@@ -1,0 +1,43 @@
+{
+  "skill_name": "example-skill",
+  "description": "Test cases for evaluating skill effectiveness",
+  "evals": [
+    {
+      "id": 1,
+      "eval_name": "basic-trigger-test",
+      "prompt": "User prompt that should trigger the skill",
+      "expected_output": "Description of what the agent should do",
+      "files": [],
+      "assertions": [
+        {
+          "name": "skill-was-triggered",
+          "type": "contains",
+          "target": "output",
+          "value": "Using [skill-name]",
+          "description": "Agent should announce skill usage"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "eval_name": "pressure-test-time",
+      "prompt": "Urgent scenario with time pressure that tests if the agent still follows the skill",
+      "expected_output": "Agent should comply with skill rules despite pressure",
+      "files": [],
+      "assertions": [
+        {
+          "name": "compliance-under-pressure",
+          "type": "does_not_contain",
+          "target": "output",
+          "value": "skip",
+          "description": "Agent should not skip the skill's required steps"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "created": "2026-06-07",
+    "last_run": null,
+    "iterations": 0
+  }
+}

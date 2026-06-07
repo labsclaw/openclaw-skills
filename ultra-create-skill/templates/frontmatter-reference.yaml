@@ -1,0 +1,101 @@
+# Frontmatter Reference — All Valid YAML Fields
+# Based on agentskills.io specification + platform extensions
+
+# === REQUIRED FIELDS ===
+
+name: skill-name
+# Type: string
+# Constraints: 1-64 chars, lowercase alphanumeric + hyphens only
+# No leading, trailing, or consecutive hyphens
+# MUST match parent directory name
+# Examples: "pdf-processor", "code-review", "data-analysis"
+
+description: >-
+  Use when [triggering conditions and symptoms]. Also use when [additional
+  triggers]. Trigger terms: term1, term2, term3.
+# Type: string
+# Constraints: Max 1024 chars, non-empty
+# Format: Start with "Use when...", third person, no workflow summary
+# Sweet spot: 100-500 characters
+# This is THE most critical field — it's the routing mechanism
+
+# === OPTIONAL FIELDS (agentskills.io Standard) ===
+
+license: Apache-2.0
+# Type: string
+# Values: SPDX identifier (MIT, Apache-2.0, BSD-2-Clause, CC-BY-4.0)
+
+compatibility: Requires Python 3.9+ and Node.js 18+
+# Type: string
+# Constraints: Max 500 chars
+# Purpose: Declare environment requirements
+
+metadata:
+  author: your-name
+  version: 1.0.0
+  tags:
+    - development
+    - productivity
+  # Arbitrary key-value map for extensibility
+
+allowed-tools: read_file run_command write_to_file
+# Type: string (space-separated tool names)
+# Status: EXPERIMENTAL
+# Purpose: Pre-approve tools this skill can use
+
+# === EXTENDED FIELDS (Antigravity/Community) ===
+
+risk: safe
+# Values: none | safe | critical | offensive | unknown
+# none = pure text/reasoning, no commands
+# safe = reads files, non-destructive commands
+# critical = modifies state, deletes files, pushes to production
+# offensive = pentesting/red-team (must include auth warning)
+
+source: community
+# Type: URL or label (community, self, https://...)
+# Purpose: Attribution for the skill's origin
+
+source_repo: owner/repo
+# Type: OWNER/REPO format
+# Purpose: Canonical GitHub repository for upstream material
+
+source_type: community
+# Values: official | community | self
+# Purpose: README credits bucket
+
+category: development
+# Type: string
+# Purpose: Domain categorization
+
+tags:
+  - react
+  - typescript
+  - testing
+# Type: array of strings
+# Purpose: Keyword categorization for search
+
+tools:
+  - openclaw
+  - opencode
+  - claude
+# Type: array of strings
+# Purpose: Compatible agent platforms
+
+date_added: "2026-06-07"
+# Type: string (YYYY-MM-DD)
+# Purpose: When skill was created
+
+author: your-name-or-handle
+# Type: string
+# Purpose: Creator attribution
+
+version: 1.0.0
+# Type: string (semver)
+# Purpose: Skill version tracking
+
+# === EXTENDED FIELDS (License Attribution) ===
+
+license_source: "https://github.com/owner/repo/blob/main/LICENSE"
+# Type: URL string
+# Purpose: Direct link to upstream license file
