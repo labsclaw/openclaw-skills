@@ -2,6 +2,7 @@
 # compare-config.ps1 - Cruza API vs config OpenClaw
 # ============================================================
 # Identifica: modelos mortos, novos disponíveis, aliases orfos
+# Inclui: antigravity proxy (127.0.0.1:8080)
 # ============================================================
 
 $ErrorActionPreference = "Continue"
@@ -81,7 +82,7 @@ function Write-Section($title) {
 $liveModels = @{}
 
 # OpenRouter
-Write-Host "[1/4] Consultando OpenRouter..." -ForegroundColor DarkGray
+Write-Host "[1/5] Consultando OpenRouter..." -ForegroundColor DarkGray
 try {
     $headers = @{ "Authorization" = "Bearer $($envVars['OPENROUTER_API_KEY'])" }
     $resp = Invoke-RestMethod -Uri "https://openrouter.ai/api/v1/models" -Headers $headers -Method Get -TimeoutSec 30
@@ -95,7 +96,7 @@ try {
 }
 
 # OpenCode
-Write-Host "[2/4] Consultando OpenCode..." -ForegroundColor DarkGray
+Write-Host "[2/5] Consultando OpenCode..." -ForegroundColor DarkGray
 try {
     $headers = @{ "Authorization" = "Bearer $($envVars['OPENCODE_API_KEY'])"; "Content-Type" = "application/json" }
     $resp = Invoke-RestMethod -Uri "https://opencode.ai/zen/v1/models" -Headers $headers -Method Get -TimeoutSec 30
@@ -110,7 +111,7 @@ try {
 }
 
 # KiloCode
-Write-Host "[3/4] Consultando KiloCode..." -ForegroundColor DarkGray
+Write-Host "[3/5] Consultando KiloCode..." -ForegroundColor DarkGray
 try {
     $headers = @{ "Authorization" = "Bearer $($envVars['KILOCODE_API_KEY'])"; "Content-Type" = "application/json" }
     $resp = Invoke-RestMethod -Uri "https://api.kilo.ai/api/gateway/models" -Headers $headers -Method Get -TimeoutSec 30
@@ -125,7 +126,7 @@ try {
 }
 
 # NVIDIA
-Write-Host "[4/4] Consultando NVIDIA..." -ForegroundColor DarkGray
+Write-Host "[4/5] Consultando NVIDIA..." -ForegroundColor DarkGray
 try {
     $headers = @{ "Authorization" = "Bearer $($envVars['NVIDIA_API_KEY'])"; "Accept" = "application/json" }
     $resp = Invoke-RestMethod -Uri "https://integrate.api.nvidia.com/v1/models" -Headers $headers -Method Get -TimeoutSec 30
@@ -140,6 +141,24 @@ try {
     Write-Host "  NVIDIA: $($free.Count) free" -ForegroundColor Green
 } catch {
     Write-Host "  NVIDIA: ERRO - $($_.Exception.Message)" -ForegroundColor Red
+}
+
+# Antigravity Proxy (local, no auth needed)
+# Config uses prefix 'antigravity-proxy/', proxy returns bare IDs
+Write-Host "[5/5] Consultando Antigravity Proxy..." -ForegroundColor DarkGray
+try {
+    $resp = Invoke-RestMethod -Uri "http://127.0.0.1:8080/v1/models" -Method Get -TimeoutSec 10
+    $all = if ($resp.data) { $resp.data } else { $resp }
+    if ($all -is [array]) {
+        foreach ($m in $all) {
+            $id = if ($m.id) { $m.id } else { "$m" }
+            # Map to config prefix: antigravity-proxy/<id>
+            $liveModels["antigravity-proxy/$id"] = @{ provider="antigravity-proxy"; id=$id; name=$id }
+        }
+        Write-Host "  Antigravity: $($all.Count) models" -ForegroundColor Green
+    }
+} catch {
+    Write-Host "  Antigravity: offline (proxy nao rodando)" -ForegroundColor Yellow
 }
 
 Write-Host "`nTotal live: $($liveModels.Count) modelos free`n" -ForegroundColor Cyan
