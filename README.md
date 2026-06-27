@@ -7,6 +7,7 @@ A collection of 'Ultra' level skills for the OpenClaw / OpenCode agent ecosystem
 - **ultra-create-skill**: The definitive guide and toolset for creating new skills.
 - **ultra-find-skill**: A cross-platform search and evaluation engine for discovering skills.
 - **ultra-drawio-skill**: A comprehensive skill for generating, editing, and exporting draw.io XML diagrams.
+- **ultra-memory-skill**: Memory Caching for LLM Agents — SSC Router, Health Check, and auto-maintenance inspired by arXiv 2602.24281.
 
 ## Installation
 
