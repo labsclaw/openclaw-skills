@@ -2,17 +2,17 @@
   <h1 align="center">🧠 ultra-memory-skill</h1>
   <p align="center">
     <strong>Memory Caching for LLM Agents</strong><br>
-    Zero-cost gated retrieval, auto-maintenance, and health monitoring for persistent agent memory.<br>
+    Zero-cost gated retrieval, auto-maintenance, and hybrid wiki architecture.<br>
     Inspired by <a href="https://arxiv.org/abs/2602.24281">Memory Caching: RNNs with Growing Memory</a> (Google, 2026).
   </p>
 </p>
 
 <p align="center">
   <a href="#quick-start">Quick Start</a> •
+  <a href="#full-installation">Full Installation</a> •
   <a href="#architecture">Architecture</a> •
   <a href="#scripts">Scripts</a> •
-  <a href="#configuration">Configuration</a> •
-  <a href="#paper">Paper</a> •
+  <a href="#wiki-architecture">Wiki</a> •
   <a href="#faq">FAQ</a>
 </p>
 
@@ -20,20 +20,99 @@
 
 ## The Problem
 
-LLM agents rediscover knowledge from scratch every session. Memory files grow unbounded. Loading all context costs O(L) tokens per session — and grows linearly with usage.
+LLM agents rediscover knowledge from scratch every session. Memory files grow unbounded. Loading all context costs O(L) tokens per session.
 
 | Approach | Complexity | Limitation |
 |----------|-----------|------------|
 | Static files (AGENTS.md) | O(1) | Fixed capacity, goes stale |
-| Full log replay | O(L) | Linear token cost, no compression |
-| RAG retrieval | O(1) query | Stateless, no knowledge accumulation |
+| Full log replay | O(L) | Linear token cost |
+| RAG retrieval | O(1) query | Stateless, no accumulation |
 | **SSC (this skill)** | **O(K)** | **K << L, compounding knowledge** |
 
-## The Solution
+## Quick Start (5 minutes)
 
-**Sparse Selective Cache (SSC)** — divide memory into topic segments, score them by relevance at query time, and load only the top-K. Access patterns update weights automatically. Maintenance compresses stale segments.
+```powershell
+# Clone or copy this skill to your workspace
+cd <your-workspace>
 
-**Result**: 91.4% token savings per session in our benchmarks.
+# Run the setup script
+powershell -ExecutionPolicy Bypass -File <skill-path>\scripts\setup.ps1
+
+# Add the SSC protocol to your AGENTS.md
+# (copy from templates/AGENTS-template.md)
+```
+
+That's it. The router works immediately. Run `.\memory\ssc-router.ps1 -Query "test"` to verify.
+
+## Full Installation
+
+### Option A: Minimal (SSC Only)
+
+Just the router and health check — zero dependencies:
+
+```powershell
+.\scripts\setup.ps1
+```
+
+Creates:
+- `memory/index.json` — SSC router config
+- `memory/ssc-router.ps1` — query-time segment scoring
+- `memory/ssc-health.ps1` — daily health check
+- `memory/segments/`, `checkpoints/`, `daily/`, `fixes/` directories
+
+### Option B: Complete (SSC + Wiki)
+
+Full hybrid architecture with knowledge extraction and vector search:
+
+```powershell
+.\scripts\setup.ps1 -Wiki -Cron
+```
+
+Additional installs:
+- **Hyper-Extract** — automated knowledge extraction (80+ templates)
+- **qmd** — hybrid search (BM25 + Vector + Reranking)
+- **agentmemory** — vector store with triple-stream retrieval
+- Wiki directory structure
+- qmd + agentmemory initialization
+
+**Requirements:** `uv` (Hyper-Extract) and `npm` (qmd + agentmemory)
+
+### Option C: Manual Step-by-Step
+
+See `examples/README.md` for detailed manual setup instructions.
+
+## Post-Setup: AGENTS.md Protocol
+
+**This is critical.** The scripts work, but your agent needs to know *when* to use them. Add this to your AGENTS.md:
+
+```markdown
+### Session Startup Protocol (Gated Retrieval)
+
+1. **Run SSC Router** — `powershell -ExecutionPolicy Bypass -File memory\ssc-router.ps1 -Query "<relevant terms>"`
+2. The script scores segments by keyword/tag overlap, returns top-K, and updates accessCount
+3. **Generate online memory** from returned segments + MEMORY.md
+4. **DO NOT load all daily files** — that's the old O(L) pattern
+5. **DO NOT read segments manually** — always use the script
+```
+
+Full template: `templates/AGENTS-template.md`
+
+## Post-Setup: Cron Health Check
+
+For automated daily health monitoring, add this cron job in OpenClaw:
+
+```json
+{
+  "name": "ssc-health-check",
+  "schedule": { "kind": "cron", "expr": "0 3 * * *" },
+  "sessionTarget": "isolated",
+  "payload": {
+    "kind": "agentTurn",
+    "message": "Run: powershell -ExecutionPolicy Bypass -File <workspace>\\memory\\ssc-health.ps1\nIf HEALTHY, respond 'SSC health: OK'. If ATTENTION NEEDED, report issues."
+  },
+  "delivery": { "mode": "announce", "channel": "telegram" }
+}
+```
 
 ## Architecture
 
@@ -55,7 +134,6 @@ LLM agents rediscover knowledge from scratch every session. Memory files grow un
 │  segments/   │    │  MEMORY.md   │
 │  s001-*.md   │    │  (overview)  │
 │  s002-*.md   │    └──────────────┘
-│  ...         │
 └──────────────┘
          │
          ▼
@@ -71,181 +149,84 @@ LLM agents rediscover knowledge from scratch every session. Memory files grow un
 memory/
 ├── index.json              ← SSC Router config + segment metadata
 ├── ssc-router.ps1          ← Query-time segment scoring
-├── ssc-health.ps1          ← Daily health check (filesystem only)
+├── ssc-health.ps1          ← Daily health check
 ├── segments/               ← Compressed knowledge by topic
 │   ├── s001-infra.md
 │   ├── s002-project.md
 │   └── s003-decisions.md
 ├── checkpoints/            ← Snapshots at key events
-│   └── ckpt-YYYY-MM-DD.md
 ├── daily/                  ← Raw daily logs (append-only)
-│   └── YYYY-MM-DD.md
 └── fixes/                  ← Bug fix records
-```
-
-## Quick Start
-
-### 1. Initialize
-
-```powershell
-$memoryDir = ".\memory"
-New-Item -ItemType Directory -Path "$memoryDir\segments" -Force
-New-Item -ItemType Directory -Path "$memoryDir\checkpoints" -Force
-New-Item -ItemType Directory -Path "$memoryDir\daily" -Force
-New-Item -ItemType Directory -Path "$memoryDir\fixes" -Force
-```
-
-### 2. Copy Scripts
-
-```powershell
-Copy-Item "<skill-path>\scripts\*" "$memoryDir\"
-```
-
-### 3. Create index.json
-
-```json
-{
-  "version": "1.0",
-  "description": "SSC Router — Memory Caching",
-  "created": "2026-06-27",
-  "lastMaintenance": null,
-  "segments": [],
-  "config": {
-    "maxSegmentsPerQuery": 4,
-    "minWeightThreshold": 0.3,
-    "autoCompressAfterDays": 30,
-    "autoMergeSimilarityThreshold": 0.85
-  }
-}
-```
-
-### 4. Add Protocol to AGENTS.md
-
-Copy the session startup section from `templates/AGENTS-template.md`.
-
-### 5. Test
-
-```powershell
-.\ssc-router.ps1 -Query "test query"
-.\ssc-health.ps1
 ```
 
 ## Scripts
 
-### ssc-router.ps1 — Segment Router
-
-Scores memory segments by keyword/tag overlap with your query. Returns top-K relevant segments and increments access counts.
+### ssc-router.ps1 — Query Memory
 
 ```powershell
-# Query for relevant segments
-.\ssc-router.ps1 -Query "project X deadline"
-
-# List all segments
-.\ssc-router.ps1 -List
-
-# Show access stats
-.\ssc-router.ps1 -Stats
-
-# Dry run (no accessCount update)
-.\ssc-router.ps1 -Query "encoding bug" -DryRun
+.\ssc-router.ps1 -Query "project deadline"    # Find relevant segments
+.\ssc-router.ps1 -List                         # List all segments
+.\ssc-router.ps1 -Stats                        # Show access counts
+.\ssc-router.ps1 -Query "test" -DryRun         # Preview without updating
 ```
 
-**Scoring formula:**
-```
-score = (keyword_hits × 2) + tag_hits + (weight × 0.5)
-```
+**Scoring:** `score = (keyword_hits × 2) + tag_hits + (weight × 0.5)`
 
 ### ssc-health.ps1 — Health Check
 
-Pure filesystem health check. No LLM required. Runs in <1 second.
+```powershell
+.\ssc-health.ps1                               # Full health report
+.\ssc-health.ps1 -Quiet                        # Report file only
+```
+
+### setup.ps1 — Full Setup
 
 ```powershell
-.\ssc-health.ps1
-# → Segments: 4 indexed, 4 healthy
-# → Daily logs: 47 files (62.33 KB)
-# → Checkpoints: 4
-# → Status: HEALTHY
+.\setup.ps1                                    # Minimal
+.\setup.ps1 -Wiki                              # SSC + wiki ecosystem
+.\setup.ps1 -Wiki -Cron                        # SSC + wiki + cron
+.\setup.ps1 -Force                             # Overwrite existing
 ```
 
-**What it monitors:**
-- Segment count consistency (index vs files)
-- Daily log freshness (warns if >7 days gap)
-- Checkpoint count and size
-- Total memory size
-- Last maintenance date (>30 days = warning)
+## Wiki Architecture (with -Wiki)
 
-## Configuration
+### Directory Structure
 
-### index.json Reference
-
-| Field | Type | Default | Description |
-|-------|------|---------|-------------|
-| `segments[].id` | string | — | Unique ID (e.g., "s001") |
-| `segments[].file` | string | — | Relative path to segment .md |
-| `segments[].summary` | string | — | One-line description |
-| `segments[].keywords` | string[] | — | Matched against queries |
-| `segments[].tags` | string[] | — | Category tags |
-| `segments[].weight` | float | 1.0 | Importance (0.0–1.0) |
-| `segments[].accessCount` | int | 0 | Auto-incremented by router |
-| `segments[].lastAccess` | ISO | — | Auto-updated by router |
-| `config.maxSegmentsPerQuery` | int | 4 | Top-K to return |
-| `config.autoCompressAfterDays` | int | 30 | Compression threshold |
-| `config.autoMergeSimilarityThreshold` | float | 0.85 | Merge threshold |
-
-### Segment File Format
-
-```markdown
-# Segment: s001 — Topic Name
-
-## Resumo
-One-line summary for router display.
-
-## Conteúdo
-
-### Subtopic A (YYYY-MM-DD)
-- Key finding or decision
-- Context and impact
-
-### Subtopic B (YYYY-MM-DD)
-- Another point
-- Cross-references
-
-## Checkpoint
-- `ckpt-YYYY-MM-DD` — Description
-
-## Tags
-tag1, tag2, tag3
-
-## Último checkpoint: YYYY-MM-DD
+```
+wiki/
+├── raw/                   ← Immutable source documents
+├── entities/              ← People, organizations, tools
+├── concepts/              ← Ideas, patterns, techniques
+├── sources/               ← Summaries of ingested sources
+├── synthesis/             ← Multi-source analyses
+├── comparisons/           ← Side-by-side evaluations
+├── projects/              ← Active project pages
+└── checkpoints/           ← Wiki state snapshots
 ```
 
-## Cron Setup
+### Workflow
 
-For automated daily health checks (OpenClaw cron):
+1. Add sources to `wiki/raw/`
+2. Extract: `he parse source.pdf -t general/academic_graph -o ./output/`
+3. Export: `he export obsidian ./output/ -o ./wiki/knowledge-abstracts/`
+4. Index: `qmd collection add wiki --name wiki; qmd embed`
+5. Import to agentmemory via MCP `memory_save`
 
-```json
-{
-  "name": "ssc-health-check",
-  "schedule": { "kind": "cron", "expr": "0 3 * * *", "tz": "America/Sao_Paulo" },
-  "sessionTarget": "isolated",
-  "payload": {
-    "kind": "agentTurn",
-    "message": "Run: powershell -ExecutionPolicy Bypass -File <path>\\memory\\ssc-health.ps1\nIf HEALTHY, respond 'SSC health: OK'. If ATTENTION NEEDED, report issues."
-  },
-  "delivery": { "mode": "announce", "channel": "telegram" }
-}
+### Search
+
+```powershell
+qmd search "memory caching"           # BM25
+qmd vsearch "hybrid architecture"     # Vector
+qmd query "what is SSC?"              # Hybrid (best quality)
 ```
 
 ## Benchmarks
-
-Measured on our production workspace (4 segments, 47 daily logs):
 
 | Metric | Before SSC | After SSC | Savings |
 |--------|-----------|-----------|---------|
 | Tokens per session startup | ~13,036 | ~1,120 | **91.4%** |
 | Files loaded | 47 daily logs | 3 segments + MEMORY.md | **93.6%** |
 | Query latency | N/A (manual) | <1s (script) | — |
-| Health check | Manual inspection | <1s automated | — |
 
 ## Paper
 
@@ -253,44 +234,39 @@ Measured on our production workspace (4 segments, 47 daily logs):
 
 - **Authors**: Behrouz et al. (Google)
 - **arXiv**: [2602.24281](https://arxiv.org/abs/2602.24281)
-- **Key insight**: RNNs don't fail because they're recurrent — they fail because memory is fixed. Caching checkpoints + selective gating = effectively growing memory without O(L²) Transformer cost.
+- **Key insight**: RNNs don't fail because they're recurrent — they fail because memory is fixed. Caching checkpoints + selective gating = effectively growing memory without O(L²) cost.
 
 **Our implementation uses the SSC (Sparse Selective Cache) variant:**
 - Segments = memory checkpoints
 - Keyword/tag scoring = gating mechanism
 - Top-K retrieval = sparse selective activation
-- Access count tracking = weight updates
-
-### Full Paper
-
-Our complete research paper documenting the hybrid memory architecture is available at `paper/sections/paper-draft.md` in the [openclaw-x-integration](https://github.com/labsclaw/openclaw-x-integration) workspace.
 
 ## FAQ
 
 **Q: Do I need any external dependencies?**
-A: No. Pure PowerShell + JSON. No npm, no Python, no API keys.
+A: No for Option A (minimal). Yes for Option B (wiki): `uv` and `npm`.
 
 **Q: What LLM frameworks does this work with?**
-A: Any framework that reads files from a workspace. We built this for OpenClaw but the protocol is framework-agnostic. Copy the AGENTS.md template and adjust the file reading commands.
+A: Any framework that reads files. We built for OpenClaw but the protocol is framework-agnostic.
 
 **Q: How many segments should I have?**
-A: Start with 3-5. The router returns top-K (default 4). More segments = better granularity but higher index maintenance. We recommend splitting when a segment exceeds 5KB.
+A: Start with 3-5. Split when a segment exceeds 5KB.
 
 **Q: When should I create a new segment?**
-A: When a distinct topic accumulates enough context that it deserves its own compressed summary. Signals: repeated references to the same concepts, decisions that affect only that topic, or a natural "chapter" in your project history.
+A: When a distinct topic accumulates enough context for its own compressed summary.
 
-**Q: Can I use this with other memory tools (Mem0, Zep, etc.)?**
-A: Yes. SSC is a retrieval layer, not a replacement. Use it alongside vector stores, knowledge graphs, or other memory systems. The scripts produce segment content that can be fed into any downstream system.
+**Q: Can I use this with other memory tools?**
+A: Yes. SSC is a retrieval layer, not a replacement. Use alongside Mem0, Zep, etc.
 
 **Q: What about shared/group sessions?**
-A: Security rule: only load segments in main sessions (direct 1:1 chats). Never load in shared contexts. The router doesn't enforce this — it's a protocol your agent follows.
+A: Security rule: only load segments in main sessions (1:1 chats). Never in shared contexts.
 
 ## Contributing
 
 1. Fork the repo
 2. Create a feature branch
-3. Test your changes with both scripts
-4. Submit a PR with before/after benchmark data
+3. Test with both scripts
+4. Submit a PR with benchmark data
 
 ## License
 

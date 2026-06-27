@@ -1,6 +1,6 @@
 # AGENTS.md — Memory Architecture Template
 
-This file defines the memory protocol for your agent workspace. Copy this to your workspace root.
+Copy this file to your workspace root as `AGENTS.md` and customize.
 
 ## Memory — MC Architecture (Memory Caching)
 
@@ -31,7 +31,7 @@ memory/
 1. **Run SSC Router** — `powershell -ExecutionPolicy Bypass -File memory\ssc-router.ps1 -Query "<relevant terms>"`
 2. The script scores segments by keyword/tag overlap, returns top-K, and updates accessCount
 3. **Generate online memory** from returned segments + MEMORY.md
-4. **DO NOT load all 30+ daily files** — that's the old O(L) pattern
+4. **DO NOT load all daily files** — that's the old O(L) pattern
 5. **DO NOT read segments manually** — always use the script for consistent scoring and tracking
 
 ### 🔒 Security Rules
@@ -65,3 +65,41 @@ During heartbeats or idle time, run maintenance:
 - When you learn a lesson → update AGENTS.md, TOOLS.md, or the relevant skill
 - When you make a mistake → document it so future-you doesn't repeat it
 - **Text > Brain** 📝
+
+## Red Lines
+
+- Don't exfiltrate private data. Ever.
+- Don't run destructive commands without asking.
+- `trash` > `rm` (recoverable beats gone forever)
+- **NEVER create Windows Scheduled Tasks for the OpenClaw gateway.** PM2 is the sole owner.
+- When in doubt, ask.
+
+## External vs Internal
+
+**Safe to do freely:**
+
+- Read files, explore, organize, learn
+- Search the web, check calendars
+- Work within this workspace
+
+**Ask first:**
+
+- Sending emails, tweets, public posts
+- Anything that leaves the machine
+- Anything you're uncertain about
+
+## Group Chats
+
+**IMPORTANT**: check its `DEFINITIONS-IMPROVE\group-chats-instructions.md`
+
+## Tools
+
+**IMPORTANT**: check its `TOOLS.md`
+
+## Heartbeats
+
+**IMPORTANT**: check its `DEFINITIONS-IMPROVE\heartbeats-instructions.md`
+
+## Make It Yours
+
+This is a starting point. Add your own conventions, style, and rules as you figure out what works.
