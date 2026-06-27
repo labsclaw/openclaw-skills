@@ -1,0 +1,26 @@
+{
+  "version": "1.0",
+  "description": "Sparse Selective Cache (SSC) — Router de memória inspirado em MC paper",
+  "created": "2026-06-13",
+  "lastMaintenance": "2026-06-13T22:24:10.410703",
+  "segments": [
+    {
+      "id": "s001",
+      "file": "segments/s001-example.md",
+      "summary": "Example segment showing the expected structure",
+      "keywords": ["example", "template", "starter"],
+      "tags": ["example", "template"],
+      "lastCheckpoint": "ckpt-2026-06-27",
+      "weight": 1.0,
+      "created": "2026-06-27",
+      "accessCount": 0
+    }
+  ],
+  "config": {
+    "maxSegmentsPerQuery": 4,
+    "minWeightThreshold": 0.3,
+    "autoCompressAfterDays": 30,
+    "autoMergeSimilarityThreshold": 0.85,
+    "maintenanceSchedule": "during-heartbeat"
+  }
+}
