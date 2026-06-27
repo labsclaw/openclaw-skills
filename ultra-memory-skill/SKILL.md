@@ -80,6 +80,8 @@ Copy-Item .\examples\memory\index.json .\memory\
 # 4. Add SSC protocol to AGENTS.md (see templates/AGENTS-template.md)
 ```
 
+For complete step-by-step instructions, see [MANUAL-INSTALL.md](MANUAL-INSTALL.md).
+
 ## Post-Setup: AGENTS.md Protocol
 
 After setup, add this to your AGENTS.md (copy from `templates/AGENTS-template.md`):

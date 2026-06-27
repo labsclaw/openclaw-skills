@@ -79,7 +79,7 @@ Additional installs:
 
 ### Option C: Manual Step-by-Step
 
-See `examples/README.md` for detailed manual setup instructions.
+See [MANUAL-INSTALL.md](MANUAL-INSTALL.md) for complete step-by-step manual installation.
 
 ## Post-Setup: AGENTS.md Protocol
 
