@@ -1,0 +1,19 @@
+{
+  "name": "ultra-x-stealth-skill",
+  "version": "1.0.0",
+  "description": "Stealth posting on X.com with anti-detection and human behavior simulation",
+  "main": "scripts/stealth-post.js",
+  "scripts": {
+    "post": "node scripts/stealth-post.js",
+    "test": "node scripts/stealth-post.js --text 'Test post' --profile openclaw"
+  },
+  "dependencies": {
+    "playwright-extra": "^4.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "author": "ClawLabs",
+  "license": "MIT"
+}

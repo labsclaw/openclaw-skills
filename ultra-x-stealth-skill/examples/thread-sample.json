@@ -1,0 +1,36 @@
+{
+  "profile": "openclaw",
+  "tweets": [
+    {
+      "text": "🧠 Seu agente de IA esquece tudo entre sessões?\n\nO cérebro humano tem 4 tipos de memória independentes — e a gente replicou essa arquitetura.\n\nConversando com o nosso founder @SmartNewbieBR, chegamos a uma descoberta fascinante 🧵👇",
+      "replyTo": null
+    },
+    {
+      "text": "Em 1953, o paciente H.M. teve o hipocampo removido pra tratar epilepsia.\n\nResultado: não criava novas memórias de vida, mas conseguia aprender habilidades motoras novas.\n\nA neuropsicóloga Brenda Milner descobriu que a memória NÃO é uma coisa só — são 4 sistemas independentes:",
+      "replyTo": "auto"
+    },
+    {
+      "text": "🔵 Trabalho → Segundos, temporário → Sessão ativa\n🟡 Episódica → Lembranças de vida → Logs diários\n🟢 Semântica → Conhecimento geral → Segmentos comprimidos\n🔴 Procedimental → Habilidades → Instruções fixas\n\nO hipocampo é o \"índice\" que decide o que vira memória permanente.",
+      "replyTo": "auto"
+    },
+    {
+      "text": "A gente construiu exatamente isso pra agentes de IA:\n\n→ SSC Router (nosso \"hipocampo\") indexa e pontua o que importa\n→ Segmentos comprimidos (nossa \"memória semântica\")\n→ Logs diários (nossa \"memória episódica\")\n→ Heartbeats fazem a consolidação — como o sono faz no cérebro",
+      "replyTo": "auto"
+    },
+    {
+      "text": "E aí o @SmartNewbieBR encontrou o Cognee — um projeto open-source que faz EXATAMENTE isso com knowledge graphs.\n\nComparação:\n• Cognee: graph reasoning + vector search + ontologia\n• A gente: keyword scoring + markdown + manutenção manual\n\nO próximo passo? Integrar graph reasoning real na nossa arquitetura.",
+      "replyTo": "auto"
+    },
+    {
+      "text": "Quer ver como memória pra agentes de IA funciona de verdade?\n\n🔍 GitHub: github.com/labsclaw/openclaw-skills\n📚 Wiki com toda a pesquisa\n🧠 Caso H.M. que inspirou tudo: bbc.com/portuguese/articles/cq8y14z71x9o\n\nAqui você tem acesso às soluções mais inovadoras que o seu agente pode ter. @SmartNewbieBR",
+      "replyTo": "auto"
+    }
+  ],
+  "settings": {
+    "minDelay": 180,
+    "maxDelay": 360,
+    "typingSpeed": "normal",
+    "headed": true,
+    "timeout": 60000
+  }
+}
