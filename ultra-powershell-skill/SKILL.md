@@ -379,7 +379,7 @@ Add-Type @"
 using System; using System.Runtime.InteropServices;
 public class Win32 {
     [DllImport("user32.dll")] public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-    [DllImport("user32.dll")] public static extern extern bool SetForegroundWindow(IntPtr hWnd);
+    [DllImport("user32.dll")] public static extern bool SetForegroundWindow(IntPtr hWnd);
     [DllImport("user32.dll")] public static extern IntPtr FindWindow(string cls, string title);
 }
 "@
@@ -466,8 +466,12 @@ function Show-InputDialog($Title='Input', $Prompt='Enter:', $Default='') {
 ```powershell
 function Show-FileBrowser($Title='Select File', $Filter='All|*.*', [switch]$Multi) {
     Add-Type -AssemblyName System.Windows.Forms
-    $d = New-Object Windows.Forms.OpenFileDialog -Property @{ Title=$Title; Filter=$Filter; Multiselect=$Multi }
-    return if ($d.ShowDialog() -eq 'OK') { if ($Multi) { $d.FileNames } else { $d.FileName } }
+    $d = [Windows.Forms.OpenFileDialog]::new()
+    $d.Title = $Title; $d.Filter = $Filter; $d.Multiselect = $Multi.IsPresent
+    try {
+        $r = if ($d.ShowDialog() -eq 'OK') { if ($Multi) { $d.FileNames } else { $d.FileName } }
+        return $r
+    } finally { $d.Dispose() }
 }
 ```
 
@@ -614,9 +618,16 @@ Install-Module -Name Microsoft.PowerShell.PSResourceGet -Force -Scope CurrentUse
 **Ensure-Module (install if missing):**
 ```powershell
 function Ensure-Module($Name, $MinVersion) {
-    $installed = Get-InstalledPSResource $Name -ErrorAction SilentlyContinue
-    if (-not $installed -or ($MinVersion -and $installed.Version -lt $MinVersion)) {
-        Install-PSResource $Name -Scope CurrentUser -TrustRepository
+    if (Get-Module -Name Microsoft.PowerShell.PSResourceGet -ListAvailable) {
+        $installed = Get-InstalledPSResource $Name -ErrorAction SilentlyContinue
+        if (-not $installed -or ($MinVersion -and $installed.Version -lt $MinVersion)) {
+            Install-PSResource $Name -Scope CurrentUser -TrustRepository
+        }
+    } else {
+        $installed = Get-InstalledModule $Name -ErrorAction SilentlyContinue
+        if (-not $installed -or ($MinVersion -and $installed.Version -lt $MinVersion)) {
+            Install-Module $Name -Scope CurrentUser -Force
+        }
     }
     Import-Module $Name
 }
