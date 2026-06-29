@@ -505,34 +505,187 @@ Get-CimInstance -ClassName Win32_LogicalDisk
 
 ### 5.2 GUI Development
 
-**Windows Forms (simple dialogs):**
+> Source: hmohamed01/powershell-expert/references/gui-development.md
+
+GUI development works on Windows platforms only.
+
+#### Windows Forms — Required Assemblies
+
 ```powershell
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
-
-$form = New-Object System.Windows.Forms.Form -Property @{
-    Text          = 'Title'
-    Size          = New-Object System.Drawing.Size(400, 300)
-    StartPosition = 'CenterScreen'
-}
-$form.ShowDialog()
 ```
 
-**WPF/XAML (complex interfaces):**
+#### Form Creation Pattern
+
 ```powershell
-[xml]$xaml = @'
-<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-    <StackPanel>
-        <Button Name="BtnClick" Content="Click Me"/>
-    </StackPanel>
-</Window>
-'@
-
-$reader = New-Object System.Xml.XmlNodeReader($xaml)
-$window = [Windows.Markup.XamlReader]::Load($reader)
-$window.FindName('BtnClick').Add_Click({ [System.Windows.MessageBox]::Show('Clicked') })
-$window.ShowDialog()
+$form = New-Object System.Windows.Forms.Form -Property @{
+    Text            = 'Application Title'
+    Size            = New-Object System.Drawing.Size(400, 300)
+    StartPosition   = 'CenterScreen'
+    FormBorderStyle = 'FixedDialog'
+    MaximizeBox     = $false
+    MinimizeBox     = $false
+    Topmost         = $true
+}
 ```
+
+#### Common Controls Reference
+
+| Control | Code | Key Properties |
+|---------|------|----------------|
+| **Button** | `New-Object System.Windows.Forms.Button` | Text, DialogResult, AcceptButton |
+| **TextBox** | `New-Object System.Windows.Forms.TextBox` | Multiline, ScrollBars, PasswordChar, MaxLength |
+| **Label** | `New-Object System.Windows.Forms.Label` | Text, AutoSize |
+| **ComboBox** | `New-Object System.Windows.Forms.ComboBox` | DropDownStyle ('DropDownList'), Items.AddRange() |
+| **ListBox** | `New-Object System.Windows.Forms.ListBox` | SelectionMode, Items.AddRange() |
+| **CheckBox** | `New-Object System.Windows.Forms.CheckBox` | Checked, Text |
+| **RadioButton** | `New-Object System.Windows.Forms.RadioButton` | Checked, group inside GroupBox |
+| **DateTimePicker** | `New-Object System.Windows.Forms.DateTimePicker` | Format, Value |
+| **ProgressBar** | `New-Object System.Windows.Forms.ProgressBar` | Minimum, Maximum, Value, Style |
+| **DataGridView** | `New-Object System.Windows.Forms.DataGridView` | DataSource, ReadOnly, AutoSizeColumnsMode |
+| **Timer** | `New-Object System.Windows.Forms.Timer` | Interval, Add_Tick() |
+
+```powershell
+# DataGridView example — bind process data
+$dataGrid = New-Object System.Windows.Forms.DataGridView -Property @{
+    Location            = New-Object System.Drawing.Point(10, 10)
+    Size                = New-Object System.Drawing.Size(400, 200)
+    AutoSizeColumnsMode = 'Fill'
+    ReadOnly            = $true
+    AllowUserToAddRows  = $false
+}
+$data = Get-Process | Select-Object Name, CPU, WorkingSet -First 10
+$dataGrid.DataSource = [System.Collections.ArrayList]@($data)
+$form.Controls.Add($dataGrid)
+```
+
+#### Layout Patterns
+
+```powershell
+# Anchoring (resize handling)
+$textBox.Anchor = [System.Windows.Forms.AnchorStyles]::Top -bor [System.Windows.Forms.AnchorStyles]::Left -bor [System.Windows.Forms.AnchorStyles]::Right
+
+# Docking
+$panel.Dock = [System.Windows.Forms.DockStyle]::Top  # Top, Bottom, Left, Right, Fill
+
+# TableLayoutPanel (grid layout)
+$tableLayout = New-Object System.Windows.Forms.TableLayoutPanel -Property @{
+    Location    = New-Object System.Drawing.Point(10, 10)
+    Size        = New-Object System.Drawing.Size(380, 200)
+    ColumnCount = 2
+    RowCount    = 3
+}
+$tableLayout.ColumnStyles.Add((New-Object System.Windows.Forms.ColumnStyle('Percent', 30)))
+$tableLayout.ColumnStyles.Add((New-Object System.Windows.Forms.ColumnStyle('Percent', 70)))
+$tableLayout.Controls.Add($label, 0, 0)    # Column 0, Row 0
+$tableLayout.Controls.Add($textBox, 1, 0)  # Column 1, Row 0
+```
+
+#### Event Handling
+
+```powershell
+# Button click
+$button.Add_Click({ [System.Windows.Forms.MessageBox]::Show('Clicked', 'Info') })
+
+# Form load — runs when form loads
+$form.Add_Load({ $textBox.Focus() })
+
+# Form closing — confirm before close
+$form.Add_FormClosing({ param($s, $e)
+    $r = [System.Windows.Forms.MessageBox]::Show('Quit?', 'Confirm', 'YesNo', 'Question')
+    if ($r -eq 'No') { $e.Cancel = $true }
+})
+
+# TextBox validation as user types
+$textBox.Add_TextChanged({ $button.Enabled = $textBox.Text.Length -gt 0 })
+
+# Timer for background updates
+$timer = New-Object System.Windows.Forms.Timer
+$timer.Interval = 1000
+$timer.Add_Tick({ $label.Text = "Time: $(Get-Date -Format 'HH:mm:ss')" })
+$timer.Start()
+# Don't forget: $timer.Stop() when done
+```
+
+#### GUI Templates
+
+**Input Dialog:**
+```powershell
+function Show-InputDialog {
+    param([string]$Title = 'Input', [string]$Prompt = 'Enter:', [string]$Default = '')
+    Add-Type -AssemblyName System.Windows.Forms, System.Drawing
+    $form = New-Object System.Windows.Forms.Form -Property @{ Text=$Title; Size=New-Object System.Drawing.Size(350,150); StartPosition='CenterScreen'; FormBorderStyle='FixedDialog'; MaximizeBox=$false; MinimizeBox=$false }
+    $lbl = New-Object System.Windows.Forms.Label -Property @{ Location=New-Object System.Drawing.Point(10,15); Size=New-Object System.Drawing.Size(320,20); Text=$Prompt }
+    $tb = New-Object System.Windows.Forms.TextBox -Property @{ Location=New-Object System.Drawing.Point(10,40); Size=New-Object System.Drawing.Size(310,20); Text=$Default }
+    $ok = New-Object System.Windows.Forms.Button -Property @{ Location=New-Object System.Drawing.Point(160,75); Size=New-Object System.Drawing.Size(75,23); Text='OK'; DialogResult='OK' }
+    $cancel = New-Object System.Windows.Forms.Button -Property @{ Location=New-Object System.Drawing.Point(245,75); Size=New-Object System.Drawing.Size(75,23); Text='Cancel'; DialogResult='Cancel' }
+    $form.AcceptButton = $ok; $form.CancelButton = $cancel
+    $form.Controls.AddRange(@($lbl,$tb,$ok,$cancel))
+    $form.Add_Shown({ $tb.Select() })
+    if ($form.ShowDialog() -eq 'OK') { return $tb.Text }
+}
+```
+
+**File Browser:**
+```powershell
+function Show-FileBrowser {
+    param([string]$Title = 'Select File', [string]$Filter = 'All (*.*)|*.*', [switch]$MultiSelect)
+    Add-Type -AssemblyName System.Windows.Forms
+    $d = New-Object System.Windows.Forms.OpenFileDialog -Property @{ Title=$Title; Filter=$Filter; Multiselect=$MultiSelect }
+    if ($d.ShowDialog() -eq 'OK') { return if ($MultiSelect) { $d.FileNames } else { $d.FileName } }
+}
+```
+
+**Folder Browser:**
+```powershell
+function Show-FolderBrowser {
+    param([string]$Description = 'Select folder')
+    Add-Type -AssemblyName System.Windows.Forms
+    $d = New-Object System.Windows.Forms.FolderBrowserDialog -Property @{ Description=$Description }
+    if ($d.ShowDialog() -eq 'OK') { return $d.SelectedPath }
+}
+```
+
+#### WPF/XAML (Complex Interfaces)
+
+```powershell
+Add-Type -AssemblyName PresentationFramework
+
+[xml]$xaml = @"
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="WPF App" Height="300" Width="400"
+        WindowStartupLocation="CenterScreen">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Content="Enter text:"/>
+        <TextBox Grid.Row="1" x:Name="InputText" Margin="0,5"/>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button x:Name="OKButton" Content="OK" Width="75" Margin="5"/>
+            <Button x:Name="CancelButton" Content="Cancel" Width="75" Margin="5"/>
+        </StackPanel>
+    </Grid>
+</Window>
+"@
+
+$reader = New-Object System.Xml.XmlNodeReader $xaml
+$window = [Windows.Markup.XamlReader]::Load($reader)
+$inputText = $window.FindName('InputText')
+$okButton = $window.FindName('OKButton')
+$cancelButton = $window.FindName('CancelButton')
+
+$okButton.Add_Click({ $script:result = $inputText.Text; $window.DialogResult = $true; $window.Close() })
+$cancelButton.Add_Click({ $window.DialogResult = $false; $window.Close() })
+
+$null = $window.ShowDialog()
+```
+
+**WPF advantages over WinForms:** Better styling, data binding, MVVM, vector graphics, modern controls (ribbon).
 
 ---
 
@@ -730,20 +883,163 @@ $path = [System.IO.Path]::Combine($base, $relative)
 
 ## 9. PowerShell Gallery & Live Verification
 
-### 9.1 Search and Install Modules
+> Source: hmohamed01/powershell-expert/references/powershellget.md
+
+PowerShell Gallery (`https://www.powershellgallery.com`) is the central repository for modules, scripts, and DSC resources.
+
+### 9.1 PSResourceGet vs Legacy PowerShellGet
+
+`Microsoft.PowerShell.PSResourceGet` is the modern replacement (ships with PS 7.4+).
+
+| Action | Legacy (PowerShellGet) | Modern (PSResourceGet) |
+|--------|------------------------|------------------------|
+| Search | `Find-Module` | `Find-PSResource` |
+| Install | `Install-Module` | `Install-PSResource` |
+| Update | `Update-Module` | `Update-PSResource` |
+| Uninstall | `Uninstall-Module` | `Uninstall-PSResource` |
+| List installed | `Get-InstalledModule` | `Get-InstalledPSResource` |
+| Publish | `Publish-Module` | `Publish-PSResource` |
 
 ```powershell
-# Search gallery
-Find-PSResource -Name 'ModuleName' -Repository PSGallery
+# Check which is available
+Get-Module -Name Microsoft.PowerShell.PSResourceGet -ListAvailable
 
-# Install
-Install-PSResource -Name 'ModuleName' -Scope CurrentUser -TrustRepository
-
-# Check installed
-Get-Module -Name 'ModuleName' -ListAvailable
+# Install if missing
+Install-Module -Name Microsoft.PowerShell.PSResourceGet -Force -Scope CurrentUser
 ```
 
-### 9.2 Live Verification Workflow
+### 9.2 Version Range Syntax (NuGet)
+
+| Syntax | Meaning |
+|--------|---------|
+| `1.0.0` | Exact version |
+| `[1.0,2.0]` | >= 1.0 AND <= 2.0 |
+| `[1.0,2.0)` | >= 1.0 AND < 2.0 |
+| `(1.0,)` | > 1.0 |
+| `[,2.0]` | <= 2.0 |
+| `*` | All versions |
+
+```powershell
+Find-PSResource -Name 'Pester' -Version '*'
+Find-PSResource -Name 'Az' -Version '[5.0,7.0)' -Prerelease
+```
+
+### 9.3 Repository Setup and Trust
+
+```powershell
+# List registered repos
+Get-PSResourceRepository
+
+# Register PSGallery if missing
+Register-PSResourceRepository -PSGallery
+
+# Set priority (lower = higher priority)
+Set-PSResourceRepository -Name PSGallery -Priority 50
+
+# Trust to skip prompts
+Set-PSResourceRepository -Name PSGallery -Trusted
+# Or per-install: Install-PSResource -Name 'Module' -TrustRepository
+```
+
+### 9.4 Search and Install
+
+```powershell
+# By name
+Find-PSResource -Name 'Az.Compute'
+
+# By tag
+Find-PSResource -Tag 'Azure', 'Cloud'
+
+# By command name
+Find-PSResource -CommandName 'Get-AzVM'
+
+# By DSC resource
+Find-PSResource -DscResourceName 'File'
+
+# Install latest stable
+Install-PSResource -Name 'Az.Compute'
+
+# Install specific version
+Install-PSResource -Name 'Pester' -Version '5.0.0'
+
+# Install prerelease
+Install-PSResource -Name 'Az' -Prerelease
+
+# Scope: CurrentUser (no admin) vs AllUsers
+Install-PSResource -Name 'PSReadLine' -Scope CurrentUser
+```
+
+> A dedicated search script with parameter sets, legacy fallback, and formatted output
+> is available at: `scripts/Search-Gallery.ps1`
+
+### 9.5 Managing Modules
+
+```powershell
+# List installed
+Get-InstalledPSResource -Name 'Az.*'
+
+# Update specific
+Update-PSResource -Name 'Az.Compute'
+
+# Update all
+Update-PSResource -Name '*'
+
+# Uninstall
+Uninstall-PSResource -Name 'Pester' -Version '4.0.0'
+
+# Save for offline use (download without install)
+Save-PSResource -Name 'Az.Compute' -Path 'C:\OfflineModules' -IncludeXml
+```
+
+### 9.6 Publishing Modules
+
+```powershell
+# Manifest must have: RootModule, ModuleVersion, GUID, Author, Description
+# Get API key from: https://www.powershellgallery.com/account/apikeys
+
+$apiKey = 'your-api-key'
+Publish-PSResource -Path './MyModule' -ApiKey $apiKey -Repository PSGallery
+
+# Dry run (validate only)
+Publish-PSResource -Path './MyModule' -ApiKey $apiKey -WhatIf
+```
+
+### 9.7 Common Patterns
+
+**Install if missing:**
+```powershell
+function Ensure-Module {
+    param([string]$Name, [string]$MinVersion)
+    $installed = Get-InstalledPSResource -Name $Name -ErrorAction SilentlyContinue
+    if (-not $installed -or ($MinVersion -and $installed.Version -lt $MinVersion)) {
+        Install-PSResource -Name $Name -Scope CurrentUser -TrustRepository
+    }
+    Import-Module $Name
+}
+```
+
+**Bulk install from list:**
+```powershell
+$modules = @(
+    @{ Name = 'Pester'; Version = '5.0.0' }
+    @{ Name = 'PSReadLine' }
+    @{ Name = 'Az.Accounts' }
+)
+foreach ($mod in $modules) {
+    $params = @{ Name=$mod.Name; Scope='CurrentUser'; TrustRepository=$true }
+    if ($mod.Version) { $params.Version = $mod.Version }
+    Install-PSResource @params
+}
+```
+
+**Find recently updated:**
+```powershell
+Find-PSResource -Name '*' -Repository PSGallery |
+    Sort-Object PublishedDate -Descending |
+    Select-Object -First 20
+```
+
+### 9.8 Live Verification Workflow
 
 When recommending modules or providing cmdlet syntax, MUST verify against live sources:
 
@@ -769,7 +1065,7 @@ Get-Help CmdletName -Full
 Get-Command CmdletName -Syntax
 ```
 
-### 9.3 Recommended Modules
+### 9.9 Recommended Modules
 
 | Category | Modules |
 |----------|---------|
@@ -790,12 +1086,16 @@ Get-Command CmdletName -Syntax
 |------|---------|
 | `scripts/template-script.ps1` | Production script skeleton |
 | `scripts/template-function.ps1` | Advanced function template |
+| `scripts/Search-Gallery.ps1` | Gallery search with parameter sets + legacy fallback |
 | `templates/module-manifest.psd1` | Module manifest template |
 | `templates/module-loader.psm1` | Module loader template |
 | `templates/pester-tests.ps1` | Pester 5 test skeleton |
 | `templates/build.ps1` | Build script with Analyze/Test/Build/Clean |
+| `templates/PSScriptAnalyzerSettings.psd1` | Analyzer rule exclusions |
 | `references/powerskills-patterns.md` | Windows COM, CDP, desktop automation |
 | `references/nasa-power-of-ten-full.md` | Full NASA 10 rules with PowerShell examples |
+| `references/powershellget-reference.md` | PSResourceGet vs PowerShellGet, version ranges, publishing |
+| `references/best-practices-reference.md` | Naming, parameters, pipeline, error handling, code style |
 | `examples/review-report.md` | Code review report example |
 
 ---
