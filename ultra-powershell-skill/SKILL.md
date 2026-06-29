@@ -159,7 +159,59 @@ C:\Users\ClawLabs\...
 ✅ C:\Users\ClawLabs\.openclaw\...
 ```
 
-### 2.9 Common Errors Quick Reference
+### 2.9 Node.js + PowerShell — Escaping Trap
+
+> Source: pattern-library Entry 19 (from real incidents 2026-06-29)
+
+PowerShell has **two problems** when calling `node.exe -e` with inline JS:
+
+1. **Unicode mangling**: PowerShell eats non-ASCII characters in `-Command` arguments before they reach Node
+2. **Regex escape consumption**: `\d`, `\w`, `\s`, `\b` in double-quoted strings are partially consumed by PowerShell, breaking regex patterns
+
+```powershell
+# WRONG — PowerShell eats the backslashes:
+node -e "console.log(/\d+/)"   # Broken
+
+# CORRECT — write to temp file:
+$script = "$env:TEMP\_script.js"
+@"
+console.log(/\d+/);
+"@ | Set-Content -Path $script -Encoding UTF8
+node $script
+Remove-Item $script -Force
+```
+
+**Golden rule:** For any `node.exe -e` with regex patterns (`\d`, `\w`, `\s`, `\b`, `\1`) or non-ASCII characters, ALWAYS write a temp `.js` file.
+
+> Full fix record: `memory/fixes/powershell-node-eval-escaping-2026-06-29.md`
+
+### 2.10 Encoding Pitfall — CP850 vs UTF-8
+
+> Source: memory/segments/s001-infra (Paperclip PR #7440, 2026-05-22)
+
+On Windows, `String(bufferValue)` uses the system default encoding (CP850 on US/BR systems), NOT UTF-8. This corrupts JSON, Unicode, and emoji.
+
+```powershell
+# WRONG on Windows — uses CP850:
+$text = [String]$buffer
+
+# CORRECT:
+$text = [System.Text.Encoding]::UTF8.GetString($buffer)
+```
+
+This is the root cause of encoding bugs in Paperclip adapter-utils (`server-utils.js` L1532, L1548). The fix: replace `String(chunk)` with `chunk.toString("utf8")`.
+
+### 2.11 BOM for Unicode Files
+
+PowerShell scripts saved as UTF-8 without BOM can fail on systems expecting BOM. The `PSUseBOMForUnicodeEncodedFile` rule in PSScriptAnalyzer flags this.
+
+```powershell
+# When saving UTF-8 from PowerShell:
+Set-Content -Path file.ps1 -Encoding UTF8  # No BOM on PS 6+
+Out-File -FilePath file.ps1 -Encoding utf8BOM  # Forces BOM (use for Windows compatibility)
+```
+
+### 2.12 Common Errors Quick Reference
 
 | Error | Cause | Fix |
 |-------|-------|-----|
@@ -168,6 +220,9 @@ C:\Users\ClawLabs\...
 | "Unexpected token" | Unicode character | Use ASCII only |
 | "Cannot find property" on null | Accessing null object | Check null first |
 | "Cannot convert" | Type mismatch | Use `.ToString()` |
+| Regex escapes consumed by shell | `node -e` with `\d`/`\w` in PowerShell | Write temp `.js` file instead |
+| UTF-8 chars garbled in output | `String(buffer)` uses CP850 | `[Encoding]::UTF8.GetString()` |
+| Script fails on other machines | Missing UTF-8 BOM | Use `-Encoding utf8BOM` for widest compat |
 
 ---
 
