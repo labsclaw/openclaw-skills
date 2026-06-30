@@ -177,6 +177,47 @@ Out-File -FilePath file.ps1 -Encoding utf8BOM
 | `Cannot find property` on null | Dereferencing null | Check null first |
 | Regex escapes consumed by shell | `node -e` with `\d` | Write temp `.js` |
 | UTF-8 garbled in output | `String()` uses CP850 | `[Encoding]::UTF8.GetString()` |
+| Unix command in prompt/instruction | `grep`, `wc -l`, `ls`, `python3` in SKILL.md or prompt | Replace with native PS or OpenClaw tools |
+
+### 2.13 Unix Commands in Prompts & Instructions
+
+Skills and prompts written on Linux/macOS often contain Unix shell commands that do NOT exist on Windows. When an agent on Windows tries to `exec` these, they fail silently or throw errors.
+
+| Unix Command | Windows Reality | Safe Alternative |
+|--------------|-----------------|------------------|
+| `ls` | No `ls` command | `Get-ChildItem` or `exec` with `dir /b` |
+| `grep` | No `grep` | `Select-String -Pattern` |
+| `wc -l` | No `wc` | `(Get-Content file.md).Count` or read tool |
+| `cat file` | No `cat` | `Get-Content file` |
+| `head` / `tail` | No `head`/`tail` | `Get-Content -TotalCount N` / `-Tail N` |
+| `sort` | No `sort` | `Sort-Object` |
+| `uniq` | No `uniq` | `Select-Object -Unique` |
+| `rm -rf` | No `rm` | `Remove-Item -Recurse -Force` |
+| `mkdir -p` | No `mkdir -p` | `New-Item -ItemType Directory -Force` |
+| `touch file` | No `touch` | `New-Item -ItemType File` or `Set-Content -Value $null` |
+| `2>/dev/null` | Redirect syntax invalid | `-ErrorAction SilentlyContinue` or try/catch |
+| `&>` | Redirect syntax invalid | `*>&1` (PS 7+) or separate streams |
+| `python3` | No `python3` — only `python` | Use `python` or check `py -3` launcher |
+| `python -c "..."` | Quote escaping breaks on PS | Write temp `.ps1`/`.py` file instead |
+| `wc -l *.md` glob | Glob not expanded by cmd | `Get-ChildItem *.md | Measure-Object -Line` |
+| `#!/bin/bash` shebang | Not executable | Use `powershell` or `pwsh` shebang |
+
+#### Detection pattern
+
+When reviewing a SKILL.md or prompt for Windows compatibility, scan for:
+- Backtick code blocks labeled `bash`, `sh`, `shell` (likely Unix commands)
+- `python -c "..."` or `python3` invocations
+- `grep`, `wc`, `ls`, `rm`, `mkdir`, `touch`, `cat` as standalone commands
+- Redirect operators `2>`, `&>`, `>/dev/null`
+
+#### Preferred approach (what Robin did)
+
+Instead of translating Unix commands to PowerShell equivalents, eliminate shell dependency entirely where possible:
+- `read` tool to inspect file contents → model counts entries in its own reasoning
+- `edit`/`write` tool for mutations
+- `exec` only when truly needed, with known-safe commands like `dir /b`
+
+This is OS-agnostic and avoids quoting/encoding issues completely.
 
 ---
 
