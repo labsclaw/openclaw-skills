@@ -1,8 +1,8 @@
 # Pipeline Resilience Skill
 
-**Versão:** 1.2 (Portável — rules-default genérico, sem dependências hardcoded)  
+**Versão:** 1.3 (Atomic writes + zombie detection + handoff protocol)  
 **Data:** 2026-07-03  
-**Autores:** Robin (Bando) + dr. Roger + Claude Sonnet 5 + Gemini PRO
+**Autores:** Robin (Bando) + dr. Roger + Claude Sonnet 5 + Gemini PRO + Justus
 
 ---
 
