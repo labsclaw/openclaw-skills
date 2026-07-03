@@ -2,7 +2,7 @@
 
 **Versão:** 1.1 (Portável — sem dependências hardcoded)  
 **Data:** 2026-07-02  
-**Autores:** Robin (Bando) + Claude Sonnet 5 + Gemini PRO
+**Autores:** Robin (Bando) + dr. Roger + Claude Sonnet 5 + Gemini PRO
 
 ---
 

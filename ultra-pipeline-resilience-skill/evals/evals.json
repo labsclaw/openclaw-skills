@@ -1,0 +1,115 @@
+{
+  "skill_name": "ultra-pipeline-resilience-skill",
+  "description": "Pipeline resilience protocol for OpenClaw — crash-safe handoff, state persistence, zombie detection, recovery hydration",
+  "evals": [
+    {
+      "id": 1,
+      "eval_name": "trigger-detection",
+      "prompt": "Execute a complex data pipeline with 5 steps that may take over 10 minutes total",
+      "expected_output": "Agent detects multi-step long-running pipeline and activates pipeline-resilience skill",
+      "files": ["skills/ultra-pipeline-resilience-skill/SKILL.md"],
+      "assertions": [
+        {
+          "name": "skill-triggered",
+          "type": "contains",
+          "target": "output",
+          "value": "Pipeline",
+          "description": "Agent should recognize and announce pipeline resilience activation"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "eval_name": "state-file-creation",
+      "prompt": "Initialize a pipeline state file for a 3-step task",
+      "expected_output": "Agent creates a valid JSON state file with status, steps, and timestamps",
+      "files": ["skills/ultra-pipeline-resilience-skill/SKILL.md"],
+      "assertions": [
+        {
+          "name": "state-file-valid",
+          "type": "contains",
+          "target": "output",
+          "value": "pipeline_id",
+          "description": "State file should contain pipeline_id field"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "eval_name": "handoff-brevity",
+      "prompt": "Complete step 1 of a pipeline and write the handoff for step 2",
+      "expected_output": "Handoff payload is concise (<500 tokens) and contains only essential state",
+      "files": ["skills/ultra-pipeline-resilience-skill/SKILL.md"],
+      "assertions": [
+        {
+          "name": "handoff-compressed",
+          "type": "does_not_contain",
+          "target": "output",
+          "value": "full conversation",
+          "description": "Handoff should not contain raw conversation history"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "eval_name": "recovery-hydration",
+      "prompt": "Resume a crashed pipeline from the state file",
+      "expected_output": "Agent reads state file and reconstructs context from handoff summary",
+      "files": ["skills/ultra-pipeline-resilience-skill/SKILL.md"],
+      "assertions": [
+        {
+          "name": "recovery-context",
+          "type": "contains",
+          "target": "output",
+          "value": "handoff",
+          "description": "Recovery should reference the handoff payload"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "eval_name": "zombie-detection",
+      "prompt": "A pipeline step has been running for 2x its expected timeout",
+      "expected_output": "Agent detects zombie state and triggers retry",
+      "files": ["skills/ultra-pipeline-resilience-skill/SKILL.md"],
+      "assertions": [
+        {
+          "name": "zombie-detected",
+          "type": "contains",
+          "target": "output",
+          "value": "retry",
+          "description": "Agent should detect zombie and attempt retry"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "eval_name": "no-hardcoded-deps",
+      "prompt": "Read the SKILL.md and verify it contains no hardcoded model names, paths, or user names",
+      "expected_output": "Skill is portable across installations",
+      "files": ["skills/ultra-pipeline-resilience-skill/SKILL.md"],
+      "assertions": [
+        {
+          "name": "no-hardcoded-models",
+          "type": "does_not_contain",
+          "target": "output",
+          "value": "big-pickle",
+          "description": "Should not reference specific model names"
+        },
+        {
+          "name": "no-hardcoded-paths",
+          "type": "does_not_contain",
+          "target": "output",
+          "value": "crew/quantmind",
+          "description": "Should not reference workspace-specific paths"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "created": "2026-07-02",
+    "last_run": null,
+    "iterations": 0,
+    "version": "1.1.0"
+  }
+}
