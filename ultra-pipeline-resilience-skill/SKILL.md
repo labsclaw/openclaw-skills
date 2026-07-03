@@ -1,7 +1,7 @@
 # Pipeline Resilience Skill
 
-**Versão:** 1.1 (Portável — sem dependências hardcoded)  
-**Data:** 2026-07-02  
+**Versão:** 1.2 (Portável — rules-default genérico, sem dependências hardcoded)  
+**Data:** 2026-07-03  
 **Autores:** Robin (Bando) + dr. Roger + Claude Sonnet 5 + Gemini PRO
 
 ---
@@ -20,15 +20,20 @@ cat > memory/rules/rules-default.md << 'EOF'
 # Regras Padrão
 
 ## Código
-- Seguir padrão dos módulos existentes
-- Dataclasses para resultados
-- Type hints em funções públicas
-- Docstrings no formato Google
+- Seguir padrão dos módulos existentes no projeto
+- Tipos/Interfaces para dados públicos
+- Funções com assinatura clara
+- Comentários apenas quando a lógica não é óbvia
 
 ## Testes
-- Todo módulo deve ter testes em tests/
-- pytest como framework
-- Mínimo: 10 testes por módulo
+- Todo módulo deve ter testes
+- Framework do projeto (pytest, vitest, jest, etc.)
+- Cobrir: caso feliz, edge cases, erros esperados
+
+## Segurança
+- Não exfiltrar dados privados
+- Não commitar chaves ou tokens
+- Preferir trash/backup sobre delete permanente
 EOF
 ```
 
