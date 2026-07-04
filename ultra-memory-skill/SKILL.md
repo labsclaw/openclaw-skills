@@ -496,6 +496,54 @@ powershell -ExecutionPolicy Bypass -File memory\ssc-health.ps1
 powershell -ExecutionPolicy Bypass -File scripts\ssc-router.ps1 -Query "test"
 ```
 
+## Wiki Maintenance
+
+### Health Check Script
+
+Automated graph connectivity monitor:
+
+```powershell
+.\scripts\wiki-health.ps1              # Full report
+.\scripts\wiki-health.ps1 -Quiet        # Summary only
+```
+
+**Checks:**
+- Orphan files (no wikilinks in/out)
+- Broken links in index.md
+- Link coverage percentage
+- Saves report to `wiki/health-report.md`
+
+**Cron:** Runs every Monday at 8am (`wiki-health-check`).
+- Reports orphan count, coverage %, broken links
+- Alerts Dr. Roger if coverage drops below 50%
+
+### Orphan File Types
+
+| Type | Action | Why |
+|------|--------|-----|
+| `knowledge-abstracts/**` | Leave as-is | Hyper-Extract output, not wiki nodes |
+| `raw/**` | Leave as-is | Immutable source documents |
+| `scripts/**` | Leave as-is | Tooling, not knowledge nodes |
+| Standalone `.md` | Add wikilinks | Should connect to wiki graph |
+
+### Manual Cleanup Procedure
+
+1. Run health check to identify orphans
+2. For each orphan, determine if it should:
+   - **Link out**: Add `## Related` section with `[[wikilinks]]`
+   - **Be linked**: Add entry to `index.md`
+   - **Stay orphan**: Document why (e.g., raw source, internal output)
+3. For broken links: create missing file or remove link
+4. Re-run health check to confirm improvement
+
+### Coverage Targets
+
+| Coverage | Status | Action |
+|----------|--------|--------|
+| ≥70% | Healthy | No action needed |
+| 50-70% | Acceptable | Review orphans quarterly |
+| <50% | Needs attention | Clean up within 1 week |
+
 ## Troubleshooting
 
 | Problem | Solution |
