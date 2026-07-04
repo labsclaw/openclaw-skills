@@ -389,6 +389,30 @@ qmd query "what is SSC?"              # Hybrid (BM25 + Vector + LLM reranking)
 
 When a new topic emerges during conversation, the agent creates the segment and updates index.json. The router picks it up on next query.
 
+## Testing
+
+**IMPORTANT:** Scripts must be tested from the `memory/` directory after running `setup.ps1`, NOT from the `scripts/` directory.
+
+The scripts use `$PSScriptRoot` to find `index.json` in the same directory. When copied to `memory/` by `setup.ps1`, the `index.json` is also there.
+
+### Correct test flow
+
+```powershell
+# 1. Run setup first (creates memory/ structure)
+.\scripts\setup.ps1
+
+# 2. Test from memory/ directory
+powershell -ExecutionPolicy Bypass -File memory\ssc-router.ps1 -Query "test" -DryRun
+powershell -ExecutionPolicy Bypass -File memory\ssc-health.ps1
+```
+
+### Wrong test flow (will fail)
+
+```powershell
+# This will fail — no index.json in scripts/ directory
+powershell -ExecutionPolicy Bypass -File scripts\ssc-router.ps1 -Query "test"
+```
+
 ## Troubleshooting
 
 | Problem | Solution |
