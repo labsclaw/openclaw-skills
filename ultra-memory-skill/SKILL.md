@@ -287,6 +287,100 @@ Track changes with source attribution:
 - High confidence (≥0.8) → promote to segment
 - Low confidence (<0.5) → review or archive
 
+## Procedural Memory (from agent-memory-systems/CoALA)
+
+Third memory type: **how-to knowledge** (rules, skills, workflows).
+
+| Memory Type | CoALA Name | Ultra-Memory Location | Purpose |
+|-------------|------------|----------------------|--------|
+| Semantic | Semantic | `semantic-patterns.json` | Facts, rules, patterns |
+| Episodic | Episodic | `episodic/` | Experiences, events |
+| Working | Working | `working/` | Current session context |
+| **Procedural** | Procedural | `segments/` (tag: `procedural`) | Skills, workflows, how-to |
+
+**Procedural segment format:**
+```json
+{
+  "id": "s010",
+  "file": "segments/s010-powershell-patterns.md",
+  "summary": "PowerShell syntax patterns and anti-patterns",
+  "tags": ["procedural", "powershell", "syntax"],
+  "tier": "HOT",
+  "patterns": [
+    {"task": "Select first N items", "solution": "Select-Object -First N"},
+    {"task": "Redirect stderr", "solution": "2>$null"}
+  ]
+}
+```
+
+## Chunking Strategies (from agent-memory-systems)
+
+When processing documents for memory storage:
+
+| Strategy | Best For | Chunk Size | Notes |
+|----------|----------|------------|-------|
+| Fixed-size | General use | 256-512 tokens | Baseline, simple |
+| Semantic | High-quality retrieval | Variable | Splits by meaning |
+| Structure-aware | Markdown/docs | Per heading | Respects hierarchy |
+| Contextual | Complex documents | 256-512 tokens | Adds doc summary to each chunk |
+| Code-specific | Source code | 1000 chars | Respects function/class boundaries |
+
+**Rule:** Chunk for retrieval, not for storage.
+
+## Background Memory Formation
+
+Process memories asynchronously after conversations:
+
+1. **Conversation ends** → session summary saved
+2. **Background job** (cron or idle timeout) → extract insights
+3. **Store** to semantic/episodic memory
+4. **Consolidate** similar memories
+
+**Why:** Real-time extraction slows conversations. Background processing yields higher quality.
+
+## Memory Consolidation (Like Sleep)
+
+Periodically merge duplicate/similar memories:
+
+```
+1. List all memories in namespace
+2. Cluster by similarity (threshold: 0.9)
+3. For each cluster:
+   a. Merge into single memory
+   b. Preserve all important info
+   c. Delete originals
+4. Update index
+```
+
+**When:** Weekly during health check, or when memory count exceeds threshold.
+
+## Memory Decay
+
+Not all memories should live forever. Decay based on:
+
+| Factor | Weight | Decay Rule |
+|--------|--------|------------|
+| Recency | 0.4 | Days since last access |
+| Frequency | 0.3 | Times retrieved |
+| Importance | 0.3 | Confidence score |
+
+**Decay score** = (0.4 × recency) + (0.3 × frequency) + (0.3 × importance)
+
+- Decay score < 0.3 → archive to COLD
+- Decay score < 0.1 → soft delete (mark, don't remove)
+- Decay score ≥ 0.5 → keep in current tier
+
+## Vector Store Reference
+
+| Store | Scale | Cost | Hybrid Search | Best For |
+|-------|-------|------|---------------|----------|
+| Pinecone | Billions | High | No | Enterprise, managed |
+| Qdrant | 100M+ | Medium | Yes | Complex filtering |
+| Weaviate | 100M+ | Medium | Yes | Knowledge graphs |
+| ChromaDB | 1M | Free | No | Prototyping |
+| pgvector | 1M | Free | Yes | PostgreSQL users |
+| agentmemory | Unlimited | Free | Yes | Our stack (local) |
+
 ## Full Installation
 
 ### Option A: Minimal (SSC Only)
