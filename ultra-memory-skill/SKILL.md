@@ -66,6 +66,89 @@ Track and promote after 3x:
 - Context-specific ("in this file...")
 - Hypotheticals ("what if...")
 
+## Map is not the Territory (from Thariq/Anthropic)
+
+Inspired by [A Field Guide to Fable: Finding Your Unknowns](https://x.com/trq212/status/2073100352921215386) (Thariq Shihipar, Anthropic Claude Code team).
+
+**Core principle:** Your prompts, skills, and context are the *map*. The real codebase, system constraints, and edge cases are the *territory*. When the agent hits unknown territory, quality drops.
+
+### Unknown Detection
+
+When the agent encounters any of these, classify as an **unknown**:
+- Command fails with unexpected error
+- API/behavior differs from learned knowledge
+- Framework constraint not in current skills
+- Platform-specific behavior (Windows vs Linux)
+- Tool version incompatibility
+- Missing prerequisite or dependency
+
+### Unknown Classification
+
+| Type | Description | Action |
+|------|-------------|--------|
+| **Known-Known** | Agent has skill/pattern for this | Execute directly |
+| **Known-Unknown** | Agent knows it doesn't know | Search web → log → update skill |
+| **Unknown-Unknown** | Agent doesn't know it doesn't know | Error occurs → classify → search → log |
+
+### Web Search Trigger (Auto-Update)
+
+When an unknown is **important for achieving an established objective**:
+
+1. **Log the unknown** to `memory/corrections.md` with category `knowledge_gap`
+2. **Search the web** for current information on the topic
+3. **Synthesize** findings into actionable knowledge
+4. **Update the relevant skill** or create a new segment
+5. **Mark as resolved** in corrections.md
+
+**Trigger conditions:**
+- Unknown blocks progress on an active goal
+- Unknown affects company operations (Paperclip, PRs, deployments)
+- Unknown is a recurring pattern (2+ occurrences)
+- Unknown involves security, data loss, or production systems
+
+**Search format:**
+```markdown
+## [LRN-YYYYMMDD-XXX] knowledge_gap
+
+**Logged**: ISO-8601 timestamp
+**Priority**: high
+**Status**: searching
+**Area**: config | infra | backend
+
+### Summary
+Agent lacked knowledge about [topic]
+
+### Unknown Type
+known-unknown | unknown-unknown
+
+### Web Search
+- Query: "[search terms]"
+- Source: [URL]
+- Finding: [what was learned]
+- Confidence: 0.0-1.0
+
+### Resolution
+- **Resolved**: timestamp
+- **Updated**: [skill/segment file]
+- **Notes**: [what changed]
+```
+
+### Practical Example
+
+```
+2026-07-04: Agent used `head` in PowerShell → FAILED
+  ↓
+Classification: Unknown-Unknown (didn't know head doesn't exist in PS)
+  ↓
+Web Search: "PowerShell Select-Object head alternative"
+  ↓
+Finding: Use `Select-Object -First N`
+  ↓
+Action: Updated ultra-powershell-skill SKILL.md section 2.10
+  ↓
+Result: Never repeat this error
+```
+
 ## Tiered Storage Architecture
 
 | Tier | Location | Size Limit | Behavior |
