@@ -12,6 +12,9 @@ Zero-cost memory architecture for LLM agents, inspired by [Memory Caching: RNNs 
 - **SSC Router** — keyword/tag scoring loads only relevant memory segments per query
 - **Health Check** — daily filesystem integrity monitor (no LLM needed)
 - **Wiki Architecture** — persistent markdown wiki with Hyper-Extract + qmd + agentmemory
+- **Learning Signals** — automatic detection of corrections, preferences, and patterns (inspired by self-improving skill)
+- **Tiered Storage** — HOT/WARM/COLD with automatic promotion/demotion rules
+- **Self-Reflection** — post-task evaluation protocol for continuous improvement
 - **91.4% token savings** per session in benchmarks
 
 ## Quick Start (5 minutes)
@@ -22,6 +25,184 @@ Zero-cost memory architecture for LLM agents, inspired by [Memory Caching: RNNs 
 ```
 
 This creates the memory structure and copies scripts. Then add the SSC protocol to your AGENTS.md (see `templates/AGENTS-template.md`).
+
+## Learning Signals (from Self-Improving Skill)
+
+Automatically detect and log these patterns:
+
+### Corrections
+Log when user corrects you or points out mistakes:
+- "No, that's not right..."
+- "Actually, it should be..."
+- "You're wrong about..."
+- "I prefer X, not Y"
+- "Remember that I always..."
+- "I told you before..."
+- "Stop doing X"
+- "Why do you keep..."
+
+**Action:** Add to `memory/corrections.md`, evaluate for segment creation.
+
+### Preference Signals
+Log explicit preferences:
+- "I like when you..."
+- "Always do X for me"
+- "Never do Y"
+- "My style is..."
+- "For [project], use..."
+
+**Action:** Add to relevant segment or MEMORY.md if confirmed.
+
+### Pattern Candidates
+Track and promote after 3x:
+- Same instruction repeated 3+ times
+- Workflow that works well repeatedly
+- User praises specific approach
+
+**Action:** After 3x, promote to segment with `tier: "HOT"`.
+
+### Ignore (Don't Log)
+- One-time instructions ("do X now")
+- Context-specific ("in this file...")
+- Hypotheticals ("what if...")
+
+## Tiered Storage Architecture
+
+| Tier | Location | Size Limit | Behavior |
+|------|----------|------------|----------|
+| HOT | `memory/segments/` (tier: "HOT") | ≤100 lines per segment | Always loaded via SSC Router |
+| WARM | `memory/segments/` (tier: "WARM") | ≤200 lines per segment | Load on context match |
+| COLD | `memory/archive/` | Unlimited | Load on explicit query only |
+
+### Promotion/Demotion Rules
+
+- **3x usage in 7 days** → Promote to HOT
+- **30 days unused** → Demote to WARM
+- **90 days unused** → Archive to COLD
+- **Never delete** without user confirmation
+
+### Segment Tier Field
+
+Add `tier` field to `index.json` entries:
+
+```json
+{
+  "id": "s001",
+  "file": "segments/s001-my-topic.md",
+  "summary": "One-line description",
+  "keywords": ["topic", "related"],
+  "tags": ["category"],
+  "weight": 0.9,
+  "tier": "HOT",
+  "lastAccess": "2026-07-04T14:00:00",
+  "accessCount": 5,
+  "created": "2026-06-27"
+}
+```
+
+## Self-Reflection Protocol
+
+After completing significant work, pause and evaluate:
+
+1. **Did it meet expectations?** — Compare outcome vs intent
+2. **What could be better?** — Identify improvements for next time
+3. **Is this a pattern?** — If yes, log to `memory/corrections.md`
+
+### When to Self-Reflect
+- After completing a multi-step task
+- After receiving feedback (positive or negative)
+- After fixing a bug or mistake
+- When you notice your output could be better
+
+### Log Format
+
+```markdown
+CONTEXT: [type of task]
+REFLECTION: [what I noticed]
+LESSON: [what to do differently]
+```
+
+### Promotion Rule
+Self-reflection entries follow same promotion rules: 3x applied successfully → promote to HOT tier.
+
+## Namespace Isolation
+
+- **Project patterns** → `memory/segments/` with tag `project:{name}`
+- **Domain patterns** (code, writing, comms) → `memory/segments/` with tag `domain:{type}`
+- **Global preferences** → `memory/segments/` with tag `global`
+
+**Priority:** project > domain > global (most specific wins)
+
+## Multi-Memory Architecture (from charon-fan/agent-playbook)
+
+Inspired by cognitive science research, implement three memory types:
+
+### Semantic Memory
+**Location:** `memory/semantic-patterns.json`
+**Purpose:** Abstract patterns and rules reusable across contexts
+**Format:**
+```json
+{
+  "patterns": {
+    "pat-2026-07-04-001": {
+      "id": "pat-2026-07-04-001",
+      "name": "PowerShell head/tail avoidance",
+      "source": "user_feedback",
+      "confidence": 0.95,
+      "applications": 3,
+      "created": "2026-07-04",
+      "category": "powershell_syntax",
+      "pattern": "Use Select-Object instead of head/tail",
+      "problem": "head/tail don't exist in PowerShell",
+      "solution": {"use": "Select-Object -First N"},
+      "target_skills": ["ultra-powershell-skill"]
+    }
+  }
+}
+```
+
+### Episodic Memory
+**Location:** `memory/episodic/YYYY-MM-DD-{skill}.json`
+**Purpose:** Specific experiences and what happened
+**Format:**
+```json
+{
+  "id": "ep-2026-07-04-001",
+  "timestamp": "2026-07-04T14:00:00-03:00",
+  "skill": "ultra-powershell-skill",
+  "situation": "Agent used head in PowerShell pipeline",
+  "root_cause": "Bash syntax in PowerShell",
+  "solution": "Select-Object -First N",
+  "lesson": "Never use head/tail in PowerShell",
+  "confidence": 0.95
+}
+```
+
+### Working Memory
+**Location:** `memory/working/current_session.json`
+**Purpose:** Current session context
+**Format:**
+```json
+{
+  "session_id": "dfde104d-aab7-44b4-8df5-ba71b7104680",
+  "started": "2026-07-04T09:59:00-03:00",
+  "active_skills": ["ultra-memory-skill"],
+  "pending_tasks": ["PR #8084 monitoring"],
+  "context": "Paper v0.3 update, self-improving integration"
+}
+```
+
+### Evolution Markers
+Track changes with source attribution:
+```markdown
+<!-- Evolution: 2026-07-04 | source: ep-2026-07-04-001 | skill: ultra-memory -->
+```
+
+### Confidence Tracking
+- Each pattern has `confidence` (0.0-1.0)
+- Updated based on applications and feedback
+- High confidence (≥0.8) → promote to segment
+- Low confidence (<0.5) → review or archive
 
 ## Full Installation
 
@@ -69,15 +250,20 @@ New-Item -ItemType Directory -Path ".\memory\segments" -Force
 New-Item -ItemType Directory -Path ".\memory\checkpoints" -Force
 New-Item -ItemType Directory -Path ".\memory\daily" -Force
 New-Item -ItemType Directory -Path ".\memory\fixes" -Force
+New-Item -ItemType Directory -Path ".\memory\archive" -Force
 
 # 2. Copy scripts
 Copy-Item .\scripts\ssc-router.ps1 .\memory\
 Copy-Item .\scripts\ssc-health.ps1 .\memory\
+Copy-Item .\scripts\ssc-promote.ps1 .\memory\  # Tier promotion/demotion
 
 # 3. Copy index.json template
 Copy-Item .\examples\memory\index.json .\memory\
 
-# 4. Add SSC protocol to AGENTS.md (see templates/AGENTS-template.md)
+# 4. Create corrections.md
+"# Corrections Log\n\n> Last 50 corrections. Promote to segment after 3x pattern.\n" | Set-Content .\memory\corrections.md -Encoding UTF8
+
+# 5. Add SSC protocol to AGENTS.md (see templates/AGENTS-template.md)
 ```
 
 For complete step-by-step instructions, see [MANUAL-INSTALL.md](MANUAL-INSTALL.md).
@@ -231,16 +417,116 @@ When a new topic emerges during conversation, the agent creates the segment and 
          ▼                   ▼
 ┌──────────────┐    ┌──────────────┐
 │  segments/   │    │  MEMORY.md   │
-│  s001-*.md   │    │  (overview)  │
-│  s002-*.md   │    └──────────────┘
+│  HOT/WARM    │    │  (overview)  │
+│  s001-*.md   │    └──────────────┘
 └──────────────┘
          │
          ▼
 ┌─────────────────────────────────────────────┐
+│     Learning Signals + Self-Reflection       │
+│  Detect corrections → log → promote 3x      │
+└──────────────────┬──────────────────────────┘
+                   │
+                   ▼
+┌─────────────────────────────────────────────┐
 │        ssc-health.ps1 (daily cron)           │
 │  Verify integrity, report anomalies          │
+│  Check tier promotion/demotion rules         │
 └─────────────────────────────────────────────┘
 ```
+
+## Corrections Log Format
+
+`memory/corrections.md` — last 50 corrections:
+
+```markdown
+# Corrections Log
+
+> Last 50 corrections. Promote to segment after 3x pattern.
+
+## Recent
+
+- **2026-07-04**: User corrected PowerShell syntax — use Select-Object, not head
+- **2026-07-04**: User corrected cron frequency — 1x/day, not 1x/hour
+
+## Patterns (3x+)
+
+- [ ] PowerShell: never use head/tail — use Select-Object
+- [ ] Always check mergeStateStatus before reporting PR ready
+```
+
+## Structured Logging (from pskoett/self-improving-agent)
+
+For detailed tracking, use structured entry format:
+
+### Entry Types
+
+| Type | File | Use Case |
+|------|------|----------|
+| LRN | `memory/learnings.md` | Corrections, knowledge gaps, best practices |
+| ERR | `memory/errors.md` | Command failures, exceptions |
+| FEAT | `memory/feature-requests.md` | User-requested capabilities |
+
+### Entry Format
+
+```markdown
+## [LRN-20260704-001] correction
+
+**Logged**: 2026-07-04T14:00:00-03:00
+**Priority**: high
+**Status**: resolved
+**Area**: config
+
+### Summary
+PowerShell head/tail commands don't exist on Windows.
+
+### Details
+Agent used `head -20` in PowerShell pipeline. Failed with command not found.
+
+### Suggested Action
+Use `Select-Object -First N` instead of `head`.
+
+### Metadata
+- Source: user_feedback
+- Tags: powershell, syntax
+- Pattern-Key: powershell.head_tail
+- Recurrence-Count: 1
+- First-Seen: 2026-07-04
+
+### Resolution
+- **Resolved**: 2026-07-04T14:01:00-03:00
+- **Section**: ultra-powershell-skill SKILL.md 2.10
+- **Notes**: Added GitHub CLI PowerShell patterns section
+```
+
+### Status Values
+
+- `pending` — not yet addressed
+- `in_progress` — being worked on
+- `resolved` — fixed
+- `promoted` — elevated to segment or workspace file
+- `wont_fix` — decided not to address
+
+### Promotion Rules
+
+When a learning proves broadly applicable:
+1. Distill into concise rule
+2. Add to appropriate segment or workspace file
+3. Update status: `pending` → `promoted`
+4. Add promotion target
+
+**Promotion targets:**
+- Behavioral patterns → SOUL.md
+- Workflow improvements → AGENTS.md
+- Tool gotchas → TOOLS.md
+- Knowledge → memory segments
+
+### Recurring Pattern Detection
+
+- Search first: check if similar entry exists
+- Link entries: add `See Also` reference
+- Bump priority if recurring
+- After 3x with same Pattern-Key → promote to segment
 
 ## References
 

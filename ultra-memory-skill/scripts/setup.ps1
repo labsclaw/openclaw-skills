@@ -53,7 +53,11 @@ $dirs = @(
     (Join-Path $MemoryDir "segments"),
     (Join-Path $MemoryDir "checkpoints"),
     (Join-Path $MemoryDir "daily"),
-    (Join-Path $MemoryDir "fixes")
+    (Join-Path $MemoryDir "fixes"),
+    (Join-Path $MemoryDir "archive"),
+    (Join-Path $MemoryDir "semantic"),
+    (Join-Path $MemoryDir "episodic"),
+    (Join-Path $MemoryDir "working")
 )
 
 foreach ($dir in $dirs) {
@@ -131,6 +135,45 @@ if ((Test-Path $memoryMd) -and -not $Force) {
 "@
     $template | Set-Content $memoryMd -Encoding UTF8
     Write-Ok "MEMORY.md created"
+}
+
+# ── Step 4b: Create corrections.md Template ────────────────────────
+Write-Step "Creating corrections.md template"
+
+$correctionsMd = Join-Path $MemoryDir "corrections.md"
+if ((Test-Path $correctionsMd) -and -not $Force) {
+    Write-Warn "corrections.md already exists (use -Force to overwrite)"
+} else {
+    $template = @"
+# Corrections Log
+
+> Last 50 corrections. Promote to segment after 3x pattern.
+
+## Recent
+
+## Patterns (3x+)
+
+## Promoted to Segments
+"@
+    $template | Set-Content $correctionsMd -Encoding UTF8
+    Write-Ok "corrections.md created"
+}
+
+# ── Step 4c: Create semantic-patterns.json Template ────────────────
+Write-Step "Creating semantic-patterns.json template"
+
+$semanticJson = Join-Path $MemoryDir "semantic-patterns.json"
+if ((Test-Path $semanticJson) -and -not $Force) {
+    Write-Warn "semantic-patterns.json already exists (use -Force to overwrite)"
+} else {
+    $template = @{
+        version = "1.0"
+        description = "Semantic memory — abstract patterns and rules"
+        created = (Get-Date -Format "yyyy-MM-dd")
+        patterns = @{}
+    }
+    $template | ConvertTo-Json -Depth 10 | Set-Content $semanticJson -Encoding UTF8
+    Write-Ok "semantic-patterns.json created"
 }
 
 # ── Step 5: Copy AGENTS.md Template Section ─────────────────────────
@@ -267,10 +310,16 @@ $checks = @(
     @{ Name = "segments/ directory"; Path = Join-Path $MemoryDir "segments" },
     @{ Name = "checkpoints/ directory"; Path = Join-Path $MemoryDir "checkpoints" },
     @{ Name = "daily/ directory"; Path = Join-Path $MemoryDir "daily" },
+    @{ Name = "archive/ directory"; Path = Join-Path $MemoryDir "archive" },
+    @{ Name = "semantic/ directory"; Path = Join-Path $MemoryDir "semantic" },
+    @{ Name = "episodic/ directory"; Path = Join-Path $MemoryDir "episodic" },
+    @{ Name = "working/ directory"; Path = Join-Path $MemoryDir "working" },
     @{ Name = "index.json"; Path = $indexPath },
     @{ Name = "ssc-router.ps1"; Path = Join-Path $MemoryDir "ssc-router.ps1" },
     @{ Name = "ssc-health.ps1"; Path = Join-Path $MemoryDir "ssc-health.ps1" },
-    @{ Name = "MEMORY.md"; Path = $memoryMd }
+    @{ Name = "MEMORY.md"; Path = $memoryMd },
+    @{ Name = "corrections.md"; Path = $correctionsMd },
+    @{ Name = "semantic-patterns.json"; Path = $semanticJson }
 )
 
 $allOk = $true
