@@ -381,6 +381,54 @@ Not all memories should live forever. Decay based on:
 | pgvector | 1M | Free | Yes | PostgreSQL users |
 | agentmemory | Unlimited | Free | Yes | Our stack (local) |
 
+## Replay Learnings (from rohitg00/pro-workflow)
+
+"Memória muscular" — buscar aprendizados relevantes antes de começar uma tarefa.
+
+### Workflow
+
+1. **Extrair keywords** da descrição da tarefa
+   - "auth refactor" → `auth`, `middleware`, `refactor`
+   - "deploy pipeline" → `deploy`, `ci`, `pipeline`
+2. **Buscar** em `corrections.md` e `semantic-patterns.json`
+3. **Classificar** por relevância, não por data
+4. **Incluir contexto do erro** — não só o que aprender, mas *por que errou*
+5. **Flag** sessões com alta taxa de correção (>20%)
+
+### Output Format
+
+```markdown
+REPLAY BRIEFING: <tarefa>
+=======================
+
+Aprendizados passados (ordenados por relevância):
+  1. [Categoria] Descrição (aplicado Nx)
+     Erro original: contexto do que deu errado
+  2. [Categoria] Descrição (aplicado Nx)
+     Erro original: contexto
+
+Histórico similar:
+  - Data: tarefa — N edits, X correções (Y% taxa)
+    ^ Taxa alta — revisar padrões antes de começar
+
+Abordagem sugerida:
+  - Ação baseada no aprendizado #1
+  - Ação baseada no aprendizado #2
+```
+
+### Integração com SSC Router
+
+O SSC Router já faz busca por keyword/tag. O Replay Learnings complementa:
+
+| SSC Router | Replay Learnings |
+|-----------|------------------|
+| Busca segments | Busca correções |
+| Retorna resumo | Retorna contexto do erro |
+| Score por keyword | Score por relevância |
+| Para conhecimento | Para evitar erros |
+
+**Uso combinado:** SessionStart → SSC Router (conhecimento) + Replay Learnings (erros) → sessão preparada.
+
 ## Memory Insights & Analytics (from rohitg00/pro-workflow)
 
 Surface patterns from learnings and session history.
