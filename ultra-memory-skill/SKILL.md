@@ -601,6 +601,26 @@ Track research topics to explore:
 
 **Pop order:** depth ASC, created_at ASC (breadth-first)
 
+### Research Loop Script
+
+```powershell
+# Run research on a topic
+.\scripts\research-loop.ps1 -Topic "LLM memory" -MaxPages 3 -BudgetSeconds 300
+
+# Kill a running loop
+touch memory\STOP
+
+# Check seed status
+Get-Content memory\research-seeds.json | ConvertFrom-Json
+```
+
+**Features:**
+- DuckDuckGo + Wikipedia search (free, no API key)
+- Convergence detection (Jaccard < 5% for 3 pages)
+- Kill-switch (touch STOP file)
+- Budget enforcement (time-based)
+- Auto-generates wiki pages with sources
+
 ### HTML Viewer Concept
 
 Single-file HTML export for sharing wikis:
