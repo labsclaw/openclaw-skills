@@ -506,6 +506,71 @@ The weekly `wiki-health-check` cron can also report:
 - Stale patterns (no access in 30+ days)
 - Coverage trend (improving/declining)
 
+## Skill Optimizer (from rohitg00/pro-workflow)
+
+Self-improvement loop: the skill learns from accumulated corrections and proposes patches to itself.
+
+**Inspired by:** Microsoft SkillOpt (arXiv:2605.23904) - adapted to free-tier stack.
+
+### Pipeline
+
+```text
+rollout      pull corrections from corrections.md
+reflect      analyze patterns, propose add/delete/replace patches
+aggregate    merge patches across batches
+select       apply budget limits (3 adds, 2 deletes, 3 replaces)
+update       apply patches to SKILL.md
+evaluate     score improvement
+gate         accept only if score improves
+```
+
+### Usage
+
+```powershell
+# Dry run (preview patches without applying)
+.\scripts\skill-optimizer.ps1 -DryRun
+
+# Apply patches to SKILL.md
+.\scripts\skill-optimizer.ps1 -SkillPath ".\SKILL.md"
+
+# Custom budget
+.\scripts\skill-optimizer.ps1 -MaxAdds 5 -MaxDeletes 3 -MaxReplaces 4
+```
+
+### What It Does
+
+1. **Finds repeated patterns** (3+ corrections in same category) -> proposes to add rule
+2. **Finds stale patterns** (confidence < 0.5, never applied) -> proposes to delete
+3. **Logs runs** to `optimization-history.json` for tracking
+
+### Example Output
+
+```
+>> Stage 1: Rollout - Extracting corrections
+   [OK] Found 7 correction entries
+
+>> Stage 2: Reflect - Analyzing corrections for patterns
+   [OK] Categories found: powershell, config, git
+   [OK] Patches proposed: 2
+
+>> Stage 6: Evaluate - Scoring improvement
+   [OK] Score: 7 -> 9 (+28.6%)
+
+>> Stage 7: Gate - Decision
+   [OK] ACCEPTED - 2 patches applied
+```
+
+### Integration with Cron
+
+Run weekly via cron to keep skills evolving:
+```json
+{
+  "name": "skill-optimizer-weekly",
+  "schedule": { "kind": "cron", "expr": "0 3 * * 0", "tz": "America/Sao_Paulo" },
+  "payload": { "kind": "agentTurn", "message": "Run skill optimizer on ultra-memory-skill" }
+}
+```
+
 ## Full Installation
 
 ### Option A: Minimal (SSC Only)
