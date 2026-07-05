@@ -381,6 +381,83 @@ Not all memories should live forever. Decay based on:
 | pgvector | 1M | Free | Yes | PostgreSQL users |
 | agentmemory | Unlimited | Free | Yes | Our stack (local) |
 
+## Memory Insights & Analytics (from rohitg00/pro-workflow)
+
+Surface patterns from learnings and session history.
+
+### Correction Heatmap
+
+Visual representation of corrections by category:
+
+```
+Correction Heatmap (all time)
+
+  ████████████ PowerShell    12 corrections
+  ████████     Config        8 corrections
+  ██████       Git           6 corrections
+  ████         Cron          4 corrections
+```
+
+**Hot learnings** (most corrected, least learned):
+- Patterns corrected 3+ times but never promoted to segment
+- Action: Promote to segment or create dedicated skill
+
+**Cold learnings** (learned but never applied):
+- Patterns in segments with accessCount = 0 for 30+ days
+- Action: Review relevance, consider archiving
+
+### Learning Analytics
+
+```markdown
+Learning Insights (N total)
+
+Top categories:
+  Category      N learnings (X%)
+  Category      N learnings (X%)
+
+Most applied:
+  #ID [Category] Description — N times applied
+
+Stale learnings (never applied):
+  #ID [Category] Description — 0 times (N days old)
+```
+
+### Productivity Metrics
+
+```markdown
+Productivity (last N sessions)
+  Avg session: X min
+  Avg edits/session: N
+  Correction rate: X% (improving|stable|worsening)
+  Learning capture: N per session
+```
+
+### How to Generate
+
+```powershell
+# Correction heatmap from corrections.md
+Select-String -Path memory\corrections.md -Pattern "^\- \*\*" | 
+  Group-Object { $_.Line -replace '.*\*\*(\w+).*','$1' } | 
+  Sort-Object Count -Descending | 
+  ForEach-Object { Write-Host "  $($_.Name): $($_.Count) corrections" }
+
+# Learning count from semantic-patterns.json
+(Get-Content memory\semantic-patterns.json -Raw | ConvertFrom-Json).patterns.PSObject.Properties.Count
+
+# Stale detection from index.json
+(Get-Content memory\index.json -Raw | ConvertFrom-Json).segments | 
+  Where-Object { $_.accessCount -eq 0 } | 
+  Select-Object id, summary, lastAccess
+```
+
+### Integration with Health Check
+
+The weekly `wiki-health-check` cron can also report:
+- Correction count since last check
+- New patterns added
+- Stale patterns (no access in 30+ days)
+- Coverage trend (improving/declining)
+
 ## Full Installation
 
 ### Option A: Minimal (SSC Only)
