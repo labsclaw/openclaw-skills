@@ -506,6 +506,111 @@ The weekly `wiki-health-check` cron can also report:
 - Stale patterns (no access in 30+ days)
 - Coverage trend (improving/declining)
 
+## Wiki Research Patterns (from rohitg00/pro-workflow)
+
+Advanced wiki management patterns for auto-growing knowledge bases.
+
+### Wiki Flavors
+
+| Flavor | Use For | Example |
+|--------|---------|--------|
+| research | Ongoing topic exploration | "agent-memory" |
+| paper | One-paper deep dive | "karpathy-llm-wiki" |
+| domain | Broad subject area | "llm-architectures" |
+| product | Product/tool KB | "openclaw" |
+| person | Researcher dossier | "karpathy" |
+| organization | Company profile | "anthropic" |
+| project | Internal project KB | "ultra-memory" |
+| codebase | Repo-aware KB | "paperclip" |
+| incident | Post-mortem KB | "telegram-outage" |
+
+### Source Tracking (Provenance)
+
+Every claim in the wiki must cite a source:
+
+```markdown
+## sources.md
+| id | url | title | hash | fetched_at |
+|----|-----|-------|------|------------|
+| S001 | https://arxiv.org/abs/2602.24281 | Memory Caching | abc123 | 2026-06-26 |
+```
+
+**Rule:** No uncited claims in wiki pages. If you can't cite it, mark as `> SPECULATION:`.
+
+### Convergence Detection
+
+Stop auto-research when content stops being novel:
+
+1. After each new page, compute Jaccard overlap with prior 3 pages
+2. If < 5% novel content for 3 consecutive pages → halt
+3. Report: "Converged after N pages, M unique claims"
+
+**Implementation (free-tier):** Word-level Jaccard, no LLM needed.
+
+```powershell
+# Simple convergence check
+function Test-Convergence {
+    param([string[]]$recentPages, [double]$threshold = 0.05)
+    
+    $words = $recentPages | ForEach-Object { ($_ -split '\W+') | Where-Object { $_.Length -gt 3 } }
+    $uniqueWords = $words | Sort-Object -Unique
+    $totalWords = $words.Count
+    
+    if ($totalWords -eq 0) { return $false }
+    
+    $overlap = ($uniqueWords | Measure-Object).Count / $totalWords
+    return $overlap -lt $threshold
+}
+```
+
+### Kill-Switch
+
+Graceful halt for any auto-loop:
+
+```powershell
+# Stop file
+touch ~/.openclaw/workspace/memory/STOP
+
+# Check in any loop
+if (Test-Path (Join-Path $memoryDir "STOP")) {
+    Write-Host "Kill-switch detected. Halting."
+    Remove-Item (Join-Path $memoryDir "STOP")
+    break
+}
+```
+
+### Seed Queue (BFS Research)
+
+Track research topics to explore:
+
+```json
+{
+  "seeds": [
+    {
+      "id": "seed-001",
+      "query": "memory consolidation in agents",
+      "status": "pending",
+      "depth": 0,
+      "parent_id": null
+    }
+  ]
+}
+```
+
+**Status flow:** pending → active → done | failed
+
+**Pop order:** depth ASC, created_at ASC (breadth-first)
+
+### HTML Viewer Concept
+
+Single-file HTML export for sharing wikis:
+- Pages + sources + link graph in one file
+- No external dependencies
+- Uploadable to S3, shareable via URL
+- In-browser search
+
+**When:** After auto-research run, before sharing with team.
+
 ## Skill Optimizer (from rohitg00/pro-workflow)
 
 Self-improvement loop: the skill learns from accumulated corrections and proposes patches to itself.
