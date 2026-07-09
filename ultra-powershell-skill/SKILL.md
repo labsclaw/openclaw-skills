@@ -7,9 +7,7 @@ description: >-
 
 # Ultra PowerShell Skill
 
-Curated PowerShell expertise for agents. No boilerplate, no agent-config
-disguised as domain knowledge. Only what actually matters for production
-PowerShell on Windows.
+Production PowerShell on Windows. No boilerplate. Only what matters.
 
 ---
 
@@ -26,15 +24,13 @@ if ($ver -ge [version]'7.0') {
 
 ### Windows PowerShell 5.1 Non-negotiable Limits
 - No `&&` / `||` — use `;`
-- No `??` (null-coalescing), `?.` (null-conditional)
+- No `??`, `?.`, ternary, `ForEach-Object -Parallel`
 - No `Select-String -Raw`
-- No ternary (`$a ? $b : $c`)
-- No `ForEach-Object -Parallel`
-- `~` does NOT expand in all contexts — always full paths: `C:\Users\...`
-- `2>$null` can fail — omit entirely if it breaks
+- `~` does NOT expand — always full paths: `C:\Users\...`
+- `2>$null` can fail — omit if it breaks
 
 ### PowerShell 7+ Worth Using
-`&&`, `||` chains, ternary, null-coalescing, `ForEach-Object -Parallel -ThrottleLimit`,
+`&&`/`||` chains, ternary, null-coalescing, `ForEach-Object -Parallel -ThrottleLimit`,
 `Get-ChildItem -Depth`, `ConvertFrom-Json -Depth`.
 
 ---
@@ -59,19 +55,13 @@ Every cmdlet call in `-and`/`-or`/`-not` MUST be parenthesized.
 | 5.1 | `;` only |
 | 7+ | `;` or `&&`/`||` |
 
-`&&` in PS 5.1 throws: `"The token '&&' is not a valid statement separator"`.
-
-### 2.3 No Unicode/Emoji
-
-PowerShell mangles non-ASCII in arguments on Windows.
+### 2.3 No Unicode/Emoji — Plain ASCII Only
 
 | Purpose | Don't Use | Use Instead |
 |---------|-----------|-------------|
 | Success | ✅ ✓ | `[OK]` `[+]` |
 | Error | ❌ ✗ 🔴 | `[!]` `[X]` |
 | Warning | ⚠️ 🟡 | `[*]` `[WARN]` |
-
-Plain ASCII only in scripts and paths.
 
 ### 2.4 Null Checks
 
@@ -85,7 +75,6 @@ Plain ASCII only in scripts and paths.
 ```powershell
 # Avoid nested $() — breaks readability
 "Value: $($obj.prop.sub.prop)"
-
 # Prefer intermediate variable
 $value = $obj.prop.sub.prop
 "Value: $value"
@@ -93,19 +82,11 @@ $value = $obj.prop.sub.prop
 
 ### 2.6 JSON Depth
 
-Default depth is 2 — will truncate nested structures silently.
-
-```powershell
-ConvertTo-Json -Depth 10
-ConvertFrom-Json -Depth 10   # PS 7+ only
-```
+Default depth is 2 — truncates silently. Always: `ConvertTo-Json -Depth 10`. `ConvertFrom-Json -Depth 10` is PS 7+ only.
 
 ### 2.7 Select-String: No -Raw in 5.1
 
 ```powershell
-# Fails in PS 5.1:
-Select-String -Pattern 'foo' -Path file.txt -Raw
-
 # Works in both:
 Select-String -Pattern 'foo' -Path file.txt | Select-Object -ExpandProperty Line
 ```
@@ -113,58 +94,34 @@ Select-String -Pattern 'foo' -Path file.txt | Select-Object -ExpandProperty Line
 ### 2.8 File Paths
 
 ```powershell
-# Variable paths: ALWAYS Join-Path
-$path = Join-Path $env:USERPROFILE "documents" "file.txt"
-
+$path = Join-Path $env:USERPROFILE "documents" "file.txt"  # ALWAYS Join-Path for variable paths
 # No tilde — doesn't expand reliably
-❌ ~\.openclaw\...
-✅ C:\Users\ClawLabs\.openclaw\...
 ```
 
 ### 2.9 Node.js + PowerShell: Escaping Trap
 
-Calling `node -e` from PowerShell breaks regex escapes. PowerShell consumes backslashes
-before they reach Node.
+PowerShell consumes backslashes before they reach Node. Any `node -e` with `\d`/`\w`/`\s`/`\b` → write temp file:
 
 ```powershell
-# WRONG — PowerShell eats the backslashes:
-node -e "console.log(/\d+/)"
-
-# CORRECT — write temp .js file:
 $script = "$env:TEMP\_fix.js"
-@"
-console.log(/\d+/);
-"@ | Set-Content -Path $script -Encoding UTF8
+@"console.log(/\d+/);"@ | Set-Content -Path $script -Encoding UTF8
 node $script
 Remove-Item $script -Force
 ```
 
-**Rule:** Any `node -e` with `\d`/`\w`/`\s`/`\b` or non-ASCII → write temp file.
-
 ### 2.10 CP850 vs UTF-8 Encoding
 
-On Windows `String(buffer)` uses system default (CP850), not UTF-8.
+On Windows `String(buffer)` uses CP850, not UTF-8:
 
 ```powershell
-# Wrong — uses CP850:
-$text = [String]$buffer
-
-# Correct:
 $text = [System.Text.Encoding]::UTF8.GetString($buffer)
 ```
 
-Root cause of Paperclip adapter-utils encoding bug (PR #7440).
-
 ### 2.11 BOM in Script Files
 
-PowerShell 6+ defaults to UTF8 without BOM. Some Windows tools require BOM.
-
 ```powershell
-# No BOM (PS 6+):
-Set-Content -Path file.ps1 -Encoding UTF8
-
-# With BOM (widest Windows compat):
-Out-File -FilePath file.ps1 -Encoding utf8BOM
+Set-Content -Path file.ps1 -Encoding UTF8       # No BOM (PS 6+)
+Out-File -FilePath file.ps1 -Encoding utf8BOM    # With BOM (widest compat)
 ```
 
 ### 2.12 Quick Error Reference
@@ -177,47 +134,25 @@ Out-File -FilePath file.ps1 -Encoding utf8BOM
 | `Cannot find property` on null | Dereferencing null | Check null first |
 | Regex escapes consumed by shell | `node -e` with `\d` | Write temp `.js` |
 | UTF-8 garbled in output | `String()` uses CP850 | `[Encoding]::UTF8.GetString()` |
-| Unix command in prompt/instruction | `grep`, `wc -l`, `ls`, `python3` in SKILL.md or prompt | Replace with native PS or OpenClaw tools |
+| Unix command in prompt | `grep`, `ls`, `python3` | Replace with native PS |
 
-### 2.13 Unix Commands in Prompts & Instructions
+### 2.13 Unix Commands → Safe Alternatives
 
-Skills and prompts written on Linux/macOS often contain Unix shell commands that do NOT exist on Windows. When an agent on Windows tries to `exec` these, they fail silently or throw errors.
+| Unix | Safe Alternative |
+|------|------------------|
+| `ls` | `Get-ChildItem` or `dir /b` |
+| `grep` | `Select-String -Pattern` |
+| `wc -l` | `(Get-Content file.md).Count` |
+| `cat file` | `Get-Content file` |
+| `head`/`tail` | `Get-Content -TotalCount N` / `-Tail N` |
+| `rm -rf` | `Remove-Item -Recurse -Force` |
+| `mkdir -p` | `New-Item -ItemType Directory -Force` |
+| `touch file` | `New-Item -ItemType File` |
+| `2>/dev/null` | `-ErrorAction SilentlyContinue` or try/catch |
+| `python3` | `python` or `py -3` |
+| `python -c "..."` | Write temp `.ps1`/`.py` file |
 
-| Unix Command | Windows Reality | Safe Alternative |
-|--------------|-----------------|------------------|
-| `ls` | No `ls` command | `Get-ChildItem` or `exec` with `dir /b` |
-| `grep` | No `grep` | `Select-String -Pattern` |
-| `wc -l` | No `wc` | `(Get-Content file.md).Count` or read tool |
-| `cat file` | No `cat` | `Get-Content file` |
-| `head` / `tail` | No `head`/`tail` | `Get-Content -TotalCount N` / `-Tail N` |
-| `sort` | No `sort` | `Sort-Object` |
-| `uniq` | No `uniq` | `Select-Object -Unique` |
-| `rm -rf` | No `rm` | `Remove-Item -Recurse -Force` |
-| `mkdir -p` | No `mkdir -p` | `New-Item -ItemType Directory -Force` |
-| `touch file` | No `touch` | `New-Item -ItemType File` or `Set-Content -Value $null` |
-| `2>/dev/null` | Redirect syntax invalid | `-ErrorAction SilentlyContinue` or try/catch |
-| `&>` | Redirect syntax invalid | `*>&1` (PS 7+) or separate streams |
-| `python3` | No `python3` — only `python` | Use `python` or check `py -3` launcher |
-| `python -c "..."` | Quote escaping breaks on PS | Write temp `.ps1`/`.py` file instead |
-| `wc -l *.md` glob | Glob not expanded by cmd | `Get-ChildItem *.md | Measure-Object -Line` |
-| `#!/bin/bash` shebang | Not executable | Use `powershell` or `pwsh` shebang |
-
-#### Detection pattern
-
-When reviewing a SKILL.md or prompt for Windows compatibility, scan for:
-- Backtick code blocks labeled `bash`, `sh`, `shell` (likely Unix commands)
-- `python -c "..."` or `python3` invocations
-- `grep`, `wc`, `ls`, `rm`, `mkdir`, `touch`, `cat` as standalone commands
-- Redirect operators `2>`, `&>`, `>/dev/null`
-
-#### Preferred approach (what Robin did)
-
-Instead of translating Unix commands to PowerShell equivalents, eliminate shell dependency entirely where possible:
-- `read` tool to inspect file contents → model counts entries in its own reasoning
-- `edit`/`write` tool for mutations
-- `exec` only when truly needed, with known-safe commands like `dir /b`
-
-This is OS-agnostic and avoids quoting/encoding issues completely.
+**Preferred:** eliminate shell dependency — use `read`/`edit`/`write` tools. `exec` only when truly needed.
 
 ---
 
@@ -247,11 +182,8 @@ end     { Write-Verbose "Done." }
 ### 3.2 Naming — Approved Verbs, PascalCase, No Aliases
 
 ```powershell
-# Good
-Get-ChildItem -Path $Path -File | Where-Object { $_.Length -gt 1MB }
-
-# Bad (aliases, positional)
-gci $Path | ? Length -gt 1MB
+Get-ChildItem -Path $Path -File | Where-Object { $_.Length -gt 1MB }  # Good
+gci $Path | ? Length -gt 1MB  # Bad
 ```
 
 ### 3.3 Parameter Design
@@ -262,54 +194,37 @@ param(
     [Parameter(Mandatory, Position = 0)]
     [ValidateNotNullOrEmpty()]
     [string]$Name,
-
     [Parameter(ParameterSetName = 'ByID')]
     [int]$ID,
-
     [Parameter(ValueFromPipeline)]
     [PSObject]$InputObject,
-
     [ValidateSet('Dev', 'Test', 'Prod')]
     [string]$Environment = 'Dev',
-
     [switch]$Force,      # Always [switch], never [bool]
     [switch]$PassThru
 )
 ```
 
-- `[switch]` always, never `[bool]`
-- `[ValidateNotNullOrEmpty()]` on mandatory strings
-- `[ValidateSet()]` for limited options (enables tab completion)
-- Standard common params: `-Force`, `-PassThru`, `-WhatIf`, `-Confirm`
-
 ### 3.4 Splatting
 
 ```powershell
-$params = @{
-    Path = $sourcePath; Destination = $destPath
-    Recurse = $true; Force = $true; ErrorAction = 'Stop'
-}
+$params = @{ Path=$sourcePath; Destination=$destPath; Recurse=$true; Force=$true; ErrorAction='Stop' }
 Copy-Item @params
 ```
 
 ### 3.5 Pipeline — Stream, Don't Buffer
 
 ```powershell
-process {
-    # Right — writes immediately
-    foreach ($obj in $InputObject) { Write-Output (Process-Item $obj) }
-
-    # Wrong — collects everything then outputs
-    $results = @(); foreach ($obj in $InputObject) { $results += Process-Item $obj }; Write-Output $results
-}
+# Right — writes immediately
+foreach ($obj in $InputObject) { Write-Output (Process-Item $obj) }
+# Wrong — collects then outputs
+$results = @(); foreach ($obj in $InputObject) { $results += Process-Item $obj }; Write-Output $results
 ```
 
 ### 3.6 Error Handling
 
 ```powershell
-try {
-    $result = Get-Content -Path $Path -ErrorAction Stop
-}
+try { $result = Get-Content -Path $Path -ErrorAction Stop }
 catch [System.IO.FileNotFoundException] {
     $err = [System.Management.Automation.ErrorRecord]::new(
         $_.Exception, 'FileNotFound',
@@ -319,29 +234,19 @@ catch [System.IO.FileNotFoundException] {
 catch { $PSCmdlet.ThrowTerminatingError($_) }
 ```
 
-- Advanced function? Use `$PSCmdlet.WriteError()` over `Write-Error`
-- `$PSCmdlet.ThrowTerminatingError()` over bare `throw`
-- Construct proper `ErrorRecord` objects
-- Never `catch { }` silently
+Use `$PSCmdlet.WriteError()` over `Write-Error`, `$PSCmdlet.ThrowTerminatingError()` over bare `throw`. Never `catch { }` silently.
 
 ### 3.7 Output — Typed Objects, Not Strings
 
 ```powershell
-[PSCustomObject]@{
-    PSTypeName = 'MyModule.ServerInfo'
-    Name       = $server.Name
-    Status     = $server.Status
-}
+[PSCustomObject]@{ PSTypeName='MyModule.ServerInfo'; Name=$server.Name; Status=$server.Status }
 ```
 
-- `Write-Output` for data, `Write-Verbose`/`Write-Warning` for status
-- Never `Write-Host` for data output (it bypasses the pipeline)
+`Write-Output` for data. Never `Write-Host` for data (bypasses pipeline).
 
 ---
 
 ## 4. Module Development
-
-### 4.1 Structure
 
 ```
 {ModuleName}/
@@ -354,13 +259,13 @@ catch { $PSCmdlet.ThrowTerminatingError($_) }
 └── PSScriptAnalyzerSettings.psd1
 ```
 
-### 4.2 Module Manifest (.psd1) — Key Fields
+### 4.1 Module Manifest (.psd1)
 
 ```powershell
 @{
     RootModule        = '{ModuleName}.psm1'
     ModuleVersion     = '0.1.0'
-    GUID              = [guid]::NewGuid().ToString()   # Real GUID, never placeholder
+    GUID              = [guid]::NewGuid().ToString()
     Author            = '{AuthorName}'
     PowerShellVersion = '5.1'
     FunctionsToExport = @('Verb-Noun1', 'Verb-Noun2')
@@ -368,17 +273,15 @@ catch { $PSCmdlet.ThrowTerminatingError($_) }
 }
 ```
 
-### 4.3 Module Loader (.psm1)
+### 4.2 Module Loader (.psm1)
 
 ```powershell
 foreach ($file in @('Private','Public')) {
-    Get-ChildItem "$PSScriptRoot/$file/*.ps1" -ErrorAction SilentlyContinue | ForEach-Object {
-        . $_.FullName
-    }
+    Get-ChildItem "$PSScriptRoot/$file/*.ps1" -ErrorAction SilentlyContinue | ForEach-Object { . $_.FullName }
 }
 ```
 
-### 4.4 Pester 5
+### 4.3 Pester 5
 
 ```powershell
 BeforeAll { Import-Module (Join-Path $PSScriptRoot '..\ModuleName.psd1') -Force }
@@ -391,10 +294,9 @@ Describe 'Verb-Noun' {
 }
 ```
 
-### 4.5 PSScriptAnalyzer
+### 4.4 PSScriptAnalyzer
 
 ```powershell
-# PSScriptAnalyzerSettings.psd1 — run before every commit
 Invoke-ScriptAnalyzer -Path . -Recurse -Settings PSScriptAnalyzerSettings.psd1
 ```
 
@@ -402,20 +304,15 @@ Invoke-ScriptAnalyzer -Path . -Recurse -Settings PSScriptAnalyzerSettings.psd1
 
 ## 5. Windows & Desktop Automation
 
-### 5.1 COM + System Toolkit
+Add-Type `System.Windows.Forms` and `System.Drawing` before use.
 
 ```powershell
-# Outlook
+# Outlook / Edge CDP / WMI
 $outlook = New-Object -ComObject Outlook.Application
-$namespace = $outlook.GetNamespace('MAPI')
-
-# Edge CDP
 Start-Process "msedge.exe" -ArgumentList "--remote-debugging-port=9222"
-
-# WMI/CIM
 Get-CimInstance -ClassName Win32_LogicalDisk
 
-# Window management (Win32 API via C# inline)
+# Win32 API
 Add-Type @"
 using System; using System.Runtime.InteropServices;
 public class Win32 {
@@ -427,67 +324,23 @@ public class Win32 {
 [Win32]::FindWindow($null, "Window Title")
 ```
 
-### 5.2 GUI Development — Controls Reference
-
-Add-Type `System.Windows.Forms` and `System.Drawing` before use.
-
-| Control | Code | Properties |
-|---------|------|------------|
-| Form | `New-Object Windows.Forms.Form` | StartPosition, FormBorderStyle, MaximizeBox, Topmost |
-| Button | `New-Object Windows.Forms.Button` | DialogResult, AcceptButton |
-| TextBox | `New-Object Windows.Forms.TextBox` | Multiline, ScrollBars, PasswordChar, MaxLength |
-| ComboBox | `New-Object Windows.Forms.ComboBox` | DropDownStyle='DropDownList', Items.AddRange() |
-| ListBox | `New-Object Windows.Forms.ListBox` | SelectionMode='MultiExtended' |
-| DataGridView | `New-Object Windows.Forms.DataGridView` | DataSource, ReadOnly, AutoSizeColumnsMode |
-| ProgressBar | `New-Object Windows.Forms.ProgressBar` | Min/Max/Value, Style='Marquee' |
-| Timer | `New-Object Windows.Forms.Timer` | Interval, Add_Tick() |
-
-```powershell
-$form = New-Object Windows.Forms.Form -Property @{
-    Text = 'App'; Size = '400,300'
-    StartPosition = 'CenterScreen'; FormBorderStyle = 'FixedDialog'
-    MaximizeBox = $false; MinimizeBox = $false
-}
-
-# DataGridView — bind process data
-$grid = New-Object Windows.Forms.DataGridView -Property @{
-    Location = '10,10'; Size = '380,200'
-    AutoSizeColumnsMode = 'Fill'; ReadOnly = $true
-}
-$grid.DataSource = [System.Collections.ArrayList]@(Get-Process | Select Name,CPU,WorkingSet -First 10)
-$form.Controls.Add($grid)
-```
-
-### 5.3 GUI Layout Patterns
-
-```powershell
-# Anchoring — resize with form
-$tb.Anchor = [Windows.Forms.AnchorStyles]::Top -bor [Windows.Forms.AnchorStyles]::Left -bor [Windows.Forms.AnchorStyles]::Right
-
-# Docking
-$panel.Dock = [Windows.Forms.DockStyle]::Top   # Top, Bottom, Left, Right, Fill
-
-# TableLayoutPanel — grid layout
-$tbl = New-Object Windows.Forms.TableLayoutPanel -Property @{ ColumnCount=2; RowCount=3 }
-$tbl.ColumnStyles.Add((New-Object Windows.Forms.ColumnStyle('Percent',30)))
-$tbl.ColumnStyles.Add((New-Object Windows.Forms.ColumnStyle('Percent',70)))
-$tbl.Controls.Add($label, 0, 0); $tbl.Controls.Add($textBox, 1, 0)
-```
-
-### 5.4 Events
+| Control | Properties |
+|---------|------------|
+| Form | StartPosition, FormBorderStyle, MaximizeBox |
+| Button | DialogResult, AcceptButton |
+| TextBox | Multiline, ScrollBars, PasswordChar |
+| ComboBox | DropDownStyle='DropDownList', Items.AddRange() |
+| DataGridView | DataSource, ReadOnly, AutoSizeColumnsMode |
+| Timer | Interval, Add_Tick() |
 
 ```powershell
 $button.Add_Click({ [Windows.Forms.MessageBox]::Show('Clicked') })
-$form.Add_Load({ $textBox.Focus() })
 $form.Add_FormClosing({ param($s,$e) $e.Cancel = -not $confirmed })
 $textBox.Add_TextChanged({ $button.Enabled = $textBox.Text.Length -gt 0 })
-$timer = New-Object Windows.Forms.Timer; $timer.Interval=1000
-$timer.Add_Tick({ $label.Text = (Get-Date -Format 'HH:mm:ss') }); $timer.Start()
 ```
 
-### 5.5 GUI Templates
+### 5.1 Input Dialog Template
 
-**Input Dialog:**
 ```powershell
 function Show-InputDialog($Title='Input', $Prompt='Enter:', $Default='') {
     Add-Type -AssemblyName System.Windows.Forms,System.Drawing
@@ -503,20 +356,7 @@ function Show-InputDialog($Title='Input', $Prompt='Enter:', $Default='') {
 }
 ```
 
-**File Browser:**
-```powershell
-function Show-FileBrowser($Title='Select File', $Filter='All|*.*', [switch]$Multi) {
-    Add-Type -AssemblyName System.Windows.Forms
-    $d = [Windows.Forms.OpenFileDialog]::new()
-    $d.Title = $Title; $d.Filter = $Filter; $d.Multiselect = $Multi.IsPresent
-    try {
-        $r = if ($d.ShowDialog() -eq 'OK') { if ($Multi) { $d.FileNames } else { $d.FileName } }
-        return $r
-    } finally { $d.Dispose() }
-}
-```
-
-### 5.6 WPF/XAML
+### 5.2 WPF/XAML
 
 ```powershell
 Add-Type -AssemblyName PresentationFramework
@@ -531,63 +371,20 @@ $w.FindName('OK').Add_Click({ $w.DialogResult=$true; $w.Close() })
 $null = $w.ShowDialog()
 ```
 
-WPF > WinForms for: styling, data binding, MVVM, vector graphics, modern controls.
+---
+
+## 6. NASA Power of Ten + Code Review
+
+**NASA Rules:** (1) Simple control flow. (2) Bound loops — `while ($next -and $pc++ -lt $maxPages)`. (3) Initialize before use — `Set-StrictMode -Version Latest`. (4) Small functions, one purpose. (5) Assert + validate — `[ValidateNotNullOrEmpty()]`. (6) Minimize scope — no `$global:`. (7) Check return values. (8) No `Invoke-Expression`. (9) Don't mutate inputs. (10) `Invoke-ScriptAnalyzer` must pass clean.
+
+**5-Step Code Review:** (1) Make requirements less dumb. (2) Delete unjustifiable code. (3) Simplify — loops → pipeline. (4) Accelerate cycle time — no N+1. (5) Automate last.
 
 ---
 
-## 6. NASA Power of Ten — Adapted
-
-**1. Keep Control Flow Simple** — No deep nesting, catch covering too much code.
-**2. Bound Loops** — Every loop has a max. Graph pagination:
-```powershell
-$maxPages=500; $pc=0
-while ($next -and $pc++ -lt $maxPages) { ... }
-```
-**3. Initialize Before Use** — `Set-StrictMode -Version Latest`, `$array=@()` before adding.
-**4. Keep Functions Small** — One screen, one purpose. Split: `Get-GraphPage`, `Invoke-GraphRetry`.
-**5. Assert + Validate** — `[ValidateNotNullOrEmpty()]`, `[ValidateSet()]`, guard clauses.
-**6. Minimize Scope** — No `$global:`, no hidden module state.
-**7. Check Return Values** — HTTP status, null, empty collections, batch failures, Graph throttling.
-**8. Avoid Dynamic Code** — No `Invoke-Expression`, no runtime-generated names.
-**9. Careful with Mutation** — Create new objects; don't modify inputs.
-**10. Zero Warnings** — `Invoke-ScriptAnalyzer` must pass clean.
-
----
-
-## 7. Code Review — 5-Step Elimination Process
-
-Adapted from Musk's design process. Apply in order; never skip to step 5.
-
-### Step 1 — Make Requirements Less Dumb
-Challenge everything. What breaks without this code?
-
-### Step 2 — Delete (most important)
-Remove what can't justify existence:
-- "Nice to have" parameters
-- Functions wrapping one cmdlet without adding value
-- Comments explaining bad code (rewrite instead)
-- Code that exists "just in case"
-- `Begin`/`End` blocks where `Process` alone suffices
-- Single-use helper functions
-
-### Step 3 — Simplify / Optimize
-Replace loops with pipeline. Replace string building with here-strings.
-Remove abstraction layers with no real reuse.
-
-### Step 4 — Accelerate Cycle Time
-Does this pattern slow future changes? Any N+1 API patterns?
-Is object materialization blocking streaming?
-
-### Step 5 — Automate (last!)
-Never automate what should be deleted.
-
----
-
-## 8. Enterprise Patterns
-
-### 8.1 ShouldProcess (WhatIf / Confirm)
+## 7. Enterprise Patterns
 
 ```powershell
+# ShouldProcess (WhatIf / Confirm)
 function Remove-CacheFiles {
     [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'High')]
     param([Parameter(Mandatory)][string]$Path)
@@ -597,41 +394,28 @@ function Remove-CacheFiles {
         }
     }
 }
-```
 
-### 8.2 PassThru
-
-```powershell
+# PassThru
 function Set-ItemProperty {
     [CmdletBinding()]
     param([string]$Name, [string]$Value, [switch]$PassThru)
     $item.Property = $Value
     if ($PassThru) { Write-Output $item }
 }
-```
 
-### 8.3 Cross-Version
-
-```powershell
+# Cross-Version JSON
 if ($PSVersionTable.PSVersion -ge '7.0') {
     $json = $data | ConvertFrom-Json -Depth 10
 } else {
     $json = $data | ConvertFrom-Json
 }
-$path = [System.IO.Path]::Combine($base, $relative)
 ```
 
-### 8.4 Secrets
-
-Use `Microsoft.PowerShell.SecretManagement`. Never hardcode, log, or display secrets.
+Use `Microsoft.PowerShell.SecretManagement` for secrets. Never hardcode, log, or display them.
 
 ---
 
-## 9. Gallery + Live Verification
-
-PowerShell Gallery: `https://www.powershellgallery.com`.
-
-### 9.1 PSResourceGet (Modern) vs PowerShellGet (Legacy)
+## 8. Gallery + Live Verification
 
 | Action | Legacy | Modern |
 |--------|--------|--------|
@@ -641,23 +425,7 @@ PowerShell Gallery: `https://www.powershellgallery.com`.
 | Uninstall | `Uninstall-Module` | `Uninstall-PSResource` |
 
 ```powershell
-Get-Module -Name Microsoft.PowerShell.PSResourceGet -ListAvailable
-Install-Module -Name Microsoft.PowerShell.PSResourceGet -Force -Scope CurrentUser
-```
-
-### 9.2 Version Range (NuGet)
-
-| Syntax | Meaning |
-|--------|---------|
-| `[1.0,2.0]` | >= 1.0 AND <= 2.0 |
-| `[1.0,2.0)` | >= 1.0 AND < 2.0 |
-| `(1.0,)` | > 1.0 |
-| `*` | All versions |
-
-### 9.3 Useful Patterns
-
-**Ensure-Module (install if missing):**
-```powershell
+# Ensure-Module (install if missing)
 function Ensure-Module($Name, $MinVersion) {
     if (Get-Module -Name Microsoft.PowerShell.PSResourceGet -ListAvailable) {
         $installed = Get-InstalledPSResource $Name -ErrorAction SilentlyContinue
@@ -674,40 +442,4 @@ function Ensure-Module($Name, $MinVersion) {
 }
 ```
 
-**Bulk Install:**
-```powershell
-@(@{Name='Pester';Version='5.0.0'}, @{Name='PSReadLine'}) | ForEach-Object {
-    $p = @{Name=$_.Name; Scope='CurrentUser'; TrustRepository=$true}
-    if ($_.Version) { $p.Version = $_.Version }
-    Install-PSResource @p
-}
-```
-
-### 9.4 Live Verification
-
-When recommending modules/cmdlets, verify against live sources:
-
-1. **Gallery:** `WebFetch https://www.powershellgallery.com/packages/{ModuleName}`
-2. **Cmdlet docs:** `Search: {CmdletName} site:learn.microsoft.com/en-us/powershell`
-3. **Raw docs:** `WebFetch https://raw.githubusercontent.com/MicrosoftDocs/PowerShell-Docs/live/reference/`
-4. **Fallback:** `Get-Help CmdletName -Full` or `Get-Command CmdletName -Syntax`
-
----
-
-## Reference Files
-
-| File | What |
-|------|------|
-| `scripts/template-script.ps1` | Script skeleton |
-| `scripts/template-function.ps1` | Advanced function template |
-| `scripts/Search-Gallery.ps1` | Gallery search with parameter sets + legacy fallback |
-| `templates/module-manifest.psd1` | Module manifest |
-| `templates/module-loader.psm1` | Module loader |
-| `templates/pester-tests.ps1` | Pester 5 template |
-| `templates/build.ps1` | Build script (Analyze/Test/Build/CI) |
-| `templates/PSScriptAnalyzerSettings.psd1` | Rule exclusions |
-| `references/powerskills-patterns.md` | COM, CDP, desktop automation |
-| `references/nasa-power-of-ten-full.md` | NASA 10 rules with PowerShell examples |
-| `references/powershellget-reference.md` | Gallery publishing, version ranges |
-| `references/best-practices-reference.md` | Naming, pipeline, error handling |
-| `examples/review-report.md` | Code review report example |
+**Verify against live sources:** `WebFetch https://www.powershellgallery.com/packages/{ModuleName}` or `Get-Help CmdletName -Full`.
