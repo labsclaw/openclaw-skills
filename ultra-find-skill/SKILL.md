@@ -13,15 +13,10 @@ description: >-
 
 # Ultra Find Skill
 
-The definitive skill discovery engine for OpenClaw/OpenCode. Searches across
-all known skill directories (local and remote), evaluates results, and guides
-installation — spanning every major agent platform.
-
----
+Skill discovery engine for OpenClaw/OpenCode. Searches local + remote
+directories, evaluates results, guides installation.
 
 ## Installation
-
-Copy this skill directory to any supported skills path:
 
 ```bash
 # OpenClaw (recommended)
@@ -32,62 +27,35 @@ cp -r ultra-find-skill/ ~/.agents/skills/ultra-find-skill/
 cp -r ultra-find-skill/ <workspace>/.agents/skills/ultra-find-skill/
 ```
 
-No external dependencies required. Works out of the box.
-
----
+No external dependencies. Works out of the box.
 
 ## Setup
 
-No configuration needed. The skill automatically detects which agent platform
-is active and adjusts search paths accordingly.
+No configuration needed. Auto-detects agent platform.
 
 **Optional environment variables:**
 - `SKILLS_SEARCH_REMOTE=true` — Enable remote catalog search (default: true)
 - `SKILLS_SEARCH_DEPTH=2` — Max directory depth for local scanning (default: 2)
 
----
+## When to Use
 
-## When to Use This Skill
+- User asks "how do I do X" / "find a skill for X" / "is there a skill for X"
+- User wants to know what skills are installed
+- User wants to extend agent capabilities
+- Before creating a new skill — check if one exists
+- Compare/evaluate multiple skills for same purpose
+- Audit or inventory installed skills
 
-Use this skill when:
+## When NOT to Use
 
-- The user asks "how do I do X" where X might be a common task with an existing skill
-- The user says "find a skill for X" or "is there a skill for X"
-- The user asks "can you do X" where X is a specialized capability
-- The user wants to know what skills are currently installed
-- The user wants to extend agent capabilities with new skills
-- The user mentions they wish they had help with a specific domain
-- The user wants to search for tools, templates, or workflows
-- Before creating a new skill — always check if one already exists
-- The user wants to compare or evaluate multiple skills for the same purpose
-- The user asks about skill compatibility across platforms
-- The ecosystem-steward `forge search` needs a more thorough search
-- The user wants to audit or inventory their installed skills
-
----
-
-## When NOT to Use This Skill
-
-Do NOT use this skill when:
-
-- The task is simple and can be solved with the agent's baseline capabilities
-- The user already knows which skill they want and just needs to invoke it
-- The user wants to CREATE a skill (use `ultra-create-skill` instead)
-- The user wants to MODIFY an existing skill (use `ultra-create-skill` instead)
-- The user is asking a general knowledge question unrelated to skills
-
-**Complexity guard**: Before searching, quickly evaluate the task. If it's a
-simple CSS fix, a variable rename, or a straightforward bug fix — solve it
-directly. Over-engineering simple tasks with specialized skills wastes tokens
-and time.
-
----
+- Task is simple — solve directly, skip skill search
+- User already knows which skill to invoke
+- User wants to CREATE or MODIFY a skill → use `ultra-create-skill`
+- General knowledge question unrelated to skills
 
 ## How It Works
 
 ### Step 1: Evaluate Need
-
-Before searching, determine if a skill is actually needed:
 
 ```
 Is the task simple/contained?
@@ -100,8 +68,7 @@ Is the task simple/contained?
 ### Step 2: Search Locally
 
 Scan all known local skill directories in precedence order.
-See [references/skill-directories.md](references/skill-directories.md) for the
-complete list of paths and precedence rules.
+See [references/skill-directories.md](references/skill-directories.md) for paths.
 
 **Search algorithm:**
 1. List all skill directories found on the system
@@ -127,9 +94,7 @@ done
 
 ### Step 3: Search Remote (if local insufficient)
 
-If local search doesn't satisfy the user's need, search remote sources.
-See [references/search-strategy.md](references/search-strategy.md) for the
-complete remote search strategy.
+See [references/search-strategy.md](references/search-strategy.md) for details.
 
 **Remote sources (priority order):**
 
@@ -157,7 +122,7 @@ For each result, present:
 └─────────────────────────────────────────────┘
 ```
 
-**Before recommending installation**, run the security pre-check.
+Run security pre-check before recommending installation.
 See [references/security-checklist.md](references/security-checklist.md).
 
 **If nothing found**, suggest:
@@ -165,13 +130,11 @@ See [references/security-checklist.md](references/security-checklist.md).
 - Use `ultra-create-skill` to build a custom skill
 - Check if the task can be solved without a skill
 
----
-
 ## Architecture
 
 ```
 ultra-find-skill/
-├── SKILL.md                    ← You are here (main instructions)
+├── SKILL.md                    ← Main instructions
 ├── references/
 │   ├── search-strategy.md      ← Deep search algorithms & remote sources
 │   ├── skill-directories.md    ← All known paths (cross-platform)
@@ -185,11 +148,7 @@ ultra-find-skill/
     └── find-and-install.md     ← Example: full discovery flow
 ```
 
----
-
 ## Allowed Tools
-
-This skill may use the following tools during execution:
 
 - `list_dir` — Scan skill directories
 - `view_file` — Read SKILL.md frontmatter and content
@@ -198,31 +157,23 @@ This skill may use the following tools during execution:
 - `read_url_content` — Fetch remote catalogs and skill content
 - `search_web` — Search for skills on GitHub, npm, skills.sh
 
----
-
 ## Best Practices
 
-1. **Always search locally first** — Remote search costs time and tokens
-2. **Parse frontmatter, don't guess** — Read actual `name` and `description` fields
-3. **Check precedence** — If multiple skills match, the one in the higher-priority directory wins
-4. **Evaluate before installing** — Use the security checklist for remote skills
-5. **Suggest alternatives** — If the exact skill doesn't exist, suggest similar ones
-6. **Report cross-platform findings** — If a skill exists for another platform, mention it can likely be adapted
-7. **Token efficiency** — Don't load full SKILL.md for every result; scan frontmatter only
-8. **Cache results** — If the user is doing multiple searches in one session, remember previous results
-
----
+1. Search locally first — remote search costs time and tokens
+2. Parse frontmatter, don't guess — read actual `name` and `description`
+3. Check precedence — higher-priority directory wins on ties
+4. Evaluate before installing — use security checklist for remote skills
+5. Suggest alternatives if exact skill doesn't exist
+6. Report cross-platform findings — mention adaptability
+7. Token efficiency — scan frontmatter only, don't load full SKILL.md
+8. Cache results — remember previous searches in same session
 
 ## Reference
 
-For detailed information, see:
-
-- **[Search Strategy](references/search-strategy.md)** — Complete remote search algorithms, API endpoints, and ranking logic
-- **[Skill Directories](references/skill-directories.md)** — All known skill installation paths across 7 platforms with precedence rules
-- **[Evaluation Criteria](references/evaluation-criteria.md)** — Quality scorecard (0-100) for ranking discovered skills
-- **[Security Checklist](references/security-checklist.md)** — Pre-installation security review for third-party skills
-
----
+- **[Search Strategy](references/search-strategy.md)** — Remote search algorithms, API endpoints, ranking logic
+- **[Skill Directories](references/skill-directories.md)** — All paths across 7 platforms with precedence rules
+- **[Evaluation Criteria](references/evaluation-criteria.md)** — Quality scorecard (0-100)
+- **[Security Checklist](references/security-checklist.md)** — Pre-installation security review
 
 ## Related Skills
 
@@ -232,47 +183,12 @@ For detailed information, see:
 | `ecosystem-steward` | The steward's `forge search` does similar but narrower searches |
 | `skill-optimizer` | Optimize a found skill's description for better triggering |
 
----
-
 ## Pre-Flight Checklist
 
-Before running a skill search, confirm:
-
 - [ ] What domain/task is the user trying to solve?
-- [ ] Is this actually complex enough to warrant a skill?
-- [ ] Has the user specified any platform preference?
-- [ ] Should we search locally only, or also remote?
-
----
+- [ ] Is this complex enough to warrant a skill?
+- [ ] Platform preference? Local only or remote too?
 
 ## License
 
-Apache-2.0. This skill is part of the OpenClaw ecosystem.
-
----
-
-## Contributing
-
-To improve this skill:
-
-1. Fork the repository containing this skill
-2. Edit files following the structure in `## Architecture`
-3. Test changes by asking the agent to find skills with various queries
-4. Submit a pull request with a clear description of improvements
-
-**Areas for contribution:**
-- Add new remote search sources to `references/search-strategy.md`
-- Improve the evaluation scoring rubric
-- Add more skill directory paths as new platforms emerge
-- Translate examples to additional languages
-
----
-
-## About
-
-**ultra-find-skill** was created by synthesizing the best patterns from 32+
-skill ecosystem sources including agentskills.io specification, Vercel
-find-skills, Antigravity skill orchestrator, and platform documentation from
-OpenClaw, OpenCode, Claude Code, Codex CLI, and Gemini CLI.
-
-Built for the OpenClaw community. Model-agnostic — works with any LLM.
+Apache-2.0. Model-agnostic. Synthesized from 32+ ecosystem sources.
