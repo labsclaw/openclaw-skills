@@ -13,6 +13,16 @@ description: >-
 Detect dead models, new additions, broken fallbacks, and orphaned aliases
 by cross-referencing live API responses against `openclaw.json`.
 
+## 📁 Path-Agnostic (v2)
+
+All scripts now auto-detect your OpenClaw home directory:
+
+1. `$env:OPENCLAW_CONFIG_PATH` (if set)
+2. `$env:USERPROFILE\.openclaw`
+3. `$env:HOMEDRIVE$env:HOMEPATH\.openclaw`
+
+Works on any machine — ClawLabs, Luna, Justus, or any other install.
+
 ## When to Use / When NOT to Use
 
 **Use for:** auditing free model availability, diagnosing silent fallbacks,
@@ -77,7 +87,20 @@ powershell -ExecutionPolicy Bypass -File "<skill-dir>/scripts/kilo-free-detail.p
 | OpenCode | ID matches `-free` or equals `big-pickle` | Models silently removed (401 errors) |
 | KiloCode | `isFree == true` | — |
 | NVIDIA | `owned_by == "nvidia"` + no pricing or pricing == 0 | NIM Preview rotates frequently |
-| Antigravity | All returned models available (local proxy) | Config uses `antigravity-proxy/<id>` prefix; `compare-config.ps1` maps automatically |
+| Antigravity | All returned models available (local proxy) | Config uses `antigravity-proxy/<id>` prefix |
+
+## Config vs API Comparison (compare-config.ps1)
+
+The `compare-config.ps1` script now reads:
+- **Aliases** from `openclaw.json` → `agents.defaults.models`
+- **Primary model** from `openclaw.json` → `agents.defaults.model.primary`
+- **Fallbacks** from `openclaw.json` → `agents.defaults.model.fallbacks`
+
+It cross-references these against live API responses to find:
+- Dead aliases (configured but removed by provider)
+- New free models (available but not in config)
+- Broken fallbacks (fallback model no longer exists)
+- Primary model health
 
 ## Known Issues
 
@@ -88,8 +111,8 @@ powershell -ExecutionPolicy Bypass -File "<skill-dir>/scripts/kilo-free-detail.p
 
 ## Best Practices
 
-1. Run `compare-config` before any config change — catch dead models first
-2. Never hardcode API keys — always read from `.env` at runtime
+1. Run `compare-config.ps1` before any config change — catch dead models first
+2. Never hardcode API keys — auto-detection reads `.env` at runtime
 3. Monitor periodically — providers remove/rename models without notice
 4. Check fallback chain health — one dead fallback cascades failures
 5. Check if antigravity proxy is running before querying it
