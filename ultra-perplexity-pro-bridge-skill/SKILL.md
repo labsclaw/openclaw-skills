@@ -12,159 +12,96 @@ Use when the user asks to search with Perplexity, start a technical session with
 
 ## Prerequisites
 
-- Browser tool must be available (`browser({ action: "status" })`)
-- If browser is not running: `browser({ action: "start", profile: "openclaw" })`
-- If browser crashed (lock error): clean stale lock files at `~/.openclaw/browser/openclaw/user-data/SingletonLock`, then start
-- Perplexity login state persists in the openclaw profile (cookies/session)
+- `browser({ action: "status" })` available
+- Start if needed: `browser({ action: "start", profile: "openclaw" })`
+- Crash fix: delete `~/.openclaw/browser/openclaw/user-data/SingletonLock`, then start
+- Login state persists in openclaw profile cookies
 
 ## Workflow
 
 ### 1. Open or reuse Perplexity tab
 
 ```js
-// Check existing tabs first
-browser({ action: "tabs" })
-
-// Open new tab if no perplexity tab exists
+browser({ action: "tabs" })  // check existing
 browser({
   action: "open",
   profile: "openclaw",
   url: "https://www.perplexity.ai",
   label: "perplexity"
-})
-// tabId will be returned (e.g. "t1")
+})  // returns tabId (e.g. "t1")
 ```
 
-### 2. Wait for page load and snapshot
+### 2. Snapshot page
 
 ```js
-browser({
-  action: "snapshot",
-  targetId: "<tabId>",
-  refs: "aria",
-  compact: true
-})
+browser({ action: "snapshot", targetId: "<tabId>", refs: "aria", compact: true })
 ```
 
-Key elements to identify:
-- Textbox (search input) — ref varies per load, search by `textbox` role
-- Model selector button — has `button "Modelo"` or `button "Claude Sonnet 4.6"`
-- Search button — `button "Pesquisar"` or `button "Enviar"`
-- Thinking toggle — `menuitemcheckbox "Thinking"` with `switch`
+Key elements: textbox (search input), model selector button (`"Modelo"` or `"Claude Sonnet 4.6"`), send button (`"Pesquisar"` / `"Enviar"`), thinking toggle (`menuitemcheckbox "Thinking"`).
 
 ### 3. Select model (optional)
 
-Click the model button to open the dropdown:
+```js
+browser({ action: "act", targetId: "<tabId>", kind: "click", ref: "<model-button-ref>" })
+// Then click the model option in dropdown
+browser({ action: "act", targetId: "<tabId>", kind: "click", ref: "<model-option-ref>" })
+```
+
+Available models (2026-06):
+| Model | Notes |
+|-------|-------|
+| Melhor | auto-select best |
+| Sonar 2 | |
+| GPT-5.4 | |
+| GPT-5.5 Max | |
+| Gemini 3.1 Pro | |
+| **Claude Sonnet 4.6** | supports Thinking |
+| Claude Opus 4.7 Max | supports Thinking |
+| Kimi K2.6 | |
+| Nemotron 3 Super | |
+
+### 4. Toggle Thinking (Claude models only)
+
+```js
+browser({ action: "act", targetId: "<tabId>", kind: "click", ref: "<thinking-ref>" })
+```
+
+Close dropdown by clicking the textbox or pressing Escape.
+
+### 5. Type and submit query
 
 ```js
 browser({
-  action: "act",
-  targetId: "<tabId>",
-  kind: "click",
-  ref: "<model-button-ref>"
+  action: "act", targetId: "<tabId>", kind: "type",
+  ref: "<textbox-ref>", text: "<user query>", submit: true
 })
 ```
 
-Available models on Perplexity (as of 2026-06):
-- Melhor (auto-select best)
-- Sonar 2
-- GPT-5.4
-- GPT-5.5 Max
-- Gemini 3.1 Pro
-- **Claude Sonnet 4.6**
-- Claude Opus 4.7 Max
-- Kimi K2.6
-- Nemotron 3 Super
-
-Find the model in the dropdown menu and click it:
+If `submit: true` fails, click the send button:
 
 ```js
-browser({
-  action: "act",
-  targetId: "<tabId>",
-  kind: "click",
-  ref: "<model-option-ref>",
-  request: { kind: "click", ref: "<model-option-ref>", targetId: "<tabId>" }
-})
+browser({ action: "act", targetId: "<tabId>", kind: "click", ref: "<send-ref>" })
 ```
 
-### 4. Toggle Thinking mode (optional, Claude models only)
+### 6. Collect result
 
-If `menuitemcheckbox "Thinking"` is visible in the model dropdown, click it:
+Wait 3-5s, then snapshot:
 
 ```js
-browser({
-  action: "act",
-  targetId: "<tabId>",
-  kind: "click",
-  ref: "<thinking-ref>",
-  request: { kind: "click", ref: "<thinking-ref>", targetId: "<tabId>" }
-})
+browser({ action: "snapshot", targetId: "<tabId>", refs: "aria", compact: true })
 ```
 
-Then close the dropdown by clicking the textbox or pressing Escape.
+Response is in `tabpanel "Resposta"`. Extract: question heading, answer paragraphs, subsection headings, link citations, and model used.
 
-### 5. Type the query
+### 7. Return to user
 
-Focus the textbox and type:
-
-```js
-browser({
-  action: "act",
-  targetId: "<tabId>",
-  kind: "type",
-  ref: "<textbox-ref>",
-  text: "<user query>",
-  submit: true, // may not trigger submission on all layouts
-  request: { kind: "type", ref: "<textbox-ref>", targetId: "<tabId>", text: "<user query>" }
-})
-```
-
-### 6. Submit (if submit:true did not work)
-
-```js
-browser({
-  action: "act",
-  targetId: "<tabId>",
-  kind: "click",
-  ref: "<send-ref>",
-  request: { kind: "click", ref: "<send-ref>", targetId: "<tabId>" }
-})
-```
-
-### 7. Wait for response and collect result
-
-Wait 3-5 seconds for generation, then snapshot:
-
-```js
-// wait
-browser({
-  action: "snapshot",
-  targetId: "<tabId>",
-  refs: "aria",
-  compact: true
-})
-```
-
-The response appears in `tabpanel "Resposta"`. Extract:
-- Heading with the question
-- Paragraphs for the answer body
-- Headings for sections (Principais melhorias, Disponibilidade, etc.)
-- Link citations (source URLs)
-- "Concluiu X etapas" indicates multi-step research completed
-
-### 8. Return results to user
-
-Format the extracted text as clean markdown. Include:
-- The question as heading
-- The answer body
-- Any subsections with their content
-- Source links at the bottom
-- Note the model used
+Format as clean markdown: heading, answer body, subsections, source links, model note.
 
 ## Known issues
 
-- **Browser crash on double start**: If a Chrome instance is already running with the same user-data-dir, openclaw's Chrome fails with "Lock file can not be created". Fix: `browser({ action: "stop" })` then clean `SingletonLock`/`SingletonSocket`/`SingletonCookie` from `~/.openclaw/browser/openclaw/user-data/`, then `browser({ action: "start" })`
-- **Stale refs**: Always snapshot after navigation or model selection before acting on new elements
-- **Encoding**: Avoid accented characters in queries (Windows code page 850); use plain ASCII
-- **act ref mismatch**: Some act calls need `request` param with the same kind/ref/targetId nested inside
+| Issue | Fix |
+|-------|-----|
+| Browser crash (lock file) | `browser({ action: "stop" })` → delete `SingletonLock`/`SingletonSocket`/`SingletonCookie` from `~/.openclaw/browser/openclaw/user-data/` → `browser({ action: "start" })` |
+| Stale refs | Always snapshot after navigation or model selection |
+| Encoding | Avoid accented chars (Windows code page 850); use plain ASCII |
+| act ref mismatch | Some calls need `request` param with `kind/ref/targetId` nested inside |
