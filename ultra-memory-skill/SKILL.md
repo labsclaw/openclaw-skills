@@ -1,394 +1,354 @@
-﻿---
+---
 name: ultra-memory-skill
-description: "Memory Caching for LLM Agents â€” zero-cost gated retrieval, auto-maintenance, and hybrid wiki architecture. arXiv 2602.24281."
+description: "Memory discipline for LLM agents — verify before trust, grade staleness, route surgically, never dump."
 ---
 
-# Ultra Memory Skill (Distilled)
+# Memory Discipline
 
-Zero-cost memory architecture for LLM agents. Inspired by [Memory Caching: RNNs with Growing Memory](https://arxiv.org/abs/2602.24281) (Google, 2026).
+Every memory has a grade, a tier, and a verification rule. Memory serves the next session, not the current ego.
 
-**Components:** SSC Router (keyword/tag scoring), Health Check, Wiki Architecture (Hyper-Extract + qmd + agentmemory), Learning Signals, Tiered Storage (HOT/WARM/COLD), Self-Reflection. **91.4% token savings** per session.
+---
+
+## When NOT to Use This Skill
+
+You don't need memory for:
+- **One-off tasks.** "Summarize this file" — do it, done.
+- **Derivable facts.** If `git log`, `docker-compose`, or `ls` gives the answer in 30 seconds, don't store it.
+- **Transient state.** "Tests are running now" is stale before you write it.
+- **Secrets.** Passwords, tokens, keys — never in memory.
+- **This is not a wiki system.** Wiki setup lives in `scripts/`. This skill is about memory discipline only.
+
+**Test:** Can you answer the question by running one command right now? If yes, don't persist it.
+
+---
+
+## Anti-Patterns (What Failure Looks Like)
+
+| What You Do | Why It Hurts | What to Do Instead |
+|---|---|---|
+| Dump everything into MEMORY.md | O(n) reads, everything looks important, nothing is | Use the SSC Router — load only top-K segments |
+| Store "PostgreSQL is version 16" | Derivable from docker-compose in 5s | Skip it |
+| Trust memory without checking | Stale port numbers cause cascading failures | Verify live (see verification protocol) |
+| Create 50 segments for one project | Router scoring breaks, too many entries | Merge into 2-3 well-tagged segments |
+| Log every user message | Noise drowns signal | Log only corrections, preferences, patterns |
+| Store "fixed the flaky test" | Done work, git log already records it | One-off fixes go in git, not memory |
+| Say "I'll check later" when memory and live disagree | "Later" never happens, next session hits the same trap | Fix it now — update memory immediately |
+
+---
+
+## The SSC Router: Load Surgically
+
+Your session startup: run the router, load top-K, build context. Never load everything.
+
+```powershell
+.\memory\ssc-router.ps1 -Query "deploy pipeline auth"
+```
+
+**Scoring:** `(keyword_hits × 2) + tag_hits + (weight × 0.5)`
+
+**Rules:**
+1. Run the script — never read segments manually.
+2. Use the returned top-K, not all segments.
+3. If the router returns nothing relevant, your memory doesn't have what you need — search live.
+
+**Verification:** Run the router. If output is empty, your memory is incomplete. That's fine — go search live.
+
+**Anti-pattern:** "I'll just read all segments to be thorough." → Wastes tokens, loads irrelevant context, model starts ignoring memory entirely.
+
+---
+
+## Staleness Grading: The One Rule That Matters
+
+Grade every fact before acting on it. If you skip one rule, skip this one last.
+
+| Memory Type | Staleness Risk | Verify Before Acting? |
+|---|---|---|
+| User preferences | LOW (months) | No |
+| Decisions + WHY | LOW (weeks-months) | No — re-read for context |
+| Non-obvious constraints | LOW (until refactored) | No — unless constraint may have changed |
+| System state (versions, configs) | HIGH (days) | **YES — always verify live** |
+| File locations, port numbers | HIGH (any deploy) | **YES — probe before acting** |
+| API behavior, endpoint shapes | HIGH (any release) | **YES — test against live** |
+
+### Verification Protocol (Not "Check Memory")
+
+Verification means touching the real system. Not re-reading what you wrote.
+
+| What to Verify | How | Example |
+|---|---|---|
+| File exists | `Test-Path "path/to/file"` | Must return `True` |
+| Port alive | `Test-NetConnection localhost -Port 3100` | Must return `TcpTestSucceeded: True` |
+| Endpoint responds | `curl http://localhost:3100/api/health` | Must return 200 |
+| Version correct | Read config file, not memory | Compare actual vs remembered |
+| Service running | `Get-Process` or `pm2 list` | Must show the process |
+
+**Verification is a checklist, not a feeling.** If you can't run the check, say "unverified" — don't guess.
+
+**Anti-pattern:** "Memory says port 3100, so I'll use 3100." → That was two weeks ago. Probe first.
+
+---
+
+## Memory vs Live: Live Always Wins
+
+No exceptions. No "I'll update it later."
+
+1. Trust the live system, not your memory.
+2. Report the drift: "memory says X, live state shows Y."
+3. Update the memory entry immediately.
+4. Note vintage: "verified 2026-07-09" vs "as of last check."
+
+**Anti-pattern:** "Memory says X but live says Y. I'll use live and mention it later." → "Later" never happens. Fix it now or the next session hits the same trap.
+
+---
+
+## What to Persist (and What Not To)
+
+### Persist
+
+- Decisions and the reasoning behind them (the WHY — that's what evaporates)
+- User preferences that are confirmed (not one-offs)
+- Non-obvious constraints ("deploy hook is armed, disarming requires approval")
+- Patterns that repeated 3+ times
+- Corrections and lessons learned
+
+### Never Persist
+
+| What | Why Not | Where It Already Lives |
+|---|---|---|
+| Secrets | Security risk | Vault, env vars |
+| Derivable facts | Duplicated effort | git log, docker-compose, docs |
+| One-off fixes | Done work | git log |
+| Fast-changing state | Stale in days | Live probe |
+| Session-bound context | No future value | Current conversation |
+
+**The 30-second test:** Can a future session derive this from codebase, git, or docs in <30 seconds? If yes, don't persist it.
+
+### Entry Format
+
+Every memory entry must have:
+
+```markdown
+## [DATE] Topic
+
+**Trigger:** when [condition], remember [fact]
+**Why:** [reason this matters — the part that evaporates]
+**Tier:** HOT | WARM | COLD
+```
+
+**One fact per entry, dated.** Undated facts rot invisibly. "As of 2026-07-02" ages honestly.
+
+---
+
+## Tiered Storage
+
+| Tier | Location | Size Limit | When Loaded |
+|---|---|---|---|
+| HOT | `memory/segments/` (tier: "HOT") | ≤100 lines | Every session via SSC Router |
+| WARM | `memory/segments/` (tier: "WARM") | ≤200 lines | On context match |
+| COLD | `memory/archive/` | Unlimited | Explicit query only |
+
+**Promotion/Demotion Rules:**
+
+| Trigger | Action |
+|---|---|
+| 3× usage in 7 days | Promote to HOT |
+| 30 days unused | Demote to WARM |
+| 90 days unused | Archive to COLD |
+| User confirmation required | Never delete without asking |
+
+**Verification:** If you have >20 HOT segments, something is wrong. Most memory should be WARM or COLD.
+
+**Anti-pattern:** Creating everything as HOT → If everything is HOT, nothing is HOT. The router can't distinguish importance.
+
+---
+
+## Learning Signals: Detect and Act
+
+### Corrections
+**Trigger:** User says "no," "actually," "wrong," "I prefer," "stop doing," "I told you before."
+**Action:** Log to `memory/corrections.md`. After 3 occurrences, evaluate for segment creation.
+**Anti-pattern:** "It only happened once." → Corrections that happen once will happen again. Log it.
+
+### Preferences
+**Trigger:** User says "always do X," "never do Y," "my style is..."
+**Action:** Log to relevant segment. Confirm on next mention before persisting.
+**Anti-pattern:** Persisting a preference stated once in passing → Wait for confirmation or repeat mention.
+
+### Pattern Candidates
+**Trigger:** Same instruction repeated 3×, workflow works well repeatedly, user praises approach.
+**Action:** After 3×, promote to segment with `tier: "HOT"`.
+**Anti-pattern:** Promoting after 1× → One occurrence is coincidence. Three is a pattern.
+
+---
+
+## Self-Reflection Protocol
+
+After significant work, ask three questions:
+
+1. **Did it meet expectations?** Compare outcome vs intent.
+2. **What could be better?** One improvement — not ten.
+3. **Is this a pattern?** If yes, log to `memory/corrections.md`.
+
+**Format:**
+```markdown
+CONTEXT: [type of task]
+REFLECTION: [what I noticed]
+LESSON: [what to do differently]
+```
+
+**When to reflect:** After multi-step tasks, after feedback, after fixing mistakes.
+
+**Promotion:** Self-reflection entries follow the same 3× rule → promote to HOT.
+
+---
+
+## Namespace Isolation
+
+Tag memory to avoid cross-contamination:
+
+- **Project patterns** → `project:{name}`
+- **Domain patterns** → `domain:{type}`
+- **Global preferences** → `global`
+
+**Priority:** project > domain > global (most specific wins).
+
+---
+
+## Map Is Not the Territory
+
+Your prompts and context are the map. The real system is the territory.
+
+When you hit unknown territory:
+1. Classify: known-unknown or unknown-unknown?
+2. Search the web if it blocks progress.
+3. Log to `memory/corrections.md` as `knowledge_gap`.
+4. Update the relevant skill or segment.
+
+**Trigger for web search:** Unknown blocks an active goal, affects company operations, is a recurring pattern (2×+), or involves security/production.
+
+---
+
+## Multi-Memory Types
+
+| Type | Location | Purpose |
+|------|----------|---------|
+| Semantic | `memory/semantic-patterns.json` | Abstract patterns, rules |
+| Episodic | `memory/episodic/` | Specific experiences |
+| Working | `memory/working/` | Current session context |
+| Procedural | `memory/segments/` (tag: `procedural`) | Skills, workflows, how-to |
+
+## Memory Decay
+
+Not all memories live forever. Compute a decay score:
+
+```
+score = (0.4 × recency) + (0.3 × frequency) + (0.3 × importance)
+```
+
+| Score | Action |
+|---|---|
+| ≥ 0.5 | Keep in current tier |
+| < 0.3 | Archive to COLD |
+| < 0.1 | Soft delete (mark, don't remove) |
+
+**Verification:** Run the health check weekly. If total memory size grows >20% month-over-month, decay isn't working.
+
+---
+
+## Replay Learnings: Learn from Past Mistakes
+
+Before starting a task, pull relevant past errors:
+
+1. Extract keywords from task description.
+2. Search `corrections.md` and relevant segments.
+3. Include error context — not just what to do, but *why it went wrong*.
+4. Flag sessions with >20% correction rate.
+
+**Integration:** SSC Router returns knowledge. Replay returns error context. Use both.
+
+---
+
+## Plan Gate for Complex Memory Operations
+
+When a memory task is non-trivial (multi-segment creation, bulk migration, tier restructuring), use this format before executing:
+
+```markdown
+## Plan Gate: [task name]
+
+### GOAL
+What we're trying to achieve.
+
+### UNKNOWNS
+What we don't know yet. If unknowns block execution, resolve them first.
+
+### SUCCESS CRITERIA
+How we know it's done. Measurable, specific.
+
+### STEPS
+1. ...
+2. ...
+
+### OUT OF SCOPE
+What we're explicitly NOT doing.
+```
+
+**Rule:** If you can't fill in SUCCESS CRITERIA, the task is too vague. Break it down.
+
+---
+
+## Health Check
+
+Run weekly (or set up a cron):
+
+```powershell
+.\memory\ssc-health.ps1
+```
+
+**Monitors:** segment count, daily log freshness, checkpoint integrity, total size, tier promotion/demotion.
+
+**Cron config:**
+
+```json
+{
+  "name": "ssc-health-check",
+  "schedule": { "kind": "cron", "expr": "0 3 * * *", "tz": "America/Sao_Paulo" },
+  "sessionTarget": "isolated",
+  "payload": {
+    "kind": "agentTurn",
+    "message": "Run: powershell -ExecutionPolicy Bypass -File <workspace>\\memory\\ssc-health.ps1. If HEALTHY, respond OK. If ATTENTION NEEDED, report issues."
+  },
+  "delivery": { "mode": "announce", "channel": "telegram" }
+}
+```
+
+**Anti-pattern:** "I'll do a health check eventually." → Set up the cron job. Forget to check = problems accumulate silently.
+
+---
 
 ## Quick Start
 
 ```powershell
-.\scripts\setup.ps1
-```
-Then add SSC protocol to AGENTS.md (see `templates/AGENTS-template.md`).
-
-## Learning Signals
-
-**Corrections â†’** `memory/corrections.md`. Catch: "No, that's not right", "Actually it should be", "I prefer X not Y", "Remember I always...", "Stop doing X".
-**Preferences â†’** segment or MEMORY.md. Catch: "I like when you", "Always/Never do X/Y", "My style is...".
-**Patterns â†’** promote to HOT at 3x (repeated instructions, recurring workflows, user praise).
-**Ignore:** one-time, context-specific, hypotheticals.
-
-## Map is not the Territory
-
-Prompts/skills/context = map. Codebase/system/edge cases = territory. Quality drops when agent hits unknown territory.
-
-**Detect unknowns:** command fails unexpectedly, API/behavior differs, framework constraint not in skills, platform-specific behavior, tool mismatch, missing dependency.
-
-| Type | Description | Action |
-|------|-------------|--------|
-| Known-Known | Agent has skill | Execute directly |
-| Known-Unknown | Agent knows it doesn't know | Search â†’ log â†’ update skill |
-| Unknown-Unknown | Agent doesn't know | Error â†’ classify â†’ search â†’ log |
-
-**Auto-update trigger:** log to `memory/corrections.md` with `knowledge_gap` category when unknown blocks active goal, affects company ops, recurring (2+), or involves security/production.
-
-```markdown
-## [LRN-YYYYMMDD-XXX] knowledge_gap
-**Logged**: ISO-8601 | **Priority**: high | **Status**: searching | **Area**: config|infra|backend
-**Summary**: Agent lacked knowledge about [topic] | **Type**: known-unknown|unknown-unknown
-**Search**: Query="[terms]", Source=[URL], Finding=[...], Confidence=0.0-1.0
-**Resolution**: Resolved=timestamp, Updated=[skill/segment], Notes=[what changed]
+.\scripts\setup.ps1                          # Minimal (SSC only)
+.\scripts\setup.ps1 -Wiki                    # Full with wiki
 ```
 
-## Tiered Storage
-
-| Tier | Location | Size Limit | Behavior |
-|------|----------|------------|----------|
-| HOT | `memory/segments/` (tier: "HOT") | â‰¤100 lines | Always loaded |
-| WARM | `memory/segments/` (tier: "WARM") | â‰¤200 lines | Load on context match |
-| COLD | `memory/archive/` | Unlimited | On explicit query only |
-
-**Promotion/Demotion:** 3x in 7d â†’ HOT. 30d unused â†’ WARM. 90d unused â†’ COLD. Never delete without confirmation.
-
-```json
-{
-  "id": "s001", "file": "segments/s001-my-topic.md",
-  "summary": "One-line description", "keywords": ["topic"], "tags": ["category"],
-  "weight": 0.9, "tier": "HOT", "lastAccess": "2026-07-04T14:00:00",
-  "accessCount": 5, "created": "2026-06-27"
-}
-```
-
-## Self-Reflection
-After significant work: compare outcome vs intent, identify improvements, check pattern â†’ log to `memory/corrections.md`.
-```markdown
-CONTEXT: [task type]
-REFLECTION: [what I noticed]
-LESSON: [what to do differently]
-```
-Promote to HOT after 3x successful applications.
-
-## Namespace Isolation
-- **Project** â†’ tag `project:{name}`. **Domain** (code, writing) â†’ tag `domain:{type}`. **Global** â†’ tag `global`.
-- **Priority:** project > domain > global
-
-## Memory Types
-
-| Type | File | Purpose |
-|------|------|---------|
-| Semantic | `memory/semantic-patterns.json` | Abstract rules reusable across contexts |
-| Episodic | `memory/episodic/YYYY-MM-DD-{skill}.json` | Specific experiences |
-| Working | `memory/working/current_session.json` | Current session context |
-| Procedural | `segments/` (tag `procedural`) | How-to knowledge (skills, workflows) |
-
-**Semantic pattern format:**
-```json
-{"id":"pat-2026-07-04-001","name":"PowerShell head/tail avoidance","source":"user_feedback","confidence":0.95,"applications":3,"category":"powershell_syntax","pattern":"Use Select-Object instead of head/tail","solution":{"use":"Select-Object -First N"},"target_skills":["ultra-powershell-skill"]}
-```
-
-**Episodic:** `{"id":"ep-...","timestamp":"...","skill":"...","situation":"...","root_cause":"...","solution":"...","lesson":"...","confidence":0.0}`
-**Working:** `{"session_id":"...","started":"...","active_skills":[],"pending_tasks":[],"context":"..."}`
-**Evolution marker:** `<!-- Evolution: YYYY-MM-DD | source: ep-... | skill: ... -->`
-**Confidence:** â‰¥0.8 promote, <0.5 review/archive.
-
-## Chunking Strategies
-
-| Strategy | Best For | Chunk Size | Notes |
-|----------|----------|------------|-------|
-| Fixed-size | General | 256-512 tokens | Baseline |
-| Semantic | Quality retrieval | Variable | Splits by meaning |
-| Structure-aware | Markdown/docs | Per heading | Respects hierarchy |
-| Contextual | Complex docs | 256-512 tokens | Adds doc summary per chunk |
-| Code-specific | Source code | 1000 chars | Function/class boundaries |
-
-**Rule:** Chunk for retrieval, not storage.
-
-## Background Memory Formation
-Process memories async after conversations: conversation ends → session summary saved → background job (cron/idle) extracts insights → store to semantic/episodic → consolidate similar. Real-time extraction slows conversations; background yields higher quality.
-
-## Memory Consolidation (Like Sleep)
-Periodically merge duplicate/similar memories: list all → cluster by similarity (threshold 0.9) → merge clusters (preserve info, delete originals) → update index. **When:** weekly during health check or count exceeds threshold.
-
-## Memory Decay
-Score = (0.4 Ã— recency) + (0.3 Ã— frequency) + (0.3 Ã— importance). < 0.3 â†’ COLD. < 0.1 â†’ soft delete (mark only). â‰¥ 0.5 â†’ keep.
-
-## Vector Store Reference
-| Store | Scale | Cost | Hybrid | Best For |
-|-------|-------|------|--------|----------|
-| Pinecone | Billions | High | No | Enterprise |
-| Qdrant | 100M+ | Med | Yes | Complex filtering |
-| Weaviate | 100M+ | Med | Yes | Knowledge graphs |
-| ChromaDB | 1M | Free | No | Prototyping |
-| pgvector | 1M | Free | Yes | PostgreSQL |
-| agentmemory | âˆž | Free | Yes | Our stack |
-
-## Replay Learnings
-Before starting a task: extract keywords â†’ search `corrections.md` + `semantic-patterns.json` â†’ classify by relevance â†’ include error context â†’ flag sessions >20% correction rate.
-
-```markdown
-REPLAY BRIEFING: <tarefa>
-=======================
-Aprendizados passados (ordenados por relevÃ¢ncia):
-  1. [Categoria] DescriÃ§Ã£o (aplicado Nx) â€” Erro original: contexto
- HistÃ³rico similar: Data â€” N edits, X correÃ§Ãµes (Y%)
-Abordagem sugerida: AÃ§Ã£o baseada no aprendizado #1
-```
-
-| SSC Router | Replay Learnings |
-|-----------|------------------|
-| Busca segments | Busca correÃ§Ãµes |
-| Retorna resumo | Retorna contexto do erro |
-| Score por keyword | Score por relevÃ¢ncia |
-| Conhecimento | Evitar erros |
-
-**Combined:** SessionStart â†’ SSC Router (knowledge) + Replay Learnings (errors) â†’ prepared session.
-
-## Memory Insights & Analytics
-
-**Hot learnings:** corrected 3+ times, never promoted â†’ promote. **Cold learnings:** accessCount=0 for 30+ days â†’ review.
-
-```powershell
-# Correction heatmap
-Select-String -Path memory\corrections.md -Pattern "^\- \*\*" | Group-Object { $_.Line -replace '.*\*\*(\w+).*','$1' } | Sort-Object Count -Descending | ForEach-Object { Write-Host "  $($_.Name): $($_.Count) corrections" }
-# Learning count
-(Get-Content memory\semantic-patterns.json -Raw | ConvertFrom-Json).patterns.PSObject.Properties.Count
-# Stale detection
-(Get-Content memory\index.json -Raw | ConvertFrom-Json).segments | Where-Object { $_.accessCount -eq 0 } | Select-Object id, summary, lastAccess
-```
-
-## Wiki Research Patterns
-
-| Flavor | Use | Example |
-|--------|-----|--------|
-| research | Topic exploration | "agent-memory" |
-| paper | Deep dive | "karpathy-llm-wiki" |
-| domain | Subject area | "llm-architectures" |
-| product/product/tool KB | "openclaw" |
-| person | Dossier | "karpathy" |
-| project | Internal KB | "ultra-memory" |
-| codebase | Repo KB | "paperclip" |
-
-**Source tracking:** Every claim in wiki must cite. If can't, mark `> SPECULATION:`.
-```markdown
-## sources.md
-| id | url | title | hash | fetched_at |
-|----|-----|-------|------|------------|
-| S001 | https://arxiv.org/abs/2602.24281 | Memory Caching | abc123 | 2026-06-26 |
-```
-
-**Convergence detection:** Jaccard overlap < 5% for 3 consecutive pages â†’ halt.
-```powershell
-function Test-Convergence {
-    param([string[]]$recentPages, [double]$threshold = 0.05)
-    $words = $recentPages | ForEach-Object { ($_ -split '\W+') | Where-Object { $_.Length -gt 3 } }
-    $uniqueWords = $words | Sort-Object -Unique; $totalWords = $words.Count
-    if ($totalWords -eq 0) { return $false }
-    $overlap = ($uniqueWords | Measure-Object).Count / $totalWords
-    return $overlap -lt $threshold
-}
-```
-
-**Kill-switch:** `touch memory/STOP` â†’ loops check and halt.
-**Seed queue:** `pending â†’ active â†’ done|failed`, BFS order (depth ASC, created_at ASC).
-
-
-### HTML Viewer Concept
-Single-file HTML export for sharing wikis: pages + sources + link graph in one file, no external deps, uploadable to S3, in-browser search.
-
-**Research loop:** `.\scripts\research-loop.ps1 -Topic "LLM memory" -MaxPages 3 -BudgetSeconds 300`
-
-## Skill Optimizer
-Pipeline: rollout â†’ reflect â†’ aggregate â†’ select â†’ update â†’ evaluate â†’ gate.
-```powershell
-.\scripts\skill-optimizer.ps1 -DryRun                              # Preview
-.\scripts\skill-optimizer.ps1 -SkillPath ".\SKILL.md"               # Apply
-.\scripts\skill-optimizer.ps1 -MaxAdds 5 -MaxDeletes 3 -MaxReplaces 4
-```
-3+ same-category corrections â†’ add. Confidence<0.5 + never applied â†’ delete.
-
-## Installation
-
-### Option A: Minimal
-```powershell
-.\scripts\setup.ps1
-```
-Creates: `memory/index.json`, `ssc-router.ps1`, `ssc-health.ps1`, `segments/`, `checkpoints/`, `daily/`, `fixes/`.
-
-### Option B: Complete (SSC + Wiki)
-```powershell
-.\scripts\setup.ps1 -Wiki -Cron
-```
-**Requirements:** `uv` (Hyper-Extract), `npm` (qmd + agentmemory).
-
-### Option C: Manual
-```powershell
-New-Item ... -Path "memory\segments","memory\checkpoints","memory\daily","memory\fixes","memory\archive" -Force
-Copy-Item .\scripts\ssc-*.ps1,.\examples\memory\index.json .\memory\
-"# Corrections Log\n" | Set-Content .\memory\corrections.md -Encoding UTF8
-```
-See [MANUAL-INSTALL.md](MANUAL-INSTALL.md).
-
-## Post-Setup: AGENTS.md Protocol
-```markdown
-### Session Startup Protocol (Gated Retrieval)
-1. **Run SSC Router** â€” `powershell -ExecutionPolicy Bypass -File memory\ssc-router.ps1 -Query "<relevant terms>"`
-2. Scores by keyword/tag overlap, returns top-K, updates accessCount
-3. Generate online memory from segments + MEMORY.md
-4. DO NOT load all daily files â€” old O(L) pattern
-5. DO NOT read segments manually â€” always use script
-```
-
-## Post-Setup: Cron Health Check
-```json
-{"name":"ssc-health-check","schedule":{"kind":"cron","expr":"0 3 * * *","tz":"America/Sao_Paulo"},"sessionTarget":"isolated","payload":{"kind":"agentTurn","message":"Run: powershell ...memory\\ssc-health.ps1\nIf HEALTHY, respond 'SSC health: OK'. If ATTENTION NEEDED, report issues."},"delivery":{"mode":"announce","channel":"telegram"}}
-```
+Then add the SSC protocol to AGENTS.md (see `templates/AGENTS-template.md`).
 
 ## Scripts Reference
 
-**ssc-router.ps1:** `-Query "project deadline"` (find), `-List`, `-Stats`, `-DryRun` (preview).
-**Scoring:** `(keyword_hits Ã— 2) + tag_hits + (weight Ã— 0.5)`
-
-**ssc-health.ps1:** `-Quiet` for report file only; default = full report.
-
-**setup.ps1:** `-Wiki` (SSC+wiki), `-Wiki -Cron` (adds cron), `-Force` (overwrite). Default: minimal.
-
-## Wiki Architecture (Option B Only)
-
-```
-wiki/
-â”œâ”€â”€ raw/              â† Immutable sources
-â”œâ”€â”€ entities/         â† People, orgs, tools
-â”œâ”€â”€ concepts/         â† Ideas, patterns
-â”œâ”€â”€ sources/          â† Source summaries
-â”œâ”€â”€ synthesis/        â† Multi-source analyses
-â”œâ”€â”€ comparisons/      â† Side-by-side evals
-â”œâ”€â”€ projects/         â† Active project pages
-â””â”€â”€ checkpoints/      â† State snapshots
-```
-
-**Workflow:** Add sources to `wiki/raw/` â†’ `he parse source.pdf -t general/academic_graph -o ./output/` â†’ `he export obsidian ./output/ -o ./wiki/knowledge-abstracts/` â†’ `qmd collection add wiki --name wiki; qmd embed` â†’ MCP `memory_save`.
-
-**Search:** `qmd search "memory caching"` (BM25), `qmd vsearch "hybrid architecture"` (vector), `qmd query "what is SSC?"` (hybrid).
-
-## Creating Segments
-
-### Manual
-1. Create `memory/segments/s00N-topic.md`
-2. Add to `memory/index.json`:
-```json
-{
-  "id": "s001", "file": "segments/s001-my-topic.md",
-  "summary": "One-line description", "keywords": ["topic"], "tags": ["category"],
-  "weight": 0.9, "lastCheckpoint": null, "accessCount": 0, "created": "2026-06-27"
-}
-```
-
-### Automatic
-Agent creates segment + updates index.json when new topic emerges during conversation.
-
-## Testing
-Scripts must run from `memory/` directory after `setup.ps1`, NOT from `scripts/`. They use `$PSScriptRoot` to find `index.json`.
-
-```powershell
-# Correct
-.\scripts\setup.ps1
-powershell -ExecutionPolicy Bypass -File memory\ssc-router.ps1 -Query "test" -DryRun
-
-# Wrong â€” no index.json in scripts/
-powershell -ExecutionPolicy Bypass -File scripts\ssc-router.ps1 -Query "test"
-```
-
-## Wiki Maintenance
-```powershell
-.\scripts\wiki-health.ps1           # Full report
-.\scripts\wiki-health.ps1 -Quiet     # Summary only
-```
-**Checks:** orphans, broken links, coverage. Report: `wiki/health-report.md`. Cron: Monday 8am.
-**Orphan types:** knowledge-abstracts/, raw/, scripts/ â†’ leave. Standalone .md â†’ add wikilinks.
-**Coverage:** â‰¥70% Healthy, 50-70% Acceptable, <50% Fix within 1 week.
-
-## Troubleshooting
-| Problem | Solution |
-|---------|----------|
-| `accessCount` not updating | Check write permissions on `index.json` |
-| Encoding errors | Scripts use UTF8 â€” check no BOM |
-| `qmd embed` slow first run | Normal â€” downloads 333MB GGUF (cached) |
-| agentmemory won't start | Check `iii.exe` in PATH: `~\.local\bin\iii.exe` |
-| Stale health check | Run `.\ssc-health.ps1` manually |
-
-## Architecture
-
-```
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚         Session Startup          â”‚
-â”‚  "What do I need to remember?"   â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-             â–¼
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚     SSC Router (ssc-router.ps1)  â”‚
-â”‚  Query â†’ keyword/tag â†’ top-K     â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-       â”Œâ”€â”€â”€â”€â”´â”€â”€â”€â”€â”
-       â–¼         â–¼
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â” â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚segments â”‚ â”‚MEMORY.mdâ”‚
-â”‚HOT/WARM â”‚ â”‚overview â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜ â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-       â”‚
-       â–¼
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚ Learning Signals + Self-Reflect â”‚
-â”‚ Corrections â†’ log â†’ promote 3x  â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-             â–¼
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚   ssc-health.ps1 (daily cron)    â”‚
-â”‚  Verify integrity, report issues â”‚
-â”‚  Check tier promotion/demotion   â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-```
-
-## Logging
-
-**Corrections** â†’ `memory/corrections.md`:
-```markdown
-# Corrections Log
-> Last 50 corrections. Promote after 3x.
-- **2026-07-04**: PowerShell syntax â€” Select-Object, not head
-## Patterns (3x+)
-- [ ] PowerShell: never head/tail
-```
-
-**Structured entries** (3 types):
-| Type | File | Use Case |
-|------|------|----------|
-| LRN | `memory/learnings.md` | Corrections, knowledge gaps |
-| ERR | `memory/errors.md` | Command failures |
-| FEAT | `memory/feature-requests.md` | User-requested features |
-
-```markdown
-## [LRN-20260704-001] correction
-**Logged**: 2026-07-04T14:00:00-03:00 | **Priority**: high | **Status**: resolved | **Area**: config
-### Summary: PowerShell head/tail don't exist on Windows.
-### Suggested Action: Use `Select-Object -First N`.
-### Metadata
-Source: user_feedback | Tags: powershell, syntax | Pattern-Key: powershell.head_tail | Recurrence-Count: 1
-### Resolution: **Resolved**: 2026-07-04 | **Section**: ultra-powershell-skill SKILL.md 2.10
-```
-
-**Status:** pending â†’ in_progress â†’ resolved | promoted | wont_fix
-**Promotion targets:** SOUL.md (behavior), AGENTS.md (workflow), TOOLS.md (gotchas), memory segments (knowledge).
-**Recurring:** search for same Pattern-Key first; link entries; promote after 3x.
+| Script | Purpose |
+|---|---|
+| `ssc-router.ps1` | Query memory by keyword/tag — run this, not manual reads |
+| `ssc-health.ps1` | Daily integrity check |
+| `setup.ps1` | Initial setup (`-Wiki` for full install) |
+| `ssc-promote.ps1` | Tier promotion/demotion |
 
 ## References
-- **Paper**: [Memory Caching: RNNs with Growing Memory](https://arxiv.org/abs/2602.24281) â€” Behrouz et al. (Google, 2026)
-- **Organization**: [LabsClaw](https://github.com/labsclaw)
+
+- **Paper:** [Memory Caching: RNNs with Growing Memory](https://arxiv.org/abs/2602.24281) — Behrouz et al. (Google, 2026)
+- **Implementation:** Dr. Roger Oliveira + Justus (AI Agent)
+- **Organization:** [LabsClaw](https://github.com/labsclaw)
 
 ## License
-MIT
 
+MIT
