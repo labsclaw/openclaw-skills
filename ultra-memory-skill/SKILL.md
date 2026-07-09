@@ -1,52 +1,65 @@
 ---
 name: ultra-memory-skill
-description: "Memory discipline for LLM agents — gated retrieval, staleness grading, tiered storage, and anti-forgetting."
+description: "Memory discipline for LLM agents — verify before trust, grade staleness, route surgically, never dump."
 ---
 
-# Ultra Memory Skill
+# Memory Discipline
 
-Zero-cost memory architecture. Every fact has a grade, a tier, and a verification rule. Memory exists to serve the next session, not to be impressive.
+Every memory has a grade, a tier, and a verification rule. Memory serves the next session, not the current ego.
+
+---
 
 ## When NOT to Use This Skill
 
-- **One-off tasks** — "read this file and summarize it" doesn't need memory
-- **Simple lookups** — if it's in the current context, don't persist it
-- **Transient state** — "tests are running now" ages out immediately
-- **Derivable facts** — if git, docs, or `ls` gives you the answer in 30s, don't store it
-- **Secrets** — passwords, tokens, keys NEVER go in memory
-- **This is not a wiki system** — wiki setup is in `scripts/` and a separate reference doc. This skill is about memory discipline.
+You don't need memory for:
+- **One-off tasks.** "Summarize this file" — do it, done.
+- **Derivable facts.** If `git log`, `docker-compose`, or `ls` gives the answer in 30 seconds, don't store it.
+- **Transient state.** "Tests are running now" is stale before you write it.
+- **Secrets.** Passwords, tokens, keys — never in memory.
+- **This is not a wiki system.** Wiki setup lives in `scripts/`. This skill is about memory discipline only.
 
-## Anti-Pattern Hall of Shame
+**Test:** Can you answer the question by running one command right now? If yes, don't persist it.
 
-| Pattern | Why It's Bad | Fix |
-|---------|-------------|-----|
-| Dumping everything into MEMORY.md | One giant file, O(n) reads, everything looks important | Use SSC Router to load only relevant segments |
-| Storing "PostgreSQL is version 16" | Derivable from docker-compose in 5s | Don't persist derivable facts |
-| Never verifying before acting | Stale port numbers cause cascading failures | Staleness Grading table says "verify live" |
-| Creating 50 segments for one project | Router scoring breaks, too many entries | Merge into 2-3 well-tagged segments |
-| Logging every user message | Noise drowns signal, corrections.md becomes useless | Log only corrections, preferences, and patterns |
-| Storing "fixed the flaky test" | Done work, git log already records it | One-off fixes go in git, not memory |
+---
 
-## The SSC Router
+## Anti-Patterns (What Failure Looks Like)
 
-Your session startup is: run the router, load top-K segments, build context. Never load everything.
+| What You Do | Why It Hurts | What to Do Instead |
+|---|---|---|
+| Dump everything into MEMORY.md | O(n) reads, everything looks important, nothing is | Use the SSC Router — load only top-K segments |
+| Store "PostgreSQL is version 16" | Derivable from docker-compose in 5s | Skip it |
+| Trust memory without checking | Stale port numbers cause cascading failures | Verify live (see verification protocol) |
+| Create 50 segments for one project | Router scoring breaks, too many entries | Merge into 2-3 well-tagged segments |
+| Log every user message | Noise drowns signal | Log only corrections, preferences, patterns |
+| Store "fixed the flaky test" | Done work, git log already records it | One-off fixes go in git, not memory |
+| Say "I'll check later" when memory and live disagree | "Later" never happens, next session hits the same trap | Fix it now — update memory immediately |
+
+---
+
+## The SSC Router: Load Surgically
+
+Your session startup: run the router, load top-K, build context. Never load everything.
 
 ```powershell
 .\memory\ssc-router.ps1 -Query "deploy pipeline auth"
 ```
 
-**Scoring formula:** `score = (keyword_hits × 2) + tag_hits + (weight × 0.5)`
+**Scoring:** `(keyword_hits × 2) + tag_hits + (weight × 0.5)`
 
 **Rules:**
-1. Run the script — never read segments manually
-2. Use the returned top-K, not all segments
-3. If the router returns nothing relevant, your memory doesn't have what you need — search live
+1. Run the script — never read segments manually.
+2. Use the returned top-K, not all segments.
+3. If the router returns nothing relevant, your memory doesn't have what you need — search live.
+
+**Verification:** Run the router. If output is empty, your memory is incomplete. That's fine — go search live.
 
 **Anti-pattern:** "I'll just read all segments to be thorough." → Wastes tokens, loads irrelevant context, model starts ignoring memory entirely.
 
-## Staleness Grading
+---
 
-Grade every fact before acting on it. This is the single most important rule.
+## Staleness Grading: The One Rule That Matters
+
+Grade every fact before acting on it. If you skip one rule, skip this one last.
 
 | Memory Type | Staleness Risk | Verify Before Acting? |
 |---|---|---|
@@ -57,39 +70,50 @@ Grade every fact before acting on it. This is the single most important rule.
 | File locations, port numbers | HIGH (any deploy) | **YES — probe before acting** |
 | API behavior, endpoint shapes | HIGH (any release) | **YES — test against live** |
 
-**Verification is not "check memory."** Verification means:
-- File exists: `Test-Path "path/to/file"`
-- Port alive: `Test-NetConnection localhost -Port 3100`
-- Endpoint responds: `curl http://localhost:3100/api/health`
-- Version correct: check config file, not memory
+### Verification Protocol (Not "Check Memory")
+
+Verification means touching the real system. Not re-reading what you wrote.
+
+| What to Verify | How | Example |
+|---|---|---|
+| File exists | `Test-Path "path/to/file"` | Must return `True` |
+| Port alive | `Test-NetConnection localhost -Port 3100` | Must return `TcpTestSucceeded: True` |
+| Endpoint responds | `curl http://localhost:3100/api/health` | Must return 200 |
+| Version correct | Read config file, not memory | Compare actual vs remembered |
+| Service running | `Get-Process` or `pm2 list` | Must show the process |
+
+**Verification is a checklist, not a feeling.** If you can't run the check, say "unverified" — don't guess.
 
 **Anti-pattern:** "Memory says port 3100, so I'll use 3100." → That was two weeks ago. Probe first.
 
-## When Memory and Live State Disagree
+---
 
-**Live state wins. Always.** No exceptions.
+## Memory vs Live: Live Always Wins
 
-1. Trust the live system, not your memory
-2. Report the drift: "memory says X, live state shows Y"
-3. Update the memory entry immediately
-4. Note vintage: "verified just now" vs "as of last check"
+No exceptions. No "I'll update it later."
 
-**A contradicted memory left standing bites the next session.**
+1. Trust the live system, not your memory.
+2. Report the drift: "memory says X, live state shows Y."
+3. Update the memory entry immediately.
+4. Note vintage: "verified 2026-07-09" vs "as of last check."
 
-**Anti-pattern:** "Memory says X but live says Y. I'll use live and mention it later." → "Later" never happens. Fix it now.
+**Anti-pattern:** "Memory says X but live says Y. I'll use live and mention it later." → "Later" never happens. Fix it now or the next session hits the same trap.
+
+---
 
 ## What to Persist (and What Not To)
 
 ### Persist
-- Decisions and the reasoning behind them
+
+- Decisions and the reasoning behind them (the WHY — that's what evaporates)
 - User preferences that are confirmed (not one-offs)
 - Non-obvious constraints ("deploy hook is armed, disarming requires approval")
 - Patterns that repeated 3+ times
 - Corrections and lessons learned
 
-### Do NOT Persist
+### Never Persist
 
-| Never Persist | Why | Derivable From |
+| What | Why Not | Where It Already Lives |
 |---|---|---|
 | Secrets | Security risk | Vault, env vars |
 | Derivable facts | Duplicated effort | git log, docker-compose, docs |
@@ -97,7 +121,7 @@ Grade every fact before acting on it. This is the single most important rule.
 | Fast-changing state | Stale in days | Live probe |
 | Session-bound context | No future value | Current conversation |
 
-**Rule:** If a future session can derive it from codebase, git, or docs in <30 seconds, do not persist it.
+**The 30-second test:** Can a future session derive this from codebase, git, or docs in <30 seconds? If yes, don't persist it.
 
 ### Entry Format
 
@@ -113,114 +137,96 @@ Every memory entry must have:
 
 **One fact per entry, dated.** Undated facts rot invisibly. "As of 2026-07-02" ages honestly.
 
+---
+
 ## Tiered Storage
 
 | Tier | Location | Size Limit | When Loaded |
-|------|----------|------------|-------------|
+|---|---|---|---|
 | HOT | `memory/segments/` (tier: "HOT") | ≤100 lines | Every session via SSC Router |
 | WARM | `memory/segments/` (tier: "WARM") | ≤200 lines | On context match |
 | COLD | `memory/archive/` | Unlimited | Explicit query only |
 
-### Promotion/Demotion Rules
+**Promotion/Demotion Rules:**
 
 | Trigger | Action |
-|---------|--------|
+|---|---|
 | 3× usage in 7 days | Promote to HOT |
 | 30 days unused | Demote to WARM |
 | 90 days unused | Archive to COLD |
 | User confirmation required | Never delete without asking |
 
-**Anti-pattern:** Creating everything as HOT. → If everything is HOT, nothing is HOT. The router can't distinguish importance.
+**Verification:** If you have >20 HOT segments, something is wrong. Most memory should be WARM or COLD.
 
-## Learning Signals
+**Anti-pattern:** Creating everything as HOT → If everything is HOT, nothing is HOT. The router can't distinguish importance.
 
-Detect and act on these patterns during conversation:
+---
+
+## Learning Signals: Detect and Act
 
 ### Corrections
 **Trigger:** User says "no," "actually," "wrong," "I prefer," "stop doing," "I told you before."
-**Action:** Log to `memory/corrections.md`. Evaluate for segment creation after 3×.
-**Anti-pattern:** Ignoring corrections because "it only happened once." → Corrections that happen once will happen again. Log it.
+**Action:** Log to `memory/corrections.md`. After 3 occurrences, evaluate for segment creation.
+**Anti-pattern:** "It only happened once." → Corrections that happen once will happen again. Log it.
 
 ### Preferences
 **Trigger:** User says "always do X," "never do Y," "my style is..."
-**Action:** Log to relevant segment or MEMORY.md. Confirm on next mention.
-**Anti-pattern:** Persisting a preference the user stated once in passing. → Wait for confirmation or repeat mention.
+**Action:** Log to relevant segment. Confirm on next mention before persisting.
+**Anti-pattern:** Persisting a preference stated once in passing → Wait for confirmation or repeat mention.
 
 ### Pattern Candidates
 **Trigger:** Same instruction repeated 3×, workflow works well repeatedly, user praises approach.
 **Action:** After 3×, promote to segment with `tier: "HOT"`.
-**Anti-pattern:** Promoting after 1×. → One occurrence is coincidence. Three is a pattern.
+**Anti-pattern:** Promoting after 1× → One occurrence is coincidence. Three is a pattern.
+
+---
 
 ## Self-Reflection Protocol
 
-After significant work, evaluate:
+After significant work, ask three questions:
 
 1. **Did it meet expectations?** Compare outcome vs intent.
-2. **What could be better?** Identify one improvement.
+2. **What could be better?** One improvement — not ten.
 3. **Is this a pattern?** If yes, log to `memory/corrections.md`.
 
-**When to reflect:** After multi-step tasks, after feedback, after fixing mistakes.
-
+**Format:**
 ```markdown
 CONTEXT: [type of task]
 REFLECTION: [what I noticed]
 LESSON: [what to do differently]
 ```
 
-**Promotion:** Self-reflection entries follow same 3× rule → promote to HOT.
+**When to reflect:** After multi-step tasks, after feedback, after fixing mistakes.
+
+**Promotion:** Self-reflection entries follow the same 3× rule → promote to HOT.
+
+---
 
 ## Namespace Isolation
 
-- **Project patterns** → tag `project:{name}`
-- **Domain patterns** → tag `domain:{type}`
-- **Global preferences** → tag `global`
-- **Priority:** project > domain > global (most specific wins)
+Tag memory to avoid cross-contamination:
 
-## Map is Not the Territory
+- **Project patterns** → `project:{name}`
+- **Domain patterns** → `domain:{type}`
+- **Global preferences** → `global`
 
-Your prompts and context are the map. The real system is the territory. When you hit unknown territory:
+**Priority:** project > domain > global (most specific wins).
 
-1. Classify the unknown (known-unknown? unknown-unknown?)
-2. Search the web if it blocks progress
-3. Log to `memory/corrections.md` as `knowledge_gap`
-4. Update the relevant skill or segment
+---
 
-**Trigger conditions for web search:** Unknown blocks an active goal, affects company operations, is a recurring pattern (2×+), or involves security/production.
+## Map Is Not the Territory
 
-## Background Memory Formation
+Your prompts and context are the map. The real system is the territory.
 
-Extract insights after conversations, not during:
+When you hit unknown territory:
+1. Classify: known-unknown or unknown-unknown?
+2. Search the web if it blocks progress.
+3. Log to `memory/corrections.md` as `knowledge_gap`.
+4. Update the relevant skill or segment.
 
-1. Conversation ends → session summary saved
-2. Background job → extract insights to semantic/episodic memory
-3. Consolidate similar memories (similarity threshold: 0.9)
+**Trigger for web search:** Unknown blocks an active goal, affects company operations, is a recurring pattern (2×+), or involves security/production.
 
-**Why:** Real-time extraction slows conversations. Background processing yields higher quality.
-
-## Memory Decay
-
-Not all memories should live forever. Decay score:
-
-```
-score = (0.4 × recency) + (0.3 × frequency) + (0.3 × importance)
-```
-
-| Score | Action |
-|-------|--------|
-| ≥ 0.5 | Keep in current tier |
-| < 0.3 | Archive to COLD |
-| < 0.1 | Soft delete (mark, don't remove) |
-
-## Replay Learnings
-
-Before starting a task, pull relevant past errors:
-
-1. Extract keywords from task description
-2. Search `corrections.md` and `semantic-patterns.json`
-3. Include error context — not just what to do, but *why it went wrong*
-4. Flag sessions with >20% correction rate
-
-**Integration with SSC Router:** Router returns knowledge. Replay returns error context. Use both.
+---
 
 ## Multi-Memory Types
 
@@ -230,6 +236,37 @@ Before starting a task, pull relevant past errors:
 | Episodic | `memory/episodic/` | Specific experiences |
 | Working | `memory/working/` | Current session context |
 | Procedural | `memory/segments/` (tag: `procedural`) | Skills, workflows, how-to |
+
+## Memory Decay
+
+Not all memories live forever. Compute a decay score:
+
+```
+score = (0.4 × recency) + (0.3 × frequency) + (0.3 × importance)
+```
+
+| Score | Action |
+|---|---|
+| ≥ 0.5 | Keep in current tier |
+| < 0.3 | Archive to COLD |
+| < 0.1 | Soft delete (mark, don't remove) |
+
+**Verification:** Run the health check weekly. If total memory size grows >20% month-over-month, decay isn't working.
+
+---
+
+## Replay Learnings: Learn from Past Mistakes
+
+Before starting a task, pull relevant past errors:
+
+1. Extract keywords from task description.
+2. Search `corrections.md` and relevant segments.
+3. Include error context — not just what to do, but *why it went wrong*.
+4. Flag sessions with >20% correction rate.
+
+**Integration:** SSC Router returns knowledge. Replay returns error context. Use both.
+
+---
 
 ## Plan Gate for Complex Memory Operations
 
@@ -257,9 +294,11 @@ What we're explicitly NOT doing.
 
 **Rule:** If you can't fill in SUCCESS CRITERIA, the task is too vague. Break it down.
 
+---
+
 ## Health Check
 
-Run daily via cron:
+Run weekly (or set up a cron):
 
 ```powershell
 .\memory\ssc-health.ps1
@@ -267,16 +306,24 @@ Run daily via cron:
 
 **Monitors:** segment count, daily log freshness, checkpoint integrity, total size, tier promotion/demotion.
 
+**Cron config:**
+
+```json
+{
+  "name": "ssc-health-check",
+  "schedule": { "kind": "cron", "expr": "0 3 * * *", "tz": "America/Sao_Paulo" },
+  "sessionTarget": "isolated",
+  "payload": {
+    "kind": "agentTurn",
+    "message": "Run: powershell -ExecutionPolicy Bypass -File <workspace>\\memory\\ssc-health.ps1. If HEALTHY, respond OK. If ATTENTION NEEDED, report issues."
+  },
+  "delivery": { "mode": "announce", "channel": "telegram" }
+}
+```
+
 **Anti-pattern:** "I'll do a health check eventually." → Set up the cron job. Forget to check = problems accumulate silently.
 
-## Scripts Reference
-
-| Script | Purpose | Usage |
-|--------|---------|-------|
-| `ssc-router.ps1` | Query memory by keyword/tag | `-Query "term"` |
-| `ssc-health.ps1` | Daily integrity check | No args |
-| `setup.ps1` | Initial setup | `-Wiki` flag for full install |
-| `ssc-promote.ps1` | Tier promotion/demotion | Manual or cron |
+---
 
 ## Quick Start
 
@@ -287,20 +334,14 @@ Run daily via cron:
 
 Then add the SSC protocol to AGENTS.md (see `templates/AGENTS-template.md`).
 
-## Cron Health Check
+## Scripts Reference
 
-```json
-{
-  "name": "ssc-health-check",
-  "schedule": { "kind": "cron", "expr": "0 3 * * *", "tz": "America/Sao_Paulo" },
-  "sessionTarget": "isolated",
-  "payload": {
-    "kind": "agentTurn",
-    "message": "Run: powershell -ExecutionPolicy Bypass -File <workspace>\\memory\\ssc-health.ps1"
-  },
-  "delivery": { "mode": "announce", "channel": "telegram" }
-}
-```
+| Script | Purpose |
+|---|---|
+| `ssc-router.ps1` | Query memory by keyword/tag — run this, not manual reads |
+| `ssc-health.ps1` | Daily integrity check |
+| `setup.ps1` | Initial setup (`-Wiki` for full install) |
+| `ssc-promote.ps1` | Tier promotion/demotion |
 
 ## References
 
