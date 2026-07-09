@@ -1,5 +1,5 @@
 ---
-name: ultra-confluence-docs
+name: ultra-confluence-docs-skill
 description: >-
   Generate standardized technical documentation: Architecture Decision Records
   (ADRs), operational runbooks, system architecture docs, knowledge transfer

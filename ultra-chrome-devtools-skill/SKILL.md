@@ -1,3 +1,8 @@
+---
+name: ultra-chrome-devtools-skill
+description: "Diagnóstico e otimização de performance web usando Chrome DevTools MCP."
+---
+
 # Chrome DevTools Performance Skill
 
 Diagnóstico e otimização de performance web usando Chrome DevTools MCP.
