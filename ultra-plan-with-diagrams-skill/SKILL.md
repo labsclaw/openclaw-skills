@@ -19,11 +19,11 @@ date: "2026-07-09T00:59:15.614Z"
 
 ## Output Formats
 
-| Format | When | Portable |
-|--------|------|----------|
-| **ASCII Box** | Primary — hierarchies, flows, tables, trees | Any markdown renderer |
-| **Mermaid** | Fallback — only when ASCII cutoff triggered | GitHub, GitLab, Notion, Obsidian |
-| **Structured Plan** | Task decomposition, implementation steps | Any markdown renderer |
+| Format              | When                                             | Portable                         |
+|---------------------|--------------------------------------------------|----------------------------------|
+| **ASCII Box**       | Primary — hierarchies, flows, tables, trees      | Any markdown renderer            |
+| **Mermaid**         | Fallback — only when ASCII cutoff triggered      | GitHub, GitLab, Notion, Obsidian |
+| **Structured Plan** | Task decomposition, implementation steps         | Any markdown renderer            |
 
 Default: **ASCII + Structured Plan**. Mermaid only when ASCII is insufficient.
 
@@ -154,7 +154,7 @@ When user says: "architecture", "design", "how should X connect", "system design
 ## Decisions
 | Decision | Choice | Rationale |
 |----------|--------|-----------|
-| [Q] | [A] | [why] |
+| [Q]      | [A]    | [why]     |
 ```
 
 ## ASCII Box Diagram Rules
@@ -190,9 +190,9 @@ Every box uses this template (width = content length + 4 padding):
 #### Linear Flow (horizontal)
 
 ```
-┌──────────┐      ┌──────────┐    ┌──────────┐
-│  Step 1  │───▶ │  Step 2  │───▶│  Step 3  │
-└──────────┘      └──────────┘    └──────────┘
+┌──────────┐       ┌──────────┐     ┌──────────┐
+│  Step 1  │ ───▶ │  Step 2   │───▶│  Step 3  │
+└──────────┘       └──────────┘     └──────────┘
 ```
 
 Rules:
