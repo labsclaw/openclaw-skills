@@ -16,6 +16,13 @@ Work that merely looks correct and work that is correct are indistinguishable to
 - BEFORE presenting it as done
 - Do not skip because the work "looks clean"; plausible-but-wrong is the exact failure this kills
 
+## When NOT to use (from adversarial-verify benchmarks)
+
+- Straightforward code review of small functions — Opus 4.8 already catches off-by-ones unaided
+- When every relevant file is already on screen and the fact is directly readable
+- Trivial tasks where the model would catch bugs without help
+- The skill's value is on spec contradictions and contract violations, not on "review this" tasks
+
 ## The switch
 
 When you finish a piece of work, run this pass BEFORE presenting. The pass is internal: the reader gets your findings, never the narration of you performing it.

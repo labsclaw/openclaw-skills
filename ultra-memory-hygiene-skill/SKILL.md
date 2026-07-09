@@ -16,6 +16,12 @@ An agent's persistent memory is its highest-leverage asset and its most dangerou
 - CLAUDE.md, memory files, notes, project docs meant for future sessions
 - When a session starts by loading old memory
 
+## When NOT to use
+
+- Ephemeral session notes that have no future value
+- When the memory file is already clean and current (don't add ceremony)
+- For single-use reminders (use cron instead)
+
 ## Writing: what deserves persistence
 
 Persist the things a future session cannot rederive:

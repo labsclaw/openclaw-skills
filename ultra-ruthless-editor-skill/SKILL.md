@@ -15,6 +15,13 @@ First drafts explain themselves to their author. The cutting pass is where writi
 - Whenever you produce prose a human will read: documentation, READMEs, reports, summaries, commit messages, emails, blog drafts, PR descriptions
 - Do NOT use on code or on text the user asked you to preserve verbatim
 
+## When NOT to use
+
+- Code files (use linter/formatter instead)
+- Legal documents or contracts where every word matters
+- When the user explicitly asked for verbose/detailed output
+- Chat messages under 50 words (overhead > value)
+
 ## The pass
 
 Take the draft. For every sentence ask, in order:

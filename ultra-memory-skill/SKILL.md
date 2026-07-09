@@ -61,10 +61,49 @@ Track and promote after 3x:
 
 **Action:** After 3x, promote to segment with `tier: "HOT"`.
 
+## Staleness Grading (from memory-hygiene)
+
+Not all memories age at the same rate. Grade before acting on a remembered fact:
+
+| Memory type | Staleness risk | Verify before acting? |
+|---|---|---|
+| User preferences | LOW (months) | No — preferences are stable |
+| Decisions + WHY | LOW (weeks-months) | No — but re-read for context |
+| Non-obvious constraints | LOW (until refactored) | No — unless constraint may have changed |
+| System state (versions, configs) | HIGH (days) | **YES — always verify live** |
+| File locations, port numbers | HIGH (any deploy) | **YES — probe before acting** |
+| API behavior, endpoint shapes | HIGH (any release) | **YES — test against live** |
+
+**Rule:** Fast-aging fact + consequential action = verify first. One live probe (does the file exist, is the flag set, does the endpoint respond) before building on the memory.
+
+## When Memory and Live State Disagree
+
+**Live state wins. Always.**
+
+When you recall a fact and verification shows differently:
+1. Trust the live system, not your memory
+2. Report the drift: "memory says X, live state shows Y"
+3. Update the memory entry immediately — a contradicted memory left standing bites the next session
+4. Note which is vintage: "As of this check" vs "verified just now"
+
 ### Ignore (Don't Log)
 - One-time instructions ("do X now")
 - Context-specific ("in this file...")
 - Hypotheticals ("what if...")
+
+### What NOT to Persist (from memory-hygiene)
+
+Persisting the wrong things is worse than forgetting. These age into contradiction:
+
+| Never persist | Why | Example |
+|---|---|---|
+| Secrets (passwords, tokens, keys) | Security risk; session-bound | `st4g1ng-pw-2026` → NEVER |
+| Derivable facts | Git history, docker-compose, docs already record it | "PostgreSQL 16" → check docker-compose |
+| One-off fixes | Done work; derivable from git log | "Fixed flaky test" → git log |
+| State that changes fast | Versions, configs, deploys, file locations | "Port is 3000" → verify live |
+| Temporary context | Session-bound, no future value | "Running tests now" |
+
+**Rule:** If a future session can derive it from the codebase, git, or docs in <30 seconds, do not persist it. Memory is for what CANNOT be derived.
 
 ## Map is not the Territory (from Thariq/Anthropic)
 
@@ -880,6 +919,29 @@ qmd query "what is SSC?"              # Hybrid (BM25 + Vector + LLM reranking)
 ### Automatic
 
 When a new topic emerges during conversation, the agent creates the segment and updates index.json. The router picks it up on next query.
+
+### Entry Format (from memory-hygiene)
+
+Every memory entry should follow this format:
+
+```markdown
+## [DATE] Topic
+
+**Trigger:** when [condition], remember [fact]
+**Why:** [reason this matters — the part that evaporates]
+**Tier:** HOT | WARM | COLD
+```
+
+**Example:**
+```markdown
+## [2026-07-02] Deploy Hook
+
+**Trigger:** when touching the publish pipeline, remember the deploy hook is armed
+**Why:** we chose to arm it after the May incident; disarming requires team approval
+**Tier:** HOT
+```
+
+One fact per entry, dated. "As of 2026-07-02" ages honestly. Undated facts rot invisibly.
 
 ## Testing
 

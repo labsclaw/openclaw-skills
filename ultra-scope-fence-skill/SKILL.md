@@ -15,6 +15,12 @@ The most reviewable diff is the one that contains exactly the requested change a
 - On every task where you will modify existing work (code, documents, configs)
 - Do NOT use it to refuse legitimate follow-through the task actually requires
 
+## When NOT to use (from scope-fence benchmarks)
+
+- Trivial single-line fixes with no adjacent code
+- Tasks where the user explicitly asked you to fix multiple things
+- Pure read-only review (use adversarial-verify instead)
+
 ## The fence
 
 1. **Restate the task as a boundary.** One sentence: "The task is X. The fence is: files/behavior needed for X." Write it before editing.

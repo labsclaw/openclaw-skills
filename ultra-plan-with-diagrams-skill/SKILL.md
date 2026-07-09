@@ -1,12 +1,9 @@
 ---
-name: "ultra-plan-with-diagrams"
+name: "ultra-plan-with-diagrams-skill"
 description: "Generate structured implementation plans with Mermaid diagrams, task decomposition, and visual brainstorm outputs."
-status: proposal
-version: "v3"
-date: "2026-07-09T00:59:15.614Z"
 ---
 
-# ultra-plan-with-diagrams
+# ultra-plan-with-diagrams-skill
 
 > Generate structured plans, brainstorm visualizations, and architecture diagrams — all in one skill.
 
@@ -16,6 +13,13 @@ date: "2026-07-09T00:59:15.614Z"
 - User wants to brainstorm ideas visually
 - User needs architecture or flow diagrams in markdown
 - Any multi-step project that benefits from visual structure
+
+## When NOT to Use
+
+- Single-line fixes or trivial edits (skip plan-gate: "trivial, skipping plan-gate")
+- Pure questions with no implementation
+- Tasks where the user explicitly says "just do it, no plan needed"
+- Review-only tasks (use adversarial-verify instead)
 
 ## Output Formats
 
@@ -37,6 +41,23 @@ Mermaid requires renderer support. Always prefer ASCII unless the diagram trigge
 ### 1. Plan Mode (default)
 
 When user provides: objective, requirements, or spec.
+
+**Before starting any plan, run the Plan Gate (from plan-gate skill):**
+
+```
+GOAL: <one sentence: what is true when this is done>
+UNKNOWNS: <what you have not verified yet - each with how you will verify it>
+SUCCESS CRITERIA: <how you and the user will KNOW it worked>
+STEPS: <numbered, smallest useful granularity>
+OUT OF SCOPE: <adjacent things you noticed but will NOT touch>
+```
+
+**Rules:**
+- The plan comes from evidence, not memory. Read files and run read-only commands FIRST.
+- Every unknown gets a verification step.
+- Success criteria must be executable: "npm test passes" not "code works".
+- More than 7 steps = task needs decomposition, not a longer plan.
+- When reality contradicts the plan mid-task, STOP and re-plan.
 
 **Output structure:**
 

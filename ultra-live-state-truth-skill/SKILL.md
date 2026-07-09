@@ -16,6 +16,13 @@ Every system carries two versions of itself: what it IS, and what its documentat
 - What a function does, what a config is set to, what is deployed, what a table contains
 - Do NOT use when every relevant file is already on screen and the fact is directly readable
 
+## When NOT to use (from live-state-truth benchmarks)
+
+- When every relevant artifact is already in front of you — reading it IS the check
+- When the truth is directly observable without probing
+- Adding ceremony to a question the material on hand already answers is overhead, not rigor
+- The skill's measured edge: facts that resolve through different override chains across sources
+
 ## The rule
 
 Before asserting a fact about a system, or taking an action whose safety depends on that fact, verify it against the live state:
