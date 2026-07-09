@@ -1,7 +1,7 @@
 # ============================================================
 # compare-config.ps1 - Cruza API vs config OpenClaw
 # ============================================================
-# Identifica: modelos mortos, novos disponíveis, aliases orfos
+# Identifica: modelos mortos, novos disponiveis, aliases orfos
 # Inclui: antigravity proxy (127.0.0.1:8080)
 # ============================================================
 
@@ -11,8 +11,22 @@ $ErrorActionPreference = "Continue"
 [Console]::InputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
+# -- Detectar diretorio OpenClaw -------------------------------
+function Get-OpenClawHome {
+    if ($env:OPENCLAW_CONFIG_PATH) {
+        return Split-Path $env:OPENCLAW_CONFIG_PATH -Parent
+    }
+    $candidate = "$env:USERPROFILE\.openclaw"
+    if (Test-Path $candidate) { return $candidate }
+    $candidate = "$env:HOMEDRIVE$env:HOMEPATH\.openclaw"
+    if (Test-Path $candidate) { return $candidate }
+    return "$env:USERPROFILE\.openclaw"
+}
+
+$openClawHome = Get-OpenClawHome
+
 # -- Carregar .env ---------------------------------------------
-$envFile = "C:\Users\ClawLabs\.openclaw\.env"
+$envFile = Join-Path $openClawHome ".env"
 if (-not (Test-Path $envFile)) {
     Write-Host "[ERRO] .env nao encontrado: $envFile" -ForegroundColor Red
     exit 1
@@ -26,48 +40,59 @@ Get-Content $envFile | ForEach-Object {
 }
 
 # -- Carregar config -------------------------------------------
-$configPath = "C:\Users\ClawLabs\.openclaw\openclaw.json"
+$configPath = Join-Path $openClawHome "openclaw.json"
 if (-not (Test-Path $configPath)) {
     Write-Host "[ERRO] openclaw.json nao encontrado: $configPath" -ForegroundColor Red
     exit 1
 }
 
 $config = Get-Content $configPath -Raw | ConvertFrom-Json
-$configModels = @{}
 
-# Provider models (definicoes reais)
-foreach ($provider in $config.models.providers.PSObject.Properties) {
-    $providerName = $provider.Name
-    if ($provider.Value.models) {
-        foreach ($m in $provider.Value.models) {
-            $fullId = "$providerName/$($m.id)"
-            $configModels[$fullId] = @{
-                provider = $providerName
-                id = $m.id
-                name = $m.name
-                source = "provider"
+# --- Ler aliases (models section) ---
+$configModels = @{}
+if ($config.agents.defaults.models) {
+    foreach ($alias in $config.agents.defaults.models.PSObject.Properties) {
+        $configModels[$alias.Name] = @{
+            id = $alias.Name
+            name = $alias.Value.alias
+            source = "alias"
+        }
+    }
+}
+
+# --- Ler primary + fallbacks ---
+$primaryModel = $null
+$fallbacks = @()
+if ($config.agents.defaults.model) {
+    $modelCfg = $config.agents.defaults.model
+    if ($modelCfg -is [string]) {
+        $primaryModel = $modelCfg
+    } elseif ($modelCfg.primary) {
+        $primaryModel = $modelCfg.primary
+        if ($modelCfg.fallbacks) {
+            $fallbacks = @($modelCfg.fallbacks)
+        }
+    }
+}
+
+# --- Ler tambem se houver agent-level model config ---
+if ($config.agents.list) {
+    foreach ($agent in $config.agents.list) {
+        if ($agent.model) {
+            $agentModel = $agent.model
+            if ($agentModel -is [string]) {
+                # agent-level string override
+            } elseif ($agentModel.primary) {
+                # agent-level object, could add to tracking
             }
         }
     }
 }
 
-# Agent aliases
-$agentAliases = @{}
-if ($config.agents.defaults.models) {
-    foreach ($alias in $config.agents.defaults.models.PSObject.Properties) {
-        $agentAliases[$alias.Name] = $alias.Value.alias
-    }
-}
-
-# Fallbacks
-$fallbacks = @()
-if ($config.agents.defaults.model.fallbacks) {
-    $fallbacks = @($config.agents.defaults.model.fallbacks)
-}
-
 Write-Host "`n==========================================" -ForegroundColor Cyan
 Write-Host " CONFIG vs API - Comparacao" -ForegroundColor Cyan
 Write-Host " $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')" -ForegroundColor Cyan
+Write-Host " OpenClaw home: $openClawHome" -ForegroundColor DarkGray
 Write-Host "==========================================" -ForegroundColor Cyan
 Write-Host ""
 
@@ -80,6 +105,7 @@ function Write-Section($title) {
 # 1. Buscar modelos live de cada API
 # ============================================================
 $liveModels = @{}
+$providerCounts = @{}
 
 # OpenRouter
 Write-Host "[1/5] Consultando OpenRouter..." -ForegroundColor DarkGray
@@ -90,6 +116,7 @@ try {
     foreach ($m in $free) {
         $liveModels["openrouter/$($m.id)"] = @{ provider="openrouter"; id=$m.id; name=$m.name }
     }
+    $providerCounts["OpenRouter"] = $free.Count
     Write-Host "  OpenRouter: $($free.Count) free" -ForegroundColor Green
 } catch {
     Write-Host "  OpenRouter: ERRO - $($_.Exception.Message)" -ForegroundColor Red
@@ -105,6 +132,7 @@ try {
     foreach ($m in $free) {
         $liveModels["opencode/$($m.id)"] = @{ provider="opencode"; id=$m.id; name=$m.name }
     }
+    $providerCounts["OpenCode"] = $free.Count
     Write-Host "  OpenCode: $($free.Count) free" -ForegroundColor Green
 } catch {
     Write-Host "  OpenCode: ERRO - $($_.Exception.Message)" -ForegroundColor Red
@@ -120,6 +148,7 @@ try {
     foreach ($m in $free) {
         $liveModels["kilocode/$($m.id)"] = @{ provider="kilocode"; id=$m.id; name=$m.name }
     }
+    $providerCounts["KiloCode"] = $free.Count
     Write-Host "  KiloCode: $($free.Count) free" -ForegroundColor Green
 } catch {
     Write-Host "  KiloCode: ERRO - $($_.Exception.Message)" -ForegroundColor Red
@@ -138,13 +167,13 @@ try {
     foreach ($m in $free) {
         $liveModels["nvidia/$($m.id)"] = @{ provider="nvidia"; id=$m.id; name=$m.name }
     }
+    $providerCounts["NVIDIA"] = $free.Count
     Write-Host "  NVIDIA: $($free.Count) free" -ForegroundColor Green
 } catch {
     Write-Host "  NVIDIA: ERRO - $($_.Exception.Message)" -ForegroundColor Red
 }
 
 # Antigravity Proxy (local, no auth needed)
-# Config uses prefix 'antigravity-proxy/', proxy returns bare IDs
 Write-Host "[5/5] Consultando Antigravity Proxy..." -ForegroundColor DarkGray
 try {
     $resp = Invoke-RestMethod -Uri "http://127.0.0.1:8080/v1/models" -Method Get -TimeoutSec 10
@@ -152,9 +181,9 @@ try {
     if ($all -is [array]) {
         foreach ($m in $all) {
             $id = if ($m.id) { $m.id } else { "$m" }
-            # Map to config prefix: antigravity-proxy/<id>
             $liveModels["antigravity-proxy/$id"] = @{ provider="antigravity-proxy"; id=$id; name=$id }
         }
+        $providerCounts["Antigravity"] = $all.Count
         Write-Host "  Antigravity: $($all.Count) models" -ForegroundColor Green
     }
 } catch {
@@ -167,22 +196,23 @@ Write-Host "`nTotal live: $($liveModels.Count) modelos free`n" -ForegroundColor 
 # 2. Comparar: Config vs Live
 # ============================================================
 
-# 2a. Modelos no config que NAO existem na API (MORTOS)
-Write-Section "MODELOS MORTOS (no config, ausente na API)"
+# 2a. Aliases que NAO existem na API (MORTOS)
+Write-Section "ALIASES MORTOS (no config, ausente na API)"
 $deadCount = 0
 foreach ($fullId in $configModels.Keys) {
     if (-not $liveModels.ContainsKey($fullId)) {
         $m = $configModels[$fullId]
-        $alias = if ($agentAliases.ContainsKey($fullId)) { " -> $($agentAliases[$fullId])" } else { "" }
+        $aliasInfo = if ($m.name) { " -> $($m.name)" } else { "" }
         $isFallback = if ($fallbacks -contains $fullId) { " [FALLBACK]" } else { "" }
-        Write-Host "  X $fullId ($($m.name))$alias$isFallback" -ForegroundColor Red
+        $isPrimary = if ($fullId -eq $primaryModel) { " [PRIMARY]" } else { "" }
+        Write-Host "  X $fullId$aliasInfo$isFallback$isPrimary" -ForegroundColor Red
         $deadCount++
     }
 }
 if ($deadCount -eq 0) { Write-Host "  (nenhum)" -ForegroundColor Green }
 
-# 2b. Modelos live que NAO estao no config (NOVOS)
-Write-Section "MODELOS NOVOS (na API, ausente no config)"
+# 2b. Modelos live que NAO estao nos aliases (NOVOS para considerar)
+Write-Section "MODELOS NOVOS (na API, sem alias no config)"
 $newCount = 0
 foreach ($fullId in $liveModels.Keys) {
     if (-not $configModels.ContainsKey($fullId)) {
@@ -193,12 +223,12 @@ foreach ($fullId in $liveModels.Keys) {
 }
 if ($newCount -eq 0) { Write-Host "  (nenhum)" -ForegroundColor Green }
 
-# 2c. Aliases orfos (apontam pra modelos mortos)
-Write-Section "ALIASES ORFOS (alias aponta pra modelo morto)"
+# 2c. Aliases orfos
+Write-Section "ALIASES ORFOS"
 $orphanCount = 0
-foreach ($aliasPath in $agentAliases.Keys) {
+foreach ($aliasPath in $configModels.Keys) {
     if (-not $liveModels.ContainsKey($aliasPath)) {
-        Write-Host "  ! $aliasPath -> $($agentAliases[$aliasPath])" -ForegroundColor Yellow
+        Write-Host "  ! $aliasPath -> $($configModels[$aliasPath].name)" -ForegroundColor Yellow
         $orphanCount++
     }
 }
@@ -215,14 +245,28 @@ foreach ($fb in $fallbacks) {
 }
 if ($brokenFb -eq 0) { Write-Host "  (todos OK)" -ForegroundColor Green }
 
-# 2e. Resumo
+# 2e. Primary model status
+Write-Section "PRIMARY MODEL"
+if ($primaryModel) {
+    if ($liveModels.ContainsKey($primaryModel)) {
+        Write-Host "  OK $primaryModel" -ForegroundColor Green
+    } else {
+        Write-Host "  X $primaryModel (SILENT FALLBACK RISK!)" -ForegroundColor Red
+    }
+} else {
+    Write-Host "  (nenhum primary configurado, usa catalogo built-in do gateway)" -ForegroundColor Yellow
+}
+
+# 2f. Resumo
 Write-Host "`n==========================================" -ForegroundColor Cyan
 Write-Host " RESUMO" -ForegroundColor Cyan
 Write-Host "==========================================" -ForegroundColor Cyan
-Write-Host "  Config: $($configModels.Count) modelos definidos" -ForegroundColor White
-Write-Host "  Live:   $($liveModels.Count) modelos free disponiveis" -ForegroundColor White
-Write-Host "  Mortos: $deadCount" -ForegroundColor $(if($deadCount -gt 0){"Red"}else{"Green"})
-Write-Host "  Novos:  $newCount" -ForegroundColor $(if($newCount -gt 0){"Green"}else{"White"})
-Write-Host "  Aliases orfos: $orphanCount" -ForegroundColor $(if($orphanCount -gt 0){"Yellow"}else{"Green"})
+Write-Host "  Aliases no config: $($configModels.Count)" -ForegroundColor White
+Write-Host "  Live:             $($liveModels.Count) modelos free disponiveis" -ForegroundColor White
+Write-Host "  Mortos:           $deadCount" -ForegroundColor $(if($deadCount -gt 0){"Red"}else{"Green"})
+Write-Host "  Novos:            $newCount" -ForegroundColor $(if($newCount -gt 0){"Green"}else{"White"})
 Write-Host "  Fallbacks quebrados: $brokenFb" -ForegroundColor $(if($brokenFb -gt 0){"Red"}else{"Green"})
+foreach ($prov in ($providerCounts.Keys | Sort-Object)) {
+    Write-Host "  $prov`: $($providerCounts[$prov]) free" -ForegroundColor DarkGray
+}
 Write-Host ""
