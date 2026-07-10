@@ -161,7 +161,7 @@ try {
     $resp = Invoke-RestMethod -Uri "https://integrate.api.nvidia.com/v1/models" -Headers $headers -Method Get -TimeoutSec 30
     $all = if ($resp.data) { $resp.data } else { $resp }
     $free = $all | Where-Object {
-        ($_.id -match '(nim|nvidia).*preview' -or $_.id -match '-preview$' -or $_.id -match '^nvidia/') -and
+        ($_.id -match '^nvidia/' -or $_.owned_by -eq 'nvidia' -or $_.id -match 'nvidia/.*:free') -and
         (-not $_.pricing -or $_.pricing.prompt -eq "0" -or $_.pricing.prompt -eq 0 -or $null -eq $_.pricing.prompt)
     }
     foreach ($m in $free) {
@@ -191,6 +191,49 @@ try {
 }
 
 Write-Host "`nTotal live: $($liveModels.Count) modelos free`n" -ForegroundColor Cyan
+
+# ============================================================
+# 1b. Normalizar IDs e mapear cross-provider
+# ============================================================
+# Remove prefixo (openrouter/, opencode/, kilocode/, nvidia/) e sufixo (:free)
+# pra agrupar o "mesmo modelo" disponivel em multiplos providers
+function Get-ModelBaseName($fullId) {
+    $base = $fullId
+    # Remove prefixo do provider
+    $base = $base -replace '^(openrouter|opencode|kilocode|nvidia|antigravity-proxy)/', ''
+    # Remove sufixo :free
+    $base = $base -replace ':free$', ''
+    # Remove sufixo -free (OpenCode pattern)
+    $base = $base -replace '-free$', ''
+    # Normaliza case
+    return $base.ToLower()
+}
+
+# Agrupa por base name
+$crossProviderMap = @{}
+foreach ($fullId in $liveModels.Keys) {
+    $base = Get-ModelBaseName $fullId
+    if (-not $crossProviderMap.ContainsKey($base)) {
+        $crossProviderMap[$base] = @()
+    }
+    $crossProviderMap[$base] += @{
+        fullId = $fullId
+        provider = $liveModels[$fullId].provider
+        name = $liveModels[$fullId].name
+    }
+}
+
+# Filtra: só modelos disponiveis em 2+ providers
+$multiProvider = @{}
+foreach ($base in $crossProviderMap.Keys) {
+    $providers = $crossProviderMap[$base] | ForEach-Object { $_.provider } | Select-Object -Unique
+    if ($providers.Count -ge 2) {
+        $multiProvider[$base] = @{
+            providers = $providers
+            routes = $crossProviderMap[$base]
+        }
+    }
+}
 
 # ============================================================
 # 2. Comparar: Config vs Live
@@ -257,7 +300,64 @@ if ($primaryModel) {
     Write-Host "  (nenhum primary configurado, usa catalogo built-in do gateway)" -ForegroundColor Yellow
 }
 
-# 2f. Resumo
+# 2f. Cross-Provider Analysis
+Write-Section "MODELOS MULTI-PROVIDER (fallback transparente)"
+if ($multiProvider.Count -gt 0) {
+    Write-Host "  $($multiProvider.Count) modelos disponiveis em 2+ providers:`n" -ForegroundColor Green
+    foreach ($base in ($multiProvider.Keys | Sort-Object)) {
+        $mp = $multiProvider[$base]
+        $providerList = ($mp.providers | Sort-Object) -join " + "
+        $routeCount = $mp.routes.Count
+        Write-Host "  $base" -ForegroundColor White
+        Write-Host "    Providers: $providerList ($routeCount rotas)" -ForegroundColor DarkGray
+        foreach ($route in $mp.routes) {
+            $nameStr = if ($route.name) { " ($($route.name))" } else { "" }
+            Write-Host "      -> $($route.fullId)$nameStr" -ForegroundColor Gray
+        }
+    }
+} else {
+    Write-Host "  (nenhum modelo encontrado em multiplos providers)" -ForegroundColor Yellow
+}
+
+# 2g. Cross-Provider Fallback Recommendations
+Write-Section "RECOMENDACOES DE FALLBACK CROSS-PROVIDER"
+if ($primaryModel) {
+    $primaryBase = Get-ModelBaseName $primaryModel
+    if ($multiProvider.ContainsKey($primaryBase)) {
+        $mp = $multiProvider[$primaryBase]
+        Write-Host "  Primary '$primaryBase' tem $($mp.routes.Count) rotas disponiveis:" -ForegroundColor Green
+        foreach ($route in $mp.routes) {
+            $isCurrent = if ($route.fullId -eq $primaryModel) { " [ATUAL]" } else { " [alternativa]" }
+            $color = if ($route.fullId -eq $primaryModel) { "Green" } else { "Cyan" }
+            Write-Host "    -> $($route.fullId)$isCurrent" -ForegroundColor $color
+        }
+        Write-Host "  Dica: fallbacks podem usar o mesmo modelo de outro provider" -ForegroundColor DarkGray
+    } else {
+        Write-Host "  Primary '$primaryModel' so tem 1 rota disponivel" -ForegroundColor Yellow
+        # Verifica se o primary ta morto
+        if (-not $liveModels.ContainsKey($primaryModel)) {
+            # Busca alternativas por nome base
+            $alternatives = @()
+            foreach ($base in $crossProviderMap.Keys) {
+                if ($base -match ($primaryBase -replace '[^a-z0-9]', '.*')) {
+                    foreach ($route in $crossProviderMap[$base]) {
+                        if ($route.fullId -ne $primaryModel) {
+                            $alternatives += $route
+                        }
+                    }
+                }
+            }
+            if ($alternatives.Count -gt 0) {
+                Write-Host "  Mas encontrei $($alternatives.Count) alternativa(s) por nome similar:" -ForegroundColor Yellow
+                foreach ($alt in $alternatives) {
+                    Write-Host "    -> $($alt.fullId) ($($alt.provider))" -ForegroundColor Yellow
+                }
+            }
+        }
+    }
+}
+
+# 2h. Resumo
 Write-Host "`n==========================================" -ForegroundColor Cyan
 Write-Host " RESUMO" -ForegroundColor Cyan
 Write-Host "==========================================" -ForegroundColor Cyan
@@ -266,6 +366,7 @@ Write-Host "  Live:             $($liveModels.Count) modelos free disponiveis" -
 Write-Host "  Mortos:           $deadCount" -ForegroundColor $(if($deadCount -gt 0){"Red"}else{"Green"})
 Write-Host "  Novos:            $newCount" -ForegroundColor $(if($newCount -gt 0){"Green"}else{"White"})
 Write-Host "  Fallbacks quebrados: $brokenFb" -ForegroundColor $(if($brokenFb -gt 0){"Red"}else{"Green"})
+Write-Host "  Multi-provider:     $($multiProvider.Count) modelos com fallback transparente" -ForegroundColor $(if($multiProvider.Count -gt 0){"Green"}else{"DarkGray"})
 foreach ($prov in ($providerCounts.Keys | Sort-Object)) {
     Write-Host "  $prov`: $($providerCounts[$prov]) free" -ForegroundColor DarkGray
 }
