@@ -155,6 +155,35 @@ Out-File -FilePath file.ps1 -Encoding utf8BOM    # With BOM (widest compat)
 **Preferred:** eliminate shell dependency — use `read`/`edit`/`write` tools. `exec` only when truly needed.
 
 ---
+### 2.14 gh CLI on PowerShell — Body & Path Traps
+
+PowerShell mangles quotes inside `--body "string"`. **Always** use `--body-file` with an absolute path (no tilde, forward slashes preferred).
+
+| Wrong | Correct |
+|-------|---------|
+| `gh pr create --body "text with quotes"` | Write to temp file, then `--body-file` |
+| `gh pr create --body-file ~\.openclaw\temp.md` | `gh pr create --body-file C:/Users/.../temp.md` |
+| `gh api ... -f body="complex json"` | Write JSON to temp file, pipe via `--input` |
+
+```powershell
+# Correct pattern for gh with multi-line body
+$tempFile = Join-Path $env:TEMP "gh-body-$(Get-Date -Format 'yyyyMMddHHmmss').md"
+@"
+## Title
+Body with "quotes" and special chars like & | % work fine here.
+"@ | Set-Content -Path $tempFile -Encoding UTF8
+
+gh pr create --body-file $tempFile --repo owner/repo --head branch --base main
+Remove-Item $tempFile -Force
+```
+
+**Rules:**
+1. `--body-file` always, never `--body "string"`
+2. Absolute path, no `~` expansion
+3. Forward slashes `/` preferred over backslashes `\`
+4. Clean up temp files after use
+5. For `gh api` JSON bodies, write to temp file and use `--input` or pipe
+
 
 ## 3. Script Development Essentials
 
