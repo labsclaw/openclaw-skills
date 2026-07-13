@@ -143,6 +143,10 @@
     const elements = [];
     
     function walk(node) {
+      if (node.nodeType === Node.DOCUMENT_NODE) {
+        for (const child of node.childNodes) walk(child);
+        return;
+      }
       if (node.nodeType !== Node.ELEMENT_NODE) return;
       if (shouldSkipElement(node)) return;
       
@@ -216,6 +220,10 @@
     const elements = [];
     
     function walk(node) {
+      if (node.nodeType === Node.DOCUMENT_NODE || node.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
+        for (const child of node.childNodes) walk(child);
+        return;
+      }
       if (node.nodeType !== Node.ELEMENT_NODE) return;
       if (shouldSkipElement(node)) return;
       
