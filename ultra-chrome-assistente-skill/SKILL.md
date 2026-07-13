@@ -30,7 +30,7 @@ chrome://extensions/
 # 2. Ativar "Modo do desenvolvedor" (canto superior direito)
 
 # 3. Clicar "Carregar sem compactação"
-# Selecionar pasta: C:\Users\renat\.openclaw\workspace\chrome-assistente\extension
+# Selecionar pasta: <skill-root>/extension
 
 # 4. Verificar Service Worker ativo:
 # chrome-extension://fignfifoniblkonapihmkfakmlgkbkcf/
@@ -218,7 +218,7 @@ await chromeAssistente.saveEnvKeys({
 ```powershell
 & "C:\Program Files\Google\Chrome\Application\chrome.exe" `
   --remote-debugging-port=9222 `
-  --user-data-dir="C:\Users\renat\.openclaw\chrome-profile"
+  --user-data-dir="<profile-dir>"
 ```
 
 ### Variáveis de Ambiente (.env)
@@ -227,10 +227,10 @@ await chromeAssistente.saveEnvKeys({
 OPENCLAW_GATEWAY_URL=http://localhost:18789
 OPENCLAW_API_KEY=
 
-*** Extension
+# Extension
 CHROME_ASSISTENTE_WS_PORT=3032
 CHROME_CDP_PORT=9222
-CHROME_PROFILE_DIR=C:\Users\renat\.openclaw\chrome-profile
+CHROME_PROFILE_DIR=<profile-dir>
 ```
 
 ---

@@ -25,7 +25,7 @@ chrome://extensions/
 # 2. Enable "Developer mode" (top right)
 
 # 3. Click "Load unpacked"
-# Select: skills/ultra-chrome-assistente-skill/extension
+# Select: <skill-root>/extension
 
 # 4. Verify Service Worker active:
 # chrome-extension://fignfifoniblkonapihmkfakmlgkbkcf/
@@ -70,7 +70,7 @@ chrome://extensions/
 ```powershell
 & "C:\Program Files\Google\Chrome\Application\chrome.exe" `
   --remote-debugging-port=9222 `
-  --user-data-dir="C:\Users\renat\.openclaw\chrome-profile"
+  --user-data-dir="<profile-dir>"
 ```
 
 ### Environment Variables (.env)
@@ -82,7 +82,7 @@ OPENCLAW_API_KEY=
 # Extension
 CHROME_ASSISTENTE_WS_PORT=3032
 CHROME_CDP_PORT=9222
-CHROME_PROFILE_DIR=C:\Users\renat\.openclaw\chrome-profile
+CHROME_PROFILE_DIR=<profile-dir>
 ```
 
 ---
