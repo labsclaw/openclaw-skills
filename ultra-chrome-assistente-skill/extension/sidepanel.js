@@ -321,17 +321,6 @@ class ChromeAssistenteSidepanel {
     indicator.querySelector('.text').textContent = text;
   }
   
-  async checkHealth() {
-    try {
-      const result = await this.sendToContentScript({ type: 'HEALTH_CHECK' });
-      this.updateStatus('connected', 'Conectado ✅');
-      this.showResult({ action: 'healthCheck', data: result });
-    } catch (error) {
-      this.updateStatus('error', 'Desconectado');
-      this.showResult({ action: 'healthCheck', error: error.message });
-    }
-  }
-  
   escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
