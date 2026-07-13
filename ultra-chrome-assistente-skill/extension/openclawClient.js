@@ -1,6 +1,9 @@
-// openclawClient.js - OpenClaw Gateway Integration (ESM, browser/service-worker ready)
+// openclawClient.js - OpenClaw Gateway Integration (CommonJS + browser global).
 // Substitui Groq -> usa gateway OpenClaw local.
 // Converted from openclawClient.ts. Keep openclawClient.ts as the TS source of truth.
+//
+// Loadable both via `require()` (Node/tests) and as a browser global (window.OpenClawClient),
+// so it works inside the extension page context and in Node test runners without ESM flags.
 //
 // NOTE on default model: `opencode/big-pickle` is a *stealth* OpenCode model.
 // It does NOT appear in GET /v1/models but IS valid on the backend. We keep it
@@ -9,7 +12,7 @@
 
 const FALLBACK_MODELS = ['opencode/big-pickle', 'opencode/hy3-free'];
 
-export class OpenClawClient {
+class OpenClawClient {
   constructor(config = {}) {
     this.config = {
       gatewayUrl: config.gatewayUrl || 'http://localhost:18789',
@@ -165,16 +168,23 @@ export class OpenClawClient {
   }
 }
 
-export function createOpenClawClient(overrides = {}) {
+function createOpenClawClient(overrides = {}) {
   const gatewayUrl = (typeof process !== 'undefined' && process.env && process.env.OPENCLAW_GATEWAY_URL) || 'http://localhost:18789';
   const apiKey = (typeof process !== 'undefined' && process.env && process.env.OPENCLAW_API_KEY) || '';
   return new OpenClawClient({ gatewayUrl, apiKey, ...overrides });
 }
 
 let defaultClient = null;
-export function getDefaultOpenClawClient() {
+function getDefaultOpenClawClient() {
   if (!defaultClient) defaultClient = createOpenClawClient();
   return defaultClient;
 }
 
-export default OpenClawClient;
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = OpenClawClient;
+  module.exports.OpenClawClient = OpenClawClient;
+  module.exports.createOpenClawClient = createOpenClawClient;
+  module.exports.getDefaultOpenClawClient = getDefaultOpenClawClient;
+}
+if (typeof window !== 'undefined') window.OpenClawClient = OpenClawClient;
+if (typeof globalThis !== 'undefined') globalThis.OpenClawClient = OpenClawClient;

@@ -11,10 +11,18 @@
 // in README.md / SKILL.md. To enable it, launch Chrome with:
 //   chrome.exe --remote-debugging-port=9222 --user-data-dir=<profile>
 //
+// RUNTIME: Uses only globals (WebSocket, fetch, AbortController) so it works both
+// in Node (require) and in the browser (window.ChromeAssistente) without `ws`
+// or `http` Node built-ins. No NodeJS-only `require()` in the SDK body.
+//
 // The SDK exposes the documented API: connect, healthCheck, navigateAndExtract,
 // snapshot, click, fill, submit, captureAuth, detectChallenge, extractApiKey.
 
 const CDP_DEFAULT_PORT = 9222;
+// Use the global WebSocket (browser + Node >= 21). Avoid the ws module so this
+// file works unchanged in the browser context.
+const WS = (typeof WebSocket !== 'undefined') ? WebSocket
+  : (typeof globalThis !== 'undefined' && globalThis.WebSocket ? globalThis.WebSocket : null);
 
 // The dom-engine command runner, evaluated inside the page's ISOLATED world via
 // Runtime.evaluate. It mirrors content.js message handling so we can invoke the
@@ -102,30 +110,30 @@ class ChromeAssistente {
   connect({ port = CDP_DEFAULT_PORT, host = '127.0.0.1' } = {}) {
     this.port = port; this.host = host;
     // Verify Chrome is reachable; the actual page WS is opened in useTab().
-    return new Promise((resolve, reject) => {
-      const http = require('http');
-      http.get(`http://${host}:${port}/json/version`, (res) => {
-        let d = ''; res.on('data', c => d += c); res.on('end', () => {
-          try { JSON.parse(d); this.connected = true; resolve({ extension: 'loaded', bridge: 'connected', transport: 'cdp' }); }
-          catch (e) { reject(e); }
-        });
-      }).on('error', (e) => reject(new Error('Cannot reach Chrome on ' + host + ':' + port + ' (' + e.message + '). Launch with --remote-debugging-port=' + port)));
+    return fetch(`http://${host}:${port}/json/version`).then((res) => {
+      if (!res.ok) throw new Error('Cannot reach Chrome on ' + host + ':' + port);
+      return res.json();
+    }).then((json) => {
+      this.connected = true;
+      return { extension: 'loaded', bridge: 'connected', transport: 'cdp' };
+    }).catch((e) => {
+      throw new Error('Cannot reach Chrome on ' + host + ':' + port + ' (' + e.message + '). Launch with --remote-debugging-port=' + port);
     });
   }
 
   _openPageWs(wsUrl) {
     return new Promise((resolve, reject) => {
-      const W = require('ws');
-      const ws = new W(wsUrl);
+      if (!WS) { reject(new Error('WebSocket global unavailable in this runtime')); return; }
+      const ws = new WS(wsUrl);
       this.ws = ws;
-      ws.on('open', () => { ws.send(JSON.stringify({ id: ++this._msgId, method: 'Runtime.enable' })); resolve(); });
-      ws.on('error', (e) => reject(new Error('CDP page connection error: ' + e.message)));
-      ws.on('message', (data) => this._onCdpMessage(data));
+      ws.onopen = () => { ws.send(JSON.stringify({ id: ++this._msgId, method: 'Runtime.enable' })); resolve(); };
+      ws.onerror = (e) => reject(new Error('CDP page connection error: ' + (e && e.message ? e.message : 'unknown')));
+      ws.onmessage = (ev) => this._onCdpMessage(ev.data);
     });
   }
 
   _onCdpMessage(data) {
-    const msg = JSON.parse(data.toString());
+    const msg = JSON.parse(typeof data === 'string' ? data : data.toString());
     if (msg.id != null && this._pending.has(msg.id)) {
       const { resolve, reject } = this._pending.get(msg.id);
       this._pending.delete(msg.id);
@@ -145,9 +153,9 @@ class ChromeAssistente {
 
   // Select the target tab (by url match or index) and open its CDP page socket.
   async useTab(predicateUrl) {
-    const list = await new Promise((resolve, reject) => {
-      const http = require('http');
-      http.get(`http://${this.host}:${this.port}/json/list`, (res) => { let d=''; res.on('data',c=>d+=c); res.on('end',()=>resolve(JSON.parse(d))); }).on('error', reject);
+    const list = await fetch(`http://${this.host}:${this.port}/json/list`).then((res) => {
+      if (!res.ok) throw new Error('Failed to list CDP targets: ' + res.status);
+      return res.json();
     });
     const page = list.find(t => t.type === 'page' && (!predicateUrl || (t.url || '').includes(predicateUrl))) || list.find(t => t.type === 'page');
     if (!page) throw new Error('No page tab found');

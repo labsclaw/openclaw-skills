@@ -1,19 +1,17 @@
 {
   "name": "ultra-chrome-assistente-skill",
   "version": "0.3.0",
-  "description": "Chrome MV3 extension for browser automation with dom-engine, agentic-purpose-id, real WebSocket bridge (port 3032) and OpenClaw Gateway integration.",
+  "description": "Chrome MV3 extension for browser automation with dom-engine, agentic-purpose-id, CDP (port 9222) bridge and OpenClaw Gateway integration.",
   "scripts": {
     "build": "node build.mjs",
-    "test": "node tests/test_dom_engine.js && node tests/test_integration.js && node tests/test_cdp_bridge.js",
+    "pretest": "node tests/pretest.js",
+    "test": "npm run pretest && node tests/test_dom_engine.js && node tests/test_integration.js && node tests/test_cdp_bridge.js",
     "test:unit": "node tests/test_dom_engine.js",
     "test:integration": "node tests/test_integration.js",
     "test:cdp": "node tests/test_cdp_bridge.js"
   },
   "devDependencies": {
     "typescript": "^5.4.0"
-  },
-  "dependencies": {
-    "ws": "^8.16.0"
   },
   "license": "MIT"
 }
