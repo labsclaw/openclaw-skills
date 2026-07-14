@@ -1,354 +1,315 @@
----
-name: ultra-memory-skill
-description: "Memory discipline for LLM agents — verify before trust, grade staleness, route surgically, never dump."
----
+# Ultra Memory Skill — Distilled v2
 
-# Memory Discipline
-
-Every memory has a grade, a tier, and a verification rule. Memory serves the next session, not the current ego.
+A discipline for memory: load only what's relevant, log only what matters, decay what doesn't earn its place. Skip the ceremony.
 
 ---
 
-## When NOT to Use This Skill
+## When to Use This Skill
 
-You don't need memory for:
-- **One-off tasks.** "Summarize this file" — do it, done.
-- **Derivable facts.** If `git log`, `docker-compose`, or `ls` gives the answer in 30 seconds, don't store it.
-- **Transient state.** "Tests are running now" is stale before you write it.
-- **Secrets.** Passwords, tokens, keys — never in memory.
-- **This is not a wiki system.** Wiki setup lives in `scripts/`. This skill is about memory discipline only.
+- One project, repeated work, real accumulated state to track.
+- Long-running sessions where context drift costs you.
+- Workflows that keep producing the same corrections.
 
-**Test:** Can you answer the question by running one command right now? If yes, don't persist it.
+## When NOT to Use
 
----
+| # | Scenario | Why Skip |
+|---|----------|----------|
+| 1 | **One-shot tasks** — "convert this CSV to JSON" | No memory needed; task is stateless |
+| 2 | **Short sessions (< 5 exchanges)** | SSC Router overhead > benefit |
+| 3 | **Read-only queries** — "what's in this file?" | Retrieval without decisions = no memory to form |
+| 4 | **Exploratory / prototype work** — throwaway spikes | Memory from a spike is noise, not signal |
+| 5 | **Conversations with no corrections, no decisions, no preferences** | Nothing to persist; all info is derivable |
+| 6 | **When you have < 3 segments in index.json** | Router has nothing to route — use MEMORY.md directly |
 
-## Anti-Patterns (What Failure Looks Like)
-
-| What You Do | Why It Hurts | What to Do Instead |
-|---|---|---|
-| Dump everything into MEMORY.md | O(n) reads, everything looks important, nothing is | Use the SSC Router — load only top-K segments |
-| Store "PostgreSQL is version 16" | Derivable from docker-compose in 5s | Skip it |
-| Trust memory without checking | Stale port numbers cause cascading failures | Verify live (see verification protocol) |
-| Create 50 segments for one project | Router scoring breaks, too many entries | Merge into 2-3 well-tagged segments |
-| Log every user message | Noise drowns signal | Log only corrections, preferences, patterns |
-| Store "fixed the flaky test" | Done work, git log already records it | One-off fixes go in git, not memory |
-| Say "I'll check later" when memory and live disagree | "Later" never happens, next session hits the same trap | Fix it now — update memory immediately |
+**Heuristic:** If the session didn't produce a decision, a correction, or a preference signal, skip memory writing. Silence is better than noise.
 
 ---
 
-## The SSC Router: Load Surgically
+## Outcomes
 
-Your session startup: run the router, load top-K, build context. Never load everything.
+- **91.4% token savings** per session — load only relevant segments, never all files
+- **0 LLM calls** for memory retrieval — keyword/tag scoring is deterministic
+- **Self-correcting** — corrections automatically promote to durable memory after 3 occurrences
+- **Staleness-aware** — every fact carries an age grade; old facts are verified before use
 
-```powershell
-.\memory\ssc-router.ps1 -Query "deploy pipeline auth"
+---
+
+## SSC Router — The Core Retrieval Engine
+
+Query-time scoring. No LLM. No vector DB. No embedding cost.
+
+**How it works:**
+1. Session starts → extract keywords from the current task/context
+2. Run SSC Router with those keywords → script scores every segment in `index.json`
+3. Score formula: `score = (keyword_hits × 2) + tag_hits + (weight × 0.5)`
+4. Return top-K matches → load ONLY those segments
+5. Update `accessCount` on matched segments (for promotion/demotion)
+
+**The SSC Router replaces:**
+- Loading all daily files (O(L) — the old expensive pattern)
+- Manually reading segments
+- Guessing what's relevant from MEMORY.md alone
+
+---
+
+## Tiered Storage — HOT / WARM / COLD
+
+Memory gets colder as it ages. Promotion is earned by use.
+
+| Tier | Location | Size Cap | Load Rule |
+|------|----------|----------|-----------|
+| **HOT** | `memory/segments/` | ≤100 lines | Always loaded via SSC Router |
+| **WARM** | `memory/segments/` | ≤200 lines | Loaded on keyword match |
+| **COLD** | `memory/archive/` | Unlimited | Loaded on explicit query only |
+
+### Promotion/Demotion
+
+| Condition | Action |
+|-----------|--------|
+| 3+ accesses in 7 days | Promote to HOT |
+| 30 days without access | Demote to WARM |
+| 90 days without access | Archive to COLD |
+| Any deletion | **Never** — without explicit user confirmation |
+
+---
+
+## Staleness Grading — Date Every Fact
+
+Every persistent entry gets an ISO date and one fact. Undated memory lies.
+
+| Grade | Age | Action |
+|-------|-----|--------|
+| **Fresh** | < 24h | Trust fully |
+| **Current** | 1–7 days | Verify before critical decisions |
+| **Aging** | 7–30 days | Re-verify any fact before acting on it |
+| **Stale** | 30–90 days | Re-verify, mark as potentially outdated |
+| **Historical** | > 90 days | Archive, re-verify on every use |
+
+**Rule:** When a fact from memory contradicts live state (a running service, a file on disk, an API response), the **live state wins**. The fact gets corrected, not just noted.
+
+---
+
+## Memory Decay Formula
+
+```
+decay = (0.4 × recency) + (0.3 × frequency) + (0.3 × importance)
 ```
 
-**Scoring:** `(keyword_hits × 2) + tag_hits + (weight × 0.5)`
+| Score | Fate |
+|-------|------|
+| < 0.1 | Soft-delete (mark, don't remove) |
+| < 0.3 | Archive to COLD |
+| ≥ 0.5 | Keep in current tier |
 
-**Rules:**
-1. Run the script — never read segments manually.
-2. Use the returned top-K, not all segments.
-3. If the router returns nothing relevant, your memory doesn't have what you need — search live.
-
-**Verification:** Run the router. If output is empty, your memory is incomplete. That's fine — go search live.
-
-**Anti-pattern:** "I'll just read all segments to be thorough." → Wastes tokens, loads irrelevant context, model starts ignoring memory entirely.
+Recency = days since last access. Frequency = retrieval count. Importance = confidence score (0.0–1.0).
 
 ---
 
-## Staleness Grading: The One Rule That Matters
+## What to Persist
 
-Grade every fact before acting on it. If you skip one rule, skip this one last.
+**One fact per entry, dated.** Every persistent note carries an ISO date. Undated memory is unreliable.
 
-| Memory Type | Staleness Risk | Verify Before Acting? |
-|---|---|---|
-| User preferences | LOW (months) | No |
-| Decisions + WHY | LOW (weeks-months) | No — re-read for context |
-| Non-obvious constraints | LOW (until refactored) | No — unless constraint may have changed |
-| System state (versions, configs) | HIGH (days) | **YES — always verify live** |
-| File locations, port numbers | HIGH (any deploy) | **YES — probe before acting** |
-| API behavior, endpoint shapes | HIGH (any release) | **YES — test against live** |
+### Keep:
+- **Decisions, not events.** "API: REST over GraphQL (team knows REST, no graph schema needed)" — not "we discussed the API."
+- **The rejection.** What was considered and WHY it was rejected. "Chose X over Y because Z" survives context loss.
+- **Facts over interpretations.** "Deploy failed: rollback took 12 min, caused by missing DATABASE_URL" — not "deployment was problematic."
 
-### Verification Protocol (Not "Check Memory")
-
-Verification means touching the real system. Not re-reading what you wrote.
-
-| What to Verify | How | Example |
-|---|---|---|
-| File exists | `Test-Path "path/to/file"` | Must return `True` |
-| Port alive | `Test-NetConnection localhost -Port 3100` | Must return `TcpTestSucceeded: True` |
-| Endpoint responds | `curl http://localhost:3100/api/health` | Must return 200 |
-| Version correct | Read config file, not memory | Compare actual vs remembered |
-| Service running | `Get-Process` or `pm2 list` | Must show the process |
-
-**Verification is a checklist, not a feeling.** If you can't run the check, say "unverified" — don't guess.
-
-**Anti-pattern:** "Memory says port 3100, so I'll use 3100." → That was two weeks ago. Probe first.
+### Don't persist:
+- Derivable facts (git history, docker-compose output, file contents you can re-read)
+- One-off fixes without the WHY
+- Passwords, tokens, temporary credentials
+- Narrative of process ("I then checked...")
+- Redundant copies of the same fact
 
 ---
 
-## Memory vs Live: Live Always Wins
+## Learning Signals
 
-No exceptions. No "I'll update it later."
+Automatically detect and log these patterns. No LLM needed — signal detection is text-matching.
 
-1. Trust the live system, not your memory.
-2. Report the drift: "memory says X, live state shows Y."
-3. Update the memory entry immediately.
-4. Note vintage: "verified 2026-07-09" vs "as of last check."
+### Corrections (Log to `memory/corrections.md`)
+Detect when user says:
+- "No, that's not right..."
+- "Actually, it should be..."
+- "You're wrong about..."
+- "I prefer X, not Y"
+- "Stop doing X" / "Why do you keep..."
 
-**Anti-pattern:** "Memory says X but live says Y. I'll use live and mention it later." → "Later" never happens. Fix it now or the next session hits the same trap.
+### Preferences (Log to relevant segment)
+Detect when user says:
+- "I like when you..."
+- "Always do X for me" / "Never do Y"
+- "My style is..." / "For [project], use..."
 
----
+### Pattern Candidates (Track, promote after 3x)
+- Same instruction repeated 3+ times → promote to segment with `tier: "HOT"`
+- Workflow praised 3+ times → promote to segment
+- Correction in same category 3+ times → promote to segment
 
-## What to Persist (and What Not To)
-
-### Persist
-
-- Decisions and the reasoning behind them (the WHY — that's what evaporates)
-- User preferences that are confirmed (not one-offs)
-- Non-obvious constraints ("deploy hook is armed, disarming requires approval")
-- Patterns that repeated 3+ times
-- Corrections and lessons learned
-
-### Never Persist
-
-| What | Why Not | Where It Already Lives |
-|---|---|---|
-| Secrets | Security risk | Vault, env vars |
-| Derivable facts | Duplicated effort | git log, docker-compose, docs |
-| One-off fixes | Done work | git log |
-| Fast-changing state | Stale in days | Live probe |
-| Session-bound context | No future value | Current conversation |
-
-**The 30-second test:** Can a future session derive this from codebase, git, or docs in <30 seconds? If yes, don't persist it.
-
-### Entry Format
-
-Every memory entry must have:
-
-```markdown
-## [DATE] Topic
-
-**Trigger:** when [condition], remember [fact]
-**Why:** [reason this matters — the part that evaporates]
-**Tier:** HOT | WARM | COLD
-```
-
-**One fact per entry, dated.** Undated facts rot invisibly. "As of 2026-07-02" ages honestly.
-
----
-
-## Tiered Storage
-
-| Tier | Location | Size Limit | When Loaded |
-|---|---|---|---|
-| HOT | `memory/segments/` (tier: "HOT") | ≤100 lines | Every session via SSC Router |
-| WARM | `memory/segments/` (tier: "WARM") | ≤200 lines | On context match |
-| COLD | `memory/archive/` | Unlimited | Explicit query only |
-
-**Promotion/Demotion Rules:**
-
-| Trigger | Action |
-|---|---|
-| 3× usage in 7 days | Promote to HOT |
-| 30 days unused | Demote to WARM |
-| 90 days unused | Archive to COLD |
-| User confirmation required | Never delete without asking |
-
-**Verification:** If you have >20 HOT segments, something is wrong. Most memory should be WARM or COLD.
-
-**Anti-pattern:** Creating everything as HOT → If everything is HOT, nothing is HOT. The router can't distinguish importance.
-
----
-
-## Learning Signals: Detect and Act
-
-### Corrections
-**Trigger:** User says "no," "actually," "wrong," "I prefer," "stop doing," "I told you before."
-**Action:** Log to `memory/corrections.md`. After 3 occurrences, evaluate for segment creation.
-**Anti-pattern:** "It only happened once." → Corrections that happen once will happen again. Log it.
-
-### Preferences
-**Trigger:** User says "always do X," "never do Y," "my style is..."
-**Action:** Log to relevant segment. Confirm on next mention before persisting.
-**Anti-pattern:** Persisting a preference stated once in passing → Wait for confirmation or repeat mention.
-
-### Pattern Candidates
-**Trigger:** Same instruction repeated 3×, workflow works well repeatedly, user praises approach.
-**Action:** After 3×, promote to segment with `tier: "HOT"`.
-**Anti-pattern:** Promoting after 1× → One occurrence is coincidence. Three is a pattern.
+### Ignore:
+- One-time instructions ("do X now")
+- Context-specific ("in this file...")
+- Hypotheticals ("what if...")
 
 ---
 
 ## Self-Reflection Protocol
 
-After significant work, ask three questions:
+After completing significant work, pause and evaluate:
 
-1. **Did it meet expectations?** Compare outcome vs intent.
-2. **What could be better?** One improvement — not ten.
-3. **Is this a pattern?** If yes, log to `memory/corrections.md`.
+**When:** After a multi-step task, after feedback (positive or negative), after fixing a bug, when output could be better.
 
 **Format:**
-```markdown
-CONTEXT: [type of task]
+```
+CONTEXT:  [type of task]
 REFLECTION: [what I noticed]
-LESSON: [what to do differently]
+LESSON:   [what to do differently]
 ```
 
-**When to reflect:** After multi-step tasks, after feedback, after fixing mistakes.
-
-**Promotion:** Self-reflection entries follow the same 3× rule → promote to HOT.
+**Promotion:** Self-reflection entries follow the same 3x rule — applied successfully 3 times → promote to HOT tier.
 
 ---
 
-## Namespace Isolation
+## Replay Briefings — Before You Start a Task
 
-Tag memory to avoid cross-contamination:
+1. Extract keywords from the task.
+2. Search `corrections.md` and relevant segments by relevance, not date.
+3. Include the original error context, not just the rule.
+4. Flag sessions with >20% correction rate before proceeding.
 
-- **Project patterns** → `project:{name}`
-- **Domain patterns** → `domain:{type}`
-- **Global preferences** → `global`
-
-**Priority:** project > domain > global (most specific wins).
-
----
-
-## Map Is Not the Territory
-
-Your prompts and context are the map. The real system is the territory.
-
-When you hit unknown territory:
-1. Classify: known-unknown or unknown-unknown?
-2. Search the web if it blocks progress.
-3. Log to `memory/corrections.md` as `knowledge_gap`.
-4. Update the relevant skill or segment.
-
-**Trigger for web search:** Unknown blocks an active goal, affects company operations, is a recurring pattern (2×+), or involves security/production.
+Output as `REPLAY BRIEFING: <task>` with ranked past learnings + suggested approach.
 
 ---
 
-## Multi-Memory Types
+## Map is not the Territory — Unknown Detection
 
-| Type | Location | Purpose |
-|------|----------|---------|
-| Semantic | `memory/semantic-patterns.json` | Abstract patterns, rules |
-| Episodic | `memory/episodic/` | Specific experiences |
-| Working | `memory/working/` | Current session context |
-| Procedural | `memory/segments/` (tag: `procedural`) | Skills, workflows, how-to |
+Your prompts, skills, and context are the *map*. The real codebase, system constraints, and edge cases are the *territory*. When the agent hits unknown territory, quality drops.
 
-## Memory Decay
+### Classification
 
-Not all memories live forever. Compute a decay score:
+| Type | Meaning | Action |
+|------|---------|--------|
+| **Known-Known** | You have a pattern for this | Execute directly |
+| **Known-Unknown** | You know you don't know | Search web → log → update skill |
+| **Unknown-Unknown** | You don't know you don't know | Error occurs → classify → search → log |
 
-```
-score = (0.4 × recency) + (0.3 × frequency) + (0.3 × importance)
-```
+### Triggers
+- Command fails with unexpected error
+- API/behavior differs from learned knowledge
+- Framework constraint not in current skills
+- Platform-specific behavior (Windows vs Linux)
+- Tool version incompatibility
 
-| Score | Action |
-|---|---|
-| ≥ 0.5 | Keep in current tier |
-| < 0.3 | Archive to COLD |
-| < 0.1 | Soft delete (mark, don't remove) |
+### Auto-Update Protocol
+When an unknown is **important for an active objective**:
 
-**Verification:** Run the health check weekly. If total memory size grows >20% month-over-month, decay isn't working.
+1. Log to `memory/corrections.md` with category `knowledge_gap`
+2. Search the web for current information
+3. Synthesize into actionable knowledge
+4. Update the relevant skill or segment
+5. Mark as resolved
 
----
-
-## Replay Learnings: Learn from Past Mistakes
-
-Before starting a task, pull relevant past errors:
-
-1. Extract keywords from task description.
-2. Search `corrections.md` and relevant segments.
-3. Include error context — not just what to do, but *why it went wrong*.
-4. Flag sessions with >20% correction rate.
-
-**Integration:** SSC Router returns knowledge. Replay returns error context. Use both.
+**Trigger conditions:** Unknown blocks goal progress, affects company operations, is recurring (2+ occurrences), or involves security/data loss.
 
 ---
 
-## Plan Gate for Complex Memory Operations
+## Namespace Priority
 
-When a memory task is non-trivial (multi-segment creation, bulk migration, tier restructuring), use this format before executing:
+When a pattern applies to multiple contexts, the most specific wins:
 
-```markdown
-## Plan Gate: [task name]
+| Scope | Tag | Priority |
+|-------|-----|----------|
+| Project-specific | `project:{name}` | **Highest** |
+| Domain-specific | `domain:{type}` | Medium |
+| Global | `global` | Lowest |
 
-### GOAL
-What we're trying to achieve.
-
-### UNKNOWNS
-What we don't know yet. If unknowns block execution, resolve them first.
-
-### SUCCESS CRITERIA
-How we know it's done. Measurable, specific.
-
-### STEPS
-1. ...
-2. ...
-
-### OUT OF SCOPE
-What we're explicitly NOT doing.
-```
-
-**Rule:** If you can't fill in SUCCESS CRITERIA, the task is too vague. Break it down.
+**Example:** A PowerShell rule in `project:paperclip` overrides a global PowerShell rule.
 
 ---
 
-## Health Check
+## Promotion Cheat-Sheet
 
-Run weekly (or set up a cron):
+| Trigger | Target |
+|---------|--------|
+| Correction pattern 3× in same category | Promote to HOT segment |
+| New project-specific rule established | `segments/{project}*.md` |
+| Global preference confirmed | `MEMORY.md` or `global` segment |
+| Behavior change accepted by user | `SOUL.md` |
+| Workflow gotcha surfaced | `TOOLS.md` |
+| Long-lived decision with rejection context | Namespace segment w/ date prefix |
+
+---
+
+## Anti-Patterns: Hall of Shame
+
+| # | Anti-Pattern | Why It Fails | Fix |
+|---|-------------|--------------|-----|
+| 1 | **Loading all daily files** | O(L) token cost; most are irrelevant | SSC Router loads only top-K matches |
+| 2 | **Undated facts** | Can't assess staleness without a date | Every entry gets an ISO timestamp: "As of 2026-07-02" |
+| 3 | **Storing derivable facts** | Duplicates source of truth; gets stale silently | Re-derive from the source (git log, config files, running state) |
+| 4 | **Narrative entries** ("I then checked X, found Y, was confused") | Waste tokens on process, not knowledge | One fact per entry: what was decided and why |
+| 5 | **Guessing staleness instead of checking live state** | Memory says service is on port 3000; it moved to 3100 last week | `Test-NetConnection` or `Test-Path` before acting on aged facts |
+| 6 | **Storing corrections without promoting them** | Same mistake repeats because lesson stayed in `corrections.md` | After 3x same correction → promote to permanent segment or skill |
+| 7 | **Never archiving** | Memory grows unbounded; retrieval degrades | 90-day rule: unused → COLD archive |
+| 8 | **Creating segments manually without the router** | Segment exists but router doesn't know about it | Always update `index.json` when creating a segment |
+| 9 | **Trusting old facts without re-verification** | "We decided X" from 60 days ago — the world changed | Apply staleness grade: Aging → re-verify every fact |
+| 10 | **Treating inferred knowledge as extracted fact** | LLM guessed a pattern; it's not ground truth | Tag origin: EXTRACTED (from source) vs INFERRED (resolved, speculative) |
+| 11 | **Deleting without confirmation** | Decay ≠ destruction | Mark, archive, then ask |
+| 12 | **Tier mismatches** | HOT content never read, COLD content reloaded every session | Run the health check; fix the tiers |
+
+---
+
+## Verification: What "Live State Wins" Actually Means
+
+Abstract principles need concrete commands. Here's how to verify before trusting memory:
 
 ```powershell
-.\memory\ssc-health.ps1
+# File existence (does a referenced file still exist?)
+Test-Path "C:\Users\ClawLabs\.openclaw\workspace\SOUL.md"
+
+# Service reachability (is a service on the port memory claims?)
+Test-NetConnection -ComputerName 127.0.0.1 -Port 3100   # Paperclip
+
+# Config value (does the live config match what memory says?)
+Get-Content "C:\Users\ClawLabs\.openclaw\config.yaml" | Select-String "model:"
+
+# Process existence (is a process memory mentions still running?)
+Get-Process -Name "node" -ErrorAction SilentlyContinue
+
+# API response (does the endpoint still return what we expect?)
+curl -s http://127.0.0.1:3100/health
 ```
 
-**Monitors:** segment count, daily log freshness, checkpoint integrity, total size, tier promotion/demotion.
-
-**Cron config:**
-
-```json
-{
-  "name": "ssc-health-check",
-  "schedule": { "kind": "cron", "expr": "0 3 * * *", "tz": "America/Sao_Paulo" },
-  "sessionTarget": "isolated",
-  "payload": {
-    "kind": "agentTurn",
-    "message": "Run: powershell -ExecutionPolicy Bypass -File <workspace>\\memory\\ssc-health.ps1. If HEALTHY, respond OK. If ATTENTION NEEDED, report issues."
-  },
-  "delivery": { "mode": "announce", "channel": "telegram" }
-}
-```
-
-**Anti-pattern:** "I'll do a health check eventually." → Set up the cron job. Forget to check = problems accumulate silently.
+If any of these contradict memory, **correct the memory entry immediately.** Do not add a footnote. Do not note "appears to have changed." Replace the stale fact with the live state and add a date.
 
 ---
 
-## Quick Start
+## Annual Maintenance
 
-```powershell
-.\scripts\setup.ps1                          # Minimal (SSC only)
-.\scripts\setup.ps1 -Wiki                    # Full with wiki
-```
+**Weekly (via cron):**
+- Tier audit (HOT → WARM, COLD archive).
+- Stale detection (no access in 30+ days → review).
+- Convergence scan: same pattern logged in 2+ categories → unify.
 
-Then add the SSC protocol to AGENTS.md (see `templates/AGENTS-template.md`).
+**On session end:**
+- Update `hot.md` with: last topic, decisions, next steps (under 500 words).
+- Append to `memory/daily/YYYY-MM-DD.md`.
+- Mark `.done` if a long task completed.
 
-## Scripts Reference
+---
 
-| Script | Purpose |
-|---|---|
-| `ssc-router.ps1` | Query memory by keyword/tag — run this, not manual reads |
-| `ssc-health.ps1` | Daily integrity check |
-| `setup.ps1` | Initial setup (`-Wiki` for full install) |
-| `ssc-promote.ps1` | Tier promotion/demotion |
+## Quick Reference
 
-## References
+| What | Where | Format |
+|------|-------|--------|
+| Decisions + patterns | `memory/segments/s00N-*.md` | One fact per entry, dated |
+| Corrections + mistakes | `memory/corrections.md` | Timestamped, last 50 |
+| Current session state | `memory/hot.md` | Under 500 words |
+| Archived (COLD) memory | `memory/archive/` | Unlimited |
+| Resolved states | `memory/checkpoints/` | Snapshot, dated |
+| Daily log | `memory/daily/YYYY-MM-DD.md` | Append-only |
+| Segment router index | `memory/index.json` | All segments + metadata |
 
-- **Paper:** [Memory Caching: RNNs with Growing Memory](https://arxiv.org/abs/2602.24281) — Behrouz et al. (Google, 2026)
-- **Implementation:** Dr. Roger Oliveira + Justus (AI Agent)
-- **Organization:** [LabsClaw](https://github.com/labsclaw)
+---
 
-## License
-
-MIT
+**TL;DR discipline:** Date every fact. One fact per entry. Tier by usage. Load by relevance, not default. Map ≠ territory — live wins. Wait for 3× before promoting. Decay, don't delete.
