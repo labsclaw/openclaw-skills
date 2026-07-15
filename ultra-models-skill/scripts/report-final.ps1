@@ -1,231 +1,284 @@
-# report-final.ps1 - Relatorio Final de Modelos
+# ============================================================
+# report-final.ps1 - Relatorio final consolidado
+# ============================================================
+# Gera um relatorio completo do estado dos modelos free:
+# inventario, rankings, saude dos providers, e recomendacoes.
+#
+# Uso:  powershell -ExecutionPolicy Bypass -File report-final.ps1
+#       powershell -ExecutionPolicy Bypass -File report-final.ps1 -Json
+# ============================================================
+
+param(
+    [switch]$Json
+)
 
 $ErrorActionPreference = "Continue"
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-[Console]::InputEncoding = [System.Text.Encoding]::UTF8
-$OutputEncoding = [System.Text.Encoding]::UTF8
+[Console]::InputEncoding  = [System.Text.Encoding]::UTF8
+$OutputEncoding           = [System.Text.Encoding]::UTF8
 
-function Get-OpenClawHome {
-    if ($env:OPENCLAW_CONFIG_PATH) { return Split-Path $env:OPENCLAW_CONFIG_PATH -Parent }
-    $c = "$env:USERPROFILE\.openclaw"
-    if (Test-Path $c) { return $c }
-    return "$env:USERPROFILE\.openclaw"
+# -- Load shared functions ------------------------------------
+$sharedPath = Join-Path $PSScriptRoot "_shared.ps1"
+if (Test-Path $sharedPath) { . $sharedPath } else {
+    Write-Host "[ERRO] _shared.ps1 nao encontrado" -ForegroundColor Red
+    exit 1
 }
 
-$openClawHome = Get-OpenClawHome
-$envFile = Join-Path $openClawHome ".env"
-$envVars = @{}
-Get-Content $envFile | ForEach-Object {
-    if ($_ -match '^\s*([A-Z_]+)\s*=\s*(.+)$') { $envVars[$Matches[1]] = $Matches[2].Trim() }
-}
+# -- Load .env keys -------------------------------------------
+$envVars = Get-AllEnvKeys
 
-function Get-ModelBaseName($fullId) {
-    $b = $fullId
-    $b = $b -replace '^(openrouter|opencode|kilocode|nvidia|antigravity-proxy)/', ''
-    $b = $b -replace ':free$', ''
-    $b = $b -replace '-free$', ''
-    $b = $b -replace '^deepseek-ai/', ''
-    $b = $b -replace '^minimaxai/', ''
-    $b = $b -replace '^z-ai/', ''
-    $b = $b -replace '^deepseek/deepseek-', 'deepseek-'
-    $b = $b -replace '^minimax/minimax-', 'minimax-'
-    $b = $b -replace '^glm/glm-', 'glm-'
-    $b = $b -replace '^glm-5\.2$', 'glm-5'
-    $b = $b -replace '^glm-5\.1$', 'glm-5'
-    $b = $b -replace '^minimax-m2\.7$', 'minimax-m2'
-    $b = $b -replace '^minimax-m2\.5$', 'minimax-m2'
-    $b = $b -replace '^minimax-m3$', 'minimax-m2'
-    $b = $b -replace '^qwen/', ''
-    $b = $b -replace '^nvidia/', ''
-    return $b.ToLower()
-}
+# ============================================================
+# 1. QUERY ALL PROVIDERS
+# ============================================================
 
-function Get-Quality($base) {
-    $s = 50
-    if ($base -match '550b|405b|340b|253b|120b|70b') { $s += 30 }
-    elseif ($base -match '49b|30b|31b|26b|24b') { $s += 20 }
-    elseif ($base -match '8b|9b|3b') { $s += 5 }
-    if ($base -match 'nemotron.*ultra') { $s += 15 }
-    elseif ($base -match 'nemotron.*super') { $s += 12 }
-    elseif ($base -match 'llama.*(70b|405b)') { $s += 10 }
-    elseif ($base -match 'gemma.*4') { $s += 10 }
-    elseif ($base -match 'gpt-oss') { $s += 12 }
-    elseif ($base -match 'qwen3.*coder') { $s += 10 }
-    elseif ($base -match 'deepseek.*v4') { $s += 10 }
-    elseif ($base -match 'minimax') { $s += 8 }
-    elseif ($base -match 'glm.*5') { $s += 8 }
-    elseif ($base -match 'hermes') { $s += 8 }
-    elseif ($base -match 'laguna.*m\.1') { $s += 7 }
-    elseif ($base -match 'hy3') { $s += 6 }
-    if ($base -match 'content-safety|embed|pii|safety|parse|clip|retriever|translate|calibration|cosmos|neva|vila|ising|riva|nvclip|nemoretriever|gliner|chatqa|reward') { $s -= 40 }
-    return $s
-}
+Write-Section "1. Consultando providers"
 
-function Get-TPS($base) {
-    $t = 50
-    if ($base -match 'deepseek.*v4.*flash') { $t = 95 }
-    elseif ($base -match 'mimo.*v2\.5') { $t = 90 }
-    elseif ($base -match 'big-pickle') { $t = 85 }
-    elseif ($base -match 'hy3|north-mini-code') { $t = 80 }
-    elseif ($base -match 'gemma.*4.*26b|qwen3.*coder') { $t = 75 }
-    elseif ($base -match 'deepseek') { $t = 70 }
-    elseif ($base -match 'nemotron.*nano') { $t = 75 }
-    elseif ($base -match 'nemotron.*super.*120b') { $t = 50 }
-    elseif ($base -match 'nemotron.*ultra.*550b') { $t = 30 }
-    elseif ($base -match 'llama.*405b|hermes.*405b') { $t = 25 }
-    elseif ($base -match 'gpt-oss.*120b') { $t = 45 }
-    elseif ($base -match 'minimax') { $t = 50 }
-    elseif ($base -match 'glm.*5') { $t = 60 }
-    if ($base -match 'content-safety|embed|pii|safety|parse|clip|retriever|translate|calibration|cosmos|neva|vila') { $t = 0 }
-    return $t
-}
-
-# Coletar modelos
-$live = @{}
-
-try {
-    $h = @{ "Authorization" = "Bearer $($envVars['OPENROUTER_API_KEY'])" }
-    $r = Invoke-RestMethod -Uri "https://openrouter.ai/api/v1/models" -Headers $h -Method Get -TimeoutSec 30
-    $r.data | Where-Object { $_.pricing.prompt -eq "0" -or $_.pricing.prompt -eq 0 } | ForEach-Object {
-        $live["openrouter/$($_.id)"] = @{ provider="openrouter"; id=$_.id }
+function Safe-Query($name, $url, $headers, $filterFn) {
+    try {
+        $resp = Invoke-RestMethod -Uri $url -Headers $headers -Method Get -TimeoutSec 30
+        $all = if ($resp.data) { $resp.data } else { $resp }
+        $filtered = & $filterFn $all
+        return @{ total = $all.Count; free = $filtered.Count; models = $filtered; error = $null }
+    } catch {
+        return @{ total = 0; free = 0; models = @(); error = $_.Exception.Message }
     }
-} catch {}
-
-try {
-    $h = @{ "Authorization" = "Bearer $($envVars['OPENCODE_API_KEY'])"; "Content-Type" = "application/json" }
-    $r = Invoke-RestMethod -Uri "https://opencode.ai/zen/v1/models" -Headers $h -Method Get -TimeoutSec 30
-    $a = if ($r.data) { $r.data } else { $r }
-    $a | Where-Object { $_.id -match "-free" -or $_.id -eq "big-pickle" -or $_.id -match '^(deepseek|minimax|glm|qwen|mimo)' } | ForEach-Object {
-        $live["opencode/$($_.id)"] = @{ provider="opencode"; id=$_.id }
-    }
-} catch {}
-
-try {
-    $h = @{ "Authorization" = "Bearer $($envVars['KILOCODE_API_KEY'])"; "Content-Type" = "application/json" }
-    $r = Invoke-RestMethod -Uri "https://api.kilo.ai/api/gateway/models" -Headers $h -Method Get -TimeoutSec 30
-    $a = if ($r.data) { $r.data } else { $r }
-    $a | Where-Object { $_.isFree -eq $true } | ForEach-Object {
-        $live["kilocode/$($_.id)"] = @{ provider="kilocode"; id=$_.id }
-    }
-} catch {}
-
-try {
-    $h = @{ "Authorization" = "Bearer $($envVars['NVIDIA_API_KEY'])"; "Accept" = "application/json" }
-    $r = Invoke-RestMethod -Uri "https://integrate.api.nvidia.com/v1/models" -Headers $h -Method Get -TimeoutSec 30
-    $a = if ($r.data) { $r.data } else { $r }
-    $a | Where-Object {
-        ($_.id -match '^nvidia/' -or $_.id -match '^(deepseek-ai|minimaxai|z-ai|qwen)/') -and
-        (-not $_.pricing -or $_.pricing.prompt -eq "0" -or $_.pricing.prompt -eq 0 -or $null -eq $_.pricing.prompt)
-    } | ForEach-Object {
-        $live["nvidia/$($_.id)"] = @{ provider="nvidia"; id=$_.id }
-    }
-} catch {}
-
-# Cross-provider map
-$xmap = @{}
-foreach ($fid in $live.Keys) {
-    $base = Get-ModelBaseName $fid
-    if ($base -match 'content-safety|embed|pii|safety|parse|clip|retriever|translate|calibration|cosmos|neva|vila|ising|riva|nvclip|nemoretriever|gliner|chatqa|reward') { continue }
-    if (-not $xmap.ContainsKey($base)) { $xmap[$base] = @() }
-    $xmap[$base] += @{ fullId=$fid; provider=$live[$fid].provider }
 }
 
-# Output
-$date = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-$sep = "#" * 80
+# OpenRouter
+$orHeaders = @{ "Authorization" = "Bearer $($envVars['OPENROUTER_API_KEY'])" }
+$orResult = Safe-Query "OpenRouter" "https://openrouter.ai/api/v1/models" $orHeaders {
+    param($all)
+    $all | Where-Object { $_.pricing -and ($_.pricing.prompt -eq "0" -or $_.pricing.prompt -eq 0) }
+}
+Write-Status "OpenRouter: $($orResult.free) free / $($orResult.total) total" $(if ($orResult.error) { "WARN" } else { "OK" })
 
-Write-Host ""
-Write-Host "# PROVIDER MODELS MONITOR" -ForegroundColor Cyan
-Write-Host "# $date" -ForegroundColor DarkGray
-Write-Host $sep -ForegroundColor DarkGray
+# OpenCode
+$ocHeaders = @{ "Authorization" = "Bearer $($envVars['OPENCODE_API_KEY'])"; "Content-Type" = "application/json" }
+$ocResult = Safe-Query "OpenCode" "https://opencode.ai/zen/v1/models" $ocHeaders {
+    param($all)
+    $all | Where-Object { $_.id -match "-free" -or $_.id -eq "big-pickle" }
+}
+Write-Status "OpenCode: $($ocResult.free) free / $($ocResult.total) total" $(if ($ocResult.error) { "WARN" } else { "OK" })
 
-$pnames = @{ "nvidia"="NVIDIA NIM"; "opencode"="OPENCODE ZEN"; "kilocode"="KILOCODE"; "openrouter"="OPENROUTER" }
+# KiloCode
+$kcHeaders = @{ "Authorization" = "Bearer $($envVars['KILOCODE_API_KEY'])"; "Content-Type" = "application/json" }
+$kcResult = Safe-Query "KiloCode" "https://api.kilo.ai/api/gateway/models" $kcHeaders {
+    param($all)
+    $all | Where-Object { $_.isFree -eq $true }
+}
+Write-Status "KiloCode: $($kcResult.free) free / $($kcResult.total) total" $(if ($kcResult.error) { "WARN" } else { "OK" })
 
-foreach ($prov in @("nvidia","opencode","kilocode","openrouter")) {
-    Write-Host ""
-    Write-Host "## $($pnames[$prov])" -ForegroundColor Yellow
-    Write-Host ""
-    Write-Host "| # | Model-ID | Score | TPS | Status |"
-    Write-Host "|---| ------------------------------------ | ----- | ------- | --------------- |"
+# NVIDIA
+$nvHeaders = @{ "Authorization" = "Bearer $($envVars['NVIDIA_API_KEY'])"; "Accept" = "application/json" }
+$nvResult = Safe-Query "NVIDIA" "https://integrate.api.nvidia.com/v1/models" $nvHeaders {
+    param($all)
+    $all | Where-Object {
+        ($_.owned_by -eq 'nvidia') -or (-not $_.pricing) -or
+        ($_.pricing.prompt -eq "0" -or $_.pricing.prompt -eq 0)
+    }
+}
+Write-Status "NVIDIA: $($nvResult.free) free / $($nvResult.total) total" $(if ($nvResult.error) { "WARN" } else { "OK" })
 
-    $pm = @()
-    foreach ($base in $xmap.Keys) {
-        $route = $xmap[$base] | Where-Object { $_.provider -eq $prov } | Select-Object -First 1
-        if ($route) {
-            $q = Get-Quality $base
-            $t = Get-TPS $base
-            $rbonus = [Math]::Min(($xmap[$base].provider | Select-Object -Unique).Count - 1, 3) * 15
-            $sc = [Math]::Round(($q * 0.5) + ($t * 0.25) + 25 * 0.25 + $rbonus, 1)
-            $pm += @{ base=$base; fullId=$route.fullId; score=$sc; tps=$t }
+# ============================================================
+# 2. BUILD UNIFIED INVENTORY
+# ============================================================
+
+Write-Section "2. Inventario unificado"
+
+$inventory = [System.Collections.ArrayList]::new()
+
+function Add-ToInventory($provider, $models, $providerLabel) {
+    foreach ($m in $models) {
+        $id = if ($m.id) { $m.id } else { $m }
+        $name = if ($m.name) { $m.name } else { $id }
+        $cid = Get-CanonicalModelId $id
+        $q = Get-ModelQualityScore $cid
+        $t = Get-ModelTPSScore $cid
+        $fam = Get-ModelFamily $cid
+        $tier = Get-ModelTier $cid
+
+        $existing = $inventory | Where-Object { $_.canonical_id -eq $cid -and $_.provider -eq $provider }
+        if (-not $existing) {
+            [void]$inventory.Add([PSCustomObject]@{
+                provider     = $provider
+                full_id      = "$provider/$id"
+                canonical_id = $cid
+                display_name = $name
+                family       = $fam
+                tier         = $tier
+                quality      = $q
+                tps          = $t
+            })
         }
     }
-    $pm = $pm | Sort-Object { $_.score } -Descending
-    $i = 0
-    foreach ($m in $pm) {
-        $i++
-        $tl = if ($m.tps -ge 80) { "$($m.tps) T" } elseif ($m.tps -ge 65) { "$($m.tps) t" } else { "$($m.tps)" }
-        Write-Host ("| {0} | {1} | {2} | {3} | {4} |" -f $i, $m.fullId, $m.score, $tl, "OK")
-    }
 }
 
-# Primary Candidates
-Write-Host ""
-Write-Host "## Model Router Planning" -ForegroundColor Yellow
-Write-Host ""
-Write-Host "### PRIMARY CANDIDATES" -ForegroundColor Cyan
-Write-Host "(apenas modelos com potencial para primary)" -ForegroundColor DarkGray
-Write-Host ""
-Write-Host "| Modelo | OpenCode | NVIDIA | OpenRouter | KiloCode |"
-Write-Host "| -------------------- | -------- | ------ | ---------- | -------- |"
+Add-ToInventory "openrouter" $orResult.models "OpenRouter"
+Add-ToInventory "opencode" $ocResult.models "OpenCode"
+Add-ToInventory "kilocode" $kcResult.models "KiloCode"
+Add-ToInventory "nvidia" $nvResult.models "NVIDIA"
 
-$pc = @()
-foreach ($base in $xmap.Keys) {
-    $q = Get-Quality $base
-    if ($q -lt 55) { continue }
-    $provs = $xmap[$base] | ForEach-Object { $_.provider } | Select-Object -Unique
-    $pc += @{
-        base = $base
-        oc = if ($provs -contains "opencode") { "Y" } else { "-" }
-        nv = if ($provs -contains "nvidia") { "Y" } else { "-" }
-        or2 = if ($provs -contains "openrouter") { "Y" } else { "-" }
-        kc = if ($provs -contains "kilocode") { "Y" } else { "-" }
-        q = $q
-    }
-}
-$pc = $pc | Sort-Object { $_.q } -Descending | Select-Object -First 10
-foreach ($p in $pc) {
-    Write-Host ("| {0} | {1} | {2} | {3} | {4} |" -f $p.base, $p.oc, $p.nv, $p.or2, $p.kc)
-}
+Write-Status "$($inventory.Count) entradas no inventario" "OK"
 
-# Agents
+# ============================================================
+# 3. RANKINGS
+# ============================================================
+
+Write-Section "3. Rankings"
+
+# 3a. By quality
 Write-Host ""
-Write-Host "### AGENTS (MODEL CANDIDATES)" -ForegroundColor Cyan
-Write-Host "- fallback = mesmo modelo em outro provider sempre que possivel" -ForegroundColor DarkGray
-Write-Host ""
-Write-Host "| # | Nome Base | Score | Q | TPS | Providers | Rotas |"
-Write-Host "|---| -------------------------- | ----- | --- | ------- | --------- | ------------------------------ |"
+Write-Status "TOP 15 por qualidade:" "STEP"
+Write-Host ("  {0,-4} {1,-40} {2,-8} {3,-5} {4,-15}" -f "#", "MODELO", "QUALITY", "TPS", "PROVIDER") -ForegroundColor Cyan
+Write-Host ("  {0,-4} {1,-40} {2,-8} {3,-5} {4,-15}" -f ("-"*4), ("-"*40), ("-"*8), ("-"*5), ("-"*15)) -ForegroundColor DarkGray
 
-$ag = @()
-foreach ($base in $xmap.Keys) {
-    $provs = $xmap[$base] | ForEach-Object { $_.provider } | Select-Object -Unique
-    if ($provs.Count -lt 2) { continue }
-    $q = Get-Quality $base
-    $t = Get-TPS $base
-    $rbonus = [Math]::Min(($provs.Count - 1) * 15, 45)
-    $sc = [Math]::Round(($q * 0.5) + ($t * 0.25) + 25 * 0.25 + $rbonus, 1)
-    $routes = ($provs | Sort-Object) -join " + "
-    $ag += @{ base=$base; score=$sc; q=$q; tps=$t; provs=$provs.Count; routes=$routes }
-}
-$ag = $ag | Sort-Object { $_.score } -Descending | Select-Object -First 15
-
-$i = 0
-foreach ($a in $ag) {
+$rankedByQuality = $inventory | Sort-Object quality -Descending | Select-Object -First 15
+$i = 1
+foreach ($m in $rankedByQuality) {
+    Write-Host ("  {0,-4} {1,-40} {2,-8} {3,-5} {4,-15}" -f $i, $m.canonical_id, $m.quality, $m.tps, $m.provider) -ForegroundColor White
     $i++
-    $tl = if ($a.tps -ge 80) { "$($a.tps) T" } elseif ($a.tps -ge 65) { "$($a.tps) t" } else { "$($a.tps)" }
-    Write-Host ("| {0} | {1} | {2} | {3} | {4} | {5} | {6} |" -f $i, $a.base, $a.score, $a.q, $tl, $a.provs, $a.routes)
+}
+
+# 3b. By TPS
+Write-Host ""
+Write-Status "TOP 10 por throughput:" "STEP"
+Write-Host ("  {0,-4} {1,-40} {2,-5} {3,-8} {4,-15}" -f "#", "MODELO", "TPS", "QUALITY", "PROVIDER") -ForegroundColor Cyan
+$rankedByTPS = $inventory | Sort-Object tps -Descending | Select-Object -First 10
+$i = 1
+foreach ($m in $rankedByTPS) {
+    Write-Host ("  {0,-4} {1,-40} {2,-5} {3,-8} {4,-15}" -f $i, $m.canonical_id, $m.tps, $m.quality, $m.provider) -ForegroundColor White
+    $i++
+}
+
+# 3c. Multi-provider models
+Write-Host ""
+Write-Status "Modelos disponiveis em 2+ providers:" "STEP"
+$multiProvider = $inventory | Group-Object canonical_id | Where-Object { $_.Count -ge 2 } |
+    Sort-Object { ($_.Group | Measure-Object quality -Maximum).Maximum } -Descending
+foreach ($mp in $multiProvider) {
+    $q = ($mp.Group | Measure-Object quality -Maximum).Maximum
+    $providers = ($mp.Group | ForEach-Object { $_.provider }) -join " + "
+    Write-Host "  $($mp.Name) (Q=$q) [$providers]" -ForegroundColor Green
+}
+
+# ============================================================
+# 4. PROVIDER HEALTH
+# ============================================================
+
+Write-Section "4. Saude dos providers"
+
+$providers = @(
+    @{ name = "OpenRouter"; result = $orResult; health = Get-ProviderHealthScore "openrouter" }
+    @{ name = "OpenCode";   result = $ocResult; health = Get-ProviderHealthScore "opencode" }
+    @{ name = "KiloCode";   result = $kcResult; health = Get-ProviderHealthScore "kilocode" }
+    @{ name = "NVIDIA";     result = $nvResult; health = Get-ProviderHealthScore "nvidia" }
+)
+
+Write-Host ("  {0,-12} {1,-8} {2,-8} {3,-8} {4,-10}" -f "PROVIDER", "FREE", "TOTAL", "HEALTH", "STATUS") -ForegroundColor Cyan
+Write-Host ("  {0,-12} {1,-8} {2,-8} {3,-8} {4,-10}" -f ("-"*12), ("-"*8), ("-"*8), ("-"*8), ("-"*10)) -ForegroundColor DarkGray
+foreach ($p in $providers) {
+    $status = if ($p.result.error) { "ERROR" } elseif ($p.result.free -eq 0) { "EMPTY" } else { "OK" }
+    $color = switch ($status) { "OK" { "Green" } "EMPTY" { "Yellow" } "ERROR" { "Red" } }
+    $healthPct = [Math]::Round($p.health * 100)
+    Write-Host ("  {0,-12} {1,-8} {2,-8} {3,-7}% {4,-10}" -f $p.name, $p.result.free, $p.result.total, $healthPct, $status) -ForegroundColor $color
+}
+
+# ============================================================
+# 5. FAMILY ANALYSIS
+# ============================================================
+
+Write-Section "5. Analise por familia"
+
+$families = $inventory | Group-Object family | Sort-Object Count -Descending
+Write-Host ("  {0,-15} {1,-6} {2,-8} {3,-8}" -f "FAMILIA", "QTD", "MAX_Q", "MAX_TPS") -ForegroundColor Cyan
+foreach ($f in $families) {
+    $maxQ = ($f.Group | Measure-Object quality -Maximum).Maximum
+    $maxT = ($f.Group | Measure-Object tps -Maximum).Maximum
+    Write-Host ("  {0,-15} {1,-6} {2,-8} {3,-8}" -f $f.Name, $f.Count, $maxQ, $maxT) -ForegroundColor White
+}
+
+# ============================================================
+# 6. RECOMMENDATIONS
+# ============================================================
+
+Write-Section "6. Recomendacoes"
+
+# Find models that are good for each key role
+$roles = @("ceo_orchestrator", "implementation_agent", "reviewer_agent", "fast_worker")
+foreach ($role in $roles) {
+    $best = $null
+    $bestFit = -1
+    foreach ($m in $inventory | Sort-Object quality -Descending) {
+        $fit = Get-ModelRoleFit $m.canonical_id $role
+        if ($fit -gt $bestFit) {
+            $bestFit = $fit
+            $best = $m
+        }
+    }
+    if ($best) {
+        Write-Status "$role -> $($best.canonical_id) (fit=$([Math]::Round($bestFit, 3)))" "OK"
+    }
+}
+
+# Warn about single-provider models
+$singleProvider = $inventory | Group-Object canonical_id | Where-Object { $_.Count -eq 1 }
+if ($singleProvider.Count -gt 0) {
+    Write-Host ""
+    Write-Status "Modelos sem redundancia de provider:" "WARN"
+    foreach ($sp in $singleProvider | Select-Object -First 5) {
+        Write-Host "  $($sp.Name) (apenas $($sp.Group[0].provider))" -ForegroundColor Yellow
+    }
+}
+
+# ============================================================
+# 7. JSON EXPORT
+# ============================================================
+
+if ($Json) {
+    $output = @{
+        generated_at = (Get-Date -Format "o")
+        providers    = @{}
+        inventory    = @()
+        rankings     = @{
+            by_quality = @()
+            by_tps     = @()
+        }
+    }
+
+    foreach ($p in $providers) {
+        $output.providers[$p.name.ToLower()] = @{
+            free = $p.result.free
+            total = $p.result.total
+            health = $p.health
+            error = $p.result.error
+        }
+    }
+
+    foreach ($m in $inventory) {
+        $output.inventory += @{
+            provider     = $m.provider
+            full_id      = $m.full_id
+            canonical_id = $m.canonical_id
+            display_name = $m.display_name
+            family       = $m.family
+            tier         = $m.tier
+            quality      = $m.quality
+            tps          = $m.tps
+        }
+    }
+
+    $output.rankings.by_quality = $inventory | Sort-Object quality -Descending | Select-Object -First 20 | ForEach-Object {
+        @{ canonical_id = $_.canonical_id; quality = $_.quality; provider = $_.provider }
+    }
+    $output.rankings.by_tps = $inventory | Sort-Object tps -Descending | Select-Object -First 20 | ForEach-Object {
+        @{ canonical_id = $_.canonical_id; tps = $_.tps; provider = $_.provider }
+    }
+
+    $outPath = Join-Path (Get-OpenClawHome) "logs\model-report-$(Get-Date -Format 'yyyyMMdd-HHmmss').json"
+    Export-JsonPretty $outPath $output
+    Write-Host ""
+    Write-Status "Relatorio exportado: $outPath" "OK"
 }
 
 Write-Host ""
-Write-Host $sep -ForegroundColor DarkGray
-Write-Host "# FIM DO RELATORIO" -ForegroundColor Cyan
-Write-Host ""
+Write-Status "Concluido: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')" "OK"
