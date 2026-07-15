@@ -13,7 +13,7 @@ const DISTILLED = fs.readFileSync(
 );
 
 const ORIGINAL = fs.readFileSync(
-  path.resolve(__dirname, '..', '..', 'skills', 'ultra-memory-skill', 'SKILL.md'),
+  path.resolve(__dirname, '..', 'SKILL.md.pre-distill-backup'),
   'utf-8'
 );
 
