@@ -271,6 +271,37 @@ Rule: if next step doesn't need the data, don't include it.
 - **Retrying without caps** → max 3 retries, then fail permanently
 - **Skipping zombie detection** → cron monitor catches stuck steps automatically
 
+---
+
+## FENCE REPORT
+
+After completing a pipeline step, run this report:
+
+```
+FENCE REPORT
+Changed: <files touched, each traceable to the task>
+Noticed, NOT touched: <adjacent issue> - <why it matters, why it stays>
+Decision: <one of: proceed | escalate | pause>
+```
+
+### Decision rules for the gray zone
+
+- Would the requested change BREAK without this extra edit? → **proceed**
+- Is the adjacent issue a latent bug or cosmetic? → **proceed** with note
+- Could fixing it introduce regression? → **escalate** to user
+- Is the scope creeping beyond the original request? → **pause**, report, ask
+
+### Example
+
+```
+FENCE REPORT
+Changed: src/adapter.ts (fixed timeout logic), src/adapter.test.ts (added test)
+Noticed, NOT touched: src/adapter.ts:142 has unused import - cosmetic, no risk
+Decision: proceed
+```
+
+---
+
 ## Verification Checklist
 
 - [ ] `memory/pipelines/` and `memory/rules/rules-default.md` exist
