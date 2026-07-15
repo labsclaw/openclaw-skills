@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chrome Assistente</title>
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="logo">
+        <span class="icon">🤖</span>
+        <span class="title">Chrome Assistente</span>
+        <span class="version">v0.2.0</span>
+      </div>
+      <div class="status-indicator" id="statusIndicator">
+        <span class="dot"></span>
+        <span class="text">Conectando...</span>
+      </div>
+    </header>
+    
+    <main class="main">
+      <section class="panel" id="tabPanel">
+        <h2>Abas Ativas</h2>
+        <div class="tabs-list" id="tabsList">
+          <div class="loading">Carregando abas...</div>
+        </div>
+        <button class="btn btn-primary" id="refreshTabs">Atualizar</button>
+      </section>
+      
+      <section class="panel" id="actionPanel" style="display: none;">
+        <h2>Ações</h2>
+        <div class="form-group">
+          <label>URL</label>
+          <input type="url" id="navigateUrl" placeholder="https://...">
+        </div>
+        <div class="form-row">
+          <button class="btn btn-primary" id="navigateBtn">Navegar + Extrair</button>
+          <button class="btn btn-secondary" id="extractBtn">Extrair DOM</button>
+        </div>
+        <div class="form-group">
+          <label>Agentic Purpose ID</label>
+          <input type="text" id="elementId" placeholder="elem_1">
+        </div>
+        <div class="form-row">
+          <button class="btn btn-primary" id="clickBtn">Click</button>
+          <button class="btn btn-primary" id="fillBtn">Fill</button>
+        </div>
+        <div class="form-group" id="fillValueGroup" style="display: none;">
+          <label>Valor</label>
+          <input type="text" id="fillValue" placeholder="Texto para preencher">
+        </div>
+      </section>
+      
+      <section class="panel" id="toolsPanel">
+        <h2>Ferramentas</h2>
+        <div class="tools-grid">
+          <button class="tool-btn" id="captureAuthBtn">
+            <span class="tool-icon">🔐</span>
+            <span>Capturar Auth</span>
+          </button>
+          <button class="tool-btn" id="detectChallengeBtn">
+            <span class="tool-icon">🛡️</span>
+            <span>Detectar Challenge</span>
+          </button>
+          <button class="tool-btn" id="extractApiKeyBtn">
+            <span class="tool-icon">🔑</span>
+            <span>Extrair API Key</span>
+          </button>
+          <button class="tool-btn" id="healthCheckBtn">
+            <span class="tool-icon">❤️</span>
+            <span>Health Check</span>
+          </button>
+        </div>
+      </section>
+      
+      <section class="panel" id="resultsPanel">
+        <div class="panel-header">
+          <h2>Resultado</h2>
+          <button class="btn btn-ghost" id="clearResults">Limpar</button>
+        </div>
+        <pre class="results-output" id="resultsOutput">Aguardando ação...</pre>
+      </section>
+    </main>
+  </div>
+  
+  <script type="module" src="sidepanel.js"></script>
+</body>
+</html>
