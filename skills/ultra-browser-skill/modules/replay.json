@@ -1,0 +1,179 @@
+{
+  "version": "5.1.0",
+  "lastUpdated": "2026-07-06",
+  "description": "Session recording and replay patterns for common workflows",
+  "recording": {
+    "trigger": "After successful multi-step task completion",
+    "prompt": "Workflow completed successfully. Save as replay template? (yes/no)",
+    "format": {
+      "replay_id": "string — unique identifier (kebab-case)",
+      "recorded_at": "ISO date",
+      "description": "string — what this workflow does",
+      "steps": [
+        {
+          "action": "string — browser action type",
+          "target": "string — URL or element description",
+          "ref_pattern": "string — CSS/aria pattern for finding element (not fixed ref)",
+          "text": "string — optional text to type (may contain {{variables}})",
+          "label": "string — tab label",
+          "compact": "boolean — use compact snapshot",
+          "expected_state": "string — what to verify"
+        }
+      ],
+      "variables": "array — replaceable values (e.g., ['content', 'url'])",
+      "site": "string — target domain",
+      "estimated_duration": "string — e.g., '15 seconds'"
+    }
+  },
+  "replay_rules": [
+    "Always re-snapshot before each action (refs change between sessions)",
+    "Use ref_pattern instead of fixed refs (e.g., 'button:has-text(\"Post\")' not 'e42')",
+    "Variable substitution: {{variable_name}} replaced with provided values",
+    "Safety checks still apply — domain blocklist and element protection active",
+    "Validation still runs — Validator checks each step even in replay",
+    "If ref_pattern fails to match → Planner self-corrects (same as normal flow)"
+  ],
+  "ref_pattern_syntax": {
+    "text_match": "button:has-text('Post') — button containing text 'Post'",
+    "aria_label": "[aria-label*='compose'] — element with aria-label containing 'compose'",
+    "role": "[role='button'] — element with role 'button'",
+    "data_testid": "[data-testid='tweetButton'] — element with data-testid",
+    "input_type": "input[type='email'] — email input field",
+    "placeholder": "input[placeholder*='search' i] — search input (case-insensitive)",
+    "combined": "button:has-text('Submit')[type='submit'] — multiple conditions"
+  },
+  "example_replays": {
+    "linkedin_post": {
+      "description": "Create and publish a LinkedIn post",
+      "site": "linkedin.com",
+      "variables": [
+        "content"
+      ],
+      "steps": [
+        {
+          "action": "open",
+          "url": "https://linkedin.com/feed",
+          "label": "replay-linkedin"
+        },
+        {
+          "action": "snapshot",
+          "targetId": "replay-linkedin",
+          "refs": "aria",
+          "compact": true
+        },
+        {
+          "action": "act",
+          "kind": "click",
+          "ref_pattern": "button[aria-label*='Start a post']",
+          "targetId": "replay-linkedin"
+        },
+        {
+          "action": "snapshot",
+          "targetId": "replay-linkedin",
+          "refs": "aria",
+          "compact": true
+        },
+        {
+          "action": "act",
+          "kind": "fill",
+          "ref_pattern": "div[contenteditable='true']",
+          "text": "{{content}}",
+          "targetId": "replay-linkedin"
+        },
+        {
+          "action": "snapshot",
+          "targetId": "replay-linkedin",
+          "refs": "aria",
+          "compact": true
+        },
+        {
+          "action": "act",
+          "kind": "click",
+          "ref_pattern": "button:has-text('Post')",
+          "targetId": "replay-linkedin"
+        },
+        {
+          "action": "close",
+          "targetId": "replay-linkedin"
+        }
+      ]
+    },
+    "twitter_post": {
+      "description": "Create and publish a tweet",
+      "site": "x.com",
+      "variables": [
+        "content"
+      ],
+      "steps": [
+        {
+          "action": "open",
+          "url": "https://x.com/compose/post",
+          "label": "replay-twitter"
+        },
+        {
+          "action": "snapshot",
+          "targetId": "replay-twitter",
+          "refs": "aria",
+          "compact": true
+        },
+        {
+          "action": "act",
+          "kind": "fill",
+          "ref_pattern": "[data-testid='tweetTextarea_0']",
+          "text": "{{content}}",
+          "targetId": "replay-twitter"
+        },
+        {
+          "action": "snapshot",
+          "targetId": "replay-twitter",
+          "refs": "aria",
+          "compact": true
+        },
+        {
+          "action": "act",
+          "kind": "click",
+          "ref_pattern": "[data-testid='tweetButton']",
+          "targetId": "replay-twitter"
+        },
+        {
+          "action": "close",
+          "targetId": "replay-twitter"
+        }
+      ]
+    },
+    "gmail_check": {
+      "description": "Check Gmail inbox and summarize recent emails",
+      "site": "mail.google.com",
+      "variables": [
+        "count"
+      ],
+      "steps": [
+        {
+          "action": "open",
+          "url": "https://mail.google.com",
+          "label": "replay-gmail"
+        },
+        {
+          "action": "snapshot",
+          "targetId": "replay-gmail",
+          "refs": "aria",
+          "compact": true
+        },
+        {
+          "action": "evaluate",
+          "fn": "GET_EMAILS_SCRIPT",
+          "targetId": "replay-gmail"
+        },
+        {
+          "action": "close",
+          "targetId": "replay-gmail"
+        }
+      ]
+    }
+  },
+  "storage": {
+    "location": "modules/replay-templates.json",
+    "max_templates": 20,
+    "auto_cleanup": "Remove templates not used in 30 days"
+  }
+}

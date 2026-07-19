@@ -1,0 +1,282 @@
+{
+  "version": "5.1.0",
+  "lastUpdated": "2026-07-18",
+  "tools": {
+    "linkedin_post": {
+      "name": "LinkedIn Post Creator",
+      "description": "Create and publish a LinkedIn post with optional image",
+      "parameters": {
+        "content": {
+          "type": "string",
+          "required": true,
+          "description": "Post content"
+        },
+        "image": {
+          "type": "string",
+          "required": false,
+          "description": "Path to image file"
+        },
+        "hashtags": {
+          "type": "array",
+          "required": false,
+          "description": "Hashtags to add"
+        }
+      },
+      "steps": [
+        {
+          "action": "open",
+          "url": "https://linkedin.com/feed",
+          "label": "linkedin-post"
+        },
+        {
+          "action": "snapshot",
+          "targetId": "linkedin-post",
+          "refs": "aria"
+        },
+        {
+          "action": "act",
+          "kind": "click",
+          "ref": "COMPOSE_BUTTON",
+          "targetId": "linkedin-post"
+        },
+        {
+          "action": "snapshot",
+          "targetId": "linkedin-post",
+          "refs": "aria"
+        },
+        {
+          "action": "act",
+          "kind": "type",
+          "ref": "COMPOSE_BOX",
+          "text": "{{content}}",
+          "targetId": "linkedin-post"
+        },
+        {
+          "action": "snapshot",
+          "targetId": "linkedin-post",
+          "refs": "aria"
+        },
+        {
+          "action": "act",
+          "kind": "click",
+          "ref": "POST_BUTTON",
+          "targetId": "linkedin-post"
+        },
+        {
+          "action": "close",
+          "targetId": "linkedin-post"
+        }
+      ],
+      "site": "linkedin.com"
+    },
+    "twitter_post": {
+      "name": "Twitter/X Post Creator",
+      "description": "Create and publish a tweet",
+      "parameters": {
+        "content": {
+          "type": "string",
+          "required": true,
+          "description": "Tweet content (max 280 chars)"
+        },
+        "image": {
+          "type": "string",
+          "required": false,
+          "description": "Path to image file"
+        }
+      },
+      "steps": [
+        {
+          "action": "open",
+          "url": "https://x.com/compose/post",
+          "label": "twitter-post"
+        },
+        {
+          "action": "snapshot",
+          "targetId": "twitter-post",
+          "refs": "aria"
+        },
+        {
+          "action": "act",
+          "kind": "type",
+          "ref": "TWEET_TEXTAREA",
+          "text": "{{content}}",
+          "targetId": "twitter-post"
+        },
+        {
+          "action": "snapshot",
+          "targetId": "twitter-post",
+          "refs": "aria"
+        },
+        {
+          "action": "act",
+          "kind": "click",
+          "ref": "TWEET_BUTTON",
+          "targetId": "twitter-post"
+        },
+        {
+          "action": "close",
+          "targetId": "twitter-post"
+        }
+      ],
+      "site": "x.com"
+    },
+    "email_check": {
+      "name": "Email Checker",
+      "description": "Check Gmail for new emails and summarize",
+      "parameters": {
+        "label": {
+          "type": "string",
+          "required": false,
+          "description": "Filter by label (primary, promotions, etc.)"
+        },
+        "count": {
+          "type": "number",
+          "required": false,
+          "description": "Number of emails to check (default: 5)"
+        }
+      },
+      "steps": [
+        {
+          "action": "open",
+          "url": "https://mail.google.com",
+          "label": "gmail-check"
+        },
+        {
+          "action": "snapshot",
+          "targetId": "gmail-check",
+          "refs": "aria"
+        },
+        {
+          "action": "act",
+          "kind": "evaluate",
+          "fn": "GET_EMAILS_SCRIPT",
+          "targetId": "gmail-check"
+        },
+        {
+          "action": "close",
+          "targetId": "gmail-check"
+        }
+      ],
+      "site": "mail.google.com"
+    },
+    "form_filler": {
+      "name": "Generic Form Filler",
+      "description": "Fill any form with provided data",
+      "parameters": {
+        "url": {
+          "type": "string",
+          "required": true,
+          "description": "Form URL"
+        },
+        "fields": {
+          "type": "object",
+          "required": true,
+          "description": "Field name/value pairs"
+        },
+        "submit": {
+          "type": "boolean",
+          "required": false,
+          "description": "Submit after filling (default: false)"
+        }
+      },
+      "steps": [
+        {
+          "action": "open",
+          "url": "{{url}}",
+          "label": "form-fill"
+        },
+        {
+          "action": "snapshot",
+          "targetId": "form-fill",
+          "refs": "aria"
+        },
+        {
+          "action": "note",
+          "text": "For each field in {{fields}}, use act kind=fill with ref matching field name"
+        },
+        {
+          "action": "close",
+          "targetId": "form-fill"
+        }
+      ]
+    },
+    "screenshot_and_analyze": {
+      "name": "Screenshot Analyzer",
+      "description": "Take annotated screenshot and analyze page content",
+      "parameters": {
+        "url": {
+          "type": "string",
+          "required": true,
+          "description": "Page URL"
+        },
+        "analysis_prompt": {
+          "type": "string",
+          "required": false,
+          "description": "What to look for"
+        }
+      },
+      "steps": [
+        {
+          "action": "open",
+          "url": "{{url}}",
+          "label": "screenshot-analyze"
+        },
+        {
+          "action": "screenshot",
+          "targetId": "screenshot-analyze",
+          "labels": true
+        },
+        {
+          "action": "snapshot",
+          "targetId": "screenshot-analyze",
+          "refs": "aria"
+        },
+        {
+          "action": "close",
+          "targetId": "screenshot-analyze"
+        }
+      ]
+    },
+    "multi_site_research": {
+      "name": "Multi-Site Researcher",
+      "description": "Research multiple sites in parallel using background sub-agents",
+      "parameters": {
+        "urls": {
+          "type": "array",
+          "required": true,
+          "description": "URLs to research"
+        },
+        "prompt": {
+          "type": "string",
+          "required": true,
+          "description": "Research question for each site"
+        },
+        "consolidate": {
+          "type": "boolean",
+          "required": false,
+          "description": "Consolidate results (default: true)"
+        }
+      },
+      "steps": [
+        {
+          "action": "note",
+          "text": "For each URL in {{urls}}, spawn a sub-agent session"
+        },
+        {
+          "action": "sessions_spawn",
+          "task": "Research {{url}}: {{prompt}}",
+          "context": "isolated",
+          "mode": "run"
+        },
+        {
+          "action": "sessions_yield",
+          "message": "Waiting for research results"
+        },
+        {
+          "action": "note",
+          "text": "Consolidate returned facts from all sub-agents with [web:N] citations"
+        }
+      ]
+    }
+  }
+}

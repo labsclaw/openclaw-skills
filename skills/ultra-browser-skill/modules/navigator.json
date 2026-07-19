@@ -1,0 +1,119 @@
+{
+  "version": "5.1.0",
+  "lastUpdated": "2026-07-06",
+  "description": "Navigator agent — execution protocols, 4 primitives, and cache integration (v5)",
+  "execution_protocol": {
+    "per_step": [
+      "1. Pre-action snapshot (compact: true, refs: aria)",
+      "2. Execute action using appropriate tool",
+      "3. Post-action snapshot to verify state change",
+      "4. Report outcome to Validator with: status, page_url, visible_elements, errors, data_captured"
+    ],
+    "rules": [
+      "Always snapshot before acting (get fresh refs)",
+      "Use @e refs, never CSS selectors or coordinates",
+      "Batch related actions when possible (click + type + click)",
+      "Use compact snapshots to save tokens",
+      "Close tabs when task is complete",
+      "Never skip safety checks"
+    ]
+  },
+  "action_matrix": {
+    "observe": {
+      "primitive": true,
+      "description": "Discover available actions without executing",
+      "tool": "browser observe()",
+      "pre_action": "None (this IS the observation)",
+      "post_action": "Review returned elements, pick best match",
+      "notes": "Use before act() on unfamiliar pages"
+    },
+    "act": {
+      "primitive": true,
+      "description": "Execute a natural language action",
+      "tool": "browser act()",
+      "pre_action": "snapshot or observe (to find element)",
+      "post_action": "snapshot to verify state changed",
+      "notes": "Stagehand resolves element from instruction"
+    },
+    "extract": {
+      "primitive": true,
+      "description": "Pull structured data from page",
+      "tool": "browser extract()",
+      "pre_action": "snapshot (to understand page structure)",
+      "post_action": "Verify data matches expected schema",
+      "notes": "Use Zod-like schemas for type safety"
+    },
+    "agent": {
+      "primitive": true,
+      "description": "Multi-step autonomous execution",
+      "tool": "browser agent()",
+      "pre_action": "None (agent handles its own steps)",
+      "post_action": "Verify overall task completion",
+      "notes": "Use for complex tasks; agent plans internally"
+    },
+    "navigate": {
+      "primitive": false,
+      "tool": "browser open or browser navigate",
+      "pre_action": "snapshot (to verify current state)",
+      "post_action": "snapshot (to confirm navigation succeeded)",
+      "notes": "Always use labels for tracking"
+    },
+    "extract_legacy": {
+      "primitive": false,
+      "tool": "browser snapshot + browser evaluate",
+      "pre_action": "snapshot (compact: true)",
+      "post_action": "Verify data was captured",
+      "notes": "Use extract() primitive instead when possible"
+    },
+    "upload": {
+      "primitive": false,
+      "tool": "browser act kind=upload",
+      "pre_action": "Verify file path exists",
+      "post_action": "snapshot to confirm upload started",
+      "notes": "Confirm file exists before upload"
+    },
+    "scroll": {
+      "primitive": false,
+      "tool": "browser act kind=scrollIntoView or press key=PageDown",
+      "pre_action": "snapshot to identify scroll target",
+      "post_action": "snapshot to verify content is now visible",
+      "notes": "Use scrollIntoView for specific elements"
+    },
+    "wait": {
+      "primitive": false,
+      "tool": "browser act kind=wait",
+      "pre_action": "None",
+      "post_action": "snapshot to verify content loaded",
+      "notes": "Use for dynamic content, SPAs, lazy loading"
+    },
+    "consolidate": {
+      "primitive": false,
+      "tool": "None (data processing only)",
+      "pre_action": "Review all captured data",
+      "post_action": "Format output",
+      "notes": "No browser action needed"
+    },
+    "verify": {
+      "primitive": false,
+      "tool": "browser snapshot",
+      "pre_action": "None",
+      "post_action": "Check expected_state matches",
+      "notes": "Used for final validation"
+    }
+  },
+  "token_optimization": {
+    "compact_snapshots": true,
+    "use_refs_not_selectors": true,
+    "batch_actions": true,
+    "incremental_snapshots": "Only re-snapshot changed areas when possible",
+    "max_snapshot_chars": 3000,
+    "ref_token_cost": "~5 tokens",
+    "css_selector_token_cost": "~50 tokens",
+    "coordinate_token_cost": "~10 tokens"
+  },
+  "navigator_model_requirements": {
+    "min_context_window": 4000,
+    "recommended": "Fast model (Haiku, Flash, GPT-4o-mini)",
+    "thinking": "off — Navigator executes, doesn't reason"
+  }
+}

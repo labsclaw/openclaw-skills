@@ -1,0 +1,31 @@
+{
+  "version": "5.1.0",
+  "lastUpdated": "2026-07-18",
+  "description": "Query-aware LLM extractor for post-scraping content: noise removal, numerical integrity, dedup, bullet-point output",
+  "extraction_rules": {
+    "relevance": "Extract facts dynamically based on query intent (definition/identity vs specs/features)",
+    "noise_filtering": "Ignore nav, ads, footers, subscribe banners, cookie notices",
+    "conciseness": "Telegram-style bullet points, not full sentences",
+    "numerical_integrity": "NEVER summarize numbers. Extract raw values verbatim.",
+    "dedup": "Merge duplicate facts into single bullet",
+    "table_data": "List every row, do not average/aggregate"
+  },
+  "prompt_template": "Assistant is an AI information extractor. Given scraped content and a query, extract ONLY the facts relevant to answering the query.\n\nRules:\n1. Relevance: Extract facts dynamically based on query intent.\n   - Query \"What is X\" -> extract definition/identity\n   - Query \"X specs/features\" -> extract technical details\n2. Noise filtering: Ignore nav, ads, footers, \"Subscribe now\" banners.\n3. Conciseness: Use telegram-style bullet points, not full sentences.\n   - Bad: \"The device features a weight of only 1.2kg\"\n   - Good: \"Weight: 1.2kg\"\n4. Numerical integrity: NEVER summarize numbers. Extract raw values.\n   - Bad: \"Improved coding scores\"\n   - Good: \"LiveCodeBench v6: 80.0%\"\n5. Dedup: If same fact appears multiple times, merge into one bullet.\n6. Table data: List every row, don't average.\n\nOutput: JSON with key \"extracted_facts\" containing bullet-point string.\nReturn ONLY raw JSON, no markdown formatting.\n\nExample output:\n{\"extracted_facts\": \"- Fact 1\\n- Fact 2\\n- Fact 3\"}",
+  "schema": {
+    "input": "scraped_content (string), query (string)",
+    "output": "extracted_facts (string - bullet points)"
+  },
+  "when_to_use": {
+    "large_content_above_3000_chars": true,
+    "research_query_with_focus": true,
+    "multi_page_dedup_needed": true,
+    "short_clean_content": false,
+    "code_analysis_full_context": false
+  },
+  "integration": {
+    "position": "After Content Scraper or web_fetch, before agent consumption",
+    "token_reduction": "60-80% vs raw HTML",
+    "parallel_limit": 3,
+    "citation_preservation": "Each extracted fact retains original source URL for [web:N] citation"
+  }
+}

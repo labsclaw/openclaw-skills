@@ -1,0 +1,127 @@
+{
+  "version": "5.1.0",
+  "lastUpdated": "2026-06-18",
+  "description": "ID registry for tracking data across tool calls. Format: {type}:{index}",
+  "types": {
+    "tab": {
+      "description": "Open browser tab",
+      "example": "tab:1",
+      "created_by": [
+        "browser open",
+        "browser tabs"
+      ],
+      "referenced_by": [
+        "browser snapshot",
+        "browser act",
+        "browser screenshot"
+      ]
+    },
+    "page": {
+      "description": "Current page context",
+      "example": "page:1",
+      "created_by": [
+        "browser snapshot (current page)"
+      ],
+      "referenced_by": [
+        "browser act (use_current_page=true)"
+      ]
+    },
+    "web": {
+      "description": "Web search result",
+      "example": "web:3",
+      "created_by": [
+        "web_search",
+        "web_fetch"
+      ],
+      "referenced_by": [
+        "browser open (attached_ids)",
+        "response citations"
+      ]
+    },
+    "email": {
+      "description": "Email message",
+      "example": "email:1",
+      "created_by": [
+        "email API"
+      ],
+      "referenced_by": [
+        "browser control (compose/reply)",
+        "response citations"
+      ]
+    },
+    "calendar": {
+      "description": "Calendar event",
+      "example": "calendar:2",
+      "created_by": [
+        "calendar API"
+      ],
+      "referenced_by": [
+        "response citations"
+      ]
+    },
+    "snapshot": {
+      "description": "DOM snapshot",
+      "example": "snapshot:1",
+      "created_by": [
+        "browser snapshot"
+      ],
+      "referenced_by": [
+        "browser act (refs from snapshot)"
+      ]
+    },
+    "screenshot": {
+      "description": "Screenshot capture",
+      "example": "screenshot:1",
+      "created_by": [
+        "browser screenshot"
+      ],
+      "referenced_by": [
+        "response (image reference)"
+      ]
+    },
+    "file": {
+      "description": "Downloaded/generated file",
+      "example": "file:1",
+      "created_by": [
+        "browser upload",
+        "code execution"
+      ],
+      "referenced_by": [
+        "response (file reference)"
+      ]
+    }
+  },
+  "rules": {
+    "format": "{type}:{index}",
+    "index_starts_at": 1,
+    "session_scoped": true,
+    "unique_per_type": true,
+    "never_reuse": true,
+    "cite_at_point_of_use": true,
+    "one_citation_per_fact": true
+  },
+  "cross_tool_flow": {
+    "description": "Pass data between tools via IDs, not content copies",
+    "pattern": [
+      "1. Tool A returns results with IDs",
+      "2. User/agent references IDs in next tool call",
+      "3. Tool B dereferences IDs internally",
+      "4. Agent uses dereferenced content"
+    ],
+    "example": {
+      "step1": "web_search('restaurants') → [web:1, web:2, web:3]",
+      "step2": "browser_open('opentable.com', attached_ids=[web:1, web:2])",
+      "step3": "Agent reads web:1 and web:2 content to make reservations",
+      "step4": "Response cites [web:1] and [web:2]"
+    }
+  },
+  "citation_format": {
+    "inline": "[type:index]",
+    "multiple": "[type:1, type:2, type:3]",
+    "examples": [
+      "The company raised $50M [web:1].",
+      "Revenue grew 15% [web:1, web:3].",
+      "Competitors include A [web:2] and B [web:4]."
+    ]
+  }
+}
