@@ -719,19 +719,29 @@ Every piece of data gets `{type}:{index}`:
 
 ---
 
-## Citation System
+## Citation System (with LangExtract Source Grounding)
+
+Every fact is traced back to its exact source location using LangExtract's `char_interval`.
 
 ```markdown
-The company raised $50M [web:1].
-Revenue grew 15% [web:1, web:3].
-Competitors include A [web:2] and B [web:4].
+The company raised $50M [web:1, chars 342-358].
+Revenue grew 15% [web:1, chars 401-415; web:3, chars 120-135].
+Competitors include A [web:2, chars 89-102] and B [web:4, chars 200-215].
 ```
 
 **Rules:**
-- One citation per fact
+- Every fact must have a citation with `char_interval` when available
+- Format: `[{source_id}, chars {start_pos}-{end_pos}]`
+- Multiple sources: `[web:1, chars 342-358; web:3, chars 120-135]`
+- Filter extractions with `char_interval = null` (ungrounded)
 - Cite at point of use (not end of paragraph)
-- Multiple sources: `[web:1, web:2]`
 - Always include URL in sources list
+
+**How it works:**
+1. LangExtract processes scraped text and returns extractions with `char_interval` (start_pos, end_pos)
+2. Each extraction maps to exact character positions in the original document
+3. Citations include the source ID + character range for precise traceability
+4. Grounding verification: if `char_interval` is null, the extraction may be hallucinated — flag it
 
 ---
 
@@ -1019,9 +1029,17 @@ Researcher Agent
     │
     ├─ SearxNG search → URLs
     ├─ Content Scraper → Clean content per URL
-    ├─ LLM Extractor → Filtered facts
-    └─ Consolidate → Answer with citations
+    ├─ LangExtract → Structured extraction with source grounding
+    │   • Domain-specific few-shot examples (research/financial/technical/general)
+    │   • Every entity mapped to exact char_interval in source text
+    │   • Chunking + parallel processing for long documents
+    │   • Schema enforcement via controlled generation
+    ├─ Consolidate → Answer with granular citations [web:N, chars X-Y]
+    └─ Optional: Visualize extractions as interactive HTML
 ```
+
+> **Note:** LangExtract replaces the legacy LLM Content Extractor as the primary extraction backend.
+> See `modules/langextract.json` for full configuration, few-shot examples per domain, and citation format.
 
 ---
 
@@ -1146,7 +1164,8 @@ This replaces sending raw HTML to the answer generator, cutting token usage by 6
 | `modules/tool-router.md` | Smart routing decision tree |
 | `modules/custom-tools.json` | Reusable tool templates (LinkedIn, Twitter, form filler, multi-site research) |
 | `modules/content-scraper.json` | Playwright + Readability scraper config (v5.1) |
-| `modules/extractor.json` | LLM extractor prompts & schemas (v5.1) |
+| `modules/extractor.json` | Legacy LLM extractor prompts & schemas (v5.1) |
+| `modules/langextract.json` | Google LangExtract integration — structured extraction with source grounding (v1.6.0) |
 
 ---
 
