@@ -1,5 +1,5 @@
 {
-  "version": "5.0.0",
+  "version": "5.1.0",
   "lastUpdated": "2026-07-06",
   "description": "Observe-Act cache for deterministic replay of successful action patterns",
   "how_it_works": [
@@ -74,17 +74,39 @@
       "cache_id": "linkedin-compose-button",
       "site": "linkedin.com",
       "url_pattern": "linkedin.com/feed",
-      "action": {"type": "click", "selector": "button[aria-label*='Start a post']", "ref_hint": "compose button"},
-      "confidence": {"success_count": 12, "fail_count": 0, "score": 100},
-      "metadata": {"created_by": "ai", "ttl_days": 30}
+      "action": {
+        "type": "click",
+        "selector": "button[aria-label*='Start a post']",
+        "ref_hint": "compose button"
+      },
+      "confidence": {
+        "success_count": 12,
+        "fail_count": 0,
+        "score": 100
+      },
+      "metadata": {
+        "created_by": "ai",
+        "ttl_days": 30
+      }
     },
     {
       "cache_id": "gmail-search-box",
       "site": "mail.google.com",
       "url_pattern": "mail.google.com/*",
-      "action": {"type": "fill", "selector": "input[aria-label='Search mail']", "ref_hint": "search input"},
-      "confidence": {"success_count": 8, "fail_count": 1, "score": 89},
-      "metadata": {"created_by": "ai", "ttl_days": 30}
+      "action": {
+        "type": "fill",
+        "selector": "input[aria-label='Search mail']",
+        "ref_hint": "search input"
+      },
+      "confidence": {
+        "success_count": 8,
+        "fail_count": 1,
+        "score": 89
+      },
+      "metadata": {
+        "created_by": "ai",
+        "ttl_days": 30
+      }
     }
   ],
   "storage": {

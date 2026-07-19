@@ -1,5 +1,5 @@
 {
-  "version": "3.0.0",
+  "version": "5.1.0",
   "lastUpdated": "2026-06-18",
   "description": "Prompt injection detection patterns and defense rules",
   "threat_model": {

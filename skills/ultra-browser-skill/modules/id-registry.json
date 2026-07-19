@@ -1,55 +1,94 @@
 {
-  "version": "3.0.0",
+  "version": "5.1.0",
   "lastUpdated": "2026-06-18",
   "description": "ID registry for tracking data across tool calls. Format: {type}:{index}",
   "types": {
     "tab": {
       "description": "Open browser tab",
       "example": "tab:1",
-      "created_by": ["browser open", "browser tabs"],
-      "referenced_by": ["browser snapshot", "browser act", "browser screenshot"]
+      "created_by": [
+        "browser open",
+        "browser tabs"
+      ],
+      "referenced_by": [
+        "browser snapshot",
+        "browser act",
+        "browser screenshot"
+      ]
     },
     "page": {
       "description": "Current page context",
       "example": "page:1",
-      "created_by": ["browser snapshot (current page)"],
-      "referenced_by": ["browser act (use_current_page=true)"]
+      "created_by": [
+        "browser snapshot (current page)"
+      ],
+      "referenced_by": [
+        "browser act (use_current_page=true)"
+      ]
     },
     "web": {
       "description": "Web search result",
       "example": "web:3",
-      "created_by": ["web_search", "web_fetch"],
-      "referenced_by": ["browser open (attached_ids)", "response citations"]
+      "created_by": [
+        "web_search",
+        "web_fetch"
+      ],
+      "referenced_by": [
+        "browser open (attached_ids)",
+        "response citations"
+      ]
     },
     "email": {
       "description": "Email message",
       "example": "email:1",
-      "created_by": ["email API"],
-      "referenced_by": ["browser control (compose/reply)", "response citations"]
+      "created_by": [
+        "email API"
+      ],
+      "referenced_by": [
+        "browser control (compose/reply)",
+        "response citations"
+      ]
     },
     "calendar": {
       "description": "Calendar event",
       "example": "calendar:2",
-      "created_by": ["calendar API"],
-      "referenced_by": ["response citations"]
+      "created_by": [
+        "calendar API"
+      ],
+      "referenced_by": [
+        "response citations"
+      ]
     },
     "snapshot": {
       "description": "DOM snapshot",
       "example": "snapshot:1",
-      "created_by": ["browser snapshot"],
-      "referenced_by": ["browser act (refs from snapshot)"]
+      "created_by": [
+        "browser snapshot"
+      ],
+      "referenced_by": [
+        "browser act (refs from snapshot)"
+      ]
     },
     "screenshot": {
       "description": "Screenshot capture",
       "example": "screenshot:1",
-      "created_by": ["browser screenshot"],
-      "referenced_by": ["response (image reference)"]
+      "created_by": [
+        "browser screenshot"
+      ],
+      "referenced_by": [
+        "response (image reference)"
+      ]
     },
     "file": {
       "description": "Downloaded/generated file",
       "example": "file:1",
-      "created_by": ["browser upload", "code execution"],
-      "referenced_by": ["response (file reference)"]
+      "created_by": [
+        "browser upload",
+        "code execution"
+      ],
+      "referenced_by": [
+        "response (file reference)"
+      ]
     }
   },
   "rules": {

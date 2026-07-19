@@ -1,5 +1,5 @@
 {
-  "version": "5.0.0",
+  "version": "5.1.0",
   "lastUpdated": "2026-07-06",
   "description": "Vision fallback rules for screenshot-based analysis when DOM fails",
   "when_to_use": [
@@ -34,16 +34,41 @@
   },
   "multi_model_routing": {
     "vision_tasks": {
-      "models": ["GPT-4o", "Gemini Pro Vision", "Claude Sonnet"],
-      "use_for": ["Layout understanding", "Element detection", "Screenshot analysis", "Visual verification"]
+      "models": [
+        "GPT-4o",
+        "Gemini Pro Vision",
+        "Claude Sonnet"
+      ],
+      "use_for": [
+        "Layout understanding",
+        "Element detection",
+        "Screenshot analysis",
+        "Visual verification"
+      ]
     },
     "reasoning_tasks": {
-      "models": ["Claude Sonnet", "GPT-4o"],
-      "use_for": ["Task planning", "Failure analysis", "Strategy adjustment"]
+      "models": [
+        "Claude Sonnet",
+        "GPT-4o"
+      ],
+      "use_for": [
+        "Task planning",
+        "Failure analysis",
+        "Strategy adjustment"
+      ]
     },
     "speed_tasks": {
-      "models": ["GPT-4o-mini", "Claude Haiku", "Gemini Flash"],
-      "use_for": ["Element clicking", "Form filling", "Simple navigation", "Validation checks"]
+      "models": [
+        "GPT-4o-mini",
+        "Claude Haiku",
+        "Gemini Flash"
+      ],
+      "use_for": [
+        "Element clicking",
+        "Form filling",
+        "Simple navigation",
+        "Validation checks"
+      ]
     }
   },
   "analysis_prompts": {
@@ -67,7 +92,11 @@
   "screenshot_analysis_format": {
     "element_location": {
       "description": "Approximate coordinates of found element",
-      "format": {"x": "number — pixels from left", "y": "number — pixels from top", "confidence": "low|medium|high"}
+      "format": {
+        "x": "number — pixels from left",
+        "y": "number — pixels from top",
+        "confidence": "low|medium|high"
+      }
     },
     "page_description": {
       "description": "What the page currently shows",

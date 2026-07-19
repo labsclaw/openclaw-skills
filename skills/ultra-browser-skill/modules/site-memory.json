@@ -1,12 +1,22 @@
 {
-  "version": "2.0.0",
+  "version": "5.1.0",
   "lastUpdated": "2026-06-18",
   "sites": {
     "linkedin.com": {
       "platform": "LinkedIn",
       "login_flow": "email → password → 2FA (email code)",
       "onboarding": {
-        "steps": ["emailConfirmation", "ageCheck", "jobSeekerStatus", "photoUpload", "contactImport", "connectionSuggestions", "followSuggestions", "appDownload", "gamesNotification"],
+        "steps": [
+          "emailConfirmation",
+          "ageCheck",
+          "jobSeekerStatus",
+          "photoUpload",
+          "contactImport",
+          "connectionSuggestions",
+          "followSuggestions",
+          "appDownload",
+          "gamesNotification"
+        ],
         "all_skippable": true,
         "skip_strategy": "Click 'Skip' or 'Pular' on each step, uncheck notification toggles",
         "progress_bar": true,

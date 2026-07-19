@@ -1,5 +1,5 @@
 {
-  "version": "4.0.0",
+  "version": "5.1.0",
   "lastUpdated": "2026-07-06",
   "description": "Session recording and replay patterns for common workflows",
   "recording": {
@@ -46,40 +46,128 @@
     "linkedin_post": {
       "description": "Create and publish a LinkedIn post",
       "site": "linkedin.com",
-      "variables": ["content"],
+      "variables": [
+        "content"
+      ],
       "steps": [
-        {"action": "open", "url": "https://linkedin.com/feed", "label": "replay-linkedin"},
-        {"action": "snapshot", "targetId": "replay-linkedin", "refs": "aria", "compact": true},
-        {"action": "act", "kind": "click", "ref_pattern": "button[aria-label*='Start a post']", "targetId": "replay-linkedin"},
-        {"action": "snapshot", "targetId": "replay-linkedin", "refs": "aria", "compact": true},
-        {"action": "act", "kind": "fill", "ref_pattern": "div[contenteditable='true']", "text": "{{content}}", "targetId": "replay-linkedin"},
-        {"action": "snapshot", "targetId": "replay-linkedin", "refs": "aria", "compact": true},
-        {"action": "act", "kind": "click", "ref_pattern": "button:has-text('Post')", "targetId": "replay-linkedin"},
-        {"action": "close", "targetId": "replay-linkedin"}
+        {
+          "action": "open",
+          "url": "https://linkedin.com/feed",
+          "label": "replay-linkedin"
+        },
+        {
+          "action": "snapshot",
+          "targetId": "replay-linkedin",
+          "refs": "aria",
+          "compact": true
+        },
+        {
+          "action": "act",
+          "kind": "click",
+          "ref_pattern": "button[aria-label*='Start a post']",
+          "targetId": "replay-linkedin"
+        },
+        {
+          "action": "snapshot",
+          "targetId": "replay-linkedin",
+          "refs": "aria",
+          "compact": true
+        },
+        {
+          "action": "act",
+          "kind": "fill",
+          "ref_pattern": "div[contenteditable='true']",
+          "text": "{{content}}",
+          "targetId": "replay-linkedin"
+        },
+        {
+          "action": "snapshot",
+          "targetId": "replay-linkedin",
+          "refs": "aria",
+          "compact": true
+        },
+        {
+          "action": "act",
+          "kind": "click",
+          "ref_pattern": "button:has-text('Post')",
+          "targetId": "replay-linkedin"
+        },
+        {
+          "action": "close",
+          "targetId": "replay-linkedin"
+        }
       ]
     },
     "twitter_post": {
       "description": "Create and publish a tweet",
       "site": "x.com",
-      "variables": ["content"],
+      "variables": [
+        "content"
+      ],
       "steps": [
-        {"action": "open", "url": "https://x.com/compose/post", "label": "replay-twitter"},
-        {"action": "snapshot", "targetId": "replay-twitter", "refs": "aria", "compact": true},
-        {"action": "act", "kind": "fill", "ref_pattern": "[data-testid='tweetTextarea_0']", "text": "{{content}}", "targetId": "replay-twitter"},
-        {"action": "snapshot", "targetId": "replay-twitter", "refs": "aria", "compact": true},
-        {"action": "act", "kind": "click", "ref_pattern": "[data-testid='tweetButton']", "targetId": "replay-twitter"},
-        {"action": "close", "targetId": "replay-twitter"}
+        {
+          "action": "open",
+          "url": "https://x.com/compose/post",
+          "label": "replay-twitter"
+        },
+        {
+          "action": "snapshot",
+          "targetId": "replay-twitter",
+          "refs": "aria",
+          "compact": true
+        },
+        {
+          "action": "act",
+          "kind": "fill",
+          "ref_pattern": "[data-testid='tweetTextarea_0']",
+          "text": "{{content}}",
+          "targetId": "replay-twitter"
+        },
+        {
+          "action": "snapshot",
+          "targetId": "replay-twitter",
+          "refs": "aria",
+          "compact": true
+        },
+        {
+          "action": "act",
+          "kind": "click",
+          "ref_pattern": "[data-testid='tweetButton']",
+          "targetId": "replay-twitter"
+        },
+        {
+          "action": "close",
+          "targetId": "replay-twitter"
+        }
       ]
     },
     "gmail_check": {
       "description": "Check Gmail inbox and summarize recent emails",
       "site": "mail.google.com",
-      "variables": ["count"],
+      "variables": [
+        "count"
+      ],
       "steps": [
-        {"action": "open", "url": "https://mail.google.com", "label": "replay-gmail"},
-        {"action": "snapshot", "targetId": "replay-gmail", "refs": "aria", "compact": true},
-        {"action": "evaluate", "fn": "GET_EMAILS_SCRIPT", "targetId": "replay-gmail"},
-        {"action": "close", "targetId": "replay-gmail"}
+        {
+          "action": "open",
+          "url": "https://mail.google.com",
+          "label": "replay-gmail"
+        },
+        {
+          "action": "snapshot",
+          "targetId": "replay-gmail",
+          "refs": "aria",
+          "compact": true
+        },
+        {
+          "action": "evaluate",
+          "fn": "GET_EMAILS_SCRIPT",
+          "targetId": "replay-gmail"
+        },
+        {
+          "action": "close",
+          "targetId": "replay-gmail"
+        }
       ]
     }
   },

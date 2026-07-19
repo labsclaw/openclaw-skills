@@ -1,5 +1,5 @@
 {
-  "version": "5.0.0",
+  "version": "5.1.0",
   "lastUpdated": "2026-07-06",
   "description": "Navigator agent — execution protocols, 4 primitives, and cache integration (v5)",
   "execution_protocol": {

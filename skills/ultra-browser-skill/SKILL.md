@@ -1,6 +1,6 @@
 ---
 name: ultra-browser-skill
-description: Ultimate browser control for OpenClaw — multi-agent orchestration (Planner→Navigator→Validator), Accessibility Tree optimization (80-90% fewer tokens), observe-act caching, vision fallback, DevTools integration (console/network/performance/a11y), task decomposition, session replay, self-healing automation, and full v3/v4 features.
+description: Full browser automation — Playwright headless scraping, LLM extractor, ARIA tree grounding, planner/navigator loop, DevTools integration, self-healing.
 version: 5.1.0
 author: Luna (OpenClaw Agency)
 ---
@@ -182,6 +182,19 @@ async def wait_for_challenge(page, timeout_ms=15000):
 ---
 
 ## Architecture
+
+### Skill Ecosystem — Where Ultra-Browser Fits
+
+This skill coexists with two other browser tools in the workspace.
+Here is the **division of responsibility**:
+
+| Tool | Role | When to Use |
+|------|------|-------------|
+| **Ultra-Browser Skill** (this) | Full agentic browser orchestration | Complex multi-step tasks, scraping, research, DevTools, planner/navigator/validator loop |
+| **OpenClaw browser tool** (built-in) | Direct tool-level browser control | Single snapshot, click, or navigate calls — lightweight, no extra setup |
+| **Camoufox** (anti-detection) | Browser fingerprint protection layer | Only when operating from a different machine/context; NOT needed when using CDP mode with real user Chrome |
+
+**Default flow:** Start with the built-in browser tool for simple actions. Escalate to this skill for complex multi-step workflows, content scraping, or when you need the planner/navigator/validator loop. Camoufox is only relevant for cross-machine anti-detection — CDP mode on the real user browser already inherits the user's session and fingerprint.
 
 ### The Agent Loop (4 Phases)
 
@@ -854,6 +867,12 @@ Use tools to clarify, never ask the user.
 
 **Exception:** Passwords, payment confirmation, irreversible actions.
 
+**Precedence:** The **Safety System (4 Layers)** ALWAYS overrides the Never Ask Policy.
+- If Safety Layer 2 says ASK_USER for a password field → the agent MUST ask, despite Never Ask.
+- If Safety Layer 2 says CONFIRM for irreversible actions → the agent MUST confirm.
+- The Never Ask Policy applies to *discoverable information*, not to safety-critical confirmations.
+- Think of it as: "Never ask for things you can find out, but ALWAYS confirm things that can cause harm."
+
 ---
 
 ## Content Scraper Engine (Playwright + Readability)
@@ -979,7 +998,7 @@ class ContentScraper:
 | Scenario | web_fetch | Content Scraper |
 |----------|-----------|-----------------|
 | Static HTML blog | ✅ Prefer | ⏹️ Overkill |
-| SPA (React/Vue/Angular) | ❌ Fails | ✅ Corretto |
+| SPA (React/Vue/Angular) | ❌ Fails | ✅ Correct |
 | Twitter/X thread | ❌ Skeleton only | ✅ Full content |
 | Medium/Substack article | ⚠️ Partial | ✅ Full reader mode |
 | Documentation site | ⚠️ Misses JS toggles | ✅ Rendered fully |
@@ -1125,9 +1144,9 @@ This replaces sending raw HTML to the answer generator, cutting token usage by 6
 | `modules/id-registry.json` | ID tracking across tool calls |
 | `modules/injection-patterns.json` | Prompt injection detection |
 | `modules/tool-router.md` | Smart routing decision tree |
-| `modules/custom-tools.json` | Reusable tool templates |
-| `modules/content-scraper.json` | Playwright + Readability scraper config |
-| `modules/extractor.json` | LLM extractor prompts & schemas |
+| `modules/custom-tools.json` | Reusable tool templates (LinkedIn, Twitter, form filler, multi-site research) |
+| `modules/content-scraper.json` | Playwright + Readability scraper config (v5.1) |
+| `modules/extractor.json` | LLM extractor prompts & schemas (v5.1) |
 
 ---
 

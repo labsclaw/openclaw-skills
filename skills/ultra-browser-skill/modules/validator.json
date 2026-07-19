@@ -1,5 +1,5 @@
 {
-  "version": "5.0.0",
+  "version": "5.1.0",
   "lastUpdated": "2026-07-06",
   "description": "Validator agent — verification rules, failure classification, vision fallback trigger (v5)",
   "verification_checks": {

@@ -1,5 +1,5 @@
 {
-  "version": "5.0.0",
+  "version": "5.1.0",
   "lastUpdated": "2026-07-06",
   "description": "DevTools integration module — console analysis, network monitoring, performance profiling, accessibility verification (inspired by Addy Osmani's browser-testing-with-devtools)",
   "console_analysis": {
@@ -35,8 +35,20 @@
   "network_monitoring": {
     "description": "Capture and analyze network requests during automation",
     "what_to_capture": {
-      "requests": ["URL", "method", "headers", "payload", "timing"],
-      "responses": ["status code", "headers", "body", "size", "time"]
+      "requests": [
+        "URL",
+        "method",
+        "headers",
+        "payload",
+        "timing"
+      ],
+      "responses": [
+        "status code",
+        "headers",
+        "body",
+        "size",
+        "time"
+      ]
     },
     "diagnosis_patterns": {
       "4xx_client_error": "Client sending wrong data or wrong URL",

@@ -1,5 +1,5 @@
 {
-  "version": "5.0.0",
+  "version": "5.1.0",
   "lastUpdated": "2026-07-06",
   "description": "Observer module — the observe() primitive for discovering page actions without executing",
   "purpose": "Discover available actions on a page before committing to execute them. Reduces failed clicks and wasted tokens.",

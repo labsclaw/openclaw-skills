@@ -1,5 +1,5 @@
 {
-  "version": "5.0.0",
+  "version": "5.1.0",
   "lastUpdated": "2026-07-06",
   "description": "Planner agent — task decomposition, self-correction, and cache-aware planning (v5)",
   "decomposition": {

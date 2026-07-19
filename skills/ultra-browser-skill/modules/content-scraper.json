@@ -1,0 +1,62 @@
+{
+  "version": "5.1.0",
+  "lastUpdated": "2026-07-18",
+  "description": "Playwright headless + Mozilla Readability for JS-heavy sites (SPAs, Twitter, docs)",
+  "pipeline": {
+    "stages": [
+      {
+        "name": "Playwright Chromium (headless)",
+        "config": {
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+          "navTimeout": 20000,
+          "loadTimeout": 5000,
+          "jsSettleDelay": 500,
+          "args": [
+            "--no-sandbox",
+            "--disable-setuid-sandbox",
+            "--disable-dev-shm-usage",
+            "--disable-gpu",
+            "--disable-blink-features=AutomationControlled"
+          ]
+        }
+      },
+      {
+        "name": "Mozilla Readability (reader-mode extraction)",
+        "config": {
+          "stripSelectors": ["nav", "footer", "script", "style", "aside", ".ad", ".banner"],
+          "minContentLength": 100
+        }
+      },
+      {
+        "name": "Optional: LLM Extractor pass-through",
+        "config": {
+          "enabled": true,
+          "minCharsForExtract": 3000,
+          "maxInputChars": 15000
+        }
+      }
+    ]
+  },
+  "singleton_browser_pool": {
+    "maxIdleSeconds": 30,
+    "mutexEnabled": true,
+    "contextIsolation": true,
+    "maxConcurrentContexts": 5
+  },
+  "anti_detection": {
+    "navigatorWebdriverHide": true,
+    "realisticUserAgent": true,
+    "cdpFallback": "Use real-user CDP mode for logged-in sites (see CDP mode section in SKILL.md)",
+    "ethicsNote": "In CDP mode (real user browser), navigator.webdriver is naturally absent — no spoofing needed. Headless anti-detection is only for scraping public content, never for evading auth or committing fraud."
+  },
+  "routing_table": {
+    "static_html_blog": "web_fetch (prefer)",
+    "spa_react_vue_angular": "Content Scraper",
+    "twitter_x_thread": "Content Scraper",
+    "medium_substack_article": "Content Scraper",
+    "documentation_site": "Content Scraper",
+    "pdf_plain_file": "web_fetch (direct)",
+    "login_required_page": "CDP mode (real browser)",
+    "api_endpoint": "web_fetch"
+  }
+}
