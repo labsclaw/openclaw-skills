@@ -1,0 +1,113 @@
+{
+  "version": "5.0.0",
+  "lastUpdated": "2026-07-06",
+  "description": "Planner agent — task decomposition, self-correction, and cache-aware planning (v5)",
+  "decomposition": {
+    "rules": [
+      "Break complex tasks into atomic steps (one action per step)",
+      "Each step must have an explicit expected_state for Validator",
+      "Identify dependencies: chain dependent steps, parallelize independent ones",
+      "Assess risk per step: low/medium/high",
+      "Flag steps requiring user confirmation (payments, deletions, auth)",
+      "Estimate total steps to set user expectations"
+    ],
+    "step_types": {
+      "observe": "Discover available actions on a page (no execution)",
+      "navigate": "Open URL or navigate to page",
+      "extract": "Capture structured data from page",
+      "act": "Click, fill, type, scroll, or interact with an element",
+      "upload": "Upload a file",
+      "wait": "Wait for dynamic content to load",
+      "agent": "Multi-step autonomous execution",
+      "consolidate": "Process collected data (no browser action)",
+      "verify": "Check specific page state"
+    },
+    "max_steps_per_task": 20,
+    "max_retries_per_step": 3,
+    "step_timeout_seconds": 30
+  },
+  "self_correction": {
+    "strategies": [
+      {
+        "order": 1,
+        "name": "re_snapshot",
+        "description": "Re-snapshot page to get fresh element refs",
+        "when": "Element ref seems stale or page state changed"
+      },
+      {
+        "order": 2,
+        "name": "try_alternative_ref",
+        "description": "Find and use a different element achieving same goal",
+        "when": "Original element unclickable or hidden"
+      },
+      {
+        "order": 3,
+        "name": "scroll_into_view",
+        "description": "Scroll element into viewport before acting",
+        "when": "Element exists but is off-screen"
+      },
+      {
+        "order": 4,
+        "name": "wait_and_retry",
+        "description": "Wait for page to finish loading, then retry",
+        "when": "Dynamic content still loading"
+      },
+      {
+        "order": 5,
+        "name": "alternative_approach",
+        "description": "Try completely different method (e.g., search instead of browse)",
+        "when": "Direct approach failed 2+ times"
+      }
+    ],
+    "escalation_rules": [
+      "After 3 failures → report blocker to user with full context",
+      "If safety rules block → immediately report, no retry",
+      "If auth wall → report, suggest user login manually",
+      "If CAPTCHA → report, cannot solve programmatically"
+    ]
+  },
+  "plan_output_format": {
+    "description": "Planner returns structured plan for Navigator + Validator",
+    "schema": {
+      "task": "string — original user request",
+      "steps": [
+        {
+          "id": "number — step sequence",
+          "action": "string — step type from step_types",
+          "target": "string — URL, element description, or data target",
+          "purpose": "string — why this step exists",
+          "expected_state": "string — what Validator should check",
+          "risk": "string — low/medium/high",
+          "requires_confirmation": "boolean"
+        }
+      ],
+      "parallel_groups": "array of step ID groups that can run concurrently",
+      "estimated_steps": "number",
+      "risk_level": "string — overall task risk"
+    }
+  },
+  "planner_model_requirements": {
+    "min_context_window": 8000,
+    "recommended": "Smart model with good reasoning (Claude Sonnet, GPT-4o)",
+    "thinking": "high — Planner needs to reason about strategy"
+  },
+  "cache_aware_planning": {
+    "description": "Planner checks action cache before creating new steps",
+    "rules": [
+      "Before decomposing, check if URL + task matches any cached plan",
+      "If cached plan exists with high confidence → reuse it",
+      "If partial match → use cached steps where possible, only plan new ones",
+      "If no match → full decomposition",
+      "After successful execution → save plan as cached template"
+    ]
+  },
+  "observe_first": {
+    "description": "Planner can call observe() to understand page before planning",
+    "rules": [
+      "For unfamiliar pages, observe first to discover available actions",
+      "Use observe results to create more accurate step plans",
+      "If observe finds the needed elements → plan with their refs",
+      "If observe finds nothing relevant → plan with act() instructions"
+    ]
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "version": "5.0.0",
+  "lastUpdated": "2026-07-06",
+  "description": "Validator agent — verification rules, failure classification, vision fallback trigger (v5)",
+  "verification_checks": {
+    "per_step": [
+      "Action succeeded — no errors, no timeouts",
+      "Page state matches expected_state from plan",
+      "No blockers detected — CAPTCHA, 2FA, error pages",
+      "Safety rules were respected",
+      "Data was captured (if extraction step)"
+    ],
+    "final_task": [
+      "All steps completed successfully",
+      "User's original request is satisfied",
+      "No data was lost between steps",
+      "All tabs are clean (closed or labeled)",
+      "Results include proper citations"
+    ]
+  },
+  "validation_output": {
+    "schema": {
+      "step_id": "number",
+      "status": "success | failure | blocked",
+      "page_url": "string — current page URL",
+      "visible_elements": "array — key elements visible on page",
+      "errors": "array — error messages if any",
+      "blockers": "array — blocking issues (captcha, auth, etc.)",
+      "data_captured": "boolean — was data extracted successfully",
+      "screenshot_id": "string — screenshot reference if taken",
+      "retry_suggestion": "string | null — suggested retry strategy"
+    }
+  },
+  "failure_classification": {
+    "stale_ref": {
+      "description": "Element ref no longer valid (DOM changed)",
+      "retry": true,
+      "strategy": "re_snapshot",
+      "max_retries": 2
+    },
+    "page_not_loaded": {
+      "description": "Dynamic content still loading",
+      "retry": true,
+      "strategy": "wait_and_retry",
+      "max_retries": 3
+    },
+    "wrong_page": {
+      "description": "Navigated to wrong URL or page changed",
+      "retry": true,
+      "strategy": "alternative_approach",
+      "max_retries": 1
+    },
+    "element_hidden": {
+      "description": "Element exists but is not visible (off-screen, collapsed)",
+      "retry": true,
+      "strategy": "scroll_into_view",
+      "max_retries": 2
+    },
+    "captcha_detected": {
+      "description": "CAPTCHA blocking action",
+      "retry": false,
+      "action": "report_to_user",
+      "message": "CAPTCHA detected — requires manual intervention"
+    },
+    "auth_required": {
+      "description": "Login wall encountered",
+      "retry": false,
+      "action": "report_to_user",
+      "message": "Authentication required — please log in manually"
+    },
+    "rate_limited": {
+      "description": "Too many requests to this site",
+      "retry": false,
+      "action": "report_to_user",
+      "message": "Rate limited — wait before retrying"
+    },
+    "safety_blocked": {
+      "description": "Action blocked by safety rules",
+      "retry": false,
+      "action": "report_to_user",
+      "message": "Action blocked by safety rules"
+    },
+    "unknown_error": {
+      "description": "Unexpected failure",
+      "retry": true,
+      "strategy": "re_snapshot",
+      "max_retries": 1,
+      "note": "Retry once, then abort if still failing"
+    }
+  },
+  "success_signals": {
+    "page_navigation": "URL changed to expected target",
+    "element_click": "Page content changed or new page loaded",
+    "form_fill": "Input value matches provided text",
+    "form_submit": "Success message or redirect occurred",
+    "data_extraction": "Structured data returned with expected fields",
+    "file_upload": "File name visible in upload field or progress started",
+    "add_to_cart": "Cart count incremented",
+    "post_published": "Post visible in feed or confirmation shown"
+  },
+  "vision_fallback_trigger": {
+    "description": "When DOM verification fails, trigger screenshot + vision analysis",
+    "triggers": [
+      "DOM snapshot shows different page than expected",
+      "Element refs not found after re-snapshot",
+      "Can't determine success from DOM alone",
+      "Dynamic content not yet rendered",
+      "Element inside unpierced Shadow DOM"
+    ],
+    "action": "Take screenshot → analyze with vision model → determine page state",
+    "cost": "~2-3s extra (screenshot + vision analysis)",
+    "use_only_when": "DOM verification fails or is ambiguous"
+  },
+  "validator_model_requirements": {
+    "min_context_window": 2000,
+    "recommended": "Fast model (same as Navigator)",
+    "thinking": "off — pattern matching, not reasoning"
+  }
+}

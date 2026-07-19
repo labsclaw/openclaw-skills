@@ -1,0 +1,95 @@
+{
+  "version": "5.0.0",
+  "lastUpdated": "2026-07-06",
+  "description": "Observe-Act cache for deterministic replay of successful action patterns",
+  "how_it_works": [
+    "1. First run: AI finds and executes action → succeeds",
+    "2. Cache it: Save pattern (URL + selector + action type)",
+    "3. Next run: Check cache → if match → execute deterministically (no AI call)",
+    "4. Self-heal: If cached pattern fails → invalidate, fall back to AI"
+  ],
+  "cache_format": {
+    "cache_id": "string — unique identifier (kebab-case)",
+    "site": "string — domain",
+    "url_pattern": "string — URL pattern to match (supports wildcards)",
+    "action": {
+      "type": "string — click|fill|navigate|extract",
+      "selector": "string — CSS/aria selector that worked",
+      "ref_hint": "string — human-readable description"
+    },
+    "context": {
+      "page_state": "string — what the page looked like when this worked",
+      "prerequisites": "array — steps that must run before this"
+    },
+    "confidence": {
+      "success_count": "number — times this pattern succeeded",
+      "fail_count": "number — times this pattern failed",
+      "last_success": "ISO date",
+      "last_failure": "ISO date | null",
+      "score": "number — 0-100 confidence score"
+    },
+    "metadata": {
+      "created_by": "string — ai|user|replay",
+      "created_at": "ISO date",
+      "ttl_days": "number — default 30",
+      "auto_invalidate": "boolean — invalidate on any failure"
+    }
+  },
+  "scoring": {
+    "formula": "success_count / (success_count + fail_count) * 100",
+    "high_confidence": ">= 80 — execute deterministically",
+    "medium_confidence": "50-79 — execute but verify with snapshot",
+    "low_confidence": "< 50 — use AI instead, re-cache on success",
+    "min_executions_for_deterministic": 3
+  },
+  "self_healing": {
+    "on_failure": [
+      "1. Mark pattern as failed (increment fail_count)",
+      "2. If score drops below 50 → invalidate pattern",
+      "3. Fall back to AI-based execution",
+      "4. If AI succeeds → create new cache entry",
+      "5. Log divergence for review"
+    ],
+    "auto_expire_days": 30,
+    "revalidate_after_expire": true
+  },
+  "cache_rules": [
+    "Only cache successful patterns — never cache failures",
+    "Track success/fail counts for confidence scoring",
+    "Auto-expire patterns older than 30 days",
+    "Self-heal: if cached action fails, invalidate and use AI",
+    "Site-scoped: different accounts don't share cache",
+    "URL pattern matching supports wildcards: linkedin.com/feed/*",
+    "Cache persists across sessions (stored in modules/action-cache.json)",
+    "Max 100 cached patterns per site"
+  ],
+  "matching": {
+    "exact_url": "URL matches exactly",
+    "wildcard_url": "URL matches pattern with * (linkedin.com/feed/*)",
+    "domain_only": "Same domain, any path",
+    "combined": "URL + element selector must both match"
+  },
+  "examples": [
+    {
+      "cache_id": "linkedin-compose-button",
+      "site": "linkedin.com",
+      "url_pattern": "linkedin.com/feed",
+      "action": {"type": "click", "selector": "button[aria-label*='Start a post']", "ref_hint": "compose button"},
+      "confidence": {"success_count": 12, "fail_count": 0, "score": 100},
+      "metadata": {"created_by": "ai", "ttl_days": 30}
+    },
+    {
+      "cache_id": "gmail-search-box",
+      "site": "mail.google.com",
+      "url_pattern": "mail.google.com/*",
+      "action": {"type": "fill", "selector": "input[aria-label='Search mail']", "ref_hint": "search input"},
+      "confidence": {"success_count": 8, "fail_count": 1, "score": 89},
+      "metadata": {"created_by": "ai", "ttl_days": 30}
+    }
+  ],
+  "storage": {
+    "location": "modules/action-cache.json",
+    "max_per_site": 100,
+    "max_total": 500
+  }
+}

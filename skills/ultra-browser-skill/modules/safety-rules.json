@@ -1,0 +1,129 @@
+{
+  "version": "2.0.0",
+  "lastUpdated": "2026-06-18",
+  "domain_blocklist": {
+    "description": "Domains where agent is READ-ONLY. Can snapshot/read but NEVER click, fill, or submit.",
+    "categories": {
+      "banking": {
+        "patterns": ["*bank*", "*banco*", "*itau*", "*bradesco*", "*nubank*", "*caixa*", "*bb.com*", "*chase*", "*wellsfargo*", "*bofa*"],
+        "reason": "Financial data — read-only",
+        "examples": ["itau.com.br", "bradesco.com.br", "nubank.com.br", "caixa.gov.br", "bb.com.br", "chase.com", "wellsfargo.com", "bankofamerica.com"]
+      },
+      "payments": {
+        "patterns": ["*paypal*", "*stripe*", "*square*", "*mercadopago*", "*pagseguro*", "*picpay*"],
+        "reason": "Payment processing — read-only",
+        "examples": ["paypal.com", "stripe.com", "squareup.com", "mercadopago.com.br", "pagseguro.uol.com.br", "picpay.com"]
+      },
+      "auth": {
+        "patterns": ["accounts.google.com", "okta.com", "auth0.com", "login.microsoftonline.com", "identity.*", "login.*"],
+        "reason": "Authentication portals — never操作",
+        "examples": ["accounts.google.com", "okta.com", "auth0.com", "login.microsoftonline.com"]
+      },
+      "cloud_consoles": {
+        "patterns": ["console.aws.amazon.com", "console.cloud.google.com", "portal.azure.com", "cloud.google.com/console", "vercel.com/dashboard"],
+        "reason": "Cloud infrastructure — catastrophic risk",
+        "examples": ["console.aws.amazon.com", "console.cloud.google.com", "portal.azure.com"]
+      },
+      "government": {
+        "patterns": ["*.gov.br", "*.gov", "receita.*", "rfb.*", "pgfn.*", "srf.*"],
+        "reason": "Government/tax portals — legal risk",
+        "examples": ["gov.br", "receita.fazenda.gov.br", "cav.receita.fazenda.gov.br"]
+      },
+      "crypto_wallets": {
+        "patterns": ["*metamask*", "*phantom*", "*trust-wallet*", "*coinbase-wallet*", "*exodus*"],
+        "reason": "Crypto wallet operations — financial risk",
+        "examples": ["metamask.io", "phantom.app", "trustwallet.com"]
+      },
+      "admin_panels": {
+        "patterns": ["*/admin*", "*cpanel*", "*phpmyadmin*", "*webmin*", "*plesk*"],
+        "reason": "Server administration — security risk",
+        "examples": ["cpanel", "phpmyadmin", "webmin"]
+      }
+    }
+  },
+  "element_protection": {
+    "password_fields": {
+      "selectors": [
+        "input[type='password']",
+        "input[name='password']",
+        "input[name='passwd']",
+        "input[autocomplete='current-password']",
+        "input[aria-label*='password' i]",
+        "input[aria-label*='senha' i]",
+        "input[placeholder*='password' i]",
+        "input[placeholder*='senha' i]"
+      ],
+      "action": "ASK_USER",
+      "reason": "Password fields require manual input or explicit user instruction"
+    },
+    "payment_buttons": {
+      "keywords": [
+        "pay", "checkout", "purchase", "buy now", "place order", "complete purchase",
+        "pagar", "comprar", "finalizar", "efetuar pagamento", "comprar agora",
+        "finalizar compra", "confirmar pagamento", "assinar", "subscribe"
+      ],
+      "action": "BLOCK",
+      "reason": "Financial transactions require explicit confirmation"
+    },
+    "delete_actions": {
+      "keywords": [
+        "delete", "remove", "destroy", "unsubscribe", "cancel account", "deactivate",
+        "excluir", "remover", "cancelar conta", "desativar", "deletar"
+      ],
+      "action": "CONFIRM",
+      "reason": "Destructive actions require user confirmation"
+    },
+    "send_actions": {
+      "keywords": [
+        "send", "submit", "publish", "post", "enviar", "publicar",
+        "publicar agora", "enviar mensagem", "submit form", "send message"
+      ],
+      "action": "CONFIRM_UNLESS_PRE_AUTHORIZED",
+      "reason": "Outgoing actions need confirmation unless user pre-authorized"
+    },
+    "file_actions": {
+      "keywords": [
+        "download", "upload", "export", "backup",
+        "baixar", "exportar", "backup"
+      ],
+      "action": "CONFIRM_FOR_EXECUTABLES",
+      "reason": "Executable downloads need confirmation; data files are OK"
+    }
+  },
+  "action_confirmation_rules": {
+    "always_confirm": [
+      "form_submission",
+      "email_send",
+      "message_send",
+      "data_deletion",
+      "account_setting_change",
+      "purchase",
+      "file_download_executable",
+      "password_change",
+      "email_change",
+      "two_factor_setup"
+    ],
+    "confirm_once_per_session": [
+      "repeated_form_same_type",
+      "bulk_operations",
+      "repetitive_clicks"
+    ],
+    "never_confirm": [
+      "page_navigation",
+      "tab_management",
+      "snapshot_read",
+      "screenshot",
+      "search_query",
+      "copy_text",
+      "scroll",
+      "hover"
+    ]
+  },
+  "override_protocol": {
+    "domain_override": "User says 'I confirm this action on [domain]' → agent proceeds once",
+    "element_override": "User says 'fill this password field with [value]' → agent fills",
+    "bulk_override": "User says 'do not ask again for this session' → agent skips confirmation for current session only",
+    "emergency_stop": "User says 'STOP' or 'PARA' → agent halts all browser operations immediately",
+    "trust_site": "User says 'trust [site] for this session' → agent skips all safety checks for that site (still logs actions)"
+  }
+}

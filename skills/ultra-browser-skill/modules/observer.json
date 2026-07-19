@@ -1,0 +1,83 @@
+{
+  "version": "5.0.0",
+  "lastUpdated": "2026-07-06",
+  "description": "Observer module — the observe() primitive for discovering page actions without executing",
+  "purpose": "Discover available actions on a page before committing to execute them. Reduces failed clicks and wasted tokens.",
+  "observe_primitive": {
+    "what_it_does": "Scans the page and returns a list of interactive elements matching the instruction, WITHOUT executing any action",
+    "when_to_use": [
+      "Before act() to understand what's available",
+      "When exploring an unfamiliar page",
+      "When you need to choose between multiple similar elements",
+      "When DOM structure is unclear"
+    ],
+    "input": {
+      "instruction": "string — natural language description of what to find",
+      "targetId": "string — tab/page to observe"
+    },
+    "output": {
+      "elements": [
+        {
+          "ref": "string — ARIA element reference (e.g., e42)",
+          "type": "string — button|input|link|select|textarea|other",
+          "label": "string — visible text or aria-label",
+          "aria": "string — ARIA role + name",
+          "actionable": "boolean — can this element be interacted with?",
+          "confidence": "number — 0-100 how well it matches instruction"
+        }
+      ],
+      "page_context": {
+        "url": "string — current URL",
+        "title": "string — page title",
+        "total_interactive": "number — total interactive elements on page"
+      }
+    }
+  },
+  "observe_vs_snapshot": {
+    "snapshot": {
+      "returns": "Full page structure (all elements)",
+      "best_for": "When you need to act on a specific known element",
+      "tokens": "Higher (full tree)"
+    },
+    "observe": {
+      "returns": "Filtered elements matching instruction",
+      "best_for": "When exploring or unsure what's available",
+      "tokens": "Lower (filtered subset)"
+    },
+    "recommendation": "Use observe() first when exploring, snapshot() when you know what you need"
+  },
+  "observe_patterns": {
+    "find_buttons": "observe('Find all buttons on this page')",
+    "find_form_fields": "observe('Find all form input fields')",
+    "find_navigation": "observe('Find navigation menu items')",
+    "find_search": "observe('Find search input or search button')",
+    "find_links": "observe('Find all links in the main content')",
+    "find_actions": "observe('What actions can I take on this page?')"
+  },
+  "integration_with_cache": {
+    "description": "observe() results can be cached alongside act() patterns",
+    "flow": [
+      "1. observe('Find login button') → returns [{ref: 'e42', label: 'Sign In'}]",
+      "2. act('Click Sign In') → succeeds",
+      "3. Cache: {observe_pattern: 'login button', action_pattern: 'click Sign In', selector: '...'}",
+      "4. Next visit: check cache → if URL matches → skip observe, go straight to act"
+    ]
+  },
+  "integration_with_planner": {
+    "description": "Planner can use observe() to understand page before decomposing task",
+    "flow": [
+      "1. User: 'Fill out this form'",
+      "2. Planner calls observe('Find all form fields')",
+      "3. Returns: [{ref: 'e10', type: 'input', label: 'Name'}, {ref: 'e11', type: 'input', label: 'Email'}, ...]",
+      "4. Planner creates steps: fill e10, fill e11, click submit",
+      "5. Navigator executes each step with known refs"
+    ]
+  },
+  "best_practices": [
+    "Always observe before acting on unfamiliar pages",
+    "Use specific instructions ('Find the submit button' not 'Find stuff')",
+    "Check confidence scores — low confidence means uncertain match",
+    "Combine observe() with snapshot() for full context",
+    "Cache observe results for repeated visits"
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "version": "5.0.0",
+  "lastUpdated": "2026-07-06",
+  "description": "Vision fallback rules for screenshot-based analysis when DOM fails",
+  "when_to_use": [
+    "Element not found in DOM but should be visible on page",
+    "Page state unclear after action (did it succeed?)",
+    "Dynamic content changed between snapshots",
+    "Canvas/custom UI with no DOM elements (games, editors, maps)",
+    "DOM verification failed — need visual confirmation",
+    "Element is inside Shadow DOM that wasn't pierced",
+    "CAPTCHA detected — need to describe what's shown",
+    "Layout changed — old selectors don't work"
+  ],
+  "vision_primitives": {
+    "screenshot_analyze": {
+      "description": "Take screenshot + analyze with vision model",
+      "tool": "browser screenshot + image analysis",
+      "when": "DOM snapshot is insufficient or element not found",
+      "returns": "Description of visible elements + their locations"
+    },
+    "element_finding": {
+      "description": "Use vision to locate an element that DOM can't find",
+      "tool": "browser screenshot + vision analysis",
+      "prompt_template": "Find the {element_description} on this page. Return its approximate position (x, y coordinates) and any text near it.",
+      "when": "act() or observe() couldn't find the element via DOM"
+    },
+    "state_verification": {
+      "description": "Verify page state visually after an action",
+      "tool": "browser screenshot + vision analysis",
+      "prompt_template": "After clicking '{action}', what is the current page state? Is there a success message, error, or new page loaded?",
+      "when": "Validator can't determine success from DOM alone"
+    }
+  },
+  "multi_model_routing": {
+    "vision_tasks": {
+      "models": ["GPT-4o", "Gemini Pro Vision", "Claude Sonnet"],
+      "use_for": ["Layout understanding", "Element detection", "Screenshot analysis", "Visual verification"]
+    },
+    "reasoning_tasks": {
+      "models": ["Claude Sonnet", "GPT-4o"],
+      "use_for": ["Task planning", "Failure analysis", "Strategy adjustment"]
+    },
+    "speed_tasks": {
+      "models": ["GPT-4o-mini", "Claude Haiku", "Gemini Flash"],
+      "use_for": ["Element clicking", "Form filling", "Simple navigation", "Validation checks"]
+    }
+  },
+  "analysis_prompts": {
+    "find_element": "Look at this webpage screenshot. I need to find: {description}. Where is it? Describe its position and any identifying text nearby.",
+    "verify_action": "I just performed this action: {action}. Look at the current screenshot. Did the action succeed? What changed? Is there an error message?",
+    "describe_page": "Describe what's currently visible on this page. What are the main sections, buttons, and interactive elements?",
+    "captcha_help": "There appears to be a CAPTCHA on this page. Describe what type it is (text, image, puzzle) and what it shows.",
+    "error_detection": "Is there any error message, warning, or unexpected state on this page? Describe anything that looks wrong.",
+    "form_state": "Look at this form. Which fields are filled? Which are empty? Are there any validation errors shown?"
+  },
+  "fallback_cascade": {
+    "description": "When DOM fails, try vision in order",
+    "steps": [
+      "1. DOM snapshot → element found → use DOM refs",
+      "2. DOM snapshot → element NOT found → try re-snapshot (maybe stale)",
+      "3. Re-snapshot → still not found → screenshot + vision analysis",
+      "4. Vision finds element → use coordinates or description to interact",
+      "5. Vision can't find → report to user with screenshot"
+    ]
+  },
+  "screenshot_analysis_format": {
+    "element_location": {
+      "description": "Approximate coordinates of found element",
+      "format": {"x": "number — pixels from left", "y": "number — pixels from top", "confidence": "low|medium|high"}
+    },
+    "page_description": {
+      "description": "What the page currently shows",
+      "format": "text description of visible content"
+    },
+    "suggested_action": {
+      "description": "What to try next if element not found",
+      "format": "natural language suggestion"
+    }
+  },
+  "limitations": [
+    "Vision is slower than DOM (screenshot + analysis = ~2-3s extra)",
+    "Coordinate-based clicking is less reliable than ref-based",
+    "Vision can't read small text or low-contrast elements reliably",
+    "Some visual elements are decorative, not interactive",
+    "Use vision as fallback, not primary method"
+  ]
+}

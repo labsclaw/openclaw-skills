@@ -1,0 +1,154 @@
+{
+  "version": "2.0.0",
+  "lastUpdated": "2026-06-18",
+  "sites": {
+    "linkedin.com": {
+      "platform": "LinkedIn",
+      "login_flow": "email → password → 2FA (email code)",
+      "onboarding": {
+        "steps": ["emailConfirmation", "ageCheck", "jobSeekerStatus", "photoUpload", "contactImport", "connectionSuggestions", "followSuggestions", "appDownload", "gamesNotification"],
+        "all_skippable": true,
+        "skip_strategy": "Click 'Skip' or 'Pular' on each step, uncheck notification toggles",
+        "progress_bar": true,
+        "estimated_time": "2-3 minutes if skipping all"
+      },
+      "selectors": {
+        "codeInput": "input[aria-label*='code']",
+        "continueButton": "button:has-text('Continue')",
+        "skipLink": "a:has-text('Skip')",
+        "postButton": "button[aria-label='Start a post']",
+        "composeBox": "div[contenteditable='true']",
+        "shareButton": "button:has-text('Post')"
+      },
+      "tips": [
+        "Onboarding has ~10 steps, all skippable",
+        "Photo upload can be skipped",
+        "Connection suggestions can be skipped",
+        "Code is 6 digits, sent to email",
+        "Progress bar shows % completion",
+        "Profile URL: linkedin.com/in/[username]"
+      ],
+      "automation_patterns": {
+        "post": "Click 'Start a post' → type content → click 'Post'",
+        "reply": "Click reply icon on post → type → click 'Reply'",
+        "search": "Use search bar → filter by People/Companies/Posts"
+      },
+      "interactions": 5
+    },
+    "instagram.com": {
+      "platform": "Instagram",
+      "signup_flow": "email → password → birthday → name → username → verification code",
+      "login_flow": "email/username → password → 2FA (if suspicious)",
+      "code_source": "email",
+      "code_type": "6-digit verification",
+      "min_age": 18,
+      "selectors": {
+        "emailInput": "input[name='emailOrPhone']",
+        "passwordInput": "input[name='password']",
+        "codeInput": "input[name='confirmationCode']",
+        "postButton": "div[role='button']:has-text('Share')",
+        "composeBox": "textarea[aria-label]"
+      },
+      "tips": [
+        "Signup requires birthday (must be 18+)",
+        "Username is checked in real-time",
+        "Codes arrive via email, not SMS by default",
+        "Notification permission can be skipped",
+        "Desktop has limited features vs mobile"
+      ],
+      "interactions": 2
+    },
+    "x.com": {
+      "platform": "X/Twitter",
+      "login_flow": "email/phone → password → 2FA (optional)",
+      "selectors": {
+        "composeButton": "[data-testid='SideNav_NewTweet_Button']",
+        "tweetTextarea": "[data-testid='tweetTextarea_0']",
+        "tweetButton": "[data-testid='tweetButton']",
+        "replyButton": "[data-testid='reply']",
+        "searchInput": "input[data-testid='SearchBox_Search_Input']"
+      },
+      "tips": [
+        "Use browser automation for posting",
+        "Rate limits apply (don't spam)",
+        "Threads: post first tweet, then reply to self",
+        "Character limit: 280 (free) / 25000 (premium)"
+      ],
+      "automation_patterns": {
+        "post": "Click compose → type → click Tweet button",
+        "reply": "Click reply on tweet → type → click Reply",
+        "thread": "Post first tweet → click '+' to add replies → Post all"
+      },
+      "interactions": 5
+    },
+    "github.com": {
+      "platform": "GitHub",
+      "login_flow": "username → password → 2FA (if enabled)",
+      "selectors": {
+        "searchInput": "input[name='query-builder-search']",
+        "issueTitle": "a.Link--primary",
+        "prButton": "a[href*='/pull/']"
+      },
+      "tips": [
+        "SSH keys don't work via browser",
+        "Use for: issues, PRs, code browsing, releases",
+        "Rate limit: 60 requests/hour unauthenticated",
+        "Search syntax: repo:user/repo is:issue"
+      ],
+      "interactions": 3
+    },
+    "notion.so": {
+      "platform": "Notion",
+      "login_flow": "email → magic link OR password",
+      "selectors": {
+        "pageContent": "div[contenteditable='true']",
+        "titleBlock": "h1[contenteditable='true']",
+        "slashMenu": ".notion-overlay-container"
+      },
+      "tips": [
+        "Rich text via CDP Input.insertText",
+        "Blocks are div-based, click to edit",
+        "Slash commands: /heading, /bullet, /toggle, /callout",
+        "Pages are nested — breadcrumb navigation at top"
+      ],
+      "automation_patterns": {
+        "write": "Click block → type content → Tab to next block",
+        "createPage": "Click '+' in sidebar → select page type"
+      },
+      "interactions": 4
+    },
+    "mail.google.com": {
+      "platform": "Gmail",
+      "login_flow": "email → password → 2FA (if enabled)",
+      "selectors": {
+        "searchBox": "input[aria-label='Search mail']",
+        "inboxLink": "a[href*='#inbox']",
+        "emailRow": "tr.zA",
+        "composeButton": "div[gh='cm']"
+      },
+      "tips": [
+        "Labels: Primary, Promotions, Social, Updates, Spam",
+        "Check Spam for missing emails",
+        "Search operators: from:, subject:, has:attachment",
+        "Tab categories may hide important emails"
+      ],
+      "interactions": 3
+    },
+    "google.com": {
+      "platform": "Google Search",
+      "selectors": {
+        "searchBox": "textarea[name='q']",
+        "searchResults": "div.g",
+        "firstResult": "div.g:first-child a"
+      },
+      "tips": [
+        "Use quotes for exact match: \"specific phrase\"",
+        "Use minus to exclude: keyword -excluded",
+        "site:example.com to search within a site",
+        "filetype:pdf to find specific file types"
+      ],
+      "interactions": 1
+    }
+  },
+  "profile_directory": "~/.openclaw/workspace/skills/ultra-browser-skill/profiles/"
+}
