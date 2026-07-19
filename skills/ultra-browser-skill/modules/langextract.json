@@ -1,0 +1,116 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-07-19",
+  "description": "LangExtract integration — Google's open-source structured extraction with source grounding",
+  "source": "https://github.com/google/langextract",
+  "license": "Apache 2.0",
+  "installed_version": "1.6.0",
+  "installation": "pip install langextract",
+  "model_config": {
+    "default_model": "gemini-3.5-flash",
+    "local_fallback": "ollama (zero cost)",
+    "env_var": "GEMINI_API_KEY or LANGEXTRACT_API_KEY",
+    "providers": ["gemini", "openai", "ollama", "custom"]
+  },
+  "extraction_config": {
+    "prompt_template": "Extract all named entities, dates, monetary values, key facts, and relationships from the text. Use exact text for extractions — do not paraphrase. Provide meaningful attributes for each entity to add context.",
+    "chunking": {
+      "enabled": true,
+      "strategy": "smart_text_chunking",
+      "parallel_processing": true,
+      "multi_pass": true,
+      "pass_count": 2
+    },
+    "grounding": {
+      "source_grounding": true,
+      "char_interval_format": "start_pos / end_pos",
+      "filter_ungrounded": true
+    }
+  },
+  "domains": {
+    "research": {
+      "extraction_classes": ["organization", "person", "date", "monetary_value", "metric", "technology", "location"],
+      "few_shot_examples": [
+        {
+          "text": "OpenAI raised $6.6 billion in October 2024 at a $157 billion valuation. CEO Sam Altman stated the funding would accelerate AGI research.",
+          "extractions": [
+            {"class": "organization", "text": "OpenAI", "attributes": {"role": "company_raised_funding"}},
+            {"class": "monetary_value", "text": "$6.6 billion", "attributes": {"metric": "funding_raised"}},
+            {"class": "date", "text": "October 2024", "attributes": {"type": "funding_date"}},
+            {"class": "monetary_value", "text": "$157 billion", "attributes": {"metric": "valuation"}},
+            {"class": "person", "text": "Sam Altman", "attributes": {"role": "CEO"}},
+            {"class": "metric", "text": "AGI research", "attributes": {"category": "research_focus"}}
+          ]
+        }
+      ]
+    },
+    "financial": {
+      "extraction_classes": ["organization", "date", "monetary_value", "metric", "percentage", "person"],
+      "few_shot_examples": [
+        {
+          "text": "Q3 2026 revenue reached $42.3 billion, up 18% year over year. Operating income was $12.1 billion with a 28.6% margin. The board declared a $0.85 quarterly dividend payable August 15, 2026.",
+          "extractions": [
+            {"class": "date", "text": "Q3 2026", "attributes": {"type": "reporting_period"}},
+            {"class": "monetary_value", "text": "$42.3 billion", "attributes": {"metric": "revenue"}},
+            {"class": "percentage", "text": "18%", "attributes": {"metric": "yoy_growth"}},
+            {"class": "monetary_value", "text": "$12.1 billion", "attributes": {"metric": "operating_income"}},
+            {"class": "percentage", "text": "28.6%", "attributes": {"metric": "operating_margin"}},
+            {"class": "monetary_value", "text": "$0.85", "attributes": {"metric": "quarterly_dividend"}},
+            {"class": "date", "text": "August 15, 2026", "attributes": {"type": "payment_date"}}
+          ]
+        }
+      ]
+    },
+    "technical": {
+      "extraction_classes": ["technology", "metric", "organization", "date", "version", "specification"],
+      "few_shot_examples": [
+        {
+          "text": "GPT-5 achieved 92.4% on HumanEval and 88.1% on MMLU, surpassing GPT-4's scores of 67.0% and 86.4% respectively. Released March 2026 with a 1.8T parameter count.",
+          "extractions": [
+            {"class": "technology", "text": "GPT-5", "attributes": {"category": "llm"}},
+            {"class": "metric", "text": "92.4%", "attributes": {"benchmark": "HumanEval"}},
+            {"class": "metric", "text": "88.1%", "attributes": {"benchmark": "MMLU"}},
+            {"class": "technology", "text": "GPT-4", "attributes": {"category": "llm", "relation": "predecessor"}},
+            {"class": "date", "text": "March 2026", "attributes": {"type": "release_date"}},
+            {"class": "specification", "text": "1.8T parameter", "attributes": {"metric": "model_size"}}
+          ]
+        }
+      ]
+    },
+    "general": {
+      "extraction_classes": ["organization", "person", "date", "monetary_value", "location", "metric"],
+      "few_shot_examples": [
+        {
+          "text": "The Global AI Summit held in Geneva on July 10, 2026, announced $3.8 billion in new funding for open-source AI research.",
+          "extractions": [
+            {"class": "organization", "text": "Global AI Summit", "attributes": {"type": "event"}},
+            {"class": "location", "text": "Geneva", "attributes": {"type": "event_location"}},
+            {"class": "date", "text": "July 10, 2026", "attributes": {"type": "event_date"}},
+            {"class": "monetary_value", "text": "$3.8 billion", "attributes": {"metric": "total_funding"}}
+          ]
+        }
+      ]
+    }
+  },
+  "citation_integration": {
+    "enabled": true,
+    "format": "[{source_id}, chars {start_pos}-{end_pos}]",
+    "example": "[web:1, chars 342-358]",
+    "rules": [
+      "Every fact must have a citation with char_interval when available",
+      "Multiple sources: [web:1, chars 342-358; web:3, chars 120-135]",
+      "Filter extractions with char_interval=null (ungrounded)",
+      "Cite at point of use, not end of paragraph"
+    ]
+  },
+  "pipeline_position": {
+    "after": "content_scraper",
+    "before": "agent_consumption",
+    "flow": "Content Scraper → LangExtract (domain-specific few-shot) → Agent with granular citations"
+  },
+  "visualization": {
+    "enabled": true,
+    "format": "interactive HTML",
+    "use_case": "manual verification of extractions, debugging, auditing"
+  }
+}

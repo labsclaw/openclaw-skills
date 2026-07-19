@@ -1,7 +1,8 @@
 {
   "version": "5.1.0",
   "lastUpdated": "2026-07-18",
-  "description": "Query-aware LLM extractor for post-scraping content: noise removal, numerical integrity, dedup, bullet-point output",
+  "description": "Query-aware LLM extractor (legacy). Prefer LangExtract (modules/langextract.json) for new extractions with source grounding.",
+  "legacy_note": "This module is retained for backward compatibility. New pipelines should use LangExtract which provides: source grounding (char_interval), schema enforcement, chunking, and visualization.",
   "extraction_rules": {
     "relevance": "Extract facts dynamically based on query intent (definition/identity vs specs/features)",
     "noise_filtering": "Ignore nav, ads, footers, subscribe banners, cookie notices",
