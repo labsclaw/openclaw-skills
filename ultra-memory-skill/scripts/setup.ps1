@@ -70,7 +70,7 @@ Write-Step "Copying SSC scripts"
 
 $scripts = @("ssc-router.ps1", "ssc-health.ps1")
 foreach ($script in $scripts) {
-    $src = Join-Path $ScriptDir "scripts" $script
+    $src = Join-Path $ScriptDir $script
     $dst = Join-Path $MemoryDir $script
     if ((Test-Path $dst) -and -not $Force) {
         Write-Warn "$script already exists (use -Force to overwrite)"
