@@ -38,7 +38,7 @@ function Ensure-Dir($path) { if (-not (Test-Path $path)) { New-Item -ItemType Di
 Write-Host @"
 
   ╔══════════════════════════════════════════════╗
-  ║  Ultra Memory Skill - Setup                  ║
+  ║  Ultra Memory Skill — Setup                  ║
   ║  Memory Caching for LLM Agents               ║
   ║  arXiv 2602.24281                            ║
   ╚══════════════════════════════════════════════╝
@@ -70,7 +70,7 @@ Write-Step "Copying SSC scripts"
 
 $scripts = @("ssc-router.ps1", "ssc-health.ps1")
 foreach ($script in $scripts) {
-    $src = Join-Path $ScriptDir $script
+    $src = Join-Path $ScriptDir "scripts" $script
     $dst = Join-Path $MemoryDir $script
     if ((Test-Path $dst) -and -not $Force) {
         Write-Warn "$script already exists (use -Force to overwrite)"
@@ -89,7 +89,7 @@ if ((Test-Path $indexPath) -and -not $Force) {
 } else {
     $index = @{
         version = "1.0"
-        description = "Sparse Selective Cache (SSC) - Memory Caching"
+        description = "Sparse Selective Cache (SSC) — Memory Caching"
         created = (Get-Date -Format "yyyy-MM-dd")
         lastMaintenance = $null
         segments = @()
@@ -113,7 +113,7 @@ if ((Test-Path $memoryMd) -and -not $Force) {
     Write-Warn "MEMORY.md already exists (use -Force to overwrite)"
 } else {
     $template = @"
-# MEMORY.md - Online Memory (auto-gerada)
+# MEMORY.md — Online Memory (auto-gerada)
 
 > **Arquitetura**: Memory Caching (inspirado em arXiv 2602.24281)
 > **Ultima atualizacao**: $(Get-Date -Format "yyyy-MM-dd")
@@ -131,7 +131,7 @@ if ((Test-Path $memoryMd) -and -not $Force) {
 ---
 
 > Este arquivo e gerado automaticamente a partir dos segmentos em ``memory/segments/``.
-> Nao edite diretamente - atualize os segmentos e rode manutencao.
+> Nao edite diretamente — atualize os segmentos e rode manutencao.
 "@
     $template | Set-Content $memoryMd -Encoding UTF8
     Write-Ok "MEMORY.md created"
@@ -168,7 +168,7 @@ if ((Test-Path $semanticJson) -and -not $Force) {
 } else {
     $template = @{
         version = "1.0"
-        description = "Semantic memory - abstract patterns and rules"
+        description = "Semantic memory — abstract patterns and rules"
         created = (Get-Date -Format "yyyy-MM-dd")
         patterns = @{}
     }
@@ -189,7 +189,7 @@ if (Test-Path $agentsMd) {
         Write-Warn "Add the session startup section from templates/AGENTS-template.md"
     }
 } else {
-    Write-Warn "AGENTS.md not found - copy templates/AGENTS-template.md to workspace root"
+    Write-Warn "AGENTS.md not found — copy templates/AGENTS-template.md to workspace root"
 }
 
 # ── Step 6: Wiki Setup (Optional) ──────────────────────────────────
@@ -265,7 +265,7 @@ if ($Wiki) {
         & qmd collection add wiki --name wiki 2>&1 | Out-Null
         Write-Ok "qmd initialized"
     } catch {
-        Write-Warn "qmd init failed - run manually: cd workspace; qmd init; qmd collection add wiki --name wiki"
+        Write-Warn "qmd init failed — run manually: cd workspace; qmd init; qmd collection add wiki --name wiki"
     }
     Pop-Location
 
@@ -275,7 +275,7 @@ if ($Wiki) {
         & npx @agentmemory/agentmemory init 2>&1 | Out-Null
         Write-Ok "agentmemory initialized"
     } catch {
-        Write-Warn "agentmemory init failed - run manually: npx @agentmemory/agentmemory init"
+        Write-Warn "agentmemory init failed — run manually: npx @agentmemory/agentmemory init"
     }
 }
 
@@ -356,4 +356,3 @@ Write-Host @"
     .\ssc-health.ps1                           # Run health check
 
 "@ -ForegroundColor White
-
