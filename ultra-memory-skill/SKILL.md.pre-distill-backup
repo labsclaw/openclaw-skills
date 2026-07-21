@@ -61,10 +61,49 @@ Track and promote after 3x:
 
 **Action:** After 3x, promote to segment with `tier: "HOT"`.
 
+## Staleness Grading (from memory-hygiene)
+
+Not all memories age at the same rate. Grade before acting on a remembered fact:
+
+| Memory type | Staleness risk | Verify before acting? |
+|---|---|---|
+| User preferences | LOW (months) | No — preferences are stable |
+| Decisions + WHY | LOW (weeks-months) | No — but re-read for context |
+| Non-obvious constraints | LOW (until refactored) | No — unless constraint may have changed |
+| System state (versions, configs) | HIGH (days) | **YES — always verify live** |
+| File locations, port numbers | HIGH (any deploy) | **YES — probe before acting** |
+| API behavior, endpoint shapes | HIGH (any release) | **YES — test against live** |
+
+**Rule:** Fast-aging fact + consequential action = verify first. One live probe (does the file exist, is the flag set, does the endpoint respond) before building on the memory.
+
+## When Memory and Live State Disagree
+
+**Live state wins. Always.**
+
+When you recall a fact and verification shows differently:
+1. Trust the live system, not your memory
+2. Report the drift: "memory says X, live state shows Y"
+3. Update the memory entry immediately — a contradicted memory left standing bites the next session
+4. Note which is vintage: "As of this check" vs "verified just now"
+
 ### Ignore (Don't Log)
 - One-time instructions ("do X now")
 - Context-specific ("in this file...")
 - Hypotheticals ("what if...")
+
+### What NOT to Persist (from memory-hygiene)
+
+Persisting the wrong things is worse than forgetting. These age into contradiction:
+
+| Never persist | Why | Example |
+|---|---|---|
+| Secrets (passwords, tokens, keys) | Security risk; session-bound | `st4g1ng-pw-2026` → NEVER |
+| Derivable facts | Git history, docker-compose, docs already record it | "PostgreSQL 16" → check docker-compose |
+| One-off fixes | Done work; derivable from git log | "Fixed flaky test" → git log |
+| State that changes fast | Versions, configs, deploys, file locations | "Port is 3000" → verify live |
+| Temporary context | Session-bound, no future value | "Running tests now" |
+
+**Rule:** If a future session can derive it from the codebase, git, or docs in <30 seconds, do not persist it. Memory is for what CANNOT be derived.
 
 ## Map is not the Territory (from Thariq/Anthropic)
 
@@ -207,40 +246,6 @@ LESSON: [what to do differently]
 
 ### Promotion Rule
 Self-reflection entries follow same promotion rules: 3x applied successfully → promote to HOT tier.
-
-## What to Persist (from Rigor Pack memory-hygiene benchmarks)
-
-Benchmark-tested rules for what enters persistent memory.
-
-### One Fact Per Entry, Dated
-Every persistent note gets a date and says ONE thing. "As of 2026-07-02" ages honestly. Undated memory is unreliable.
-
-### Decisions, Not Events
-- Bad: "Discussed the API design and decided to use REST"
-- Good: "API: REST over GraphQL (reason: team knows REST, no graph schema needed)"
-
-### Include the Rejection
-What was considered and WHY it was rejected matters more than what was chosen. "Chose X over Y because Z" survives context loss.
-
-### Prefer Facts Over Interpretations
-- Bad: "The deployment was problematic"
-- Good: "Deploy failed: rollback took 12 minutes, caused by missing env var DATABASE_URL"
-
-### What NOT to Persist
-- Derivable facts (git history, docker-compose output, file contents you can re-read)
-- One-off fixes without the WHY
-- Passwords, tokens, temporary credentials
-- Narrative of process ("I then checked...")
-- Redundant copies of the same fact
-
-### Staleness Grades
-| Grade | Age | Action |
-|-------|-----|--------|
-| Fresh | < 24h | Trust fully |
-| Current | 1-7 days | Verify before critical decisions |
-| Aging | 7-30 days | Re-verify any fact before acting on it |
-| Stale | 30-90 days | Re-verify, mark as potentially outdated |
-| Historical | > 90 days | Archive, re-verify on every use |
 
 ## Namespace Isolation
 
@@ -403,96 +408,6 @@ Not all memories should live forever. Decay based on:
 - Decay score < 0.3 → archive to COLD
 - Decay score < 0.1 → soft delete (mark, don't remove)
 - Decay score ≥ 0.5 → keep in current tier
-
-## Knowledge Graph Layer (from Graphify-Labs/graphify)
-
-Graph traversal complements keyword/vector search. While SSC Router does keyword matching and atoms do fact lookup, the knowledge graph maps *relationships* between concepts.
-
-### EXTRACTED vs INFERRED Edges
-
-Every connection in the graph is tagged:
-
-| Tag | Meaning | Example |
-|-----|---------|---------|
-| **EXTRACTED** | Explicit in the source file | `module A` imports `module B` |
-| **INFERRED** | Resolved by graphify's resolver | `function X` calls `function Y` (via AST analysis) |
-
-**Applied to memory atoms:** Replace `confidence: alto/médio/baixo` with `origin: EXTRACTED | INFERRED`:
-
-```markdown
-- PM2 é o único dono do gateway. Nunca criar Windows Scheduled Tasks.
-  - Source: s006-ssc-skill-incident.md
-  - Date: 2026-06-27
-  - Origin: EXTRACTED (incidente real, regra documentada)
-
-- Graphify resolveu que módulo A depende de módulo B
-  - Source: graphify-out/graph.json
-  - Date: 2026-07-06
-  - Origin: INFERRED (AST analysis)
-```
-
-### When to Use Each Retrieval Method
-
-| Method | Best For | Tool |
-|--------|----------|------|
-| SSC Router (keyword) | Broad topic search | `ssc-router.ps1 -Query "topic"` |
-| Drill-down (hierarchy) | Specific fact lookup | `node scripts/drill-down.js "query"` |
-| Knowledge graph (traversal) | Relationship mapping | `graphify path "A" "B"` |
-| Graph query (BFS) | Question answering | `graphify query "what depends on X?"` |
-
-### Graphify CLI Commands
-
-```bash
-# Build knowledge graph from codebase
-graphify extract . --backend gemini
-
-# Query the graph
-graphify query "what modules depend on the auth system?"
-
-# Find path between two concepts
-graphify path "FastAPI" "Database"
-
-# Explain a concept and its neighbors
-graphify explain "SSC Router"
-
-# Update graph after code changes (no LLM cost)
-graphify update .
-
-# Visualize
-# Open graphify-out/graph.html in browser
-```
-
-### Integration with SSC v2
-
-The knowledge graph adds a fifth retrieval layer:
-
-```
-L3  Persona     → USER.md, SOUL.md, IDENTITY.md
-L2  Scenario    → segments/*.md (keyword match)
-L1  Atom        → atoms/*.md (fact lookup)
-L0  Conversation → daily/*.md (raw logs)
-L-G Graph        → graphify-out/graph.json (relationships)
-```
-
-Graph is queried AFTER atoms if the question is about relationships, not facts.
-
-### Installation for Replication
-
-```powershell
-# Install graphify
-pip install graphifyy
-
-# Register with OpenClaw
-python -m graphify claw install
-
-# Build graph (needs LLM API key for docs, not for code)
-python -m graphify extract . --backend gemini
-
-# Verify
-python -m graphify query "SSC Router"
-```
-
-**Zero vendor lock-in:** graphify is MIT license, runs locally, code parsing is tree-sitter (no API). Only docs/media extraction uses LLM.
 
 ## Vector Store Reference
 
@@ -1004,6 +919,29 @@ qmd query "what is SSC?"              # Hybrid (BM25 + Vector + LLM reranking)
 ### Automatic
 
 When a new topic emerges during conversation, the agent creates the segment and updates index.json. The router picks it up on next query.
+
+### Entry Format (from memory-hygiene)
+
+Every memory entry should follow this format:
+
+```markdown
+## [DATE] Topic
+
+**Trigger:** when [condition], remember [fact]
+**Why:** [reason this matters — the part that evaporates]
+**Tier:** HOT | WARM | COLD
+```
+
+**Example:**
+```markdown
+## [2026-07-02] Deploy Hook
+
+**Trigger:** when touching the publish pipeline, remember the deploy hook is armed
+**Why:** we chose to arm it after the May incident; disarming requires team approval
+**Tier:** HOT
+```
+
+One fact per entry, dated. "As of 2026-07-02" ages honestly. Undated facts rot invisibly.
 
 ## Testing
 

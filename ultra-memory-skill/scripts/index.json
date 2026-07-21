@@ -1,0 +1,346 @@
+{
+  "version": "2.0",
+  "description": "SSC v2 — Sparse Selective Cache com Semantic Pyramid (L3→L2→L1→L0)",
+  "created": "2026-06-13",
+  "updated": "2026-07-13T19:24:13.184Z",
+  "lastMaintenance": "2026-07-06T13:09:00",
+  "architecture": {
+    "L3": "Persona — USER.md, SOUL.md, IDENTITY.md, MEMORY.md",
+    "L2": "Scenario — memory/segments/*.md",
+    "L1": "Atom — memory/atoms/*.md",
+    "L0": "Conversation — memory/daily/*.md"
+  },
+  "segments": [
+    {
+      "id": "s001",
+      "tier": "L2",
+      "file": "segments/s001-infra.md",
+      "atoms": [
+        "atoms/infra-atoms.md"
+      ],
+      "summary": "Encoding UTF-8 no Windows, env vars NVIDIA/OpenRouter, correção de bug em adapter-utils",
+      "keywords": [
+        "encoding",
+        "UTF-8",
+        "CP850",
+        "env vars",
+        "NVIDIA",
+        "OpenRouter",
+        "adapter-utils",
+        "String(chunk)",
+        "Windows",
+        "paperclip",
+        "percepção",
+        "visão computacional",
+        "Nemotron omni"
+      ],
+      "tags": [
+        "infraestrutura",
+        "bug-fix",
+        "resolvido"
+      ],
+      "lastCheckpoint": "ckpt-2026-05-22",
+      "weight": 1,
+      "created": "2026-05-22",
+      "accessCount": 8,
+      "lastAccess": "2026-06-30T06:01:18"
+    },
+    {
+      "id": "s002",
+      "tier": "L2",
+      "file": "segments/s002-paperclip.md",
+      "atoms": [
+        "atoms/paperclip-atoms.md"
+      ],
+      "summary": "Issues Paperclip (RLA-207, RLA-132, RLA-276), decisões de CEO, limpeza de waste, política de logs",
+      "keywords": [
+        "paperclip",
+        "issues",
+        "RLA",
+        "CEO",
+        "cleanup",
+        "logs",
+        "server.log",
+        "RLA-207",
+        "RLA-132",
+        "RLA-276",
+        "tasks",
+        "orphan",
+        "false positive",
+        "stale run"
+      ],
+      "tags": [
+        "paperclip",
+        "issues",
+        "operações",
+        "CEO"
+      ],
+      "lastCheckpoint": "ckpt-2026-06-07",
+      "weight": 0.9,
+      "created": "2026-05-22",
+      "accessCount": 7,
+      "lastAccess": "2026-06-30T06:01:18"
+    },
+    {
+      "id": "s003",
+      "tier": "L2",
+      "file": "segments/s003-heartbeat.md",
+      "atoms": [
+        "atoms/heartbeat-atoms.md"
+      ],
+      "summary": "Tempestade de alertas de heartbeat, root cause RLA-207, cron jobs, procedimentos de heartbeat",
+      "keywords": [
+        "heartbeat",
+        "alert storm",
+        "wake event",
+        "RLA-207",
+        "RLA-132",
+        "opencode_local",
+        "cron",
+        "paperclip-log-cleanup",
+        "backup-paperclip-openclaw",
+        "paperclip-status-check",
+        "stale run",
+        "originFingerprint",
+        "desperdício",
+        "compute"
+      ],
+      "tags": [
+        "heartbeat",
+        "alert-storm",
+        "resolved",
+        "operações"
+      ],
+      "lastCheckpoint": "ckpt-2026-06-07",
+      "weight": 0.8,
+      "created": "2026-06-07",
+      "accessCount": 8,
+      "lastAccess": "2026-06-30T06:01:18"
+    },
+    {
+      "id": "s004",
+      "tier": "L2",
+      "file": "segments/s004-skills.md",
+      "atoms": [
+        "atoms/skills-atoms.md"
+      ],
+      "summary": "Skills Telegram, Ultra Find/Create, projetos de pattern inspiration, identidade Justus",
+      "keywords": [
+        "telegram",
+        "skill",
+        "ultra",
+        "pattern",
+        "antigravity",
+        "identidade",
+        "Justus",
+        "Founders e CEOs",
+        "humano digital",
+        "RobinBRIAbot",
+        "canal",
+        "grupo"
+      ],
+      "tags": [
+        "skills",
+        "projetos",
+        "identidade",
+        "telegram"
+      ],
+      "lastCheckpoint": "ckpt-2026-06-23",
+      "weight": 0.95,
+      "created": "2026-06-06",
+      "accessCount": 9,
+      "lastAccess": "2026-06-30T06:01:18"
+    },
+    {
+      "id": "s005",
+      "tier": "L2",
+      "file": "segments/s005-wiki-hybrid.md",
+      "atoms": [
+        "atoms/wiki-atoms.md"
+      ],
+      "summary": "Pesquisa e implementação da arquitetura híbrida LLM-Wiki + vector DB. Paper draft completo.",
+      "keywords": [
+        "wiki",
+        "hybrid-memory",
+        "karpathy",
+        "hyper-extract",
+        "qmd",
+        "agentmemory",
+        "obsidian",
+        "OKF",
+        "paper",
+        "arquitetura",
+        "vector",
+        "embedding",
+        "LLM-Wiki",
+        "knowledge-graph",
+        "graph-view",
+        "dreaming",
+        "dream"
+      ],
+      "tags": [
+        "wiki",
+        "hybrid-memory",
+        "paper",
+        "arquitetura",
+        "research"
+      ],
+      "lastCheckpoint": "ckpt-2026-06-26",
+      "weight": 1,
+      "created": "2026-06-26",
+      "accessCount": 7,
+      "lastAccess": "2026-06-30T06:01:18"
+    },
+    {
+      "id": "s006",
+      "tier": "L2",
+      "file": "segments/s006-ssc-skill-incident.md",
+      "atoms": [
+        "atoms/ssc-atoms.md"
+      ],
+      "summary": "SSC Router implementado, ultra-memory-skill publicado, incidente Telegram outage, watchdog corrigido",
+      "keywords": [
+        "ssc-router",
+        "health-check",
+        "ultra-memory-skill",
+        "github",
+        "incidente",
+        "telegram",
+        "outage",
+        "watchdog",
+        "PM2",
+        "gateway",
+        "scheduled-task",
+        "orphan",
+        "getUpdates",
+        "conflict"
+      ],
+      "tags": [
+        "ssc",
+        "github",
+        "incidente",
+        "infraestrutura",
+        "resolvido"
+      ],
+      "lastCheckpoint": "ckpt-2026-06-27",
+      "weight": 0.9,
+      "created": "2026-06-27",
+      "accessCount": 4,
+      "lastAccess": "2026-06-29T18:56:10"
+    },
+    {
+      "id": "s007",
+      "tier": "L2",
+      "file": "segments/s007-2026-06-28.md",
+      "atoms": [
+        "atoms/ultracore-atoms.md"
+      ],
+      "summary": "Ultra-memory-core, Cognee analysis, H.M. parallel, paper v0.2, thread X, ultra-x-stealth-skill",
+      "keywords": [
+        "ultra-memory-core",
+        "cognee",
+        "H.M.",
+        "knowledge-graph",
+        "vector-search",
+        "ontology",
+        "paper-v0.2",
+        "thread-X",
+        "stealth",
+        "anti-detection",
+        "zero-dependencies"
+      ],
+      "tags": [
+        "memory-architecture",
+        "cognee",
+        "paper",
+        "x-posting",
+        "stealth",
+        "2026-06-28"
+      ],
+      "lastCheckpoint": null,
+      "weight": 1,
+      "created": "2026-06-28",
+      "accessCount": 5,
+      "lastAccess": "2026-06-30T06:01:18"
+    },
+    {
+      "id": "s008",
+      "tier": "L2",
+      "file": "segments/s008-finance.md",
+      "atoms": [
+        "atoms/finance-atoms.md"
+      ],
+      "summary": "Financas e investimentos - MSTR/STRC preferred stock analysis, leverage cascade, buyback program",
+      "keywords": [
+        "bitcoin",
+        "MSTR",
+        "STRC",
+        "preferred-stock",
+        "leverage",
+        "buyback",
+        "options",
+        "Strategy Inc",
+        "Phong Le",
+        "dividendo",
+        "financas"
+      ],
+      "tags": [
+        "financas",
+        "investimentos",
+        "bitcoin",
+        "MSTR",
+        "STRC"
+      ],
+      "lastCheckpoint": null,
+      "weight": 0.9,
+      "created": "2026-07-03",
+      "accessCount": 1,
+      "lastAccess": "2026-07-03T05:43:00"
+    },
+    {
+      "id": "s009",
+      "tier": "L2",
+      "file": "segments/s009-error-tracking.md",
+      "atoms": [],
+      "summary": "Registro estruturado de erros (meus e sub-agents) para auto-improvement. Formato padronizado, categorias, métricas.",
+      "keywords": [
+        "error",
+        "erro",
+        "tracking",
+        "self-improvement",
+        "auto-improve",
+        "lição",
+        "causa-raiz",
+        "sub-agent",
+        "timeout",
+        "tool-misuse",
+        "wrong-assumption"
+      ],
+      "tags": [
+        "errors",
+        "self-improvement",
+        "meta",
+        "processo"
+      ],
+      "lastCheckpoint": null,
+      "weight": 1,
+      "created": "2026-07-08",
+      "accessCount": 1,
+      "lastAccess": "2026-07-08T01:34:00"
+    }
+  ],
+  "config": {
+    "maxSegmentsPerQuery": 6,
+    "minWeightThreshold": 0.3,
+    "autoCompressAfterDays": 30,
+    "autoMergeSimilarityThreshold": 0.85,
+    "maintenanceSchedule": "during-heartbeat",
+    "retrievalMode": "drill-down",
+    "retrievalOrder": [
+      "L3",
+      "L2",
+      "L1",
+      "L0"
+    ]
+  }
+}
