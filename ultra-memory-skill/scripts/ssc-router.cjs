@@ -196,7 +196,7 @@ function querySSC(queryText, options = {}) {
 /**
  * Fetch embedding vector from OpenRouter text-embedding-3-small API
  */
-const EMBED_TIMEOUT_MS = 5000;
+const EMBED_TIMEOUT_MS = 15000;
 const EMBED_MAX_DOCS = 10;
 
 function fetchEmbedding(text) {
