@@ -18,7 +18,7 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-const workspaceDir = 'C:\\Users\\ClawLabs\\.openclaw\\workspace';
+const workspaceDir = path.resolve(__dirname, '..', '..', '..', '..');
 const memoryDir = path.join(workspaceDir, 'memory');
 const indexPath = path.join(memoryDir, 'index.json');
 
@@ -97,7 +97,8 @@ try {
   // TEST GROUP 3: PowerShell Interface Integration
   // -------------------------------------------------------------
   console.log(`\n[Suite 3/6] Testing PowerShell Interface (ssc-router.ps1)...`);
-  const psOutput = execSync(`powershell -ExecutionPolicy Bypass -File "C:\\Users\\ClawLabs\\.openclaw\\workspace\\memory\\ssc-router.ps1" -Query "heartbeat" -Json`, { encoding: 'utf8' });
+  const psScript = path.join(workspaceDir, 'memory', 'ssc-router.ps1');
+  const psOutput = execSync(`powershell -ExecutionPolicy Bypass -File "${psScript}" -Query "heartbeat" -Json`, { encoding: 'utf8' });
   const parsedPs = JSON.parse(psOutput);
   assert(parsedPs.results !== undefined, 'PowerShell script returned valid JSON via node delegation');
   assert(parsedPs.results.length > 0, 'PowerShell router output contains matches');

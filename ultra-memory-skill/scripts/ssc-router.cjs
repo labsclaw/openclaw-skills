@@ -18,7 +18,16 @@ const fs = require('fs');
 const path = require('path');
 const { rebuild, tokenize } = require('./ssc-rebuild.cjs');
 
-const workspaceDir = 'C:\\Users\\ClawLabs\\.openclaw\\workspace';
+function findWorkspace() {
+  if (process.env.OPENCLAW_WORKSPACE) return process.env.OPENCLAW_WORKSPACE;
+  let dir = __dirname;
+  for (let i = 0; i < 10; i++) {
+    if (fs.existsSync(path.join(dir, 'memory')) && fs.existsSync(path.join(dir, 'scripts'))) return dir;
+    dir = path.dirname(dir);
+  }
+  throw new Error('Cannot find OpenClaw workspace (looked for memory/ + scripts/ dirs)');
+}
+const workspaceDir = findWorkspace();
 const memoryDir = path.join(workspaceDir, 'memory');
 const indexPath = path.join(memoryDir, 'index.json');
 
