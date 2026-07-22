@@ -12,14 +12,17 @@
  * 7. Edge Cases & Resilience (Empty queries, special chars, zero hits)
  * 
  * Usage:
- *   node scripts/test-ssc-v4.cjs
+ *   node tests/test-ssc-v4.cjs
+ * 
+ * Convention: tests/ at workspace root, scripts/ for .cjs modules.
+ * Set OPENCLAW_WORKSPACE env var when running outside a deployed workspace.
  */
 
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-const workspaceDir = path.resolve(__dirname, '..', '..', '..', '..');
+const workspaceDir = process.env.OPENCLAW_WORKSPACE || path.resolve(__dirname, '..', '..', '..', '..');
 const memoryDir = path.join(workspaceDir, 'memory');
 const indexPath = path.join(memoryDir, 'index.json');
 
