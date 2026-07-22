@@ -1,12 +1,13 @@
-# SSC Router v4.0 — Hybrid BM25 & Layered Sparse Selective Cache
+# SSC Router v4.1 — Hybrid BM25 + Embedding Rerank
 # Inspired by Memory Caching (arXiv 2602.24281) & Obsidian-Mind
 #
 # Tier 1: Segments (Curated Domain Knowledge) - Weight Multiplier x2.0
 # Tier 2: Daily Logs (Raw Ephemeral Context) - Weight Multiplier x0.5
 # BM25: Probabilistic Term Relevance Scoring
+# Embedding: Semantic Rerank via text-embedding-3-small (--Embed flag, requires OPENROUTER_API_KEY)
 #
-# Usage: .\ssc-router.ps1 -Query "heartbeat alert storm RLA-207"
-#        .\ssc-router.ps1 -Query "awesome-llm-apps"
+# Usage: .\ssc-router.ps1 -Query "heartbeat alert storm"
+#        .\ssc-router.ps1 -Query "infrastructure" -Embed
 #        .\ssc-router.ps1 -List
 #        .\ssc-router.ps1 -Stats
 
@@ -16,7 +17,8 @@ param(
     [switch]$Stats,
     [int]$TopK = 0,
     [switch]$DryRun,
-    [switch]$Json
+    [switch]$Json,
+    [switch]$Embed
 )
 
 $ErrorActionPreference = "Stop"
@@ -37,8 +39,9 @@ if (Test-Path $nodeRouterScript) {
         if ($TopK -gt 0) { $nodeArgs += "--top=$TopK" }
         if ($Json) { $nodeArgs += "--json" }
         if ($DryRun) { $nodeArgs += "--dry-run" }
+        if ($Embed) { $nodeArgs += "--embed" }
     } else {
-        Write-Host "Usage: .\ssc-router.ps1 -Query 'your search terms' [-TopK 5] [-Json] [-DryRun]" -ForegroundColor Yellow
+        Write-Host "Usage: .\ssc-router.ps1 -Query 'your search terms' [-TopK 5] [-Json] [-DryRun] [-Embed]" -ForegroundColor Yellow
         Write-Host "       .\ssc-router.ps1 -List" -ForegroundColor Yellow
         Write-Host "       .\ssc-router.ps1 -Stats" -ForegroundColor Yellow
         exit 0
