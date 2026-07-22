@@ -9,7 +9,9 @@ Zero-cost memory architecture for LLM agents, inspired by [Memory Caching: RNNs 
 
 ## What You Get
 
-- **SSC Router** — keyword/tag scoring loads only relevant memory segments per query
+- **SSC Router v4.0** — hybrid BM25 + keyword/tag scoring with Tier 1 (segments x2.0) and Tier 2 (daily x0.5) retrieval
+- **Classification Gate** — auto-categorize session logs into ADR, Lesson, Incident, and Config
+- **Pre-Compaction Guard** — snapshot volatile context to `memory/checkpoints/` before compaction
 - **Health Check** — daily filesystem integrity monitor (no LLM needed)
 - **Wiki Architecture** — persistent markdown wiki with Hyper-Extract + qmd + agentmemory
 - **Learning Signals** — automatic detection of corrections, preferences, and patterns (inspired by self-improving skill)
