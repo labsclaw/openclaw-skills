@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * test-ssc-v4.cjs — Comprehensive Test Suite for SSC Memory System v4.0
+ * test-ssc-v4.cjs — Comprehensive Test Suite for SSC Memory System v4.1
  * 
  * Tests:
  * 1. Index Rebuild Engine (Tier 1, Tier 2, BM25 Statistics)
@@ -8,7 +8,8 @@
  * 3. PowerShell Interface Integration
  * 4. Memory Classification Gate (ADR, Lesson, Incident, Config)
  * 5. Pre-Compaction Snapshot Guard
- * 6. Edge Cases & Resilience (Empty queries, special chars, zero hits)
+ * 6. Embedding Rerank (--embed flag, BM25+Semantic hybrid)
+ * 7. Edge Cases & Resilience (Empty queries, special chars, zero hits)
  * 
  * Usage:
  *   node scripts/test-ssc-v4.cjs
@@ -41,14 +42,14 @@ function assert(condition, message) {
 }
 
 console.log(`\n==============================================`);
-console.log(`   SSC MEMORY SYSTEM v4.0 TEST SUITE`);
+console.log(`   SSC MEMORY SYSTEM v4.1 TEST SUITE`);
 console.log(`==============================================\n`);
 
 try {
   // -------------------------------------------------------------
   // TEST GROUP 1: Rebuild & BM25 Index Preparation
   // -------------------------------------------------------------
-  console.log(`[Suite 1/6] Testing Rebuild Engine (ssc-rebuild.cjs)...`);
+  console.log(`[Suite 1/7] Testing Rebuild Engine (ssc-rebuild.cjs)...`);
   const newIndex = rebuild();
   
   assert(newIndex.version === '4.0', 'Index version is 4.0');
@@ -64,7 +65,7 @@ try {
   // -------------------------------------------------------------
   // TEST GROUP 2: Hybrid BM25 Router Queries & Weighting
   // -------------------------------------------------------------
-  console.log(`\n[Suite 2/6] Testing Router Engine (ssc-router.cjs)...`);
+  console.log(`\n[Suite 2/7] Testing Router Engine (ssc-router.cjs)...`);
 
   // Query 1: Tier 1 Segment match (Heartbeat Alert Storm)
   const res1 = querySSC("heartbeat alert storm", { topK: 5, dryRun: true });
@@ -96,7 +97,7 @@ try {
   // -------------------------------------------------------------
   // TEST GROUP 3: PowerShell Interface Integration
   // -------------------------------------------------------------
-  console.log(`\n[Suite 3/6] Testing PowerShell Interface (ssc-router.ps1)...`);
+  console.log(`\n[Suite 3/7] Testing PowerShell Interface (ssc-router.ps1)...`);
   const psScript = path.join(workspaceDir, 'memory', 'ssc-router.ps1');
   const psOutput = execSync(`powershell -ExecutionPolicy Bypass -File "${psScript}" -Query "heartbeat" -Json`, { encoding: 'utf8' });
   const parsedPs = JSON.parse(psOutput);
@@ -106,7 +107,7 @@ try {
   // -------------------------------------------------------------
   // TEST GROUP 4: Classification Gate
   // -------------------------------------------------------------
-  console.log(`\n[Suite 4/6] Testing Classification Gate (memory-classify.cjs)...`);
+  console.log(`\n[Suite 4/7] Testing Classification Gate (memory-classify.cjs)...`);
   const testText = `
 Decidimos adiar a migração do Redis para o Q2.
 Encontramos um erro crítico no timeout do fallback que causou um crash.
@@ -121,7 +122,7 @@ Configuração do gateway atualizada com o modelo gemini-3.6-flash-high.
   // -------------------------------------------------------------
   // TEST GROUP 5: Pre-Compaction Snapshot Guard
   // -------------------------------------------------------------
-  console.log(`\n[Suite 5/6] Testing Pre-Compaction Guard (pre-compact-guard.cjs)...`);
+  console.log(`\n[Suite 5/7] Testing Pre-Compaction Guard (pre-compact-guard.cjs)...`);
   const snapRes = createSnapshot('unit-test-run');
   assert(snapRes.success === true, 'Snapshot created successfully');
   assert(fs.existsSync(snapRes.path), 'Snapshot file exists on disk');
@@ -135,9 +136,29 @@ Configuração do gateway atualizada com o modelo gemini-3.6-flash-high.
   assert(!fs.existsSync(snapRes.path), 'Cleaned up test snapshot');
 
   // -------------------------------------------------------------
-  // TEST GROUP 6: Edge Cases & Resilience
+  // TEST GROUP 6: Embedding Rerank
   // -------------------------------------------------------------
-  console.log(`\n[Suite 6/6] Testing Edge Cases & Resilience...`);
+  console.log(`\n[Suite 6/7] Testing Embedding Rerank (ssc-router.cjs --embed)...`);
+
+  // Test BM25-only fallback (no --embed flag)
+  const noEmbedRes = querySSC("infrastructure gateway config", { topK: 3 });
+  assert(noEmbedRes.results.length > 0, 'BM25-only returns results');
+  assert(noEmbedRes.results[0].semanticScore === undefined, 'BM25-only has no semantic score');
+
+  // Test embedding rerank via CLI spawn
+  const embedRouterPath = path.join(workspaceDir, 'scripts', 'ssc-router.cjs');
+  const embedOutput = execSync(`node "${embedRouterPath}" query "infrastructure gateway config" --top=3 --dry-run --embed`, { encoding: 'utf8', timeout: 30000 });
+  assert(embedOutput.includes('v4.1 Hybrid+Embed'), 'Output mentions hybrid embed version');
+  assert(embedOutput.includes('Semantic:'), 'Results include semantic similarity score');
+  assert(embedOutput.includes('s001-infra'), 'Top result is infrastructure segment');
+
+  // Re-run rebuild to ensure clean final state
+  rebuild();
+
+  // -------------------------------------------------------------
+  // TEST GROUP 7: Edge Cases & Resilience
+  // -------------------------------------------------------------
+  console.log(`\n[Suite 7/7] Testing Edge Cases & Resilience...`);
   const emptyRes = querySSC("", { topK: 5 });
   assert(emptyRes.results.length === 0, 'Empty query returns 0 results gracefully');
 
