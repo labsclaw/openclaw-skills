@@ -23,10 +23,10 @@ const workspaceDir = path.resolve(__dirname, '..', '..', '..', '..');
 const memoryDir = path.join(workspaceDir, 'memory');
 const indexPath = path.join(memoryDir, 'index.json');
 
-const { rebuild } = require('./ssc-rebuild.cjs');
-const { querySSC, loadIndex } = require('./ssc-router.cjs');
-const { classifyText, commitClassification } = require('./memory-classify.cjs');
-const { createSnapshot } = require('./pre-compact-guard.cjs');
+const { rebuild } = require('../scripts/ssc-rebuild.cjs');
+const { querySSC, loadIndex } = require('../scripts/ssc-router.cjs');
+const { classifyText, commitClassification } = require('../scripts/memory-classify.cjs');
+const { createSnapshot } = require('../scripts/pre-compact-guard.cjs');
 
 let passedTests = 0;
 let totalTests = 0;

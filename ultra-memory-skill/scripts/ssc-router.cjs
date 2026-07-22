@@ -196,8 +196,11 @@ function querySSC(queryText, options = {}) {
 /**
  * Fetch embedding vector from OpenRouter text-embedding-3-small API
  */
+const EMBED_TIMEOUT_MS = 5000;
+const EMBED_MAX_DOCS = 10;
+
 function fetchEmbedding(text) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const apiKey = process.env.OPENROUTER_API_KEY || '';
     if (!apiKey) {
       resolve(null);
@@ -213,6 +216,7 @@ function fetchEmbedding(text) {
       hostname: 'openrouter.ai',
       path: '/api/v1/embeddings',
       method: 'POST',
+      timeout: EMBED_TIMEOUT_MS,
       headers: {
         'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
@@ -238,6 +242,7 @@ function fetchEmbedding(text) {
       });
     });
 
+    req.on('timeout', () => { req.destroy(); resolve(null); });
     req.on('error', () => resolve(null));
     req.write(data);
     req.end();
@@ -271,20 +276,27 @@ async function embeddingRerank(topResults, queryText) {
     return topResults; // Fallback to pure BM25 when API unavailable
   }
 
+  const docsToEmbed = topResults.slice(0, EMBED_MAX_DOCS);
+  const skipped = topResults.length - docsToEmbed.length;
+
   const reranked = [];
-  for (const result of topResults) {
-    const docPath = path.join(workspaceDir, result.file);
-    let docText = result.summary || '';
-    if (fs.existsSync(docPath)) {
-      docText = fs.readFileSync(docPath, 'utf8').substring(0, 2000);
+  for (const result of docsToEmbed) {
+    try {
+      const docPath = path.join(workspaceDir, result.file);
+      let docText = result.summary || '';
+      if (fs.existsSync(docPath)) {
+        docText = fs.readFileSync(docPath, 'utf8').substring(0, 2000);
+      }
+
+      const docEmbedding = await fetchEmbedding(docText);
+      const semanticScore = docEmbedding ? cosineSimilarity(queryEmbedding, docEmbedding) : 0;
+
+      // Weighted: BM25 (0.6) + Semantic (0.4)
+      const combinedScore = (result.bm25Score * 0.6) + (semanticScore * 200 * 0.4);
+      reranked.push({ ...result, semanticScore: Math.round(semanticScore * 10000) / 10000, combinedScore: Math.round(combinedScore * 100) / 100 });
+    } catch (e) {
+      reranked.push(result); // Keep original on error
     }
-
-    const docEmbedding = await fetchEmbedding(docText);
-    const semanticScore = docEmbedding ? cosineSimilarity(queryEmbedding, docEmbedding) : 0;
-
-    // Weighted: BM25 (0.6) + Semantic (0.4)
-    const combinedScore = (result.bm25Score * 0.6) + (semanticScore * 200 * 0.4);
-    reranked.push({ ...result, semanticScore: Math.round(semanticScore * 10000) / 10000, combinedScore: Math.round(combinedScore * 100) / 100 });
   }
 
   reranked.sort((a, b) => b.combinedScore - a.combinedScore);
