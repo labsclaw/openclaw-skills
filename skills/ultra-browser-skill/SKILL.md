@@ -1,20 +1,45 @@
 ---
 name: ultra-browser-skill
-description: Full browser automation — Playwright headless scraping, LLM extractor, ARIA tree grounding, planner/navigator loop, DevTools integration, self-healing.
-version: 5.2.0
-author: Luna (OpenClaw Agency)
+description: "Full browser automation — ARIA grounding, multi-agent loop, DevTools, self-healing, CDP mode, workspace learnings"
+version: 5.3.0
+author: Luna + Robin (OpenClaw Agency)
 ---
 
-# Ultra Browser Skill v5 🦉 — THE ULTIMATE
+# Ultra Browser Skill v5.3 🦉🐦 — THE ULTIMATE
 
-Full browser control for OpenClaw. Combines the best patterns from:
-- **[Stagehand](https://github.com/browserbase/stagehand)** — Accessibility Tree grounding, observe-act caching, 4 primitives (act/extract/observe/agent)
-- **[Nanobrowser](https://github.com/nanobrowser/nanobrowser)** — Planner→Navigator→Validator multi-agent loop
-- **[Skyvern](https://github.com/skyvern-ai/skyvern)** — Vision+LLM hybrid, multi-model fallback
-- **[browser-use](https://github.com/browser-use/browser-use)** — observe-decide-act-reflect loop
-- **[Addy Osmani](https://github.com/addyosmani/agent-skills)** — DevTools integration, console/network/perf analysis, structured test plans
+Full browser control for OpenClaw. Combines patterns from Stagehand, Nanobrowser, Skyvern, browser-use, and Addy Osmani — **plus workspace learnings from Robin's daily operations**.
 
-## What's New in v5
+## v5.3 — Robin's Workspace Additions (2026-07-23)
+
+### What's New
+- **Tool Fallback Hierarchy** — explicit decision tree (built-in → CDP → Camoufox → local server)
+- **Known Limitations & Workarounds** — iframe cross-origin, snapshot truncation, exec buffer bug
+- **Local Server Workaround** — Node.js HTTP server pattern for SVG/HTML artifact rendering
+- **Snapshot Truncation Protocol** — auto-fallback to screenshot+vision when snapshot exceeds ~38k chars
+- **Verify-After-Action Rule** — mandatory post-action state verification
+- **`modules/tool-router.json`** — hierarchical tool routing with fallback chain
+- **`modules/safety-rules.json`** — domain blocklist, element protection, prompt injection patterns
+
+These additions were extracted from real browser automation challenges encountered in the OpenClaw workspace (Chrome Assistente, Camoufox, CDP mode, artifact rendering, and cross-origin iframe handling).
+
+---
+
+## v5.2 — Smart Form Fill (PageAgent-Inspired)
+
+- **In-Page JS Injection** — When `act()` fails on SPA forms, inject framework-aware JS to manipulate DOM state directly
+- **Framework Detection** — Auto-detects React, Vue, Angular, Svelte, Solid, WebComponents via global hooks + DOM markers
+- **Smart Strategies** — React fiber bypass, Vue model emit, Angular ng.getComponent(), shadow DOM piercing
+- **Custom Dropdown Fallback** — Open+type+select pattern for React Select, Ant Design, MUI Autocomplete
+- **Retry Cascade** — Framework-specific → generic native setter → custom dropdown → escalate to user
+
+## v5.1 — Vane-Inspired Additions
+
+- **Content Scraper Engine** — Playwright headless + Mozilla Readability for JS-heavy sites (SPAs, Twitter, docs)
+- **LLM Content Extractor** — Query-aware post-scraping filter: noise removal, numerical integrity, dedup, bullet-point output
+- **Singleton Browser Pool** — Mutex-guarded shared browser, idle kill after 30s, context isolation
+- **Anti-Detection Pipeline** — Realistic UserAgent + navigator.webdriver hiding
+
+## v5.0 — Core Features
 
 ### From Stagehand (80-90% Token Savings)
 - **Accessibility Tree Grounding** — Use ARIA tree instead of raw DOM snapshots
@@ -45,19 +70,6 @@ Full browser control for OpenClaw. Combines the best patterns from:
 - **Screenshot Before/After** — Visual regression testing
 - **Content Boundary** — Clear trusted/untrusted data separation
 
-### 🆕 v5.2 — Smart Form Fill (PageAgent-Inspired)
-- **In-Page JS Injection** — When `act()` fails on SPA forms, inject framework-aware JS to manipulate DOM state directly
-- **Framework Detection** — Auto-detects React, Vue, Angular, Svelte, Solid, WebComponents via global hooks + DOM markers
-- **Smart Strategies** — React fiber bypass, Vue model emit, Angular ng.getComponent(), shadow DOM piercing
-- **Custom Dropdown Fallback** — Open+type+select pattern for React Select, Ant Design, MUI Autocomplete
-- **Retry Cascade** — Framework-specific → generic native setter → custom dropdown → escalate to user
-
-### 🆕 v5.1 — Vane-Inspired Additions
-- **Content Scraper Engine** — Playwright headless + Mozilla Readability for JS-heavy sites (SPAs, Twitter, docs)
-- **LLM Content Extractor** — Query-aware post-scraping filter: noise removal, numerical integrity, dedup, bullet-point output
-- **Singleton Browser Pool** — Mutex-guarded shared browser, idle kill after 30s, context isolation
-- **Anti-Detection Pipeline** — Realistic UserAgent + navigator.webdriver hiding
-
 ### Retained from v3/v4
 - ID System, Citation System, Prompt Injection Defense
 - Session Persistence, Background Parallel Research
@@ -78,6 +90,105 @@ Full browser control for OpenClaw. Combines the best patterns from:
 /ultra-browse bg research 5 competitors' pricing pages
 /ultra-browse auto post this to LinkedIn and Twitter
 ```
+
+---
+
+## 🆕 Tool Fallback Hierarchy (v5.3)
+
+Use this hierarchy to decide which tool to use for a browser task:
+
+```
+┌─ 1. Built-in browser tool (snapshot/click/navigate)
+│     → Simple actions, single page checks, ARIA refs
+│     → refs="aria" + compact=true defaults
+│
+├─ 2. CDP Real Browser (porta 9222)
+│     → Logged-in sessions (X, LinkedIn, dashboards)
+│     → Multi-step flows needing auth cookies
+│     → Profile: ~/.openclaw/chrome-profile/
+│     → Bridge: WebSocket porta 3032 (Chrome Assistente)
+│
+├─ 3. Camoufox (porta 9377)
+│     → Bot detection sites (Cloudflare, 403, captcha)
+│     → Heavy SPAs where CDP fails
+│     → Setup: npm rebuild better-sqlite3 + fontconfig junction
+│
+└─ 4. Local Server Workaround (localhost:18900)
+      → Render SVG/HTML/artifacts not openable directly
+      → Node.js HTTP server → browser tool capture
+```
+
+### Fallback Chain
+```
+built-in browser → CDP (9222) → Camoufox (9377) → local server (18900)
+```
+
+---
+
+## 🆕 Known Limitations & Workarounds (v5.3)
+
+| Limitation | Workaround |
+|-----------|------------|
+| **Iframe cross-origin** (XMind, Framer, SaaS embutido) | Detectar `src` do iframe, abrir em tab separada |
+| **Snapshot truncation** (~38k chars limit) | 1º snapshot → se truncar, screenshot + análise por visão |
+| **Exec buffer bug** (UTF-8/emoji corrompe output PowerShell) | Delegar operações críticas para sub-agentes isolados |
+| **Camoufox não inicia** | Verificar `npm rebuild better-sqlite3` + junction fontconfig em `%LOCALAPPDATA%\camoufox\camoufox\Cache` |
+| **SPA forms não respondem a fill()** | Smart Form Fill: detectar framework, usar JS injection |
+
+## 🆕 Snapshot Truncation Protocol (v5.3)
+
+```
+Snapshot retorna < 38k chars?
+  ├─ Sim → ✅ Segue normal
+  └─ Não (truncado) →
+      ├─ 1. Tenta compact mode (refs="aria", compact=true)
+      ├─ 2. Se ainda truncado → screenshot
+      ├─ 3. Envia screenshot + prompt de análise visual
+      └─ 4. Fallback: web_fetch + extract
+```
+
+## 🆕 Verify-After-Action Rule (v5.3)
+
+**Sempre** verificar o estado da página depois de qualquer ação:
+
+```
+1. Act (click, fill, navigate)
+2. Snapshot ou screenshot imediatamente após
+3. Confirmar: o estado reflete a ação esperada?
+4. Se falhou → self-healing cascade (max 3 ciclos)
+5. Se ok → logging + cache update
+```
+
+## 🆕 Local Server Workaround (v5.3)
+
+Quando o browser tool não abre arquivos SVG/HTML/PNG locais diretamente:
+
+```javascript
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
+
+const PORT = 18900;
+const FILE = process.argv[2] || 'artifact.html';
+
+http.createServer((req, res) => {
+  const filePath = path.join(__dirname, FILE);
+  const ext = path.extname(FILE);
+  const mimeTypes = {
+    '.html': 'text/html',
+    '.svg': 'image/svg+xml',
+    '.png': 'image/png'
+  };
+
+  fs.readFile(filePath, (err, data) => {
+    if (err) { res.writeHead(404); res.end('Not found'); return; }
+    res.writeHead(200, { 'Content-Type': mimeTypes[ext] || 'text/plain' });
+    res.end(data);
+  });
+}).listen(PORT, () => console.log(`Serving ${FILE} on http://localhost:${PORT}`));
+```
+
+Serve em `http://localhost:18900` → browser tool consegue capturar o conteúdo renderizado.
 
 ---
 
@@ -192,16 +303,17 @@ async def wait_for_challenge(page, timeout_ms=15000):
 
 ### Skill Ecosystem — Where Ultra-Browser Fits
 
-This skill coexists with two other browser tools in the workspace.
+This skill coexists with other browser tools in the workspace.
 Here is the **division of responsibility**:
 
 | Tool | Role | When to Use |
 |------|------|-------------|
 | **Ultra-Browser Skill** (this) | Full agentic browser orchestration | Complex multi-step tasks, scraping, research, DevTools, planner/navigator/validator loop |
 | **OpenClaw browser tool** (built-in) | Direct tool-level browser control | Single snapshot, click, or navigate calls — lightweight, no extra setup |
-| **Camoufox** (anti-detection) | Browser fingerprint protection layer | Only when operating from a different machine/context; NOT needed when using CDP mode with real user Chrome |
+| **Chrome Assistente (CDP 9222)** | Real browser automation | Logged-in sessions, multi-step flows with auth |
+| **Camoufox (9377)** | Browser fingerprint protection | Only when operating from a different context; reserve for bot detection |
 
-**Default flow:** Start with the built-in browser tool for simple actions. Escalate to this skill for complex multi-step workflows, content scraping, or when you need the planner/navigator/validator loop. Camoufox is only relevant for cross-machine anti-detection — CDP mode on the real user browser already inherits the user's session and fingerprint.
+**Default flow:** Start with the built-in browser tool for simple actions. Escalate to CDP mode for logged-in sessions. Camoufox is reserve for Cloudflare/bot detection.
 
 ### The Agent Loop (4 Phases)
 
@@ -368,7 +480,7 @@ Instead of raw DOM (which is huge and noisy), we use Chrome's Accessibility Tree
 ```
 Raw DOM (1000+ tokens):
 <div class="css-1a2b3c" style="display:flex;..." data-testid="...">
-  <button class="btn-primary" aria-label="Submit" role="button" 
+  <button class="btn-primary" aria-label="Submit" role="button"
           onclick="..." style="...">
     <span class="icon">→</span> Submit Form
   </button>
@@ -1199,7 +1311,6 @@ interface ExtractorOutput {
 | Short, already clean content | ⏹️ Skip |
 | Agent needs full context (e.g., code analysis) | ⏹️ Skip |
 
-
 ### Full Pipeline (Scrape → Extract → Consume)
 
 ```
@@ -1241,46 +1352,22 @@ This replaces sending raw HTML to the answer generator, cutting token usage by 6
 
 ---
 
-## Modules
-
-| Module | Purpose |
-|--------|---------|
-| `modules/planner.json` | Task decomposition rules & self-correction |
-| `modules/navigator.json` | Execution protocols & action matrix |
-| `modules/validator.json` | Verification rules & failure classification |
-| `modules/action-cache.json` | Observe-act cache for known patterns |
-| `modules/vision-fallback.json` | Screenshot analysis rules |
-| `modules/observer.json` | observe() primitive configuration |
-| `modules/replay.json` | Session recording & replay |
-| `modules/devtools.json` | Console, network, performance, a11y analysis |
-| `modules/site-memory.json` | Accumulated site patterns |
-| `modules/safety-rules.json` | Domain blocklist + element protection |
-| `modules/id-registry.json` | ID tracking across tool calls |
-| `modules/injection-patterns.json` | Prompt injection detection |
-| `modules/tool-router.md` | Smart routing decision tree |
-| `modules/custom-tools.json` | Reusable tool templates (LinkedIn, Twitter, form filler, multi-site research) |
-| `modules/smart-form-fill.json` | In-page JS injection rules, framework detection, retry cascade (v5.2) |
-| `modules/content-scraper.json` | Playwright + Readability scraper config (v5.1) |
-| `modules/extractor.json` | Legacy LLM extractor prompts & schemas (v5.1) |
-| `modules/langextract.json` | Google LangExtract integration — structured extraction with source grounding (v1.6.0) |
-
----
-
 ## Operating Loop (Complete)
 
-1. **OBSERVE** — ARIA snapshot + optional screenshot
+1. **OBSERVE** — ARIA snapshot + optional screenshot; check truncation
 2. **CACHE CHECK** — Do we have a cached pattern for this?
-3. **PLAN** — Planner decomposes into steps (or uses cached plan)
-4. **FOR EACH STEP:**
+3. **TOOL ROUTING** — Select tool (built-in → CDP → Camoufox → local server)
+4. **PLAN** — Planner decomposes into steps (or uses cached plan)
+5. **FOR EACH STEP:**
    a. Navigator executes using appropriate primitive
-   b. Validator checks outcome
+   b. **VERIFY-AFTER-ACTION** — snapshot/screenshot to confirm
    c. If failed → Self-correction cascade (max 3 cycles)
    d. If vision needed → Screenshot analysis
    e. If success → Cache pattern, proceed
    f. If blocked → Report to user
-5. **FINAL VALIDATE** — Confirm overall task completion
-6. **REPORT** — Deliver results with citations
-7. **UPDATE MEMORY** — Save learned patterns
+6. **FINAL VALIDATE** — Confirm overall task completion
+7. **REPORT** — Deliver results with citations
+8. **UPDATE MEMORY** — Save learned patterns
 
 ---
 
@@ -1330,9 +1417,34 @@ Report: Cheapest flight is LATAM for $1,247 [web:1]
 
 ---
 
+## Modules
+
+| Module | Purpose |
+|--------|---------|
+| `modules/planner.json` | Task decomposition rules & self-correction |
+| `modules/navigator.json` | Execution protocols & action matrix |
+| `modules/validator.json` | Verification rules & failure classification |
+| `modules/action-cache.json` | Observe-act cache for known patterns |
+| `modules/tool-router.json` | 🔄 Tool fallback hierarchy & routing (v5.3) |
+| `modules/safety-rules.json` | 🔄 Domain blocklist, element protection, injection patterns (v5.3) |
+| `modules/vision-fallback.json` | Screenshot analysis rules |
+| `modules/observer.json` | observe() primitive configuration |
+| `modules/replay.json` | Session recording & replay |
+| `modules/devtools.json` | Console, network, performance, a11y analysis |
+| `modules/site-memory.json` | Accumulated site patterns |
+| `modules/id-registry.json` | ID tracking across tool calls |
+| `modules/injection-patterns.json` | Prompt injection detection |
+| `modules/custom-tools.json` | Reusable tool templates (LinkedIn, Twitter, form filler, multi-site research) |
+| `modules/smart-form-fill.json` | In-page JS injection rules, framework detection, retry cascade |
+| `modules/content-scraper.json` | Playwright + Readability scraper config |
+| `modules/extractor.json` | Legacy LLM extractor prompts & schemas |
+| `modules/langextract.json` | Google LangExtract integration — structured extraction with source grounding |
+
+---
+
 ## Credits
 
-Built for OpenClaw Agency by Luna 🦉
+Built for OpenClaw Agency by Luna 🦉 + Robin 🐦
 
 Inspired by:
 - [Stagehand](https://github.com/browserbase/stagehand) — Accessibility Tree, observe-act caching, 4 primitives
@@ -1341,6 +1453,7 @@ Inspired by:
 - [browser-use](https://github.com/browser-use/browser-use) — observe-decide-act-reflect loop
 - [browser-control-skill](https://github.com/d-wwei/browser-control-skill) — Safety, site memory
 - [Perplexity Comet](https://github.com/asgeirtj/system_prompts_leaks) — ID system, citations, injection defense
+- OpenClaw workspace real-world testing — Chrome Assistente, Camoufox, CDP mode, artifact rendering (Robin, 2026)
 
 ## License
 

@@ -1,0 +1,47 @@
+{
+  "tool_hierarchy": [
+    {
+      "rank": 1,
+      "tool": "built-in browser tool",
+      "use_for": ["simple snapshot", "single click", "navigate to URL", "fill simple forms"],
+      "refs_default": "aria",
+      "compact_default": true,
+      "max_chars_limit": 38000,
+      "when_to_escalate": ["truncated snapshot (>38k chars)", "iframe cross-origin", "bot detection"]
+    },
+    {
+      "rank": 2,
+      "tool": "CDP Real Browser (porta 9222)",
+      "use_for": ["logged-in sessions", "multi-step flows", "sites requiring auth cookies"],
+      "setup_windows": [
+        "Start-Process chrome.exe -ArgumentList @('--remote-debugging-port=9222','--user-data-dir=C:\\Users\\<user>\\AppData\\Local\\Google\\Chrome\\User Data')"
+      ],
+      "when_to_escalate": ["CDP connection fails", "Chrome not running"]
+    },
+    {
+      "rank": 3,
+      "tool": "Camoufox (porta 9377)",
+      "use_for": ["bot detection sites: Cloudflare, 403, captcha", "heavy SPAs"],
+      "setup_windows": [
+        "npm rebuild better-sqlite3",
+        "cd %LOCALAPPDATA%\\camoufox\\camoufox\\Cache && mklink /J fontconfig fonts",
+        "npx @askjo/camofox-browser start --port 9377"
+      ],
+      "status": "reserve",
+      "when_to_escalate": ["Camoufox not running", "connection refused"]
+    },
+    {
+      "rank": 4,
+      "tool": "Local Server Workaround (localhost:18900)",
+      "use_for": ["render SVG/HTML/PNG artifacts", "browser tool can't open file:// directly"],
+      "pattern": "Node.js http server on localhost:18900",
+      "when_to_escalate": "N/A — last resort"
+    }
+  ],
+  "fallback_chain": "built-in browser → CDP (9222) → Camoufox (9377) → local server (18900)",
+  "browser_tool_defaults": {
+    "refs": "aria",
+    "compact": true,
+    "maxChars": 38000
+  }
+}
