@@ -28,6 +28,34 @@ Zero-cost memory architecture for LLM agents, inspired by [Memory Caching: RNNs 
 
 This creates the memory structure and copies scripts. Then add the SSC protocol to your AGENTS.md (see `templates/AGENTS-template.md`).
 
+## Full Installation
+
+> **For complete step-by-step instructions with verification checklist, see [INSTALL-CHECKLIST.md](./INSTALL-CHECKLIST.md)**
+>
+> The checklist covers:
+> - Phase 1: Memory structure (REQUIRED)
+> - Phase 2: AGENTS.md integration (REQUIRED)
+> - Phase 3: Wiki ecosystem — Hyper-Extract + qmd + agentmemory (OPTIONAL)
+> - Phase 4: Cron jobs (REQUIRED)
+> - Phase 5: Full verification
+> - Known issues and fixes
+
+### Prerequisites
+
+- **PowerShell 7+** (`pwsh`) — PS 5.1 has Unicode bugs and missing operators
+- **Node.js 18+** — for qmd and agentmemory
+- **Python 3.10+** — for Hyper-Extract
+- **OpenClaw** running with gateway accessible
+
+### Bug Fix (PR #10)
+
+`setup.ps1` has a doubled `scripts/` path bug. If it fails, copy scripts manually:
+
+```powershell
+Copy-Item "scripts/ssc-router.ps1" "~/.openclaw/workspace/memory/"
+Copy-Item "scripts/ssc-health.ps1" "~/.openclaw/workspace/memory/"
+```
+
 ## Learning Signals (from Self-Improving Skill)
 
 Automatically detect and log these patterns:
