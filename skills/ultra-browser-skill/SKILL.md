@@ -131,9 +131,46 @@ built-in browser → CDP (9222) → Camoufox (9377) → local server (18900)
 |-----------|------------|
 | **Iframe cross-origin** (XMind, Framer, SaaS embutido) | Detectar `src` do iframe, abrir em tab separada |
 | **Snapshot truncation** (~38k chars limit) | 1º snapshot → se truncar, screenshot + análise por visão |
-| **Exec buffer bug** (UTF-8/emoji corrompe output PowerShell) | Delegar operações críticas para sub-agentes isolados |
+| **Exec buffer bug** (UTF-8/emoji corrompe output PowerShell) | Delegar operações críticas para sub-agentes isolados **OU** usar script .ps1 em vez de inline (`pwsh -NoProfile -File script.ps1`) |
 | **Camoufox não inicia** | Verificar `npm rebuild better-sqlite3` + junction fontconfig em `%LOCALAPPDATA%\camoufox\camoufox\Cache` |
 | **SPA forms não respondem a fill()** | Smart Form Fill: detectar framework, usar JS injection |
+
+## 🆕 Cron/Agent Task Resilience (v5.4)
+
+### Root Cause: Inline PowerShell + Buffer Bug
+Comandos `pwsh -Command` com pipes aninhados, quotes escapadas e múltiplas linhas são **truncados** pelo exec buffer bug quando o output excede ~1KB ou contém caracteres multibyte.
+
+### The Fix: Script Helpers
+
+❌ **RUIM** — inline complexo (trunca):
+```
+pwsh -Command "Get-ChildItem 'memory/pipelines/*.json' | ForEach-Object { ... }"
+```
+
+✅ **BOM** — script .ps1 dedicado:
+```
+pwsh -NoProfile -File "~/.openclaw/workspace/memory/pipelines/check_zombie.ps1"
+```
+
+Regras de ouro para agent turns de cron:
+1. **Script .ps1 > inline PowerShell** — move lógica complexa pra arquivo
+2. **Fallbacks obrigatórios** — sempre definir `fallbacks: [big-pickle, laguna-m.1]`
+3. **Timeout folgado** — pelo menos 300s para tarefas com `lightContext`
+4. **Failure → HEARTBEAT_OK** — se falhar, responder `HEARTBEAT_OK` em vez de crashar
+5. **`lightContext` para crons** — reduz payload e evita timeout
+
+### Checker Script Template
+```powershell
+# check_something.ps1
+# OUTPUT: "OK" se tudo limpo, "ALERT: <msg>" se precisar atenção
+$result = Do-Check
+if ($result -eq $null -or $result.Count -eq 0) {
+    Write-Output "OK"
+} else {
+    Write-Output "ALERT: $($result -join ', ')"
+}
+```
+O cron então lê o output e decide: OK → HEARTBEAT_OK | ALERT → relay.
 
 ## 🆕 Snapshot Truncation Protocol (v5.3)
 
