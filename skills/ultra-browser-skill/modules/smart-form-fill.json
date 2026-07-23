@@ -1,0 +1,229 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-07-23",
+  "description": "In-page JS injection for complex SPA forms. Detects framework and manipulates DOM state directly when act() fails.",
+  "inspiredBy": "alibaba/page-agent in-page GUI agent pattern",
+  "triggerConditions": {
+    "whenToUse": [
+      "act() fails 2x on the same form field",
+      "Accessibility tree shows element but fill/click has no effect",
+      "Form uses React/Vue/Angular/Svelte with controlled components",
+      "Framework manages state externally (not in DOM attributes)",
+      "Nested shadow DOM or web components",
+      "Custom dropdown/combobox (not native <select>)"
+    ],
+    "whenNotToUse": [
+      "Simple HTML forms (native <input>, <select>)",
+      "Static content pages",
+      "CAPTCHA or auth walls"
+    ]
+  },
+  "frameworkDetection": {
+    "methods": [
+      {
+        "name": "React",
+        "checks": [
+          "!!document.querySelector('[data-reactroot]')",
+          "!!Object.keys(document.querySelector('body')).find(k => k.startsWith('__reactFiber$'))",
+          "!!window.__REACT_DEVTOOLS_GLOBAL_HOOK__",
+          "!!window.__NEXT_DATA__",
+          "!!document.querySelector('#__next')"
+        ],
+        "injectionStrategy": "react"
+      },
+      {
+        "name": "Vue",
+        "checks": [
+          "!!window.__VUE__",
+          "!!window.__VUE_DEVTOOLS_GLOBAL_HOOK__",
+          "!!document.querySelector('[data-v-]')",
+          "!!document.querySelector('#app')?.__vue_app__"
+        ],
+        "injectionStrategy": "vue"
+      },
+      {
+        "name": "Angular",
+        "checks": [
+          "!!window.ng",
+          "!!document.querySelector('[ng-version]')",
+          "!!document.querySelector('[_nghost-]')",
+          "!!document.querySelector('[data-ng-reflect-]')"
+        ],
+        "injectionStrategy": "angular"
+      },
+      {
+        "name": "Svelte",
+        "checks": [
+          "!!document.querySelector('[class*=\"svelte-\"]')",
+          "!!Object.keys(document.querySelector('body') || {}).some(k => k.startsWith('__svelte'))"
+        ],
+        "injectionStrategy": "svelte"
+      },
+      {
+        "name": "Solid",
+        "checks": [
+          "!!document.querySelector('[class*=\"solid-\"]')",
+          "!!window._$HY"
+        ],
+        "injectionStrategy": "solid"
+      },
+      {
+        "name": "WebComponents",
+        "checks": [
+          "!!element.shadowRoot",
+          "element.tagName.includes('-')",
+          "!!customElements.get(element.tagName.toLowerCase())"
+        ],
+        "injectionStrategy": "webcomponents"
+      }
+    ]
+  },
+  "injectionStrategies": {
+    "react": {
+      "description": "Access React fiber tree to trigger onChange/setState",
+      "setValue": {
+        "pattern": "nativeInputValueSetter",
+        "script": "(() => { const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set; nativeSetter.call(el, VALUE); el.dispatchEvent(new Event('input', { bubbles: true })); el.dispatchEvent(new Event('change', { bubbles: true })); })()",
+        "notes": "React 16+ controlled components. nativeInputValueSetter bypasses React's synthetic event system."
+      },
+      "click": {
+        "pattern": "reactFiberClick",
+        "script": "(() => { const reactPropsKey = Object.keys(el).find(k => k.startsWith('__reactProps$')); if (reactPropsKey && el[reactPropsKey]?.onClick) { el[reactPropsKey].onClick({ target: el, preventDefault: () => {}, stopPropagation: () => {} }); } el.click(); })()",
+        "notes": "Triggers React's synthetic onClick handler directly."
+      },
+      "select": {
+        "pattern": "reactSelect",
+        "script": "(() => { const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLSelectElement.prototype, 'value').set; nativeSetter.call(el, VALUE); el.dispatchEvent(new Event('change', { bubbles: true })); })()",
+        "notes": "For native <select> with React. For custom dropdowns, see customDropdown strategy."
+      },
+      "checkbox": {
+        "pattern": "reactCheckbox",
+        "script": "(() => { el.click(); el.dispatchEvent(new Event('change', { bubbles: true })); })()",
+        "notes": "React checkboxes need click + change event."
+      },
+      "textarea": {
+        "pattern": "reactTextarea",
+        "script": "(() => { const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, 'value').set; nativeSetter.call(el, VALUE); el.dispatchEvent(new Event('input', { bubbles: true })); el.dispatchEvent(new Event('change', { bubbles: true })); })()",
+        "notes": "Same pattern as input but for textarea."
+      }
+    },
+    "vue": {
+      "description": "Access Vue component instance via __vue__ or __vue_app__",
+      "setValue": {
+        "pattern": "vueModelSet",
+        "script": "(() => { const vueKey = Object.keys(el).find(k => k.startsWith('__vue')); if (vueKey) { const vnode = el[vueKey]; if (vnode?.component?.props?.modelValue !== undefined) { vnode.component.emit('update:modelValue', VALUE); } } const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set; nativeSetter.call(el, VALUE); el.dispatchEvent(new Event('input', { bubbles: true })); })()",
+        "notes": "Vue 3 composition API + fallback to native setter."
+      },
+      "click": {
+        "pattern": "vueClick",
+        "script": "(() => { const vueKey = Object.keys(el).find(k => k.startsWith('__vue')); if (vueKey) { const vnode = el[vueKey]; if (vnode?.component?.props?.onClick) { vnode.component.emit('click'); } } el.click(); })()",
+        "notes": "Vue 3 emit + native fallback."
+      }
+    },
+    "angular": {
+      "description": "Access Angular component via ng.getComponent() or ng.probe()",
+      "setValue": {
+        "pattern": "angularModelSet",
+        "script": "(() => { if (window.ng && window.ng.getComponent) { const comp = window.ng.getComponent(el.closest('[ng-reflect-model]') || el); if (comp) { const modelKey = el.getAttribute('ng-reflect-model') || el.getAttribute('name'); if (comp[modelKey] !== undefined) { comp[modelKey] = VALUE; } } } const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set; nativeSetter.call(el, VALUE); el.dispatchEvent(new Event('input', { bubbles: true })); })()",
+        "notes": "Angular 14+ with Ivy. ng.getComponent() requires debug mode or ng.probe() fallback."
+      },
+      "click": {
+        "pattern": "angularClick",
+        "script": "(() => { el.click(); el.dispatchEvent(new Event('click', { bubbles: true })); })()",
+        "notes": "Angular binds to native events, native click usually works."
+      }
+    },
+    "svelte": {
+      "description": "Svelte compiles to vanilla JS, use native DOM events",
+      "setValue": {
+        "pattern": "svelteInput",
+        "script": "(() => { const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set; nativeSetter.call(el, VALUE); el.dispatchEvent(new Event('input', { bubbles: true })); })()",
+        "notes": "Svelte binds via addEventListener, native events work."
+      }
+    },
+    "solid": {
+      "description": "Solid uses fine-grained reactivity, native DOM events usually work",
+      "setValue": {
+        "pattern": "solidInput",
+        "script": "(() => { const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set; nativeSetter.call(el, VALUE); el.dispatchEvent(new Event('input', { bubbles: true })); })()",
+        "notes": "Solid compiles JSX to direct DOM manipulation. Native setter + events usually sufficient."
+      }
+    },
+    "webcomponents": {
+      "description": "Pierce shadow DOM and manipulate inner elements",
+      "setValue": {
+        "pattern": "shadowDomInput",
+        "script": "(() => { const root = el.shadowRoot || el; const inner = root.querySelector('input') || root.querySelector('[role=\"input\"]'); if (inner) { const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set; nativeSetter.call(inner, VALUE); inner.dispatchEvent(new Event('input', { bubbles: true })); } })()",
+        "notes": "For shadow DOM components. May need to traverse multiple levels."
+      }
+    },
+    "generic": {
+      "description": "Framework-agnostic fallback using native DOM API only",
+      "setValue": {
+        "pattern": "nativeInputSetter",
+        "script": "(() => { const tag = el.tagName.toLowerCase(); let proto; if (tag === 'textarea') proto = window.HTMLTextAreaElement.prototype; else if (tag === 'select') proto = window.HTMLSelectElement.prototype; else proto = window.HTMLInputElement.prototype; const setter = Object.getOwnPropertyDescriptor(proto, 'value')?.set; if (setter) setter.call(el, VALUE); else el.value = VALUE; el.dispatchEvent(new Event('input', { bubbles: true })); el.dispatchEvent(new Event('change', { bubbles: true })); })()",
+        "notes": "Universal fallback. Uses native prototype setter to bypass any framework wrapper."
+      },
+      "click": {
+        "pattern": "nativeClick",
+        "script": "(() => { el.dispatchEvent(new MouseEvent('mousedown', { bubbles: true })); el.dispatchEvent(new MouseEvent('mouseup', { bubbles: true })); el.dispatchEvent(new MouseEvent('click', { bubbles: true })); })()",
+        "notes": "Full mouse event sequence for maximum compatibility."
+      }
+    },
+    "customDropdown": {
+      "description": "For React Select, Ant Design Select, MUI Autocomplete, etc.",
+      "strategy": "open-type-select",
+      "steps": [
+        "Click the dropdown trigger to open options",
+        "Wait 300ms for animation/options to render",
+        "Type VALUE to filter (if searchable)",
+        "Wait 200ms for filter to apply",
+        "Query options container for matching option",
+        "Click the matching option",
+        "Wait 100ms for selection to register",
+        "Verify value updated"
+      ],
+      "fallbackScript": "(() => { const options = document.querySelectorAll('[role=\"option\"], [class*=\"option\"], [class*=\"menu-item\"], li[id*=\"option\"]'); for (const opt of options) { if (opt.textContent.trim().toLowerCase() === VALUE.toLowerCase()) { opt.click(); return true; } } return false; })()",
+      "notes": "When framework-specific injection fails, open+type+select is the universal fallback for custom dropdowns."
+    }
+  },
+  "fieldTypeMapping": {
+    "input[text]": "setValue",
+    "input[email]": "setValue",
+    "input[password]": "setValue",
+    "input[number]": "setValue",
+    "input[tel]": "setValue",
+    "input[url]": "setValue",
+    "input[search]": "setValue",
+    "input[date]": "setValue",
+    "input[datetime-local]": "setValue",
+    "textarea": "setValue",
+    "select": "select",
+    "input[checkbox]": "checkbox",
+    "input[radio]": "click",
+    "[role='combobox']": "customDropdown",
+    "[role='listbox']": "customDropdown",
+    "[role='combobox'] + [role='listbox']": "customDropdown"
+  },
+  "retryPolicy": {
+    "maxAttempts": 3,
+    "strategy": [
+      "Attempt 1: detected framework strategy",
+      "Attempt 2: generic fallback (native setter + events)",
+      "Attempt 3: open-type-select for dropdowns, or escalate to user"
+    ],
+    "escalationThreshold": "After 3 failed attempts on same field"
+  },
+  "safetyRules": {
+    "neverInject": [
+      "password fields (always use native keyboard input for security)",
+      "payment/checkout forms (use standard browser automation)",
+      "CAPTCHA or challenge forms"
+    ],
+    "alwaysVerify": [
+      "Value matches expected after injection",
+      "Form validation state is clean",
+      "No console errors from injection"
+    ]
+  }
+}

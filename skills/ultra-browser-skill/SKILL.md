@@ -1,7 +1,7 @@
 ---
 name: ultra-browser-skill
 description: Full browser automation — Playwright headless scraping, LLM extractor, ARIA tree grounding, planner/navigator loop, DevTools integration, self-healing.
-version: 5.1.0
+version: 5.2.0
 author: Luna (OpenClaw Agency)
 ---
 
@@ -44,6 +44,13 @@ Full browser control for OpenClaw. Combines the best patterns from:
 - **Structured Test Plans** — Markdown format for complex scenarios
 - **Screenshot Before/After** — Visual regression testing
 - **Content Boundary** — Clear trusted/untrusted data separation
+
+### 🆕 v5.2 — Smart Form Fill (PageAgent-Inspired)
+- **In-Page JS Injection** — When `act()` fails on SPA forms, inject framework-aware JS to manipulate DOM state directly
+- **Framework Detection** — Auto-detects React, Vue, Angular, Svelte, Solid, WebComponents via global hooks + DOM markers
+- **Smart Strategies** — React fiber bypass, Vue model emit, Angular ng.getComponent(), shadow DOM piercing
+- **Custom Dropdown Fallback** — Open+type+select pattern for React Select, Ant Design, MUI Autocomplete
+- **Retry Cascade** — Framework-specific → generic native setter → custom dropdown → escalate to user
 
 ### 🆕 v5.1 — Vane-Inspired Additions
 - **Content Scraper Engine** — Playwright headless + Mozilla Readability for JS-heavy sites (SPAs, Twitter, docs)
@@ -885,6 +892,95 @@ Use tools to clarify, never ask the user.
 
 ---
 
+## Smart Form Fill (In-Page JS Injection)
+
+When standard `act()` fails on complex SPA forms (React controlled components, Vue model binding, Angular reactive forms), inject framework-aware JavaScript directly into the page to manipulate DOM state.
+
+### When to Trigger
+
+| Condition | Action |
+|-----------|--------|
+| `act()` fails 2x on same field | Auto-trigger Smart Form Fill |
+| Accessibility tree shows element but fill has no effect | Framework state mismatch |
+| Custom dropdown (React Select, Ant D, MUI) not responding | Open+type+select fallback |
+| Shadow DOM elements invisible to a11y tree | Pierce shadow root |
+
+### Framework Detection
+
+```bash
+# Auto-detect framework
+node scripts/smart-form-fill.cjs --detect
+
+# Output: { detected: "react", evidence: ["reactFiber", "reactRoot"] }
+```
+
+Detection checks (in priority order):
+1. **React** — `data-reactroot`, `__reactFiber$`, `__NEXT_DATA__`, `__REACT_DEVTOOLS_GLOBAL_HOOK__`
+2. **Vue** — `__VUE__`, `__VUE_DEVTOOLS_GLOBAL_HOOK__`, `__vue_app__`
+3. **Angular** — `ng`, `[ng-version]`, `[ng-reflect-model]`
+4. **Svelte** — `class*="svelte-"` markers
+5. **WebComponents** — `element.shadowRoot`
+6. **Generic** — fallback to native DOM API
+
+### Injection Scripts
+
+```bash
+# Set value in React input
+node scripts/smart-form-fill.cjs --selector "input[name='email']" --value "test@co.com"
+
+# Force framework
+node scripts/smart-form-fill.cjs --selector "#field" --value "val" --framework react
+
+# Custom dropdown
+node scripts/smart-form-fill.cjs --selector "[role='combobox']" --value "Option A" --field-type "[role='combobox']"
+
+# Dry run (output script only)
+node scripts/smart-form-fill.cjs --selector "#email" --value "x" --dry-run
+```
+
+### Framework Strategies
+
+| Framework | setValue Strategy | Key Detail |
+|-----------|------------------|------------|
+| React | `nativeInputValueSetter` bypass | Uses HTMLInputElement.prototype.value setter to bypass React synthetic events |
+| Vue | `__vue__.component.emit('update:modelValue')` | Direct model update + native setter fallback |
+| Angular | `ng.getComponent().prop = val` | Ivy debug API + native setter fallback |
+| Svelte | Native setter + `input` event | Svelte compiles to vanilla event listeners |
+| Generic | `Object.getOwnPropertyDescriptor(proto, 'value').set` | Universal: works on any framework |
+
+### Retry Cascade
+
+```
+act() fails
+  → 1. Framework-specific injection (React/Vue/Angular)
+  → 2. Generic native setter + events
+  → 3. Custom dropdown (open + type + select)
+  → 4. ESCALATE to user
+```
+
+### Safety Rules
+
+- **NEVER inject into password fields** — always use native keyboard input
+- **NEVER inject into payment/checkout forms** — use standard browser automation
+- **NEVER inject into CAPTCHA/challenge forms** — escalate to user
+- **ALWAYS verify** value matches expected after injection
+- **ALWAYS check** form validation state + console errors
+
+### Integration with Agent Loop
+
+In the Planner→Navigator→Validator loop, Smart Form Fill is a **Navigator-level fallback**:
+
+```
+Planner: step = { primitive: "act", instruction: "Fill email" }
+  → Navigator: try act() with Playwright fill
+    → Validator: ❌ value didn't update (React controlled)
+    → Navigator: retry with Smart Form Fill injection
+    → Validator: ✅ value matches
+    → Cache pattern for this site
+```
+
+---
+
 ## Content Scraper Engine (Playwright + Readability)
 
 When `web_fetch` (server-side HTTP) fails to extract meaningful content from JS-heavy sites (SPAs, Twitter, LinkedIn, docs rendered client-side), use the **Content Scraper** — a headless Playwright browser + Mozilla Readability pipeline that extracts clean, readable text from any URL.
@@ -1163,6 +1259,7 @@ This replaces sending raw HTML to the answer generator, cutting token usage by 6
 | `modules/injection-patterns.json` | Prompt injection detection |
 | `modules/tool-router.md` | Smart routing decision tree |
 | `modules/custom-tools.json` | Reusable tool templates (LinkedIn, Twitter, form filler, multi-site research) |
+| `modules/smart-form-fill.json` | In-page JS injection rules, framework detection, retry cascade (v5.2) |
 | `modules/content-scraper.json` | Playwright + Readability scraper config (v5.1) |
 | `modules/extractor.json` | Legacy LLM extractor prompts & schemas (v5.1) |
 | `modules/langextract.json` | Google LangExtract integration — structured extraction with source grounding (v1.6.0) |
