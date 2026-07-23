@@ -1,0 +1,18 @@
+## Summary
+Upgrades the SSC Memory System Router to v4.1 with optional embedding-based reranking.
+
+### Changes
+- **Embedding Rerank**: New `embeddingRerank()` function scores results by BM25 (60%) + semantic similarity (40%)
+- **OpenRouter Integration**: `fetchEmbedding()` calls `text-embedding-3-small` API (free tier)
+- **Graceful Fallback**: When OPENROUTER_API_KEY is missing, pure BM25 results are returned seamlessly
+- **CLI Flag**: `--embed` for Node.js, `-Embed` for PowerShell interface
+- **Test Suite**: New Suite 6 with 5 assertions — 38 total across 7 suites
+
+### Usage
+```
+node scripts/ssc-router.cjs query "infrastructure gateway config" --embed
+.\ssc-router.ps1 -Query "infrastructure gateway" -Embed
+```
+
+### Testing
+38/38 tests pass across all 7 suites. Embedding fallback tested with and without API key.
