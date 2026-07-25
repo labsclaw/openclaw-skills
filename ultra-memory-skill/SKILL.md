@@ -17,6 +17,11 @@ Zero-cost memory architecture for LLM agents, inspired by [Memory Caching: RNNs 
 - **Learning Signals** — automatic detection of corrections, preferences, and patterns (inspired by self-improving skill)
 - **Tiered Storage** — HOT/WARM/COLD with automatic promotion/demotion rules
 - **Self-Reflection** — post-task evaluation protocol for continuous improvement
+- **Vector Search** — sqlite-vec semantic search via Gemini embeddings (768-dim) with cosine similarity
+- **Hybrid Search Pipeline** — BM25 + vector search weighted combination (`--hybrid` flag)
+- **MMR Diversity** — Maximum Marginal Relevance re-ranking to avoid result clustering
+- **Query Expansion** — automatic term expansion (simple bigram + LLM strategy)
+- **Markdown Chunker** — structure-aware chunking (by headers/paragraphs, 500 token default)
 - **91.4% token savings** per session in benchmarks
 
 ## Quick Start (5 minutes)
@@ -27,6 +32,96 @@ Zero-cost memory architecture for LLM agents, inspired by [Memory Caching: RNNs 
 ```
 
 This creates the memory structure and copies scripts. Then add the SSC protocol to your AGENTS.md (see `templates/AGENTS-template.md`).
+
+## Vector Search Integration (v4.1)
+
+Adiciona busca semantica via embeddings ao SSC Router. O BM25 continua sendo o padrao; a flag `--hybrid` ativa o pipeline completo.
+
+### Dependencies
+
+| Module | File | Purpose |
+|--------|------|---------|
+| **EmbedProvider** | `ssc-embed-provider.cjs` | Gemini embedding-2, 768-dim, batch 32, retry backoff, cache |
+| **VectorIndex** | `ssc-vec-index.cjs` | sqlite-vec sobre better-sqlite3, kNN search, upsert |
+| **Chunker** | `ssc-chunker.cjs` | Markdown chunker (header/paragraph boundaries, 500 token default) |
+| **MMR** | `ssc-mmr.cjs` | Maximum Marginal Relevance, lambda configurável |
+| **QueryExpander** | `ssc-query-expand.cjs` | Query expansion (simple bigram + LLM strategy) |
+| **HybridSearch** | `ssc-hybrid.cjs` | Orquestrador do pipeline completo |
+
+### Pipeline
+
+```
+Query → [Query Expansion] → BM25 + [Vector Search] → Score Combine → [MMR] → Top-K
+```
+
+1. **Query Expansion** (opcional): expande com termos relacionados (bigrams ou LLM)
+2. **BM25 Search**: busca lexical no index.json (sempre roda)
+3. **Vector Search** (opcional): embed da query com Gemini, kNN no sqlite-vec
+4. **Score Combination**: `final = α × BM25_norm + (1-α) × Vec_norm` (α=0.6 default)
+5. **MMR** (opcional): diversifica resultados (λ=0.5 default)
+
+### Usage
+
+```bash
+# Router (BM25 puro — comportamento original)
+node scripts/ssc-router.cjs query "memoria cache"
+
+# Router com busca hibrida
+node scripts/ssc-router.cjs --hybrid query "memoria cache"
+
+# Hibrido + MMR + Query Expansion
+node scripts/ssc-router.cjs --hybrid --mmr --expand query "memoria cache"
+
+# Apenas vetorial
+node scripts/ssc-router.cjs --hybrid --alpha=0 query "memoria cache"
+
+# Directo do modulo
+node scripts/ssc-hybrid.cjs --query "memoria cache" --vector --alpha 0.6
+```
+
+### From code
+
+```javascript
+const { hybridSearch } = require('./ssc-hybrid.cjs');
+const results = await hybridSearch('heartbeat alert storm', {
+  topK: 5,
+  hybridAlpha: 0.6,     // 0=puro vetorial, 1=puro BM25
+  useVector: true,
+  useMmr: true,
+  mmrLambda: 0.5,
+  useQueryExpansion: true,
+  expandStrategy: 'simple'
+});
+```
+
+### Configuration
+
+Requires `GEMINI_API_KEY` env var for embeddings. Sem a key, o pipeline cai pra BM25 puro.
+
+```powershell
+$env:GEMINI_API_KEY = "sua-chave-aqui"
+```
+
+### Performance (PoC)
+
+| Strategy | Avg Time | Recall | Melhor Para |
+|----------|----------|--------|-------------|
+| BM25 Only | ~127ms | 10-15 matches | Velocidade, keywords exatas |
+| Vector Only | ~550ms | 12-18 matches | Recall semantico |
+| Hybrid (α=0.6) | ~660ms | 12-18 matches | Precisao + recall |
+| Hybrid+MMR+Expand | ~600ms | 12-18 matches | Resultados diversos |
+
+### Index Maintenance
+
+```bash
+# Rebuild do indice vetorial (re-chunkeriza todos segments)
+node scripts/ssc-hybrid.cjs --rebuild
+
+# Ver stats
+node scripts/ssc-hybrid.cjs --stats
+```
+
+O indice vetorial fica em `memory/memory.db` (tabela virtual vec0 sqlite-vec). Atualize quando segments mudarem.
 
 ## Learning Signals (from Self-Improving Skill)
 
@@ -946,6 +1041,81 @@ Add a daily cron job for automated health monitoring:
 .\setup.ps1 -Wiki                              # SSC + wiki ecosystem
 .\setup.ps1 -Wiki -Cron                        # SSC + wiki + cron config
 .\setup.ps1 -Force                             # Overwrite existing files
+```
+
+### ssc-router.cjs — Router Node.js (v4.1)
+
+```bash
+node scripts/ssc-router.cjs query "memoria cache"          # BM25 puro
+node scripts/ssc-router.cjs --hybrid query "memoria"       # Busca hibrida
+node scripts/ssc-router.cjs --hybrid --mmr --expand query "memoria"  # Completo
+node scripts/ssc-router.cjs stats                          # Estatisticas
+node scripts/ssc-router.cjs list                           # Listar segments
+```
+
+**Flags novas:** `--hybrid`, `--alpha=N`, `--no-vector`, `--mmr`, `--mmr-lambda=N`, `--expand`, `--expand-strategy=simple|llm`
+
+### ssc-hybrid.cjs — Hybrid Search
+
+```bash
+node scripts/ssc-hybrid.cjs --query "memoria" --vector --alpha 0.6
+node scripts/ssc-hybrid.cjs --query "memoria" --mmr --expand
+node scripts/ssc-hybrid.cjs --rebuild             # Rebuild indice vetorial
+node scripts/ssc-hybrid.cjs --stats               # Stats do indice
+```
+
+**Saida JSON:** `--json` flag para integracao com sub-agentes.
+
+### ssc-embed-provider.cjs — Embedding Provider
+
+Fornece embeddings via Gemini API (768-dim). Cache em memoria, batch de 32, retry exponencial.
+
+```javascript
+const { EmbedProvider } = require('./ssc-embed-provider.cjs');
+const ep = new EmbedProvider({ apiKey: process.env.GEMINI_API_KEY });
+const vec = await ep.embed("texto para embedar");
+const batch = await ep.embedBatch(["texto1", "texto2"]);
+```
+
+### ssc-vec-index.cjs — Vector Index (sqlite-vec)
+
+Indexa e busca embeddings via sqlite-vec em `memory/memory.db`.
+
+```javascript
+const { VectorIndex } = require('./ssc-vec-index.cjs');
+const idx = new VectorIndex();
+idx.upsertChunk('id', 'seg-id', 'conteudo', embedding);
+const results = idx.search(queryEmbedding, 10);
+console.log('Total chunks:', idx.count());
+```
+
+### ssc-chunker.cjs — Markdown Chunker
+
+Divide segments em chunks de ~500 tokens com overlap.
+
+```javascript
+const { chunkAllSegments, chunkMarkdown, estimateTokens } = require('./ssc-chunker.cjs');
+const chunks = chunkAllSegments('./memory');
+const single = chunkMarkdown('# Titulo\n\nConteudo...', { maxTokens: 500, overlapTokens: 50 });
+```
+
+### ssc-mmr.cjs — MMR Re-ranker
+
+Diversifica resultados de busca.
+
+```javascript
+const { reRank, cosineSimilarity } = require('./ssc-mmr.cjs');
+const diversificado = reRank(queryEmbedding, candidates, { lambda: 0.5, topK: 5 });
+```
+
+### ssc-query-expand.cjs — Query Expansion
+
+Expande query com termos relacionados.
+
+```javascript
+const { expandQuery } = require('./ssc-query-expand.cjs');
+const result = await expandQuery('cache memory', { strategy: 'simple' });
+// result.combined = "cache memory cache memory cache memory"
 ```
 
 ## Wiki Architecture (Option B)

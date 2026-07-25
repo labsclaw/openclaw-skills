@@ -1,36 +1,35 @@
 #!/usr/bin/env node
 /**
- * ssc-router.cjs — SSC Router v4.1 (Hybrid BM25 + Embedding Rerank)
+ * ssc-router.cjs — SSC Router v4.0 (Hybrid BM25 + Tiered Retrieval)
  * 
  * Features:
  * - Hybrid BM25 + Exact Keyword + Tag matching (Word Boundary enforced)
  * - Tier 1 (Segments, x2.0 multiplier) & Tier 2 (Daily Logs, x0.5 multiplier)
- * - Optional Embedding Rerank via text-embedding-3-small (--embed flag)
- * - Cosine similarity weighted: BM25 (0.6) + Semantic (0.4)
  * - JSON output for sub-agents & CLI tools (--json)
  * - Auto-updates accessCount in memory/index.json
  * 
  * Usage:
- *   node scripts/ssc-router.cjs query "heartbeat alert storm" [--top=5] [--json] [--embed] [--dry-run]
+ *   node scripts/ssc-router.cjs query "heartbeat alert storm" [--top=5] [--json] [--dry-run]
+ *   node scripts/ssc-router.cjs query --hybrid "query" [--top=5] [--alpha=0.6] [--vector] [--mmr] [--expand] [--json]
  *   node scripts/ssc-router.cjs stats
  *   node scripts/ssc-router.cjs list
  */
 
 const fs = require('fs');
 const path = require('path');
-const https = require('https');
 const { rebuild, tokenize } = require('./ssc-rebuild.cjs');
 
-function findWorkspace() {
-  if (process.env.OPENCLAW_WORKSPACE) return process.env.OPENCLAW_WORKSPACE;
-  let dir = __dirname;
-  for (let i = 0; i < 10; i++) {
-    if (fs.existsSync(path.join(dir, 'memory')) && fs.existsSync(path.join(dir, 'scripts'))) return dir;
-    dir = path.dirname(dir);
+// Hybrid search (carregado sob demanda via lazy require)
+let _hybridSearch = null;
+async function getHybridSearch() {
+  if (!_hybridSearch) {
+    const mod = require('./ssc-hybrid.cjs');
+    _hybridSearch = mod.hybridSearch;
   }
-  throw new Error('Cannot find OpenClaw workspace (looked for memory/ + scripts/ dirs)');
+  return _hybridSearch;
 }
-const workspaceDir = findWorkspace();
+
+const workspaceDir = 'C:\\Users\\ClawLabs\\.openclaw\\workspace';
 const memoryDir = path.join(workspaceDir, 'memory');
 const indexPath = path.join(memoryDir, 'index.json');
 
@@ -193,122 +192,6 @@ function querySSC(queryText, options = {}) {
   };
 }
 
-/**
- * Fetch embedding vector from OpenRouter text-embedding-3-small API
- */
-const EMBED_TIMEOUT_MS = 15000;
-const EMBED_MAX_DOCS = 10;
-
-function fetchEmbedding(text) {
-  return new Promise((resolve) => {
-    const apiKey = process.env.OPENROUTER_API_KEY || '';
-    if (!apiKey) {
-      resolve(null);
-      return;
-    }
-
-    const data = JSON.stringify({
-      model: 'openai/text-embedding-3-small',
-      input: text
-    });
-
-    const options = {
-      hostname: 'openrouter.ai',
-      path: '/api/v1/embeddings',
-      method: 'POST',
-      timeout: EMBED_TIMEOUT_MS,
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://github.com/openclaw',
-        'X-Title': 'SSC-Router-v4'
-      }
-    };
-
-    const req = https.request(options, (res) => {
-      let body = '';
-      res.on('data', chunk => body += chunk);
-      res.on('end', () => {
-        try {
-          const parsed = JSON.parse(body);
-          if (parsed.data && parsed.data[0] && parsed.data[0].embedding) {
-            resolve(parsed.data[0].embedding);
-          } else {
-            resolve(null);
-          }
-        } catch (e) {
-          resolve(null);
-        }
-      });
-    });
-
-    req.on('timeout', () => { req.destroy(); resolve(null); });
-    req.on('error', () => resolve(null));
-    req.write(data);
-    req.end();
-  });
-}
-
-/**
- * Compute cosine similarity between two vectors
- */
-function cosineSimilarity(vecA, vecB) {
-  if (!vecA || !vecB || vecA.length !== vecB.length || vecA.length === 0) return 0;
-  let dot = 0, magA = 0, magB = 0;
-  for (let i = 0; i < vecA.length; i++) {
-    dot += vecA[i] * vecB[i];
-    magA += vecA[i] * vecA[i];
-    magB += vecB[i] * vecB[i];
-  }
-  const denom = Math.sqrt(magA) * Math.sqrt(magB);
-  return denom === 0 ? 0 : dot / denom;
-}
-
-/**
- * Embedding Rerank: fetches embeddings and reranks by BM25 + Semantic hybrid score
- * BM25 weight: 0.6, Semantic weight: 0.4
- */
-async function embeddingRerank(topResults, queryText) {
-  if (topResults.length === 0) return topResults;
-
-  const queryEmbedding = await fetchEmbedding(queryText);
-  if (!queryEmbedding) {
-    return topResults; // Fallback to pure BM25 when API unavailable
-  }
-
-  const docsToEmbed = topResults.slice(0, EMBED_MAX_DOCS);
-  const skipped = topResults.length - docsToEmbed.length;
-
-  const reranked = [];
-  for (const result of docsToEmbed) {
-    try {
-      const docPath = path.join(workspaceDir, result.file);
-      let docText = result.summary || '';
-      if (fs.existsSync(docPath)) {
-        docText = fs.readFileSync(docPath, 'utf8').substring(0, 2000);
-      }
-
-      const docEmbedding = await fetchEmbedding(docText);
-      const semanticScore = docEmbedding ? cosineSimilarity(queryEmbedding, docEmbedding) : 0;
-
-      // Weighted: BM25 (0.6) + Semantic (0.4)
-      const combinedScore = (result.bm25Score * 0.6) + (semanticScore * 200 * 0.4);
-      reranked.push({ ...result, semanticScore: Math.round(semanticScore * 10000) / 10000, combinedScore: Math.round(combinedScore * 100) / 100 });
-    } catch (e) {
-      reranked.push(result); // Keep original on error
-    }
-  }
-
-  reranked.sort((a, b) => b.combinedScore - a.combinedScore);
-
-  for (const r of reranked) {
-    r.score = r.combinedScore;
-    delete r.combinedScore;
-  }
-
-  return reranked;
-}
-
 function showStats() {
   const index = loadIndex();
   console.log(`\n=== SSC Router v4.0 Hybrid Stats ===`);
@@ -357,49 +240,112 @@ if (require.main === module) {
       topK = parseInt(args[topIdx].split('=')[1], 10) || 5;
     }
 
-    const embedFlag = args.includes('--embed');
+    const useHybrid = args.includes('--hybrid');
 
-    (async () => {
-      let output = querySSC(queryText, { topK, dryRun });
+    if (useHybrid) {
+      // ── Modo híbrido ────────────────────────────────────────────────────
+      (async () => {
+        try {
+          const hybridSearch = await getHybridSearch();
+          const hybridAlpha = parseFloat(args.find(a => a.startsWith('--alpha='))?.split('=')[1] || '0.6');
+          const mmrLambda = parseFloat(args.find(a => a.startsWith('--mmr-lambda='))?.split('=')[1] || '0.5');
+          const useVector = !args.includes('--no-vector');
+          const useMmr = args.includes('--mmr');
+          const useQueryExpansion = args.includes('--expand');
+          const expandStrategy = args.find(a => a.startsWith('--expand-strategy='))?.split('=')[1] || 'simple';
+          const verbose = args.includes('--verbose') || args.includes('-v');
 
-      if (embedFlag && output.results.length > 0) {
-        const reranked = await embeddingRerank(output.results, queryText);
-        output.results = reranked;
+          const output = await hybridSearch(queryText, {
+            topK,
+            hybridAlpha,
+            useVector,
+            useMmr,
+            mmrLambda,
+            useQueryExpansion,
+            expandStrategy,
+            verbose,
+          });
 
-        const hasSemantic = reranked.some(r => r.semanticScore !== undefined);
-        if (!hasSemantic) {
-          output.embeddingNote = 'Embedding unavailable (OPENROUTER_API_KEY missing or API error). Results are pure BM25.';
-        } else {
-          output.embeddingNote = 'Results reranked with BM25 (0.6) + Semantic (0.4) hybrid score.';
+          if (jsonFlag) {
+            console.log(JSON.stringify(output, null, 2));
+          } else {
+            const strategyEmoji = {
+              'hybrid+mmr': '🔀',
+              'hybrid': '🌀',
+              'bm25-fallback': '⚠️',
+              'bm25-only': '📄',
+            };
+            console.log(`\n${strategyEmoji[output.strategy] || '🌀'}  SSC Hybrid Results (Query: '${output.query}')`);
+            console.log(`Strategy: ${output.strategy} | ${output.results.length} of ${output.totalMatches} matches | ${output.timing.total}ms`);
+            if (output.expandedQuery) {
+              console.log(`Expanded: "${output.expandedQuery}"`);
+            }
+            console.log('');
+            for (const r of output.results) {
+              const tierLabel = r.tier === 1 ? '[Seg]' : '[Daily]';
+              console.log(`${tierLabel} ${r.id} — ${r.summary || '(sem resumo)'}`);
+              console.log(`  Score: ${r.score} (BM25: ${r.bm25Score}, Vec: ${r.vecScore})`);
+              if (r.mmrScore !== undefined) {
+                console.log(`  MMR:  ${r.mmrScore} (diversity: ${r.diversityContribution})`);
+              }
+              console.log(`  File: ${r.file}\n`);
+            }
+          }
+        } catch (err) {
+          console.error(`[Router] ❌ Hybrid search failed: ${err.message}`);
+          console.error(`[Router] Falling back to BM25...`);
+          const output = querySSC(queryText, { topK, dryRun });
+          if (jsonFlag) {
+            console.log(JSON.stringify(output, null, 2));
+          } else {
+            console.log(`\n=== SSC v4.0 BM25 (fallback) Results (Query: '${output.query}') ===`);
+            console.log(`Top ${output.results.length} of ${output.totalMatches} matches:\n`);
+            for (const r of output.results) {
+              const tierLabel = r.tier === 1 ? '[Tier 1: Segment]' : '[Tier 2: Daily]';
+              console.log(`${tierLabel} ${r.id} - ${r.summary}`);
+              console.log(`  Score: ${r.score} (BM25: ${r.bm25Score}, Hits: ${r.keywordHits} kw)`);
+              if (r.matchedKeywords.length > 0) {
+                console.log(`  Matched: ${r.matchedKeywords.join(', ')}`);
+              }
+              console.log(`  File: ${r.file}\n`);
+            }
+          }
         }
-      }
+      })();
+    } else {
+      // ── Modo BM25 clássico ────────────────────────────────────────────────
+      const output = querySSC(queryText, { topK, dryRun });
 
       if (jsonFlag) {
         console.log(JSON.stringify(output, null, 2));
       } else {
-        const versionLabel = embedFlag ? 'v4.1 Hybrid+Embed' : 'v4.0 Hybrid';
-        console.log(`\n=== SSC ${versionLabel} Results (Query: '${output.query}') ===`);
+        console.log(`\n=== SSC v4.0 Hybrid Results (Query: '${output.query}') ===`);
         console.log(`Top ${output.results.length} of ${output.totalMatches} matches:\n`);
-        if (output.embeddingNote) {
-          console.log(`  Note: ${output.embeddingNote}\n`);
-        }
         for (const r of output.results) {
           const tierLabel = r.tier === 1 ? '[Tier 1: Segment]' : '[Tier 2: Daily]';
           console.log(`${tierLabel} ${r.id} - ${r.summary}`);
-          const extra = r.semanticScore !== undefined ? `, Semantic: ${r.semanticScore}` : '';
-          console.log(`  Score: ${r.score} (BM25: ${r.bm25Score}${extra}, Hits: ${r.keywordHits} kw, Multiplier: x${r.tier === 1 ? 2.0 : 0.5})`);
-          if (r.matchedKeywords && r.matchedKeywords.length > 0) {
+          console.log(`  Score: ${r.score} (BM25: ${r.bm25Score}, Hits: ${r.keywordHits} kw, Multiplier: x${r.tier === 1 ? 2.0 : 0.5})`);
+          if (r.matchedKeywords.length > 0) {
             console.log(`  Matched: ${r.matchedKeywords.join(', ')}`);
           }
           console.log(`  File: ${r.file}\n`);
         }
       }
-    })();
+    }
   } else {
-    console.log(`Usage: node scripts/ssc-router.cjs query "your search terms" [--top=5] [--json] [--dry-run] [--embed]`);
+    console.log(`Usage: node scripts/ssc-router.cjs query "your search terms" [--top=5] [--json] [--dry-run]`);
+    console.log(`       node scripts/ssc-router.cjs query --hybrid "query" [--top=5] [--alpha=0.6] [--mmr] [--expand] [--json]`);
     console.log(`       node scripts/ssc-router.cjs stats`);
     console.log(`       node scripts/ssc-router.cjs list`);
+    console.log(`\nHybrid flags:`);
+    console.log(`  --hybrid              Ativa busca híbrida (BM25 + Vector)`);
+    console.log(`  --alpha=N             Peso BM25 (default: 0.6)`);
+    console.log(`  --no-vector           Desativa busca vetorial`);
+    console.log(`  --mmr                 Ativa MMR (diversificação)`);
+    console.log(`  --mmr-lambda=N        Lambda MMR (default: 0.5)`);
+    console.log(`  --expand              Ativa query expansion`);
+    console.log(`  --expand-strategy=N   simple|llm (default: simple)`);
   }
 }
 
-module.exports = { querySSC, loadIndex, rebuild };
+module.exports = { querySSC, loadIndex, rebuild, getHybridSearch };

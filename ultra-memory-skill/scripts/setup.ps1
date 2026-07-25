@@ -68,7 +68,8 @@ foreach ($dir in $dirs) {
 # ── Step 2: Copy Scripts ────────────────────────────────────────────
 Write-Step "Copying SSC scripts"
 
-$scripts = @("ssc-router.ps1", "ssc-health.ps1")
+$scripts = @("ssc-router.ps1", "ssc-health.ps1", "ssc-crag.ps1")
+$nodeScripts = @("ssc-router.cjs", "ssc-rebuild.cjs", "ssc-chunker.cjs", "ssc-embed-provider.cjs", "ssc-hybrid.cjs", "ssc-mmr.cjs", "ssc-query-expand.cjs", "ssc-vec-index.cjs", "ssc-classify.cjs", "ssc-pre-compact-guard.cjs")
 foreach ($script in $scripts) {
     $src = Join-Path $ScriptDir "scripts" $script
     $dst = Join-Path $MemoryDir $script
