@@ -33,6 +33,28 @@ if ($ver -ge [version]'7.0') {
 `&&`/`||` chains, ternary, null-coalescing, `ForEach-Object -Parallel -ThrottleLimit`,
 `Get-ChildItem -Depth`, `ConvertFrom-Json -Depth`.
 
+### ⚠️ PS7 Detection — App Execution Aliases vs Real Install
+
+**Problema conhecido:** O OpenClaw `exec` tool usa `resolvePowerShellPath()` que busca `pwsh.exe` em:
+1. `%ProgramFiles%\PowerShell\7\pwsh.exe`
+2. PATH (`resolveShellFromPath("pwsh")`)
+
+Se o `pwsh.exe` existe **apenas** como App Execution Alias do Windows (0 bytes em `WindowsApps\`), o `fs.existsSync()` do Node.js **não detecta** como arquivo real e o OpenClaw cai para `powershell.exe` (PS 5.1).
+
+**Correção:** Instalar PS7 via MSI no diretório padrão. Para ambiente ARM64:
+```
+winget install --id Microsoft.PowerShell --source winget
+```
+Ou MSI direto: `https://github.com/PowerShell/PowerShell/releases/download/v7.6.4/PowerShell-7.6.4-win-arm64.msi`
+
+**Verificação:**
+```powershell
+Get-Item "C:\Program Files\PowerShell\7\pwsh.exe"  # Deve existir e ter tamanho real
+$PSVersionTable.PSVersion  # Deve mostrar 7.6.4 via exec tool
+```
+
+**Root cause documentado em:** `memory/corrections.md` (2026-07-29).
+
 ---
 
 ## 2. Windows PowerShell CRITICAL Pitfalls
