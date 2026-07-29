@@ -152,6 +152,8 @@ Out-File -FilePath file.ps1 -Encoding utf8BOM    # With BOM (widest compat)
 | `python3` | `python` or `py -3` |
 | `python -c "..."` | Write temp `.ps1`/`.py` file |
 
+| `Select-String -i pattern` | `-i` ambiguous in PS (matches `-InputObject`, `-Include`, `-InformationAction`, `-InformationVariable`) | Use `Select-String -Pattern` without `-i` (case-insensitive by default), or `-CaseSensitive` for explicit case-sensitive |
+
 **Preferred:** eliminate shell dependency — use `read`/`edit`/`write` tools. `exec` only when truly needed.
 
 ---
