@@ -9,6 +9,7 @@ Zero-cost memory architecture for LLM agents, inspired by [Memory Caching: RNNs 
 
 ## What You Get
 
+- **Short-Term Memory (Worklog)** — session continuity log with model tagging, survives timeout/compact/fallback
 - **SSC Router v4.0** — hybrid BM25 + keyword/tag scoring with Tier 1 (segments x2.0) and Tier 2 (daily x0.5) retrieval
 - **Classification Gate** — auto-categorize session logs into ADR, Lesson, Incident, and Config
 - **Pre-Compaction Guard** — snapshot volatile context to `memory/checkpoints/` before compaction
@@ -916,6 +917,78 @@ Run weekly via cron to keep skills evolving:
   "payload": { "kind": "agentTurn", "message": "Run skill optimizer on ultra-memory-skill" }
 }
 ```
+
+## Short-Term Memory (Worklog)
+
+Continuidade entre sessões quando ocorre timeout, compact, fallback de modelo, ou troca de agente.
+
+**Quando usar:**
+- Toda tarefa multi-step que pode exceder 1 turno
+- Toda operação com navegação/browser que pode timeout
+- Toda delegação para sub-agent onde o resultado pode voltar em outro contexto
+
+### Fluxo
+
+```bash
+node scripts/worklog.cjs init "Postando thread no X"
+# ... faz trabalho ...
+node scripts/worklog.cjs append "Login OK, tweet 3/9 postado"
+# ... mais trabalho ...
+node scripts/worklog.cjs append "Decisão: pular tweet 7, rate limit"
+# ... trabalho conclui ...
+node scripts/worklog.cjs archive
+```
+
+### Formato das entradas
+
+Cada entrada registra:
+- **Timestamp ISO** — quando aconteceu
+- **Model tag** — qual modelo estava no comando (`[opencode/deepseek-v4-flash-free]`)
+- **Mensagem** — o que foi feito/descoberto/decidido
+
+Exemplo real:
+```
+[2026-07-29T16:38:13-03:00] [opencode/deepseek-v4-flash-free] **INIT** - Postando thread no X
+[2026-07-29T16:38:13-03:00] [opencode/deepseek-v4-flash-free] Login OK, composing first tweet
+[2026-07-29T16:39:01-03:00] [opencode/deepseek-v4-flash-free] Tweet 4/9, rate limit hit, waiting 30s
+```
+
+A model tag permite rastrear queda de qualidade: se uma tarefa começou com modelo A e terminou com modelo B, o worklog mostra exatamente a transição.
+
+### Comandos
+
+| Comando | Descrição |
+|---------|-----------|
+| `node scripts/worklog.cjs init <title>` | Iniciar novo worklog |
+| `node scripts/worklog.cjs append <msg>` | Adicionar entrada timestamped com tag do modelo |
+| `node scripts/worklog.cjs read` | Ler worklog atual |
+| `node scripts/worklog.cjs status` | Verificar se há worklog ativo |
+| `node scripts/worklog.cjs archive` | Arquivar em `memory/worklog/archive/` |
+
+### Ao iniciar um turn
+
+1. Verificar se `memory/worklog/current.md` existe
+2. Se sim, ler conteúdo ANTES de agir (pode ser continuação)
+3. Se não, continuar normalmente
+
+### O worklog substitui
+- Anotações mentais sobre "o que eu estava fazendo"
+- Re-descoberta de contexto após fallback/timeout
+- Retrabalho por falta de visibilidade
+
+### O worklog NÃO substitui
+- `memory/daily/` (diário permanente)
+- `memory/segments/` (conhecimento duradouro)
+- `memory/checkpoints/` (snapshots de estado)
+
+### Testes
+
+```bash
+node tests/worklog.test.cjs
+# Expected: 38 passed, 0 failed
+```
+
+---
 
 ## Full Installation
 
