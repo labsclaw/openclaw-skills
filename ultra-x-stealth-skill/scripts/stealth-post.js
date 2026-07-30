@@ -198,7 +198,7 @@ async function uploadMedia(page, mediaPath) {
   // Approach 1: Set up file chooser listener, then click the media button
   const [fileChooser] = await Promise.all([
     page.waitForEvent('filechooser', { timeout: 10000 }).catch(() => null),
-    page.click('[data-testid="addMedia"]').catch(() => {
+    page.click('[data-testid="addMedia"]', { timeout: 5000 }).catch(() => {
       // Fallback: try the media button in reply compose
       return page.click('[data-testid="mediaUploadButton"]');
     }).catch(() => {
@@ -260,7 +260,6 @@ async function postTweet(page, text, replyToStatusId = null, mediaPath = null) {
   // If replying, navigate to the parent tweet first
   if (replyToStatusId) {
     console.log(`  ↩️  Replying to status ${replyToStatusId}...`);
-    // Navigate to the tweet directly to access the reply composer
     await page.goto(`https://x.com/i/status/${replyToStatusId}`, {
       waitUntil: 'networkidle',
       timeout: DEFAULT_SETTINGS.timeout,
