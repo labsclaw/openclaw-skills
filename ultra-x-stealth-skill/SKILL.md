@@ -2,39 +2,86 @@
 name: ultra-x-stealth-skill
 description: >-
   Post X.com threads with Playwright stealth + human behavior simulation.
+  Gera imagens via Grok no browser. Upload de mídia em tweets.
   Bypasses bot detection. Trigger: X stealth, X ban, stealth tweet, anti-detection.
 user-invocable: true
 metadata:
   author: ClawLabs
-  version: "1.0.0"
+  version: "1.1.0"
   domain: social-media
-  triggers: [X stealth, X ban, stealth tweet, anti-detection]
+  triggers: [X stealth, X ban, stealth tweet, anti-detection, Grok image, Grok generate]
   role: specialist
   scope: browser-automation
   output-format: action
-  related-skills: [x-poster, browser-automation]
+  related-skills: [x-poster, browser-automation, agente-redes-sociais]
 ---
 
 # Ultra X Stealth Skill
 
-Post X.com with Playwright stealth + human simulation. Use when x-poster blocked. NOT for simple posts (use x-poster), scraping (use browser-automation), or suspended accounts.
+Post X.com with Playwright stealth + human simulation. Use when x-poster blocked.
+**Agora com geração de imagem via Grok e upload de mídia.**
 
 ## Architecture
 
 ```
-Thread Config → Stealth Layer → Human Behavior Layer → Cadence Layer → Headed Browser
-  JSON              Bézier curves      3-5 min between tweets        persistent cookies
-  playwright-extra  50-150ms typing    max 20 tweets/day
-  webdriver=false     random 3-8s delays    active 8h-22h only
-  real UA             scroll accel/decel    session max 6 tweets
+                      ┌─ Stealth Layer ─┐
+                      │  playwright-extra│
+                      │  webdriver=false │
+Thread Config ────────┤  real UA          ├───→ Headed Browser
+  JSON               │  Chrome emulation │      persistent cookies
+                     └──────────────────┘
+                              │
+                      ┌──────▼──────┐
+                      │  Grok Image │  ← NEW
+                      │  Generator  │
+                      └─────┬───────┘
+                            │
+                      ┌─────▼───────┐
+                      │ Media Upload│  ← NEW
+                      │  to tweets  │
+                      └─────────────┘
 ```
 
+## Scripts
+
+| Script | Purpose |
+|--------|---------|
+| `scripts/stealth-post.js` | Post tweets/threads with media support |
+| `scripts/grok-image.js` | Generate images via Grok browser conversation |
+
 ## Quick Start
+
+### Posting
 
 ```bash
 node scripts/stealth-post.js --config examples/thread-sample.json   # thread from JSON
 node scripts/stealth-post.js --text "Hello world!"                   # single tweet
 node scripts/stealth-post.js --text "Reply" --reply-to 1234567890    # reply
+node scripts/stealth-post.js --text "With image" --media image.jpg   # tweet with image
+```
+
+### Grok Image Generation
+
+```bash
+node scripts/grok-image.js --prompt "A dramatic photorealistic image of books being destroyed by industrial machines, dark amber lighting, dystopian atmosphere, wide shot, cinematic"
+# Saves to grok-image.jpg by default
+
+node scripts/grok-image.js --prompt "Description in Portuguese" --output /path/to/output.jpg
+
+node scripts/grok-image.js --prompt "Cinematic scene..." --profile openclaw
+```
+
+### Full Pipeline: Grok → Tweet
+
+```bash
+# Step 1: Generate image via Grok
+node scripts/grok-image.js --prompt "Dramatic scene of..." --output grok-image.jpg
+
+# Step 2: Post tweet with the generated image (needs --media flag)
+node scripts/stealth-post.js --text "Image caption" --media grok-image.jpg
+
+# Or use the thread config with "media" field
+node scripts/stealth-post.js --config examples/grok-image-thread.json
 ```
 
 ## Thread Config
@@ -43,28 +90,38 @@ node scripts/stealth-post.js --text "Reply" --reply-to 1234567890    # reply
 {
   "profile": "openclaw",
   "tweets": [
-    { "text": "Hook", "media": null },
-    { "text": "Reply", "replyTo": "auto" }
+    { "text": "Hook tweet with image", "media": "path/to/image.jpg", "replyTo": null },
+    { "text": "Thread continuation", "replyTo": "auto" }
   ],
-  "settings": { "minDelay": 180, "maxDelay": 360, "typingSpeed": "normal", "headed": true, "timeout": 60000 }
+  "settings": {
+    "minDelay": 180,
+    "maxDelay": 360,
+    "typingSpeed": "normal",
+    "headed": true,
+    "timeout": 60000
+  }
 }
 ```
 
-| Field | Type | Default |
-|---|---|---|
-| `profile` | string | `"openclaw"` |
-| `tweets[].text` | string | required |
-| `tweets[].replyTo` | string | `null` |
-| `tweets[].media` | string | `null` |
-| `settings.minDelay` | number | `180` |
-| `settings.maxDelay` | number | `360` |
-| `settings.typingSpeed` | string | `"normal"` |
-| `settings.headed` | boolean | `true` |
+### Config Fields
 
-## Typing
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `profile` | string | `"openclaw"` | Browser profile name |
+| `tweets[].text` | string | required | Tweet content |
+| `tweets[].replyTo` | string | `null` | `null` for new, `"auto"` for thread chain, or status ID |
+| `tweets[].media` | string | `null` | **NEW** Path to image file for upload |
+| `settings.minDelay` | number | `180` | Min delay between tweets (seconds) |
+| `settings.maxDelay` | number | `360` | Max delay between tweets (seconds) |
+| `settings.typingSpeed` | string | `"normal"` | `"slow"`, `"normal"`, `"fast"` |
+| `settings.headed` | boolean | `true` | Show browser window |
+
+## Method 1: Text Posting (stealth-post.js)
+
+### Typing
 
 | Speed | ms/char | Pauses | Typos |
-|---|---|---|---|
+|-------|---------|--------|-------|
 | `"slow"` | 100-200 | After space/punct | 5% |
 | `"normal"` | 50-120 | After spaces | 2% |
 | `"fast"` | 30-70 | Minimal | 1% |
@@ -80,10 +137,79 @@ await page.mouse.wheel(0, 100);
 await page.mouse.wheel(0, -30);
 ```
 
+## Method 2: Grok Image Generation (grok-image.js) — NEW
+
+Use the Grok AI on X.com to generate images directly from text descriptions.
+
+### Prompt Tips
+
+Grok understands both English and Portuguese. For best results, include:
+
+- **Style**: `photorealistic`, `cinematic`, `illustration`, `dark fantasy`
+- **Lighting**: `dark amber lighting`, `dramatic shadows`, `golden hour`
+- **Composition**: `wide shot`, `close-up`, `aerial view`, `low angle`
+- **Details**: colors, textures, specific objects, atmosphere
+- **Scale**: indicate the scope (massive, epic, intimate)
+
+Example: *"A dramatic, dark, cinematic photorealistic illustration showing a massive industrial hydraulic cutting machine slicing through stacks of old hardcover books. Pages flying through the air, conveyor belt feeding books into a high-speed scanner, dystopian atmosphere, dark amber lighting, wide shot showing the destruction scale, books piled high in a warehouse setting."*
+
+### Extraction Flow
+
+```
+Grok generates image
+       │
+       ├── Method A: Screenshot (most reliable)
+       │   → page.screenshot() → file
+       │
+       ├── Method B: CDN URL (if already posted)
+       │   → document.querySelector('img[alt*="Image"]')?.src
+       │
+       └── Method C: Canvas toDataURL (for blobs)
+           → canvas.toDataURL('image/jpeg', 0.95)
+```
+
+### Common Issues
+
+| Issue | Fix |
+|-------|-----|
+| Grok input not found | Try `--profile` with logged-in browser profile |
+| Image generation timeout | Increase prompt specificity; Grok can take 30-60s |
+| Corrupted image (< 1KB) | Re-extract via screenshot method |
+| Browser not logged in | Login to X.com manually first |
+| File chooser not triggered | Ensure the media button selector matches current X UI |
+
+## Method 3: Media Upload (stealth-post.js) — NEW
+
+The `--media` flag and `tweets[].media` field enable attaching images to tweets.
+
+```bash
+# Single tweet with image
+node scripts/stealth-post.js --text "Cool image" --media screenshot.jpg
+
+# Reply with image
+node scripts/stealth-post.js --text "Check this" --reply-to 1234567890 --media image.jpg
+```
+
+### Media Validation
+
+Before upload, the script checks:
+- File exists (throws if not found)
+- File size > 1KB (throws if corrupted/empty)
+- File chooser completes within timeout
+
+### Pipeline: Generate + Post
+
+```
+1. grok-image.js --prompt "..." --output image.jpg
+2. stealth-post.js --text "Caption" --media image.jpg
+```
+
+Or use the thread JSON with `media` field for threaded content.
+
 ## Anti-Detection
 
 | X Detects | This Skill Does |
-|---|---|
+|-----------|----------------|
 | `webdriver=true` | ✅ Removes flag |
 | Headless UA | ✅ Real UA |
 | Empty plugins | ✅ Chrome emulation |
@@ -92,17 +218,19 @@ await page.mouse.wheel(0, -30);
 | Constant typing | ✅ Variable + typos |
 | Zero delays | ✅ Random 3-8s |
 | Datacenter IPs | ❌ Not covered |
+| Grok automation | ✅ Human-like typing in Grok input |
 
 ## Safety Limits
 
 | Limit | Value |
-|---|---|
+|-------|-------|
 | Max tweets/session | 6 |
 | Max tweets/day | 20 |
 | Min delay | 180s |
 | Max delay | 360s |
 | Active hours | 08:00-22:00 |
 | Account age min | 90 days |
+| Max media size | 5 MB (X limit) |
 
 Exceeding → script stops.
 
@@ -125,7 +253,7 @@ npx playwright install chromium
 ## Error Handling
 
 | Error | Action |
-|---|---|
+|-------|--------|
 | Login page | Google OAuth recovery |
 | CAPTCHA | STOP — report |
 | Rate limit | Wait 60s, retry once, STOP |
@@ -133,17 +261,23 @@ npx playwright install chromium
 | Network timeout | Wait 10s, retry once |
 | Suspended | STOP — report |
 | Session limit | STOP — report |
+| Media not found | Check file path and size |
+| Media corrupted | Re-generate or re-download |
+| Grok timeout | Increase prompt detail, retry |
+| File chooser failed | Manual upload via browser UI |
 
 ## Comparison
 
-| Feature | x-poster | ultra-x-stealth |
-|---|---|---|
-| Stealth plugins | ❌ | ✅ |
-| Human mouse/typing | ❌ | ✅ |
-| Random delays | ❌ | ✅ |
-| Thread support | Basic | Full |
-| Safety limits | None | Enforced |
-| Detection risk | HIGH | LOW |
+| Feature | x-poster | ultra-x-stealth (v1.0) | ultra-x-stealth (v1.1 w/ Grok) |
+|---------|----------|----------------------|-------------------------------|
+| Stealth plugins | ❌ | ✅ | ✅ |
+| Human mouse/typing | ❌ | ✅ | ✅ |
+| Random delays | ❌ | ✅ | ✅ |
+| Thread support | Basic | Full | Full |
+| Media upload | ❌ | ❌ | **✅ NEW** |
+| Grok image generation | ❌ | ❌ | **✅ NEW** |
+| Safety limits | None | Enforced | Enforced |
+| Detection risk | HIGH | LOW | LOW |
 
 ## Rules
 
@@ -155,12 +289,16 @@ npx playwright install chromium
 6. ALWAYS use persistent profile
 7. STOP on CAPTCHA/2FA
 8. STOP if user says stop
+9. Verify media file integrity before posting (min 5KB)
+10. Wait for Grok generation to complete before extracting
 
 ## References
 
 - `references/anti-detection-guide.md`
 - `examples/thread-sample.json`
+- `examples/grok-image-thread.json`
 - `x-poster` for simple posting
+- `agente-redes-sociais` for Grok image + QA gate workflows
 
 ## License
 

@@ -1,0 +1,25 @@
+{
+  "profile": "openclaw",
+  "tweets": [
+    {
+      "text": "Imagem gerada pelo Grok: o que sobrou dos livros depois do escaneamento industrial da Anthropic.",
+      "replyTo": null,
+      "media": "grok-image.jpg"
+    },
+    {
+      "text": "Este é o \"Project Panama\" — milhões de livros destruídos pra treinar IA com dados \"limpos\". A máquina hidráulica corta lombadas, as páginas são escaneadas, e os originais viram pó.",
+      "replyTo": "auto"
+    },
+    {
+      "text": "O que torna isso controverso: a destruição de livros raros e exemplares únicos. A lei diz que é fair use. A ética diz outra coisa.",
+      "replyTo": "auto"
+    }
+  ],
+  "settings": {
+    "minDelay": 180,
+    "maxDelay": 360,
+    "typingSpeed": "normal",
+    "headed": true,
+    "timeout": 60000
+  }
+}
