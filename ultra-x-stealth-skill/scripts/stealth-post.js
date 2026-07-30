@@ -113,6 +113,12 @@ async function humanClick(page, selector, options = {}) {
 async function humanType(page, selector, text, speed = 'normal') {
   const config = TYPING_SPEEDS[speed] || TYPING_SPEEDS.normal;
 
+  // Focus the element first for reliability
+  const element = await page.$(selector);
+  if (element) {
+    await element.focus();
+    await sleep(random(200, 500));
+  }
   await page.click(selector);
   await sleep(random(300, 700));
 
@@ -254,7 +260,8 @@ async function postTweet(page, text, replyToStatusId = null, mediaPath = null) {
   // If replying, navigate to the parent tweet first
   if (replyToStatusId) {
     console.log(`  ↩️  Replying to status ${replyToStatusId}...`);
-    await page.goto(`https://x.com/home/status/${replyToStatusId}`, {
+    // Navigate to the tweet directly to access the reply composer
+    await page.goto(`https://x.com/i/status/${replyToStatusId}`, {
       waitUntil: 'networkidle',
       timeout: DEFAULT_SETTINGS.timeout,
     });

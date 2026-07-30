@@ -9,7 +9,6 @@
  * Usage:
  *   node grok-image.js --prompt "A dramatic scene of books being destroyed..."
  *   node grok-image.js --prompt "Scene description" --output image.jpg
- *   node grok-image.js --prompt "Scene" --extract-only --image-url https://pbs.twimg.com/media/...
  *
  * Steps:
  *   1. Opens Grok conversation on X.com
