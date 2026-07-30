@@ -105,13 +105,14 @@ async function extractByScreenshot(page, outputPath) {
  */
 async function extractByCDNUrl(page) {
   console.log('  🔗 Method 2: CDN URL extraction...');
-  // Poll for CDN URL — Grok image appears in DOM first, then CDN URL populates
+  // Poll for image src — Grok may use twimg or xAI managed storage URL
   for (let attempt = 0; attempt < 20; attempt++) {
     const url = await page.evaluate(() => {
-      // Look in Grok conversation for any image with twimg CDN URL
+      // Look in Grok conversation for any large image with a real src URL
       const imgs = document.querySelectorAll('img');
       for (const img of imgs) {
-        if (img.src && img.src.includes('pbs.twimg.com') && img.naturalWidth > 100) {
+        if (!img.src || img.src.startsWith('data:')) continue;
+        if (img.naturalWidth > 100 || img.width > 100) {
           return img.src;
         }
       }
