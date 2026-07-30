@@ -46,8 +46,9 @@ Thread Config ────────┤  real UA          ├───→ Head
 
 | Script | Purpose |
 |--------|---------|
-| `scripts/stealth-post.js` | Post tweets/threads with media support |
+| `scripts/stealth-post.js` | Post tweets/threads with media support + dom-engine |
 | `scripts/grok-image.js` | Generate images via Grok browser conversation |
+| `scripts/inject-dom-engine.js` | DOM engine for semantic element interaction (used by stealth-post.js) |
 
 ## Quick Start
 
@@ -206,6 +207,50 @@ Before upload, the script checks:
 
 Or use the thread JSON with `media` field for threaded content.
 
+## Architecture: dom-engine Integration
+
+This skill integrates `@agentic-intelligence/dom-engine` (via `scripts/inject-dom-engine.js`) for **robust, semantic element interaction**.
+
+Instead of relying solely on fragile CSS selectors (`[data-testid="..."]`), the dom-engine:
+1. Scans the page for all interactive elements
+2. Assigns unique `agenticPurposeId` identifiers
+3. Provides `window.getInteractiveContext()` → structured JSON
+4. Executes clicks/types via `window.executeActions()` with human-like mouse/keyboard events
+
+### How It Works
+
+```
+stealth-post.js
+      │
+      ├── Inject dom-engine into page context
+      │     └── page.evaluate(injectDomEngine)
+      │
+      ├── Find element via getInteractiveContext()
+      │     └── Match by data-testid, aria-label, or fuzzy text
+      │
+      ├── Execute action via executeActions()
+      │     └── { agenticPurposeId, actionType: "click" | "type", value }
+      │
+      └── Fallback to Playwright native selectors
+            └── humanClick() / humanType() with Bézier curves
+```
+
+### Why Dom-Engine?
+
+| Problem | dom-engine Solution |
+|---------|-------------------|
+| `data-testid="tweetTextarea_0"` can change | Finds by role, placeholder, or fuzzy match |
+| Generic refs (e1, e2) in snapshot | Returns descriptive `agenticPurposeId` |
+| Playwright click lacks mouseover/mousemove | Dispatches full event chain |
+| Hard to verify element state | `getInteractiveContext()` returns full element info |
+
+### When Dom-Engine Falls Back
+
+If `useDomEngine: false` in config or injection fails, the script falls back to:
+- `humanClick()` — Playwright click with Bézier mouse curves
+- `humanType()` — Variable speed typing with typos
+- Standard CSS selectors
+
 ## Anti-Detection
 
 | X Detects | This Skill Does |
@@ -219,6 +264,7 @@ Or use the thread JSON with `media` field for threaded content.
 | Zero delays | ✅ Random 3-8s |
 | Datacenter IPs | ❌ Not covered |
 | Grok automation | ✅ Human-like typing in Grok input |
+| DOM interaction detection | ✅ dom-engine simulates real browser events (mouseover→mousedown→mouseup→click) |
 
 ## Safety Limits
 
@@ -292,11 +338,38 @@ npx playwright install chromium
 9. Verify media file integrity before posting (min 5KB)
 10. Wait for Grok generation to complete before extracting
 
+## Settings Reference
+
+| Setting | Type | Default | Description |
+|---------|------|---------|-------------|
+| `useDomEngine` | boolean | `true` | **NEW** Enable dom-engine for element interaction |
+| `minDelay` | number | `180` | Min delay between tweets (seconds) |
+| `maxDelay` | number | `360` | Max delay between tweets (seconds) |
+| `typingSpeed` | string | `"normal"` | `"slow"`, `"normal"`, `"fast"` |
+| `headed` | boolean | `true` | Show browser window |
+| `timeout` | number | `60000` | Navigation timeout (ms) |
+| `maxTweetsPerSession` | number | `6` | Max tweets per session |
+| `maxTweetsPerDay` | number | `20` | Max tweets per day |
+
+## Files
+
+| File | Purpose |
+|------|---------|
+| `SKILL.md` | This file |
+| `scripts/stealth-post.js` | Main stealth posting script with dom-engine |
+| `scripts/grok-image.js` | Grok image generator |
+| `scripts/inject-dom-engine.js` | **NEW** DOM engine injection (origin: ultra-dom-engine-skill) |
+| `examples/thread-sample.json` | Thread config example |
+| `examples/grok-image-thread.json` | Thread with media example |
+| `references/anti-detection-guide.md` | Anti-detection reference |
+| `package.json` | Dependencies and scripts |
+
 ## References
 
 - `references/anti-detection-guide.md`
 - `examples/thread-sample.json`
 - `examples/grok-image-thread.json`
+- `ultra-dom-engine-skill` for standalone dom-engine usage
 - `x-poster` for simple posting
 - `agente-redes-sociais` for Grok image + QA gate workflows
 
