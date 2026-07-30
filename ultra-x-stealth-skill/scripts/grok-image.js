@@ -160,7 +160,7 @@ async function generateImage(page, prompt) {
 
   // Navigate to Grok
   await page.goto('https://x.com/i/grok', {
-    waitUntil: 'networkidle',
+    waitUntil: 'domcontentloaded',
     timeout: DEFAULT_SETTINGS.timeout,
   });
 
@@ -345,7 +345,7 @@ async function main() {
   try {
     // Check login
     console.log('🔐 Checking login status...');
-    await page.goto('https://x.com/home', { waitUntil: 'networkidle', timeout: DEFAULT_SETTINGS.timeout });
+    await page.goto('https://x.com/home', { waitUntil: 'domcontentloaded', timeout: DEFAULT_SETTINGS.timeout });
     await sleep(3000);
 
     const loginCheck = await page.evaluate(() => {
