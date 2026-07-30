@@ -167,6 +167,21 @@ async function generateImage(page, prompt) {
   // Wait for page to settle
   await sleep(5000);
 
+  // Dismiss any overlays/popups that block interaction (Grok promo, etc.)
+  try {
+    // Try clicking outside the popup or pressing Escape to dismiss
+    await page.keyboard.press('Escape');
+    await sleep(1000);
+    // Try clicking the close button if present
+    const closeBtn = await page.$('[data-testid="app-bar-close"], button[aria-label="Close"], .r-1loqt21 button, div[role="dialog"] button');
+    if (closeBtn) {
+      await closeBtn.click({ timeout: 3000 }).catch(() => {});
+      await sleep(1000);
+    }
+  } catch (e) {
+    // Non-critical — proceed anyway
+  }
+
   // Look for the Grok input area
   // X.com Grok uses a contenteditable div or textarea
   const inputSelectors = [
