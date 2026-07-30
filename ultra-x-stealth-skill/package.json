@@ -1,10 +1,11 @@
 {
   "name": "ultra-x-stealth-skill",
-  "version": "1.0.0",
-  "description": "Stealth posting on X.com with anti-detection and human behavior simulation",
+  "version": "1.1.0",
+  "description": "Stealth posting on X.com with Grok image generation, media upload, anti-detection and human behavior simulation",
   "main": "scripts/stealth-post.js",
   "scripts": {
     "post": "node scripts/stealth-post.js",
+    "grok-image": "node scripts/grok-image.js",
     "test": "node scripts/stealth-post.js --text 'Test post' --profile openclaw"
   },
   "dependencies": {
