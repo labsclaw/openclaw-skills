@@ -231,55 +231,45 @@ async function generateImage(page, prompt) {
   await page.keyboard.press('Enter');
   console.log('  ⏳ Waiting for Grok to generate image...');
 
-  // Wait for CDN image response — intercept the network request to pbs.twimg.com
-  // Grok uploads generated images to X's CDN; this catches the URL at the network level
-  console.log('  📡 Waiting for CDN image upload...');
-  let cdnUrl = null;
-  try {
-    const response = await page.waitForResponse(response => {
-      return response.url().includes('pbs.twimg.com/media/') &&
-             response.request().resourceType() === 'image';
-    }, { timeout: 120000 });
-    cdnUrl = response.url();
-    console.log(`  ✅ CDN URL captured via network: ${cdnUrl}`);
-  } catch (e) {
-    console.log('  ⏭️  No CDN network response detected, falling back to DOM detection');
-  }
+  // Initial wait for Grok to start processing (15s)
+  await sleep(15000);
 
-  // If network interception didn't catch it, fall back to DOM polling
-  if (!cdnUrl) {
-    let imageFound = false;
-    for (let attempt = 0; attempt < 30; attempt++) {
-      const hasImage = await page.evaluate(() => {
-        const imgs = document.querySelectorAll('img');
-        for (const img of imgs) {
-          if (img.naturalWidth > 200 && img.offsetParent !== null) {
-            if (img.closest('[data-testid="GrokConversation"]') ||
-                img.closest('main') ||
-                img.closest('[role="region"]')) {
-              return true;
-            }
+  // Poll for image to appear in DOM
+  // Once visible, the <img> element will have the CDN URL in its src
+  let imageFound = false;
+  for (let attempt = 0; attempt < 30; attempt++) {
+    const hasImage = await page.evaluate(() => {
+      const imgs = document.querySelectorAll('img');
+      for (const img of imgs) {
+        if (img.naturalWidth > 200 && img.offsetParent !== null) {
+          if (img.closest('[data-testid="GrokConversation"]') ||
+              img.closest('main') ||
+              img.closest('[role="region"]')) {
+            return true;
           }
         }
-        return false;
-      });
-
-      if (hasImage) {
-        console.log('  ✅ Image detected in DOM!');
-        break;
       }
+      return false;
+    });
 
-      console.log(`  ⏳ Waiting... (${(attempt + 1) * 5}s)`);
-      await sleep(5000);
+    if (hasImage) {
+      imageFound = true;
+      console.log('  ✅ Image detected in DOM!');
+      break;
     }
+
+    console.log(`  ⏳ Waiting... (${(attempt + 1) * 5}s)`);
+    await sleep(5000);
   }
 
-  // Extra settling time
-  await sleep(3000);
+  if (!imageFound) {
+    throw new Error('Grok did not generate an image within timeout');
+  }
+
+  // Extra settling time for CDN upload
+  await sleep(5000);
 
   console.log('  📸 Capturing image...');
-
-  return { cdnUrl };
 }
 
 async function extractImage(page, outputPath, cdnUrl = null) {
