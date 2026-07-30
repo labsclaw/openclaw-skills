@@ -280,6 +280,36 @@ If `useDomEngine: false` in config or injection fails, the script falls back to:
 
 Exceeding → script stops.
 
+## Profile Setup
+
+The scripts use a **dedicated browser profile** to avoid conflicting with OpenClaw's browser tool.
+
+### Create the stealth-x profile
+
+```bash
+# 1. Stop the OpenClaw browser first
+openclaw browser stop
+
+# 2. Copy the existing logged-in profile
+robocopy "~/.openclaw/browser/openclaw/user-data" \
+          "~/.openclaw/browser/stealth-x/user-data" /E /COPY:DAT
+
+# 3. Restart the OpenClaw browser
+openclaw browser start --profile openclaw
+```
+
+### Use the profile in scripts
+
+```bash
+# Single tweet
+node scripts/stealth-post.js --text "Hello" --profile stealth-x
+
+# Or set default profile in thread JSON
+# { "profile": "stealth-x", ... }
+```
+
+> **Note:** X.com stores session via IndexedDB, not just Cookies. The profile copy preserves both.
+
 ## Installation
 
 ```bash
@@ -295,6 +325,37 @@ npx playwright install chromium
 3. Manual re-login: `openclaw browser open --url https://x.com`
 
 **NEVER type passwords.**
+
+### Profile Conflicts
+
+The OpenClaw browser tool and Playwright scripts **cannot share the same profile simultaneously**.
+- Browser tool uses `profile=openclaw`
+- Scripts should use `profile=stealth-x` (copied from openclaw)
+- If you see `Target page, context or browser has been closed`, the profile is in use
+
+## Test Results (2026-07-29)
+
+Real test on X.com with stealth-x profile:
+
+| Test | Result | Notes |
+|------|--------|-------|
+| Stealth detection (`navigator.webdriver`) | ✅ PASS | `false` (undetectable) |
+| Login session preserved | ✅ PASS | Logged in via profile copy |
+| Dom-engine injection | ✅ PASS | 35 elements detected |
+| "tweetButton" found | ✅ PASS | DOM element with agenticPurposeId |
+| Profile copy (robocopy) | ⚠️ Exit code 1 | Files copied, minor warnings OK |
+| `waitUntil: 'networkidle'` | ❌ FAIL | X.com never reaches idle (WebSocket) |
+| `waitUntil: 'load'` | ✅ PASS | Fast, reliable |
+
+**Key lesson:** Always use `waitUntil: 'load'` (not `'networkidle'`) for X.com.
+
+### Performance Comparison
+
+| Method | Time to page ready | Reliability |
+|--------|-------------------|-------------|
+| `networkidle` | 30-60s+ timeout | ❌ Never completes |
+| `load` | 3-5s | ✅ Always works |
+| `load` + 3s settle | 6-8s | ✅ Best balance |
 
 ## Error Handling
 
