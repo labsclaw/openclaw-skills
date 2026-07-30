@@ -9,6 +9,7 @@
  * Usage:
  *   node grok-image.js --prompt "A dramatic scene of books being destroyed..."
  *   node grok-image.js --prompt "Scene description" --output image.jpg
+ *   node grok-image.js --prompt "Scene" --extract-only --image-url https://pbs.twimg.com/media/...
  *
  * Steps:
  *   1. Opens Grok conversation on X.com
@@ -104,13 +105,23 @@ async function extractByScreenshot(page, outputPath) {
  */
 async function extractByCDNUrl(page) {
   console.log('  🔗 Method 2: CDN URL extraction...');
-  const url = await page.evaluate(() => {
-    const img = document.querySelector('img[alt*="Image" i], img[alt*="Foto" i]');
-    return img ? img.src : null;
-  });
-  if (url && url.includes('pbs.twimg.com')) {
-    console.log(`  ✅ CDN URL found: ${url}`);
-    return { method: 'cdn', url };
+  // Poll for CDN URL — Grok image appears in DOM first, then CDN URL populates
+  for (let attempt = 0; attempt < 20; attempt++) {
+    const url = await page.evaluate(() => {
+      // Look in Grok conversation for any image with twimg CDN URL
+      const imgs = document.querySelectorAll('img');
+      for (const img of imgs) {
+        if (img.src && img.src.includes('pbs.twimg.com') && img.naturalWidth > 100) {
+          return img.src;
+        }
+      }
+      return null;
+    });
+    if (url) {
+      console.log(`  ✅ CDN URL found: ${url}`);
+      return { method: 'cdn', url };
+    }
+    await sleep(2000);
   }
   console.log('  ⏭️  No CDN URL found');
   return null;
@@ -167,20 +178,9 @@ async function generateImage(page, prompt) {
   // Wait for page to settle
   await sleep(5000);
 
-  // Dismiss any overlays/popups that block interaction (Grok promo, etc.)
-  try {
-    // Try clicking outside the popup or pressing Escape to dismiss
-    await page.keyboard.press('Escape');
-    await sleep(1000);
-    // Try clicking the close button if present
-    const closeBtn = await page.$('[data-testid="app-bar-close"], button[aria-label="Close"], .r-1loqt21 button, div[role="dialog"] button');
-    if (closeBtn) {
-      await closeBtn.click({ timeout: 3000 }).catch(() => {});
-      await sleep(1000);
-    }
-  } catch (e) {
-    // Non-critical — proceed anyway
-  }
+  // Dismiss any overlays/popups (Grok promo, etc.)
+  await page.keyboard.press('Escape').catch(() => {});
+  await sleep(500);
 
   // Look for the Grok input area
   // X.com Grok uses a contenteditable div or textarea
@@ -220,7 +220,7 @@ async function generateImage(page, prompt) {
   }
 
   // Click the input
-  await inputElement.click();
+  await inputElement.click({ force: true }).catch(() => inputElement.click());
   await sleep(500);
 
   // Type the prompt with human-like delay
@@ -231,41 +231,47 @@ async function generateImage(page, prompt) {
   await page.keyboard.press('Enter');
   console.log('  ⏳ Waiting for Grok to generate image...');
 
-  // Wait for image generation — Grok can take 20-60s
-  // We look for any img element appearing in the conversation
-  await sleep(15000); // Initial wait
-
-  // Poll for image appearance
-  let imageFound = false;
-  for (let attempt = 0; attempt < 30; attempt++) {
-    const hasImage = await page.evaluate(() => {
-      const imgs = document.querySelectorAll('img');
-      for (const img of imgs) {
-        // Filter out avatars, icons, etc.
-        if (img.naturalWidth > 200 && img.offsetParent !== null) {
-          // Check if it's in the main content area
-          if (img.closest('[data-testid="GrokConversation"]') ||
-              img.closest('main') ||
-              img.closest('[role="region"]')) {
-            return true;
-          }
-        }
-      }
-      return false;
-    });
-
-    if (hasImage) {
-      imageFound = true;
-      console.log('  ✅ Image detected!');
-      break;
-    }
-
-    console.log(`  ⏳ Waiting... (${(attempt + 1) * 5}s)`);
-    await sleep(5000);
+  // Wait for CDN image response — intercept the network request to pbs.twimg.com
+  // Grok uploads generated images to X's CDN; this catches the URL at the network level
+  console.log('  📡 Waiting for CDN image upload...');
+  let cdnUrl = null;
+  try {
+    const response = await page.waitForResponse(response => {
+      return response.url().includes('pbs.twimg.com/media/') &&
+             response.request().resourceType() === 'image';
+    }, { timeout: 120000 });
+    cdnUrl = response.url();
+    console.log(`  ✅ CDN URL captured via network: ${cdnUrl}`);
+  } catch (e) {
+    console.log('  ⏭️  No CDN network response detected, falling back to DOM detection');
   }
 
-  if (!imageFound) {
-    throw new Error('Grok did not generate an image within timeout');
+  // If network interception didn't catch it, fall back to DOM polling
+  if (!cdnUrl) {
+    let imageFound = false;
+    for (let attempt = 0; attempt < 30; attempt++) {
+      const hasImage = await page.evaluate(() => {
+        const imgs = document.querySelectorAll('img');
+        for (const img of imgs) {
+          if (img.naturalWidth > 200 && img.offsetParent !== null) {
+            if (img.closest('[data-testid="GrokConversation"]') ||
+                img.closest('main') ||
+                img.closest('[role="region"]')) {
+              return true;
+            }
+          }
+        }
+        return false;
+      });
+
+      if (hasImage) {
+        console.log('  ✅ Image detected in DOM!');
+        break;
+      }
+
+      console.log(`  ⏳ Waiting... (${(attempt + 1) * 5}s)`);
+      await sleep(5000);
+    }
   }
 
   // Extra settling time
@@ -273,13 +279,24 @@ async function generateImage(page, prompt) {
 
   console.log('  📸 Capturing image...');
 
-  return true;
+  return { cdnUrl };
 }
 
-async function extractImage(page, outputPath) {
-  // Try methods in order: CDN URL > Canvas > Screenshot
+async function extractImage(page, outputPath, cdnUrl = null) {
+  // Method 1: Network-captured CDN URL (most reliable, no DOM needed)
+  if (cdnUrl) {
+    console.log(`  🔗 Method 1: Network-captured CDN URL...`);
+    console.log(`  💾 Downloading from CDN: ${cdnUrl}`);
+    await downloadFile(cdnUrl, outputPath);
+    const stats = fs.statSync(outputPath);
+    if (stats.size > 5000) {
+      console.log(`  ✅ Image saved: ${outputPath} (${stats.size} bytes)`);
+      return outputPath;
+    }
+    console.log(`  ⏭️  CDN download too small (${stats.size} bytes), trying DOM methods`);
+  }
 
-  // Method 2: CDN URL
+  // Method 2: DOM-based CDN URL
   const cdnResult = await extractByCDNUrl(page);
   if (cdnResult) {
     console.log(`  💾 Downloading from CDN...`);
@@ -375,10 +392,10 @@ async function main() {
     console.log('✅ Logged in\n');
 
     // Generate image via Grok
-    await generateImage(page, prompt);
+    const genResult = await generateImage(page, prompt);
 
     // Extract and save
-    await extractImage(page, resolvedOutput);
+    await extractImage(page, resolvedOutput, genResult.cdnUrl);
 
     console.log('\n╔══════════════════════════════════════╗');
     console.log(`║  ✅ Image saved to: ${resolvedOutput}`);
