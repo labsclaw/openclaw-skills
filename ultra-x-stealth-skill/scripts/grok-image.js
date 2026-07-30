@@ -382,10 +382,10 @@ async function main() {
     console.log('✅ Logged in\n');
 
     // Generate image via Grok
-    const genResult = await generateImage(page, prompt);
+    await generateImage(page, prompt);
 
     // Extract and save
-    await extractImage(page, resolvedOutput, genResult.cdnUrl);
+    await extractImage(page, resolvedOutput);
 
     console.log('\n╔══════════════════════════════════════╗');
     console.log(`║  ✅ Image saved to: ${resolvedOutput}`);
