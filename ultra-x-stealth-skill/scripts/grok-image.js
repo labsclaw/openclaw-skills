@@ -236,7 +236,6 @@ async function generateImage(page, prompt) {
   await sleep(15000);
 
   // Poll for image to appear in DOM
-  // Once visible, the <img> element will have the CDN URL in its src
   let imageFound = false;
   for (let attempt = 0; attempt < 30; attempt++) {
     const hasImage = await page.evaluate(() => {
@@ -256,6 +255,8 @@ async function generateImage(page, prompt) {
     if (hasImage) {
       imageFound = true;
       console.log('  ✅ Image detected in DOM!');
+      // Brief pause for async CDN URL to populate src
+      await sleep(2000);
       break;
     }
 
@@ -266,9 +267,6 @@ async function generateImage(page, prompt) {
   if (!imageFound) {
     throw new Error('Grok did not generate an image within timeout');
   }
-
-  // Extra settling time for CDN upload
-  await sleep(5000);
 
   console.log('  📸 Capturing image...');
 }
