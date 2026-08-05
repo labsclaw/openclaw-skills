@@ -192,10 +192,14 @@ function injectDomEngine() {
       new MouseEvent('mouseup', { bubbles: true, clientX: x, clientY: y, button: 0 }),
       new MouseEvent('click', { bubbles: true, clientX: x, clientY: y, button: 0 })
     ];
-    events.forEach((e, i) => setTimeout(() => element.dispatchEvent(e), i * 15));
+    events.forEach((e, i) => {
+      const baseDelay = [8, 22, 35, 12, 18][i]; // varied per event type
+      const jitter = Math.floor(Math.random() * 16) - 8; // ±8ms
+      setTimeout(() => element.dispatchEvent(e), baseDelay + jitter);
+    });
 
     if (element.tabIndex >= 0) {
-      setTimeout(() => element.focus(), 50);
+      setTimeout(() => element.focus(), 30 + Math.floor(Math.random() * 40)); // 30-70ms
     }
   }
 
