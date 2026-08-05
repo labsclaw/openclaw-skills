@@ -464,8 +464,8 @@ async function main() {
 
   try {
     console.log('🔐 Checking login status...');
-      // Use 'load' not 'networkidle' - X.com has constant WebSocket connections
-      await page.goto('https://x.com/home', { waitUntil: 'load', timeout: settings.timeout });
+    // Use 'load' not 'networkidle' - X.com has constant WebSocket connections
+    await page.goto('https://x.com/home', { waitUntil: 'load', timeout: settings.timeout });
     await waitForPageReady(page);
 
     const loginStatus = await checkLoginStatus(page);

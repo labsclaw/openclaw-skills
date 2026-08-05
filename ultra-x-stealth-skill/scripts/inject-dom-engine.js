@@ -94,7 +94,7 @@ function injectDomEngine() {
         style.opacity !== '0' && !element.hidden &&
         rect.width > 0 && rect.height > 0
       );
-    } catch { return false; }
+    } catch(e) { console.warn('dom-engine: isElementVisible failed for element', element, e); return false; }
   }
 
   function getInteractiveSelectors() {
@@ -241,6 +241,8 @@ function injectDomEngine() {
           results.push(executeClickAction(el, action.agenticPurposeId));
         } else if (action.actionType === 'type') {
           results.push(executeTypeAction(el, action.value, action.agenticPurposeId));
+        } else {
+          results.push({ agenticPurposeId: action.agenticPurposeId, success: false, action: action.actionType, error: `Unknown actionType: ${action.actionType}` });
         }
       } catch(e) {
         results.push({ agenticPurposeId: action.agenticPurposeId, success: false, action: action.actionType, error: e.message });
