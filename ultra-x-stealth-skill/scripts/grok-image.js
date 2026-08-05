@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 /**
- * grok-image.js — Grok Image Generator
- * 
+ * grok-image.js - Grok Image Generator
+ *
  * Uses the X.com Grok conversation to generate images via browser automation.
  * Extracts the generated image and saves it locally.
  *
@@ -31,7 +31,7 @@ chromium.use(StealthPlugin());
 const DEFAULT_SETTINGS = {
   profile: 'openclaw',
   headed: true,
-  timeout: 120000, // 2 min — Grok image gen can be slow
+  timeout: 120000, // 2 min - Grok image gen can be slow
 };
 
 // ─── Prompt Templates ───────────────────────────────────────────
@@ -71,7 +71,7 @@ function downloadFile(url, outputPath) {
         file.close();
         const stats = fs.statSync(outputPath);
         if (stats.size < 1000) {
-          reject(new Error(`Downloaded file too small: ${stats.size} bytes — likely corrupted`));
+          reject(new Error(`Downloaded file too small: ${stats.size} bytes - likely corrupted`));
         } else {
           resolve(outputPath);
         }
@@ -87,25 +87,25 @@ function downloadFile(url, outputPath) {
 // ─── Image Extraction Methods ───────────────────────────────────
 
 /**
- * Method 1: Screenshot — most reliable, works with any image display
+ * Method 1: Screenshot - most reliable, works with any image display
  */
 async function extractByScreenshot(page, outputPath) {
   console.log('  📸 Method 1: Screenshot...');
   await page.screenshot({ path: outputPath, fullPage: false });
   const stats = fs.statSync(outputPath);
   if (stats.size < 5000) {
-    throw new Error(`Screenshot too small (${stats.size} bytes) — image may not be visible`);
+    throw new Error(`Screenshot too small (${stats.size} bytes) - image may not be visible`);
   }
   console.log(`  ✅ Screenshot saved: ${outputPath} (${stats.size} bytes)`);
   return outputPath;
 }
 
 /**
- * Method 2: CDN URL — if the image was already posted to X CDN
+ * Method 2: CDN URL - if the image was already posted to X CDN
  */
 async function extractByCDNUrl(page) {
   console.log('  🔗 Method 2: CDN URL extraction...');
-  // Poll for image src — Grok may use twimg or xAI managed storage URL
+  // Poll for image src - Grok may use twimg or xAI managed storage URL
   for (let attempt = 0; attempt < 20; attempt++) {
     const url = await page.evaluate(() => {
       // Look in Grok conversation for any large image with a real src URL
@@ -129,7 +129,7 @@ async function extractByCDNUrl(page) {
 }
 
 /**
- * Method 3: Canvas toDataURL — for blob images without CDN URL
+ * Method 3: Canvas toDataURL - for blob images without CDN URL
  */
 async function extractByCanvas(page) {
   console.log('  🎨 Method 3: Canvas extraction...');
@@ -171,6 +171,7 @@ async function generateImage(page, prompt) {
   console.log(`\n🤖 Sending prompt to Grok: "${prompt.substring(0, 80)}..."`);
 
   // Navigate to Grok
+  // Use 'load' not 'networkidle' -- X.com has constant WebSocket polling
   await page.goto('https://x.com/i/grok', {
     waitUntil: 'domcontentloaded',
     timeout: DEFAULT_SETTINGS.timeout,
@@ -303,7 +304,7 @@ async function extractImage(page, outputPath, cdnUrl = null) {
     const stats = fs.statSync(outputPath);
     if (stats.size < 5000) {
       fs.unlinkSync(outputPath);
-      throw new Error(`Canvas image too small (${stats.size} bytes) — corrupted`);
+      throw new Error(`Canvas image too small (${stats.size} bytes) - corrupted`);
     }
     console.log(`  ✅ Image saved: ${outputPath} (${stats.size} bytes)`);
     return outputPath;

@@ -170,7 +170,8 @@ async function humanScroll(page, distance = 300) {
  * Wait for page to be ready with human-like delay.
  */
 async function waitForPageReady(page, timeout = 30000) {
-  await page.waitForLoadState('networkidle', { timeout });
+  // X.com has constant WebSocket polling - 'load' is sufficient
+  await page.waitForLoadState('load', { timeout });
   await sleep(random(2000, 5000));
 }
 
@@ -187,7 +188,7 @@ async function uploadMedia(page, mediaPath) {
 
   const stats = fs.statSync(resolvedPath);
   if (stats.size < 1000) {
-    throw new Error(`Media file too small (${stats.size} bytes) — likely corrupted`);
+    throw new Error(`Media file too small (${stats.size} bytes) - likely corrupted`);
   }
 
   console.log(`  🖼️  Uploading media: ${resolvedPath} (${Math.round(stats.size / 1024)} KB)`);
@@ -223,7 +224,7 @@ async function uploadMedia(page, mediaPath) {
         return progressBars.length === 0;
       }, { timeout: 30000 });
     } catch {
-      console.log('  ⚠️  Upload progress check timed out — continuing anyway');
+      console.log('  ⚠️  Upload progress check timed out - continuing anyway');
     }
     console.log('  ✅ Media uploaded');
   } else if (await page.$('[data-testid="attachedMedia"]')) {
@@ -261,7 +262,8 @@ async function postTweet(page, text, replyToStatusId = null, mediaPath = null) {
   if (replyToStatusId) {
     console.log(`  ↩️  Replying to status ${replyToStatusId}...`);
     await page.goto(`https://x.com/i/status/${replyToStatusId}`, {
-      waitUntil: 'networkidle',
+      // Use 'load' not 'networkidle' - X.com has constant WebSocket connections
+      waitUntil: 'load',
       timeout: DEFAULT_SETTINGS.timeout,
     });
     await waitForPageReady(page);
@@ -277,7 +279,8 @@ async function postTweet(page, text, replyToStatusId = null, mediaPath = null) {
   } else {
     // Navigate to home for a new tweet
     await page.goto('https://x.com/home', {
-      waitUntil: 'networkidle',
+      // Use 'load' not 'networkidle' - X.com has constant WebSocket connections
+      waitUntil: 'load',
       timeout: DEFAULT_SETTINGS.timeout,
     });
     await waitForPageReady(page);
@@ -314,7 +317,7 @@ async function postTweet(page, text, replyToStatusId = null, mediaPath = null) {
 
   const isDisabled = await page.$eval(postBtnSelector, el => el.disabled);
   if (isDisabled) {
-    throw new Error('Post button is disabled — tweet may be empty or too long');
+    throw new Error('Post button is disabled - tweet may be empty or too long');
   }
 
   console.log(`  🖱️  Clicking post button...`);
@@ -427,7 +430,7 @@ async function main() {
   const settings = { ...DEFAULT_SETTINGS, ...config.settings };
 
   console.log('\n╔══════════════════════════════════════╗');
-  console.log('║  🔒 Ultra X Stealth — Posting        ║');
+  console.log('║  🔒 Ultra X Stealth - Posting        ║');
   console.log('╚══════════════════════════════════════╝\n');
   console.log(`Profile: ${config.profile}`);
   console.log(`Tweets: ${config.tweets.length}`);
@@ -438,7 +441,7 @@ async function main() {
 
   const hour = new Date().getHours();
   if (hour < 8 || hour >= 22) {
-    console.log(`⚠️  Current time: ${hour}:00 — outside safe posting window (08:00-22:00)`);
+    console.log(`⚠️  Current time: ${hour}:00 - outside safe posting window (08:00-22:00)`);
     console.log(`   Continuing anyway (user initiated)...\n`);
   }
 
@@ -461,7 +464,8 @@ async function main() {
 
   try {
     console.log('🔐 Checking login status...');
-    await page.goto('https://x.com/home', { waitUntil: 'networkidle', timeout: settings.timeout });
+      // Use 'load' not 'networkidle' - X.com has constant WebSocket connections
+      await page.goto('https://x.com/home', { waitUntil: 'load', timeout: settings.timeout });
     await waitForPageReady(page);
 
     const loginStatus = await checkLoginStatus(page);
