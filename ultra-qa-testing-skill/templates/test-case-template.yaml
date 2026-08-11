@@ -1,0 +1,80 @@
+# Test Case Template
+# Copy this file and customize for your test scenario
+
+name: "Test case name"
+description: "What this test verifies"
+target: "http://localhost:3000"  # or override per step
+priority: "high"  # high | medium | low
+timeout: 30  # seconds
+
+# Optional: pre-test authentication
+auth:
+  type: "form"  # form | cookie | state
+  url: "/login"
+  email_selector: "#email"
+  password_selector: "#password"
+  submit_selector: "button[type=submit]"
+  credentials:
+    email: "test@example.com"
+    password: "changeme"
+
+# Test steps (executed in order)
+steps:
+  - id: "step-1"
+    action: "navigate"
+    url: "/"
+    wait: "networkidle"
+    screenshot: true
+    description: "Navigate to homepage"
+
+  - id: "step-2"
+    action: "click"
+    selector: "a[href='/login']"
+    wait: "networkidle"
+    screenshot: true
+    description: "Click login link"
+
+  - id: "step-3"
+    action: "fill"
+    selector: "#email"
+    value: "test@example.com"
+    screenshot: true
+    description: "Enter email"
+
+  - id: "step-4"
+    action: "fill"
+    selector: "#password"
+    value: "password123"
+    screenshot: true
+    description: "Enter password"
+
+  - id: "step-5"
+    action: "click"
+    selector: "button[type=submit]"
+    wait: "networkidle"
+    screenshot: true
+    description: "Submit login form"
+
+  - id: "step-6"
+    action: "assert"
+    type: "url"
+    expected: "**/dashboard"
+    screenshot: true
+    description: "Verify redirect to dashboard"
+
+  - id: "step-7"
+    action: "assert"
+    type: "element"
+    selector: ".welcome-message"
+    screenshot: true
+    description: "Verify welcome message displayed"
+
+# Expected outcome
+expected:
+  status: "pass"
+  final_url: "**/dashboard"
+  assertions:
+    - type: "url"
+      expected: "**/dashboard"
+    - type: "element"
+      selector: ".welcome-message"
