@@ -27,6 +27,7 @@ $ErrorActionPreference = "Stop"
 $ScriptDir = $PSScriptRoot
 $WorkspaceDir = if ($env:OPENCLAW_WORKSPACE) { $env:OPENCLAW_WORKSPACE } else { Join-Path $env:USERPROFILE ".openclaw\workspace" }
 $MemoryDir = Join-Path $WorkspaceDir "memory"
+$WorkspaceScriptsDir = Join-Path $WorkspaceDir "scripts"
 
 # ── Helpers ─────────────────────────────────────────────────────────
 function Write-Step($msg) { Write-Host "`n>> $msg" -ForegroundColor Cyan }
@@ -50,6 +51,7 @@ Write-Step "Creating memory directory structure"
 
 $dirs = @(
     $MemoryDir,
+    $WorkspaceScriptsDir,
     (Join-Path $MemoryDir "segments"),
     (Join-Path $MemoryDir "checkpoints"),
     (Join-Path $MemoryDir "daily"),
@@ -69,14 +71,43 @@ foreach ($dir in $dirs) {
 Write-Step "Copying SSC scripts"
 
 $scripts = @("ssc-router.ps1", "ssc-health.ps1", "ssc-crag.ps1")
-$nodeScripts = @("ssc-router.cjs", "ssc-rebuild.cjs", "ssc-chunker.cjs", "ssc-embed-provider.cjs", "ssc-hybrid.cjs", "ssc-mmr.cjs", "ssc-query-expand.cjs", "ssc-vec-index.cjs", "ssc-classify.cjs", "ssc-pre-compact-guard.cjs")
+$nodeScripts = @(
+    "ssc-router.cjs",
+    "ssc-rebuild.cjs",
+    "ssc-chunker.cjs",
+    "ssc-crag.cjs",
+    "ssc-dedup.cjs",
+    "ssc-embed-provider.cjs",
+    "ssc-hybrid.cjs",
+    "ssc-mmr.cjs",
+    "ssc-query-expand.cjs",
+    "ssc-vec-index.cjs",
+    "ssc-vec-rebuild.cjs",
+    "ssc-vector-manifest.cjs",
+    "memory-classify.cjs",
+    "pre-compact-guard.cjs"
+)
 foreach ($script in $scripts) {
-    $src = Join-Path $ScriptDir "scripts" $script
+    $src = Join-Path $ScriptDir $script
     $dst = Join-Path $MemoryDir $script
     if ((Test-Path $dst) -and -not $Force) {
         Write-Warn "$script already exists (use -Force to overwrite)"
     } else {
         Copy-Item $src $dst -Force
+        Write-Ok $script
+    }
+}
+
+foreach ($script in $nodeScripts) {
+    $src = Join-Path $ScriptDir $script
+    $dst = Join-Path $WorkspaceScriptsDir $script
+    if (-not (Test-Path $src -PathType Leaf)) {
+        throw "Required Node script missing from skill: $script"
+    }
+    if ((Test-Path $dst) -and -not $Force) {
+        Write-Warn "$script already exists (use -Force to overwrite)"
+    } else {
+        Copy-Item -LiteralPath $src -Destination $dst -Force
         Write-Ok $script
     }
 }
@@ -308,6 +339,7 @@ Write-Step "Verifying installation"
 
 $checks = @(
     @{ Name = "memory/ directory"; Path = $MemoryDir },
+    @{ Name = "scripts/ directory"; Path = $WorkspaceScriptsDir },
     @{ Name = "segments/ directory"; Path = Join-Path $MemoryDir "segments" },
     @{ Name = "checkpoints/ directory"; Path = Join-Path $MemoryDir "checkpoints" },
     @{ Name = "daily/ directory"; Path = Join-Path $MemoryDir "daily" },
@@ -318,6 +350,9 @@ $checks = @(
     @{ Name = "index.json"; Path = $indexPath },
     @{ Name = "ssc-router.ps1"; Path = Join-Path $MemoryDir "ssc-router.ps1" },
     @{ Name = "ssc-health.ps1"; Path = Join-Path $MemoryDir "ssc-health.ps1" },
+    @{ Name = "ssc-router.cjs"; Path = Join-Path $WorkspaceScriptsDir "ssc-router.cjs" },
+    @{ Name = "ssc-hybrid.cjs"; Path = Join-Path $WorkspaceScriptsDir "ssc-hybrid.cjs" },
+    @{ Name = "ssc-vector-manifest.cjs"; Path = Join-Path $WorkspaceScriptsDir "ssc-vector-manifest.cjs" },
     @{ Name = "MEMORY.md"; Path = $memoryMd },
     @{ Name = "corrections.md"; Path = $correctionsMd },
     @{ Name = "semantic-patterns.json"; Path = $semanticJson }

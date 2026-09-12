@@ -39,7 +39,7 @@ const sqliteVec = require(path.join(globalRoot, 'openclaw/node_modules/sqlite-ve
 // ---------------------------------------------------------------
 const DEFAULT_DIMENSION = 768;
 const DEFAULT_TOP_K = 10;
-const WORKSPACE_DIR = path.resolve(__dirname, '..');
+const WORKSPACE_DIR = path.resolve(process.env.OPENCLAW_WORKSPACE || path.join(__dirname, '..'));
 const MEMORY_DB_PATH = path.join(WORKSPACE_DIR, 'memory', 'memory.db');
 
 class VectorIndex {

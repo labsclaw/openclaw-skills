@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 /**
- * ssc-router.cjs — SSC Router v4.0 (Hybrid BM25 + Tiered Retrieval)
+ * ssc-router.cjs — SSC Router v4.1 (Hybrid BM25 + Tiered Retrieval)
  * 
  * Features:
  * - Hybrid BM25 + Exact Keyword + Tag matching (Word Boundary enforced)
- * - Tier 1 (Segments, x2.0 multiplier) & Tier 2 (Daily Logs, x0.5 multiplier)
+ * - 5 Tiers: Segments (x2.0), Reports/Rules (x1.5), Daily (x0.5), Meta/Raw/Research/References/Atoms (x0.3)
  * - JSON output for sub-agents & CLI tools (--json)
  * - Auto-updates accessCount in memory/index.json
  * 
@@ -29,7 +29,7 @@ async function getHybridSearch() {
   return _hybridSearch;
 }
 
-const workspaceDir = 'C:\\Users\\ClawLabs\\.openclaw\\workspace';
+const workspaceDir = path.resolve(process.env.OPENCLAW_WORKSPACE || path.join(__dirname, '..'));
 const memoryDir = path.join(workspaceDir, 'memory');
 const indexPath = path.join(memoryDir, 'index.json');
 
@@ -69,9 +69,24 @@ function computeBM25Score(queryTokens, docTokens, docLen, avgDocLength, idfStats
   return score;
 }
 
+function resolveEntryWeight(entry) {
+  return entry.weight ?? 1.0;
+}
+
+function resolveTierMultiplier(config, tier) {
+  const tierWeights = {
+    1: config.tier1Weight ?? 2.0,
+    1.5: config.tier1_5Weight ?? 1.5,
+    2: config.tier2Weight ?? 0.5,
+    3: config.tier3Weight ?? 0.3,
+  };
+  return tierWeights[tier] ?? 0.5;
+}
+
 function querySSC(queryText, options = {}) {
   const topK = options.topK || 5;
   const dryRun = !!options.dryRun;
+  const requestedCollections = Array.isArray(options.collections) ? new Set(options.collections) : null;
   
   const index = loadIndex();
   const queryLower = queryText.toLowerCase();
@@ -82,16 +97,18 @@ function querySSC(queryText, options = {}) {
   }
 
   const queryTokenSet = new Set(queryTokens);
-  const t1Weight = (index.config && index.config.tier1Weight) || 2.0;
-  const t2Weight = (index.config && index.config.tier2Weight) || 0.5;
+  const config = index.config || {};
   const idfStats = (index.bm25Stats && index.bm25Stats.idf) || {};
   const avgDocLength = (index.bm25Stats && index.bm25Stats.avgDocLength) || 100;
 
   const scoredEntries = [];
 
-  function scoreEntry(entry, tier) {
-    const isTier1 = tier === 1;
-    const tierMultiplier = isTier1 ? t1Weight : t2Weight;
+  const tierKeys = ['segments', 'reports', 'rules', 'daily', 'meta', 'raw', 'research', 'references', 'atoms']
+    .filter(key => !requestedCollections || requestedCollections.has(key));
+
+  function scoreEntry(entry) {
+    const tier = entry.tier || 2;
+    const tierMultiplier = resolveTierMultiplier(config, tier);
     
     // 1. Keyword & Tag Exact Word Boundary Hits
     let keywordHits = 0;
@@ -132,7 +149,7 @@ function querySSC(queryText, options = {}) {
     // 3. Combined Score: BM25 + Keyword Hits + Weight
     // ONLY include entry if there is a real BM25 or Keyword match
     if (bm25Score > 0 || keywordHits > 0 || tagHits > 0) {
-      const rawScore = (bm25Score * 1.2) + (keywordHits * 2.0) + (tagHits * 1.5) + ((entry.weight || 1.0) * 0.5);
+      const rawScore = (bm25Score * 1.2) + (keywordHits * 2.0) + (tagHits * 1.5) + (resolveEntryWeight(entry) * 0.5);
       const finalScore = rawScore * tierMultiplier;
 
       scoredEntries.push({
@@ -140,6 +157,7 @@ function querySSC(queryText, options = {}) {
         file: entry.file,
         summary: entry.summary,
         tier: tier,
+        tierLabel: entry.tierLabel || `Tier ${tier}`,
         score: Math.round(finalScore * 100) / 100,
         bm25Score: Math.round(bm25Score * 100) / 100,
         keywordHits: keywordHits,
@@ -150,17 +168,11 @@ function querySSC(queryText, options = {}) {
     }
   }
 
-  // Score Tier 1 (Segments)
-  if (index.segments) {
-    for (const seg of index.segments) {
-      scoreEntry(seg, 1);
-    }
-  }
-
-  // Score Tier 2 (Daily)
-  if (index.daily) {
-    for (const daily of index.daily) {
-      scoreEntry(daily, 2);
+  for (const tierKey of tierKeys) {
+    if (index[tierKey]) {
+      for (const entry of index[tierKey]) {
+        scoreEntry(entry);
+      }
     }
   }
 
@@ -170,17 +182,12 @@ function querySSC(queryText, options = {}) {
 
   // Update accessCount if not dryRun
   if (!dryRun && topResults.length > 0) {
-    let updated = false;
     for (const res of topResults) {
-      const entry = res.entryRef;
-      entry.accessCount = (entry.accessCount || 0) + 1;
-      updated = true;
+      res.entryRef.accessCount = (res.entryRef.accessCount || 0) + 1;
     }
-    if (updated) {
-      try {
-        fs.writeFileSync(indexPath, JSON.stringify(index, null, 2), 'utf8');
-      } catch (e) {}
-    }
+    try {
+      fs.writeFileSync(indexPath, JSON.stringify(index, null, 2), 'utf8');
+    } catch (e) {}
   }
 
   const cleanResults = topResults.map(({ entryRef, ...rest }) => rest);
@@ -194,35 +201,30 @@ function querySSC(queryText, options = {}) {
 
 function showStats() {
   const index = loadIndex();
-  console.log(`\n=== SSC Router v4.0 Hybrid Stats ===`);
-  console.log(`Tier 1 Segments: ${index.segments ? index.segments.length : 0}`);
-  console.log(`Tier 2 Daily Logs: ${index.daily ? index.daily.length : 0}`);
+  console.log(`\n=== SSC Router v4.1 Hybrid Stats ===`);
+  for (const key of ['segments', 'reports', 'rules', 'daily', 'meta', 'raw', 'research', 'references', 'atoms']) {
+    if (index[key] && index[key].length > 0) console.log(`  ${key}: ${index[key].length}`);
+  }
   console.log(`BM25 Corpus Docs: ${index.bm25Stats ? index.bm25Stats.docCount : 0}`);
   console.log(`Last Updated: ${index.lastUpdated}`);
 }
 
 function showList() {
   const index = loadIndex();
-  console.log(`\n=== SSC Tier 1 Segments ===`);
-  if (index.segments) {
-    for (const s of index.segments) {
-      console.log(`[Tier 1] ${s.id} - ${s.summary} (${s.file})`);
-    }
-  }
-  console.log(`\n=== SSC Tier 2 Daily Logs ===`);
-  if (index.daily) {
-    for (const d of index.daily.slice(0, 10)) {
-      console.log(`[Tier 2] ${d.id} - ${d.summary} (${d.file})`);
-    }
-    if (index.daily.length > 10) {
-      console.log(`... and ${index.daily.length - 10} more daily logs.`);
+  for (const key of ['segments', 'reports', 'rules', 'daily', 'meta', 'raw', 'research', 'references', 'atoms']) {
+    if (index[key] && index[key].length > 0) {
+      console.log(`\n=== ${key} (${index[key].length}) ===`);
+      for (const entry of index[key].slice(0, 10)) {
+        console.log(`  [T${entry.tier}] ${entry.id} - ${entry.summary}`);
+      }
+      if (index[key].length > 10) console.log(`  ... and ${index[key].length - 10} more`);
     }
   }
 }
 
 if (require.main === module) {
   const args = process.argv.slice(2);
-  const mode = args[0];
+  const mode = args.find(arg => ['stats', 'list', 'query', '-Query'].includes(arg));
 
   if (mode === 'stats') {
     showStats();
@@ -230,7 +232,7 @@ if (require.main === module) {
     showList();
   } else if (mode === 'query' || mode === '-Query') {
     const queryIdx = args.indexOf('query') >= 0 ? args.indexOf('query') : args.indexOf('-Query');
-    const queryText = args[queryIdx + 1] || '';
+    const queryText = args.slice(queryIdx + 1).filter(arg => !arg.startsWith('--')).join(' ').trim();
     const jsonFlag = args.includes('--json');
     const dryRun = args.includes('--dry-run');
     
@@ -264,6 +266,7 @@ if (require.main === module) {
             useQueryExpansion,
             expandStrategy,
             verbose,
+            dryRun,
           });
 
           if (jsonFlag) {
@@ -298,11 +301,10 @@ if (require.main === module) {
           if (jsonFlag) {
             console.log(JSON.stringify(output, null, 2));
           } else {
-            console.log(`\n=== SSC v4.0 BM25 (fallback) Results (Query: '${output.query}') ===`);
+            console.log(`\n=== SSC v4.1 BM25 (fallback) Results (Query: '${output.query}') ===`);
             console.log(`Top ${output.results.length} of ${output.totalMatches} matches:\n`);
             for (const r of output.results) {
-              const tierLabel = r.tier === 1 ? '[Tier 1: Segment]' : '[Tier 2: Daily]';
-              console.log(`${tierLabel} ${r.id} - ${r.summary}`);
+              console.log(`[${r.tierLabel}] ${r.id} - ${r.summary}`);
               console.log(`  Score: ${r.score} (BM25: ${r.bm25Score}, Hits: ${r.keywordHits} kw)`);
               if (r.matchedKeywords.length > 0) {
                 console.log(`  Matched: ${r.matchedKeywords.join(', ')}`);
@@ -319,12 +321,11 @@ if (require.main === module) {
       if (jsonFlag) {
         console.log(JSON.stringify(output, null, 2));
       } else {
-        console.log(`\n=== SSC v4.0 Hybrid Results (Query: '${output.query}') ===`);
+        console.log(`\n=== SSC v4.1 Hybrid Results (Query: '${output.query}') ===`);
         console.log(`Top ${output.results.length} of ${output.totalMatches} matches:\n`);
         for (const r of output.results) {
-          const tierLabel = r.tier === 1 ? '[Tier 1: Segment]' : '[Tier 2: Daily]';
-          console.log(`${tierLabel} ${r.id} - ${r.summary}`);
-          console.log(`  Score: ${r.score} (BM25: ${r.bm25Score}, Hits: ${r.keywordHits} kw, Multiplier: x${r.tier === 1 ? 2.0 : 0.5})`);
+          console.log(`[${r.tierLabel}] ${r.id} - ${r.summary}`);
+          console.log(`  Score: ${r.score} (BM25: ${r.bm25Score}, Hits: ${r.keywordHits} kw, Tier: ${r.tierLabel})`);
           if (r.matchedKeywords.length > 0) {
             console.log(`  Matched: ${r.matchedKeywords.join(', ')}`);
           }
@@ -348,4 +349,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { querySSC, loadIndex, rebuild, getHybridSearch };
+module.exports = { querySSC, loadIndex, rebuild, getHybridSearch, resolveEntryWeight, resolveTierMultiplier };
