@@ -23,6 +23,27 @@ const DEFAULT_MAX_BATCH = 32;
 const DEFAULT_MAX_RETRIES = 3;
 const BASE_URL = 'https://generativelanguage.googleapis.com/v1beta';
 
+function retryDelayMs(headers = {}, responseBody = '') {
+  const candidates = [];
+  const retryAfter = headers['retry-after'];
+  if (retryAfter) {
+    const seconds = Number(retryAfter);
+    if (Number.isFinite(seconds)) candidates.push(seconds * 1000);
+    else {
+      const at = Date.parse(retryAfter);
+      if (Number.isFinite(at)) candidates.push(Math.max(0, at - Date.now()));
+    }
+  }
+  try {
+    const parsed = JSON.parse(responseBody);
+    for (const detail of parsed?.error?.details || []) {
+      const match = String(detail.retryDelay || '').match(/^(\d+(?:\.\d+)?)s$/);
+      if (match) candidates.push(Number(match[1]) * 1000);
+    }
+  } catch {}
+  return candidates.length ? Math.ceil(Math.max(...candidates)) : 0;
+}
+
 class EmbedProvider {
   /**
    * @param {object} options
@@ -124,6 +145,7 @@ class EmbedProvider {
             );
             err.statusCode = res.statusCode;
             err.retryable = retryable;
+            err.retryAfterMs = retryDelayMs(res.headers, data);
             reject(err);
           }
         });
@@ -146,7 +168,7 @@ class EmbedProvider {
       req.end();
     }).catch(async (err) => {
       if (err.retryable && retryCount < this.maxRetries) {
-        const delay = Math.pow(2, retryCount) * 1000; // 1s, 2s, 4s
+        const delay = Math.max(Math.pow(2, retryCount) * 1000, err.retryAfterMs || 0);
         console.warn(
           `[EmbedProvider] ⚠️  Retry ${retryCount + 1}/${this.maxRetries} ` +
           `após ${delay}ms: ${err.message}`
@@ -343,4 +365,4 @@ if (require.main === module) {
   })();
 }
 
-module.exports = { EmbedProvider };
+module.exports = { EmbedProvider, retryDelayMs };

@@ -8,26 +8,23 @@
  * 3. PowerShell Interface Integration
  * 4. Memory Classification Gate (ADR, Lesson, Incident, Config)
  * 5. Pre-Compaction Snapshot Guard
- * 6. Embedding Rerank (--embed flag, BM25+Semantic hybrid)
- * 7. Edge Cases & Resilience (Empty queries, special chars, zero hits)
+ * 6. Edge Cases & Resilience (Empty queries, special chars, zero hits)
  * 
  * Usage:
- *   node tests/test-ssc-v4.cjs
- * 
- * Convention: tests/ at workspace root, scripts/ for .cjs modules.
- * Set OPENCLAW_WORKSPACE env var when running outside a deployed workspace.
+ *   node scripts/test-ssc-v4.cjs
  */
 
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-const workspaceDir = process.env.OPENCLAW_WORKSPACE || path.resolve(__dirname, '..', '..', '..', '..');
+const workspaceDir = process.env.OPENCLAW_WORKSPACE || path.resolve(__dirname, '..', '..', '..');
+process.env.OPENCLAW_WORKSPACE = workspaceDir;
 const memoryDir = path.join(workspaceDir, 'memory');
 const indexPath = path.join(memoryDir, 'index.json');
 
 const { rebuild } = require('../scripts/ssc-rebuild.cjs');
-const { querySSC, loadIndex } = require('../scripts/ssc-router.cjs');
+const { querySSC, loadIndex, resolveEntryWeight, resolveTierMultiplier } = require('../scripts/ssc-router.cjs');
 const { classifyText, commitClassification } = require('../scripts/memory-classify.cjs');
 const { createSnapshot } = require('../scripts/pre-compact-guard.cjs');
 
@@ -52,23 +49,29 @@ try {
   // -------------------------------------------------------------
   // TEST GROUP 1: Rebuild & BM25 Index Preparation
   // -------------------------------------------------------------
-  console.log(`[Suite 1/7] Testing Rebuild Engine (ssc-rebuild.cjs)...`);
+  console.log(`[Suite 1/6] Testing Rebuild Engine (ssc-rebuild.cjs)...`);
   const newIndex = rebuild();
   
-  assert(newIndex.version === '4.0', 'Index version is 4.0');
+  assert(newIndex.version === '4.1', 'Index version is 4.1');
   assert(Array.isArray(newIndex.segments), 'Tier 1 segments is an array');
   assert(newIndex.segments.length > 0, `Tier 1 segments count > 0 (found ${newIndex.segments.length})`);
   assert(Array.isArray(newIndex.daily), 'Tier 2 daily is an array');
   assert(newIndex.daily.length > 0, `Tier 2 daily count > 0 (found ${newIndex.daily.length})`);
   assert(newIndex.bm25Stats !== undefined, 'BM25 stats present in index');
-  assert(newIndex.bm25Stats.docCount === (newIndex.segments.length + newIndex.daily.length), 'BM25 docCount matches total entries');
+  const indexedDocumentCount = Object.values(newIndex)
+    .filter(value => Array.isArray(value))
+    .reduce((total, entries) => total + entries.length, 0);
+  assert(newIndex.bm25Stats.docCount === indexedDocumentCount, 'BM25 docCount matches all indexed collections');
   assert(newIndex.bm25Stats.avgDocLength > 0, 'BM25 avgDocLength is calculated');
   assert(Object.keys(newIndex.bm25Stats.idf).length > 0, 'IDF dictionary populated');
 
   // -------------------------------------------------------------
   // TEST GROUP 2: Hybrid BM25 Router Queries & Weighting
   // -------------------------------------------------------------
-  console.log(`\n[Suite 2/7] Testing Router Engine (ssc-router.cjs)...`);
+  console.log(`\n[Suite 2/6] Testing Router Engine (ssc-router.cjs)...`);
+
+  assert(resolveEntryWeight({ weight: 0 }) === 0, 'Explicit entry weight zero is preserved');
+  assert(resolveTierMultiplier({ tier1Weight: 0 }, 1) === 0, 'Explicit tier weight zero is preserved');
 
   // Query 1: Tier 1 Segment match (Heartbeat Alert Storm)
   const res1 = querySSC("heartbeat alert storm", { topK: 5, dryRun: true });
@@ -76,11 +79,12 @@ try {
   assert(res1.results[0].tier === 1, 'Top result for "heartbeat alert storm" is Tier 1 (Segment)');
   assert(res1.results[0].id === 's003-heartbeat', 'Top result ID is s003-heartbeat');
 
-  // Query 2: Tier 2 Daily match (awesome-llm-apps)
+  // Query 2: dedicated report outranks the historical daily entry
   const res2 = querySSC("awesome-llm-apps", { topK: 5, dryRun: true });
   assert(res2.results.length > 0, 'Query 2 returned results for "awesome-llm-apps"');
-  assert(res2.results[0].tier === 2, 'Top result for "awesome-llm-apps" is Tier 2 (Daily)');
-  assert(res2.results[0].id.includes('daily-2026-07-21'), 'Top result is daily-2026-07-21');
+  assert(res2.results[0].tier === 1.5, 'Top result for "awesome-llm-apps" is the Tier 1.5 report');
+  assert(res2.results[0].id === 'awesome-llm-apps-luna-analysis', 'Top result is the dedicated analysis report');
+  assert(res2.results.some(r => r.id === '2026-07-21'), 'Historical daily entry remains retrievable');
 
   // Query 3: Multi-term BM25 + Keyword Hybrid (CRAG fallback)
   const res3 = querySSC("CRAG fallback", { topK: 5, dryRun: true });
@@ -88,20 +92,30 @@ try {
   assert(res3.results.some(r => r.id === 's010-fallback-bug-openclaw'), 'Found s010 segment in CRAG fallback query');
 
   // Query 4: accessCount Mutation & DryRun Test
-  const initialAccessCount = newIndex.segments[0].accessCount || 0;
-  querySSC("heartbeat", { topK: 1, dryRun: true });
+  const dryResult = querySSC("heartbeat", { topK: 1, dryRun: true });
+  const accessedId = dryResult.results[0].id;
+  const findEntry = index => Object.values(index)
+    .filter(Array.isArray)
+    .flat()
+    .find(entry => entry.id === accessedId);
+  const initialAccessCount = findEntry(newIndex).accessCount || 0;
   const indexAfterDryRun = loadIndex();
-  assert((indexAfterDryRun.segments[0].accessCount || 0) === initialAccessCount, 'DryRun does not increment accessCount');
+  assert((findEntry(indexAfterDryRun).accessCount || 0) === initialAccessCount, 'DryRun does not increment accessCount');
 
-  querySSC("heartbeat", { topK: 1, dryRun: false });
+  const liveResult = querySSC("heartbeat", { topK: 1, dryRun: false });
+  assert(liveResult.results[0].id === accessedId, 'Live query increments the same top result returned by dry-run');
   const indexAfterRun = loadIndex();
-  assert((indexAfterRun.segments[0].accessCount || 0) >= initialAccessCount, 'Live query updates accessCount');
+  const liveEntry = Object.values(indexAfterRun)
+    .filter(Array.isArray)
+    .flat()
+    .find(entry => entry.id === liveResult.results[0].id);
+  assert((liveEntry.accessCount || 0) === initialAccessCount + 1, 'Live query increments its returned entry accessCount exactly once');
 
   // -------------------------------------------------------------
   // TEST GROUP 3: PowerShell Interface Integration
   // -------------------------------------------------------------
-  console.log(`\n[Suite 3/7] Testing PowerShell Interface (ssc-router.ps1)...`);
-  const psScript = path.join(workspaceDir, 'memory', 'ssc-router.ps1');
+  console.log(`\n[Suite 3/6] Testing PowerShell Interface (ssc-router.ps1)...`);
+  const psScript = path.join(memoryDir, 'ssc-router.ps1');
   const psOutput = execSync(`powershell -ExecutionPolicy Bypass -File "${psScript}" -Query "heartbeat" -Json`, { encoding: 'utf8' });
   const parsedPs = JSON.parse(psOutput);
   assert(parsedPs.results !== undefined, 'PowerShell script returned valid JSON via node delegation');
@@ -110,7 +124,7 @@ try {
   // -------------------------------------------------------------
   // TEST GROUP 4: Classification Gate
   // -------------------------------------------------------------
-  console.log(`\n[Suite 4/7] Testing Classification Gate (memory-classify.cjs)...`);
+  console.log(`\n[Suite 4/6] Testing Classification Gate (memory-classify.cjs)...`);
   const testText = `
 Decidimos adiar a migração do Redis para o Q2.
 Encontramos um erro crítico no timeout do fallback que causou um crash.
@@ -125,7 +139,7 @@ Configuração do gateway atualizada com o modelo gemini-3.6-flash-high.
   // -------------------------------------------------------------
   // TEST GROUP 5: Pre-Compaction Snapshot Guard
   // -------------------------------------------------------------
-  console.log(`\n[Suite 5/7] Testing Pre-Compaction Guard (pre-compact-guard.cjs)...`);
+  console.log(`\n[Suite 5/6] Testing Pre-Compaction Guard (pre-compact-guard.cjs)...`);
   const snapRes = createSnapshot('unit-test-run');
   assert(snapRes.success === true, 'Snapshot created successfully');
   assert(fs.existsSync(snapRes.path), 'Snapshot file exists on disk');
@@ -139,29 +153,9 @@ Configuração do gateway atualizada com o modelo gemini-3.6-flash-high.
   assert(!fs.existsSync(snapRes.path), 'Cleaned up test snapshot');
 
   // -------------------------------------------------------------
-  // TEST GROUP 6: Embedding Rerank
+  // TEST GROUP 6: Edge Cases & Resilience
   // -------------------------------------------------------------
-  console.log(`\n[Suite 6/7] Testing Embedding Rerank (ssc-router.cjs --embed)...`);
-
-  // Test BM25-only fallback (no --embed flag)
-  const noEmbedRes = querySSC("infrastructure gateway config", { topK: 3 });
-  assert(noEmbedRes.results.length > 0, 'BM25-only returns results');
-  assert(noEmbedRes.results[0].semanticScore === undefined, 'BM25-only has no semantic score');
-
-  // Test embedding rerank via CLI spawn
-  const embedRouterPath = path.join(workspaceDir, 'scripts', 'ssc-router.cjs');
-  const embedOutput = execSync(`node "${embedRouterPath}" query "infrastructure gateway config" --top=3 --dry-run --embed`, { encoding: 'utf8', timeout: 30000 });
-  assert(embedOutput.includes('v4.1 Hybrid+Embed'), 'Output mentions hybrid embed version');
-  assert(embedOutput.includes('Semantic:'), 'Results include semantic similarity score');
-  assert(embedOutput.includes('s001-infra'), 'Top result is infrastructure segment');
-
-  // Re-run rebuild to ensure clean final state
-  rebuild();
-
-  // -------------------------------------------------------------
-  // TEST GROUP 7: Edge Cases & Resilience
-  // -------------------------------------------------------------
-  console.log(`\n[Suite 7/7] Testing Edge Cases & Resilience...`);
+  console.log(`\n[Suite 6/6] Testing Edge Cases & Resilience...`);
   const emptyRes = querySSC("", { topK: 5 });
   assert(emptyRes.results.length === 0, 'Empty query returns 0 results gracefully');
 

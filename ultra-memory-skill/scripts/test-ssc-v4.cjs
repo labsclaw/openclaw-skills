@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * test-ssc-v4.cjs — Comprehensive Test Suite for SSC Memory System v4.0
+ * test-ssc-v4.cjs — Comprehensive Test Suite for SSC Memory System v4.1
  * 
  * Tests:
  * 1. Index Rebuild Engine (Tier 1, Tier 2, BM25 Statistics)
@@ -18,12 +18,23 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-const workspaceDir = 'C:\\Users\\ClawLabs\\.openclaw\\workspace';
+function resolveWorkspaceDir() {
+  if (process.env.OPENCLAW_WORKSPACE) return path.resolve(process.env.OPENCLAW_WORKSPACE);
+  if (path.basename(path.resolve(__dirname, '..')) === 'ultra-memory-skill') {
+    return path.resolve(__dirname, '..', '..', '..');
+  }
+  const installedCandidate = path.resolve(__dirname, '..');
+  if (fs.existsSync(path.join(installedCandidate, 'memory', 'index.json'))) return installedCandidate;
+  return installedCandidate;
+}
+
+const workspaceDir = resolveWorkspaceDir();
+process.env.OPENCLAW_WORKSPACE = workspaceDir;
 const memoryDir = path.join(workspaceDir, 'memory');
 const indexPath = path.join(memoryDir, 'index.json');
 
 const { rebuild } = require('./ssc-rebuild.cjs');
-const { querySSC, loadIndex } = require('./ssc-router.cjs');
+const { querySSC, loadIndex, resolveEntryWeight, resolveTierMultiplier } = require('./ssc-router.cjs');
 const { classifyText, commitClassification } = require('./memory-classify.cjs');
 const { createSnapshot } = require('./pre-compact-guard.cjs');
 
@@ -41,7 +52,7 @@ function assert(condition, message) {
 }
 
 console.log(`\n==============================================`);
-console.log(`   SSC MEMORY SYSTEM v4.0 TEST SUITE`);
+console.log(`   SSC MEMORY SYSTEM v4.1 TEST SUITE`);
 console.log(`==============================================\n`);
 
 try {
@@ -51,13 +62,16 @@ try {
   console.log(`[Suite 1/6] Testing Rebuild Engine (ssc-rebuild.cjs)...`);
   const newIndex = rebuild();
   
-  assert(newIndex.version === '4.0', 'Index version is 4.0');
+  assert(newIndex.version === '4.1', 'Index version is 4.1');
   assert(Array.isArray(newIndex.segments), 'Tier 1 segments is an array');
   assert(newIndex.segments.length > 0, `Tier 1 segments count > 0 (found ${newIndex.segments.length})`);
   assert(Array.isArray(newIndex.daily), 'Tier 2 daily is an array');
   assert(newIndex.daily.length > 0, `Tier 2 daily count > 0 (found ${newIndex.daily.length})`);
   assert(newIndex.bm25Stats !== undefined, 'BM25 stats present in index');
-  assert(newIndex.bm25Stats.docCount === (newIndex.segments.length + newIndex.daily.length), 'BM25 docCount matches total entries');
+  const indexedDocumentCount = Object.values(newIndex)
+    .filter(value => Array.isArray(value))
+    .reduce((total, entries) => total + entries.length, 0);
+  assert(newIndex.bm25Stats.docCount === indexedDocumentCount, 'BM25 docCount matches all indexed collections');
   assert(newIndex.bm25Stats.avgDocLength > 0, 'BM25 avgDocLength is calculated');
   assert(Object.keys(newIndex.bm25Stats.idf).length > 0, 'IDF dictionary populated');
 
@@ -66,17 +80,21 @@ try {
   // -------------------------------------------------------------
   console.log(`\n[Suite 2/6] Testing Router Engine (ssc-router.cjs)...`);
 
+  assert(resolveEntryWeight({ weight: 0 }) === 0, 'Explicit entry weight zero is preserved');
+  assert(resolveTierMultiplier({ tier1Weight: 0 }, 1) === 0, 'Explicit tier weight zero is preserved');
+
   // Query 1: Tier 1 Segment match (Heartbeat Alert Storm)
   const res1 = querySSC("heartbeat alert storm", { topK: 5, dryRun: true });
   assert(res1.results.length > 0, 'Query 1 returned results for "heartbeat alert storm"');
   assert(res1.results[0].tier === 1, 'Top result for "heartbeat alert storm" is Tier 1 (Segment)');
   assert(res1.results[0].id === 's003-heartbeat', 'Top result ID is s003-heartbeat');
 
-  // Query 2: Tier 2 Daily match (awesome-llm-apps)
+  // Query 2: dedicated report outranks the historical daily entry
   const res2 = querySSC("awesome-llm-apps", { topK: 5, dryRun: true });
   assert(res2.results.length > 0, 'Query 2 returned results for "awesome-llm-apps"');
-  assert(res2.results[0].tier === 2, 'Top result for "awesome-llm-apps" is Tier 2 (Daily)');
-  assert(res2.results[0].id.includes('daily-2026-07-21'), 'Top result is daily-2026-07-21');
+  assert(res2.results[0].tier === 1.5, 'Top result for "awesome-llm-apps" is the Tier 1.5 report');
+  assert(res2.results[0].id === 'awesome-llm-apps-luna-analysis', 'Top result is the dedicated analysis report');
+  assert(res2.results.some(r => r.id === '2026-07-21'), 'Historical daily entry remains retrievable');
 
   // Query 3: Multi-term BM25 + Keyword Hybrid (CRAG fallback)
   const res3 = querySSC("CRAG fallback", { topK: 5, dryRun: true });
@@ -84,20 +102,31 @@ try {
   assert(res3.results.some(r => r.id === 's010-fallback-bug-openclaw'), 'Found s010 segment in CRAG fallback query');
 
   // Query 4: accessCount Mutation & DryRun Test
-  const initialAccessCount = newIndex.segments[0].accessCount || 0;
-  querySSC("heartbeat", { topK: 1, dryRun: true });
+  const dryResult = querySSC("heartbeat", { topK: 1, dryRun: true });
+  const accessedId = dryResult.results[0].id;
+  const findEntry = index => Object.values(index)
+    .filter(Array.isArray)
+    .flat()
+    .find(entry => entry.id === accessedId);
+  const initialAccessCount = findEntry(newIndex).accessCount || 0;
   const indexAfterDryRun = loadIndex();
-  assert((indexAfterDryRun.segments[0].accessCount || 0) === initialAccessCount, 'DryRun does not increment accessCount');
+  assert((findEntry(indexAfterDryRun).accessCount || 0) === initialAccessCount, 'DryRun does not increment accessCount');
 
-  querySSC("heartbeat", { topK: 1, dryRun: false });
+  const liveResult = querySSC("heartbeat", { topK: 1, dryRun: false });
+  assert(liveResult.results[0].id === accessedId, 'Live query increments the same top result returned by dry-run');
   const indexAfterRun = loadIndex();
-  assert((indexAfterRun.segments[0].accessCount || 0) >= initialAccessCount, 'Live query updates accessCount');
+  const liveEntry = Object.values(indexAfterRun)
+    .filter(Array.isArray)
+    .flat()
+    .find(entry => entry.id === liveResult.results[0].id);
+  assert((liveEntry.accessCount || 0) === initialAccessCount + 1, 'Live query increments its returned entry accessCount exactly once');
 
   // -------------------------------------------------------------
   // TEST GROUP 3: PowerShell Interface Integration
   // -------------------------------------------------------------
   console.log(`\n[Suite 3/6] Testing PowerShell Interface (ssc-router.ps1)...`);
-  const psOutput = execSync(`powershell -ExecutionPolicy Bypass -File "C:\\Users\\ClawLabs\\.openclaw\\workspace\\memory\\ssc-router.ps1" -Query "heartbeat" -Json`, { encoding: 'utf8' });
+  const psScript = path.join(memoryDir, 'ssc-router.ps1');
+  const psOutput = execSync(`powershell -ExecutionPolicy Bypass -File "${psScript}" -Query "heartbeat" -Json`, { encoding: 'utf8' });
   const parsedPs = JSON.parse(psOutput);
   assert(parsedPs.results !== undefined, 'PowerShell script returned valid JSON via node delegation');
   assert(parsedPs.results.length > 0, 'PowerShell router output contains matches');

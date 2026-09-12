@@ -1,10 +1,13 @@
 #!/usr/bin/env node
 /**
- * ssc-rebuild.cjs — SSC Router v4.0 Rebuild Engine
+ * ssc-rebuild.cjs — SSC Router v4.1 Rebuild Engine
  * 
  * Rebuilds memory/index.json with:
  * - Tier 1: Segments (Curated Domain Knowledge, weight x2.0)
+ * - Tier 1.5: Reports (Analysis & Benchmarks, weight x1.5)
+ * - Tier 1.5: Rules (Active Procedures, weight x1.5)
  * - Tier 2: Daily Logs (Raw Ephemeral Context, weight x0.5)
+ * - Tier 3: Raw, Research, References, Atoms, Meta (weight x0.3)
  * - BM25 Corpus Statistics: IDF dictionary, document token lengths, avg doc length
  * 
  * No external dependencies.
@@ -13,11 +16,22 @@
 const fs = require('fs');
 const path = require('path');
 
-const workspaceDir = 'C:\\Users\\ClawLabs\\.openclaw\\workspace';
+const workspaceDir = path.resolve(process.env.OPENCLAW_WORKSPACE || path.join(__dirname, '..'));
 const memoryDir = path.join(workspaceDir, 'memory');
-const segmentsDir = path.join(memoryDir, 'segments');
-const dailyDir = path.join(memoryDir, 'daily');
 const indexPath = path.join(memoryDir, 'index.json');
+
+// Tier definitions: dir → { tier, weight, label }
+const TIERS = {
+  segments:   { tier: 1,   weight: 2.0, label: 'Segment' },
+  reports:    { tier: 1.5, weight: 1.5, label: 'Report' },
+  rules:      { tier: 1.5, weight: 1.5, label: 'Rule' },
+  daily:      { tier: 2,   weight: 0.5, label: 'Daily' },
+  meta:       { tier: 3,   weight: 0.3, label: 'Meta' },
+  raw:        { tier: 3,   weight: 0.3, label: 'Raw' },
+  research:   { tier: 3,   weight: 0.3, label: 'Research' },
+  references: { tier: 3,   weight: 0.3, label: 'Reference' },
+  atoms:      { tier: 3,   weight: 0.3, label: 'Atom' },
+};
 
 const stopWords = new Set([
   'and', 'the', 'for', 'with', 'that', 'this', 'from', 'have', 'were', 'your',
@@ -47,97 +61,67 @@ function rebuild() {
     } catch (e) {}
   }
 
-  const existingSegMap = new Map();
-  if (existingIndex.segments) {
-    for (const s of existingIndex.segments) {
-      existingSegMap.set(s.file, s);
+  // Build lookup of all existing entries by file path for accessCount preservation
+  const existingByFile = new Map();
+  for (const tierKey of ['segments', 'daily', 'reports', 'rules', 'meta', 'raw', 'research', 'references', 'atoms']) {
+    if (existingIndex[tierKey]) {
+      for (const entry of existingIndex[tierKey]) {
+        existingByFile.set(entry.file, entry);
+      }
     }
   }
 
-  // 1. Process Segments (Tier 1)
-  const segmentFiles = fs.existsSync(segmentsDir) 
-    ? fs.readdirSync(segmentsDir).filter(f => f.endsWith('.md')) 
-    : [];
-  const segments = [];
+  const allEntries = {};
 
-  for (const f of segmentFiles) {
-    const relPath = `memory/segments/${f}`;
-    const fullPath = path.join(segmentsDir, f);
-    const content = fs.readFileSync(fullPath, 'utf8');
-    const stat = fs.statSync(fullPath);
-    
-    const existing = existingSegMap.get(relPath);
-    
-    let summary = existing ? existing.summary : '';
-    if (!summary) {
-      const firstLine = content.split('\n').find(l => l.trim().startsWith('#') || l.trim().length > 0) || f;
-      summary = firstLine.replace(/^#+\s*/, '').trim();
+  for (const [dirName, tierDef] of Object.entries(TIERS)) {
+    const dirPath = path.join(memoryDir, dirName);
+    if (!fs.existsSync(dirPath)) continue;
+
+    const files = fs.readdirSync(dirPath).filter(f => f.endsWith('.md'));
+    const entries = [];
+
+    for (const f of files) {
+      const relPath = `memory/${dirName}/${f}`;
+      const fullPath = path.join(dirPath, f);
+      const content = fs.readFileSync(fullPath, 'utf8');
+      const stat = fs.statSync(fullPath);
+      const existing = existingByFile.get(relPath);
+
+      let summary = existing ? existing.summary : '';
+      if (!summary) {
+        const firstLine = content.split('\n').find(l => l.trim().startsWith('#') || l.trim().length > 0) || f;
+        summary = firstLine.replace(/^#+\s*/, '').trim();
+      }
+
+      const headerLines = content.split('\n').filter(l => l.trim().startsWith('#')).join(' ');
+      const autoKw = extractKeywords(headerLines + ' ' + f.replace(/\.md$/, ''));
+      let keywords = existing && existing.keywords ? existing.keywords : [];
+      keywords = Array.from(new Set([...keywords, ...autoKw]));
+
+      const fullTokens = tokenize(content);
+
+      entries.push({
+        id: f.replace(/\.md$/, ''),
+        file: relPath,
+        summary: summary,
+        tier: tierDef.tier,
+        weight: tierDef.weight,
+        tierLabel: tierDef.label,
+        keywords: keywords,
+        tags: existing && existing.tags ? existing.tags : [],
+        accessCount: existing ? (existing.accessCount || 0) : 0,
+        lastUpdated: stat.mtime.toISOString(),
+        size: stat.size,
+        tokenCount: fullTokens.length,
+        tokens: fullTokens
+      });
     }
 
-    const headerLines = content.split('\n').filter(l => l.trim().startsWith('#')).join(' ');
-    const autoKw = extractKeywords(headerLines + ' ' + f.replace(/\.md$/, ''));
-    let keywords = existing && existing.keywords ? existing.keywords : [];
-    keywords = Array.from(new Set([...keywords, ...autoKw]));
-
-    const fullTokens = tokenize(content);
-
-    segments.push({
-      id: f.replace(/\.md$/, ''),
-      file: relPath,
-      summary: summary,
-      tier: 1,
-      weight: 2.0,
-      keywords: keywords,
-      tags: existing && existing.tags ? existing.tags : [],
-      accessCount: existing ? (existing.accessCount || 0) : 0,
-      lastUpdated: stat.mtime.toISOString(),
-      size: stat.size,
-      tokenCount: fullTokens.length,
-      tokens: fullTokens
-    });
+    allEntries[dirName] = entries;
   }
 
-  // 2. Process Daily Logs (Tier 2)
-  const dailyFiles = fs.existsSync(dailyDir) 
-    ? fs.readdirSync(dailyDir).filter(f => f.endsWith('.md')) 
-    : [];
-  const dailyEntries = [];
-
-  for (const f of dailyFiles) {
-    const relPath = `memory/daily/${f}`;
-    const fullPath = path.join(dailyDir, f);
-    const content = fs.readFileSync(fullPath, 'utf8');
-    const stat = fs.statSync(fullPath);
-
-    const dateMatch = f.match(/^\d{4}-\d{2}-\d{2}/);
-    const dateStr = dateMatch ? dateMatch[0] : '';
-
-    const headers = content.split('\n')
-      .filter(l => l.trim().startsWith('#'))
-      .map(l => l.replace(/^#+\s*/, '').trim());
-
-    const summaryHeader = headers.length > 0 ? headers.slice(0, 3).join(' | ') : `Daily log ${f}`;
-    const keywords = extractKeywords(headers.join(' ') + ' ' + f);
-    const fullTokens = tokenize(content);
-
-    dailyEntries.push({
-      id: `daily-${f.replace(/\.md$/, '')}`,
-      file: relPath,
-      summary: summaryHeader,
-      tier: 2,
-      weight: 0.5,
-      date: dateStr,
-      keywords: keywords,
-      accessCount: 0,
-      lastUpdated: stat.mtime.toISOString(),
-      size: stat.size,
-      tokenCount: fullTokens.length,
-      tokens: fullTokens
-    });
-  }
-
-  // 3. Compute BM25 Corpus Statistics
-  const allDocs = [...segments, ...dailyEntries];
+  // 2. Compute BM25 Corpus Statistics across ALL tiers
+  const allDocs = Object.values(allEntries).flat();
   const docCount = allDocs.length;
   let totalTokenCount = 0;
   const docFreqs = {};
@@ -153,29 +137,28 @@ function rebuild() {
   const avgDocLength = docCount > 0 ? (totalTokenCount / docCount) : 0;
   const idf = {};
   for (const [token, df] of Object.entries(docFreqs)) {
-    // Standard BM25 IDF formula with smoothing
     idf[token] = Math.log(1 + (docCount - df + 0.5) / (df + 0.5));
   }
 
-  // Clean tokens from serialized index to keep file size compact, keep token frequencies
-  const cleanedSegments = segments.map(s => {
-    const { tokens, ...rest } = s;
-    return rest;
-  });
-
-  const cleanedDaily = dailyEntries.map(d => {
-    const { tokens, ...rest } = d;
-    return rest;
-  });
+  // Clean tokens from serialized index to keep file size compact
+  const cleaned = {};
+  for (const [dirName, entries] of Object.entries(allEntries)) {
+    cleaned[dirName] = entries.map(e => {
+      const { tokens, ...rest } = e;
+      return rest;
+    });
+  }
 
   const newIndex = {
-    version: "4.0",
+    version: "4.1",
     lastUpdated: new Date().toISOString(),
-    description: `SSC v4.0 Hybrid BM25 Index (${cleanedSegments.length} Segments [Tier 1], ${cleanedDaily.length} Daily Logs [Tier 2])`,
+    description: `SSC v4.1 Hybrid BM25 Index — ${Object.entries(cleaned).map(([k, v]) => `${v.length} ${k}`).join(', ')}`,
     config: {
       maxSegmentsPerQuery: 5,
       tier1Weight: 2.0,
+      tier1_5Weight: 1.5,
       tier2Weight: 0.5,
+      tier3Weight: 0.3,
       bm25: { k1: 1.5, b: 0.75 }
     },
     bm25Stats: {
@@ -183,8 +166,7 @@ function rebuild() {
       avgDocLength,
       idf
     },
-    segments: cleanedSegments,
-    daily: cleanedDaily
+    ...cleaned
   };
 
   fs.writeFileSync(indexPath, JSON.stringify(newIndex, null, 2), 'utf8');
@@ -193,9 +175,10 @@ function rebuild() {
 
 if (require.main === module) {
   const idx = rebuild();
-  console.log(`SSC Index v4.0 rebuilt successfully!`);
-  console.log(`Tier 1 (Segments): ${idx.segments.length} entries`);
-  console.log(`Tier 2 (Daily): ${idx.daily.length} entries`);
+  console.log(`SSC Index v4.1 rebuilt successfully!`);
+  for (const [tier, entries] of Object.entries(idx).filter(([k]) => !['version','lastUpdated','description','config','bm25Stats'].includes(k))) {
+    if (Array.isArray(entries)) console.log(`  ${tier}: ${entries.length} entries`);
+  }
   console.log(`BM25 Corpus: ${idx.bm25Stats.docCount} docs, Avg Length: ${Math.round(idx.bm25Stats.avgDocLength)} tokens`);
 }
 
