@@ -7,7 +7,7 @@
   "installed_version": "1.6.0",
   "installation": "pip install langextract",
   "model_config": {
-    "default_model": "gemini-3.5-flash",
+    "default_model": "gemini-3.6-flash",
     "local_fallback": "ollama (zero cost)",
     "env_var": "GEMINI_API_KEY or LANGEXTRACT_API_KEY",
     "providers": ["gemini", "openai", "ollama", "custom"]

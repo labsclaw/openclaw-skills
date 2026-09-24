@@ -1,0 +1,30 @@
+{
+  "profile": "openclaw",
+  "tweets": [
+    {
+      "text": "🧵 Kimi K3 vai matar a era das assinaturas de AI.\n\nMoonshot AI lança os pesos completos em 27 de julho sob Modified MIT.\n\n2.8 trilhões de parâmetros. Contexto de 1M de tokens. O maior modelo open-weight já lançado.\n\nSeguem os detalhes 👇"
+    },
+    {
+      "text": "A arquitetura é agressiva:\n\n• 896 experts, mas apenas 16 disparam por token (sparsity)\n• Kimi Delta Attention — attention linear híbrido que torna 1M de tokens viável\n• Attention Residuals — modelos mais profundos sem degradação\n• 2.5x mais eficiente em scaling que o K2\n\nO custo de inferência é uma fração do tamanho."
+    },
+    {
+      "text": "Preços que mudam o jogo:\n\n• Input (cache hit): $0.30/1M tokens\n• Input (cache miss): $3.00/1M tokens  \n• Output: $15.00/1M tokens\n\nCache hit rate de 90%+ em sessões longas de código. Sessões de horas colapsam ~4x em custo."
+    },
+    {
+      "text": "O que 1M de tokens mata:\n\nChunking, embeddings, vector DBs, RAG pipelines — tudo workarounds pra modelos que não seguram contexto suficiente.\n\nK3 coloca codebase inteira, contratos, bibliotecas numa janela só. O modelo reasoninga sobre tudo simultaneamente."
+    },
+    {
+      "text": "O catch: reasoning always-on no modo max.\n\nTestadores viram 13K thinking tokens num pedido SVG trivial (~$0.25). Routing é essencial — tráfego vai pra modelos menores, K3 pra trabalho complexo.\n\nAPI OpenAI-compatible. Streaming com reasoning em delta separado."
+    },
+    {
+      "text": "A lição do engenheiro que construiu o K3 (palestra no YouTube):\n\n• Min 5: Otimizador dobra efetividade dos dados (50T → 100T)\n• Min 17: Linear attention que bate full attention\n• Min 23: 1.000 agentes em paralelo com detecção de sub-agentes preguiçosos\n• Min 25: 30T tokens, zero loss spikes\n\nBlueprint gratuito. Quase ninguém assistiu."
+    }
+  ],
+  "settings": {
+    "minDelay": 180,
+    "maxDelay": 300,
+    "typingSpeed": "normal",
+    "headed": true,
+    "timeout": 60000
+  }
+}

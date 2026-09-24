@@ -51,15 +51,8 @@ const { VectorIndex } = require('./ssc-vec-index.cjs');
 const { reRank } = require('./ssc-mmr.cjs');
 const { expandQuery } = require('./ssc-query-expand.cjs');
 const path = require('path');
-const {
-  buildCorpusManifest,
-  compareVectorManifest,
-  readVectorManifest,
-} = require('./ssc-vector-manifest.cjs');
 
-const WORKSPACE_DIR = path.resolve(process.env.OPENCLAW_WORKSPACE || path.join(__dirname, '..'));
-const INDEX_PATH = path.join(WORKSPACE_DIR, 'memory', 'index.json');
-const CHUNK_CONFIG = Object.freeze({ maxTokens: 500, overlapTokens: 50 });
+const WORKSPACE_DIR = path.resolve(__dirname, '..');
 
 // ============================================================================
 // Score normalization
@@ -76,39 +69,6 @@ function normalizeScores(scores) {
   const max = Math.max(...scores);
   if (max <= 0) return scores.map(() => 0);
   return scores.map(s => s / max);
-}
-
-function vectorAllowedForCollections(collections) {
-  return !Array.isArray(collections) || collections.includes('segments');
-}
-
-function buildMetadataMap(index, collections) {
-  const allowed = Array.isArray(collections) ? new Set(collections) : null;
-  const metadata = new Map();
-  for (const [collection, entries] of Object.entries(index)) {
-    if (!Array.isArray(entries) || (allowed && !allowed.has(collection))) continue;
-    for (const entry of entries) metadata.set(entry.id, { ...entry, collection });
-  }
-  return metadata;
-}
-
-function decodeEmbedding(value, expectedDimension) {
-  if (Array.isArray(value)) {
-    return value.length === expectedDimension && value.every(Number.isFinite) ? value : null;
-  }
-  if (typeof value === 'string') {
-    try { return decodeEmbedding(JSON.parse(value), expectedDimension); } catch { return null; }
-  }
-  if (Buffer.isBuffer(value) || ArrayBuffer.isView(value)) {
-    const bytes = Buffer.isBuffer(value)
-      ? value
-      : Buffer.from(value.buffer, value.byteOffset, value.byteLength);
-    if (bytes.byteLength !== expectedDimension * Float32Array.BYTES_PER_ELEMENT) return null;
-    const copy = Uint8Array.from(bytes);
-    const decoded = Array.from(new Float32Array(copy.buffer));
-    return decoded.every(Number.isFinite) ? decoded : null;
-  }
-  return null;
 }
 
 // ============================================================================
@@ -129,8 +89,6 @@ function decodeEmbedding(value, expectedDimension) {
  * @param {boolean} [options.useQueryExpansion=false] — Ativa/desativa query expansion
  * @param {string}  [options.expandStrategy='simple'] — 'simple' | 'llm'
  * @param {boolean} [options.verbose=false]       — Log detalhado
- * @param {boolean} [options.dryRun=false]        — Não altera contadores do índice
- * @param {string[]} [options.collections]        — Coleções SSC permitidas
  * @returns {Promise<object>} Resultado da busca híbrida
  */
 async function hybridSearch(query, options = {}) {
@@ -143,8 +101,6 @@ async function hybridSearch(query, options = {}) {
     useQueryExpansion = false,
     expandStrategy = 'simple',
     verbose = false,
-    dryRun = false,
-    collections = undefined,
   } = options;
 
   const startTime = Date.now();
@@ -196,7 +152,7 @@ async function hybridSearch(query, options = {}) {
   const t1 = Date.now();
   log('Executando BM25...');
   const _qssc = _getQuerySSC();
-  const bm25Results = _qssc(expandedQuery, { topK: topK * 3, dryRun, collections });
+  const bm25Results = _qssc(query.trim(), { topK: topK * 3 });
   timing.bm25 = Date.now() - t1;
   log(`BM25: ${bm25Results.totalMatches} matches, top ${bm25Results.results.length} resultados`);
 
@@ -207,37 +163,25 @@ async function hybridSearch(query, options = {}) {
   let queryEmbedding = null;
   let vecChunks = [];
   let vectorAvailable = false;
-  const vectorEnabled = useVector && vectorAllowedForCollections(collections);
 
-  if (vectorEnabled) {
+  if (useVector) {
     const t2 = Date.now();
     log('Executando busca vetorial...');
 
-    let vecIndex = null;
     try {
       const embedder = new EmbedProvider();
 
       if (!embedder.apiKey) {
-        throw new Error('Provider de embeddings não configurado');
+        log('⚠️  GEMINI_API_KEY não definida — pulando busca vetorial');
+        log('  Defina GEMINI_API_KEY ou GOOGLE_AI_STUDIO_KEY');
       } else {
-        vecIndex = new VectorIndex();
-        vecIndex.connect();
-        const currentManifest = buildCorpusManifest({
-          root: WORKSPACE_DIR,
-          indexPath: INDEX_PATH,
-          embeddingModel: embedder.model,
-          embeddingDimension: embedder.dimension,
-          chunkConfig: CHUNK_CONFIG,
-        });
-        const manifestVerdict = compareVectorManifest(readVectorManifest(vecIndex._db), currentManifest);
-        if (!manifestVerdict.valid) {
-          throw new Error(`Índice vetorial stale/incompatível: ${manifestVerdict.reasons.join(', ')}`);
-        }
         // Embed da query expandida (ou original)
         queryEmbedding = await embedder.embed(expandedQuery);
         log(`Query embedding gerado: ${queryEmbedding.length} dimensões`);
 
         // kNN search no VectorIndex
+        const vecIndex = new VectorIndex();
+        vecIndex.connect();
         vecChunks = vecIndex.search(queryEmbedding, topK * 3);
         log(`Vector search: ${vecChunks.length} chunks encontrados`);
 
@@ -251,8 +195,7 @@ async function hybridSearch(query, options = {}) {
         vectorAvailable = true;
       }
     } catch (err) {
-      if (vecIndex) vecIndex.close();
-      throw new Error(`[ssc-hybrid] Busca vetorial recusada: ${err.message}`);
+      log(`Vector search falhou: ${err.message}`);
     }
 
     timing.vector = Date.now() - t2;
@@ -276,6 +219,8 @@ async function hybridSearch(query, options = {}) {
   // Mapa vetorial: segment_id → { maxCosineSimilarity, chunks[] }
   const vecScores = new Map();
   const vecChunksBySeg = new Map();
+  const vecValues = [];
+
   for (const chunk of vecChunks) {
     const segId = chunk.segment_id;
     const cosim = chunk.cosineSimilarity || 0;
@@ -291,6 +236,7 @@ async function hybridSearch(query, options = {}) {
     }
     vecChunksBySeg.get(segId).push(chunk);
 
+    vecValues.push(cosim);
   }
 
   // Normaliza BM25 scores para [0, 1]
@@ -303,7 +249,7 @@ async function hybridSearch(query, options = {}) {
 
   // Normaliza vector scores para [0, 1]
   const vecNormMap = new Map();
-  const normedVec = normalizeScores([...vecScores.values()]);
+  const normedVec = normalizeScores(vecValues);
   idx = 0;
   for (const [segId] of vecScores) {
     vecNormMap.set(segId, normedVec[idx++]);
@@ -312,7 +258,12 @@ async function hybridSearch(query, options = {}) {
   // Carrega index.json para metadados (summary, file, etc.)
   const _lidx = _getLoadIndex();
   const index = _lidx();
-  const segmentMeta = buildMetadataMap(index, collections);
+  const segmentMeta = new Map();
+  if (index.segments) {
+    for (const seg of index.segments) {
+      segmentMeta.set(seg.id, seg);
+    }
+  }
 
   // Junta os segmentos de ambas as fontes
   const allSegIds = new Set([...bm25Scores.keys(), ...vecScores.keys()]);
@@ -338,7 +289,7 @@ async function hybridSearch(query, options = {}) {
 
     // Fórmula de combinação linear
     let combinedScore;
-    if (vectorEnabled && vectorAvailable) {
+    if (useVector && vectorAvailable) {
       // Híbrido: BM25 * alpha + Vector * (1 - alpha)
       combinedScore = hybridAlpha * bm25Norm + (1 - hybridAlpha) * vecNorm;
     } else {
@@ -359,7 +310,7 @@ async function hybridSearch(query, options = {}) {
       vecNorm: Math.round(vecNorm * 10000) / 10000,
       matchedKeywords: meta ? (meta.keywords || []) : [],
       chunks: vecChunksBySeg.get(segId) || [],
-      strategy: (vectorEnabled && vectorAvailable) ? 'hybrid' : 'bm25-only',
+      strategy: (useVector && vectorAvailable) ? 'hybrid' : 'bm25-only',
     });
   }
 
@@ -415,8 +366,8 @@ async function hybridSearch(query, options = {}) {
               .prepare('SELECT embedding FROM chunks_vec WHERE chunk_id = ?')
               .get(chunk.chunk_id);
             if (row && row.embedding) {
-              const emb = decodeEmbedding(row.embedding, queryEmbedding.length);
-              if (emb) {
+              const emb = JSON.parse(row.embedding);
+              if (Array.isArray(emb) && emb.length > 0) {
                 bestChunk = { ...chunk, embedding: emb };
                 break; // primeiro chunk com embedding serve
               }
@@ -434,11 +385,29 @@ async function hybridSearch(query, options = {}) {
             score: seg.score,
             embedding: bestChunk.embedding,
           });
+        } else {
+          // Sem embedding disponível — entra com score puro (sem contribuição de diversidade)
+          mmrCandidates.push({
+            id: seg.id,
+            segmentId: seg.id,
+            content: seg.summary || seg.id,
+            score: seg.score,
+            embedding: null,
+          });
         }
+      } else {
+        // Segmento BM25-only — sem embedding
+        mmrCandidates.push({
+          id: seg.id,
+          segmentId: seg.id,
+          content: seg.summary || seg.id,
+          score: seg.score,
+          embedding: null,
+        });
       }
     }
 
-    if (mmrCandidates.length > 1) {
+    if (mmrCandidates.length > 0) {
       const mmrResults = reRank(queryEmbedding, mmrCandidates, {
         lambda: mmrLambda,
         topK: Math.min(topK, mmrCandidates.length),
@@ -520,9 +489,9 @@ async function hybridSearch(query, options = {}) {
   let strategy;
   if (mmrApplied) {
     strategy = 'hybrid+mmr';
-  } else if (vectorEnabled && vectorAvailable) {
+  } else if (useVector && vectorAvailable) {
     strategy = 'hybrid';
-  } else if (vectorEnabled && !vectorAvailable) {
+  } else if (useVector && !vectorAvailable) {
     strategy = 'bm25-fallback';
   } else {
     strategy = 'bm25-only';
@@ -660,7 +629,4 @@ if (require.main === module) {
 module.exports = {
   hybridSearch,
   normalizeScores,
-  vectorAllowedForCollections,
-  buildMetadataMap,
-  decodeEmbedding,
 };

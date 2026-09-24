@@ -1,3 +1,8 @@
+---
+name: ultra-pipeline-resilience-skill
+description: Multi-step pipeline execution with atomic state writes, zombie detection, and handoff protocols. Use when orchestrating complex multi-agent workflows.
+---
+
 # Pipeline Resilience Skill
 
 **Version:** 1.3 | **Date:** 2026-07-03

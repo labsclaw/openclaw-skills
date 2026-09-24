@@ -1,0 +1,40 @@
+{
+  "profile": "openclaw",
+  "tweets": [
+    {
+      "text": "30 LLMs testados em coding real com auditoria humana. A variável que mais separa Tier A de Tier D não é o modelo — é o harness. 🧵",
+      "replyTo": null
+    },
+    {
+      "text": "Gemini 3.1 Pro: 62 pts no OpenCode (Tier C) → 88 pts no Antigravity (Tier A). Mesmo modelo, harness diferente. 26 pontos de diferença.",
+      "replyTo": "auto"
+    },
+    {
+      "text": "Grok 4.3: 18 pts (Tier D) no OpenCode → 55 pts no grok CLI. MiniMax M3: 24 pts no orchestrator → 91 pts limpo. O harness é tão importante quanto o modelo.",
+      "replyTo": "auto"
+    },
+    {
+      "text": "O padrão mais letal: alucinação de API. Modelo inventa uma interface que não existe, escreve testes mockando ela. Testes passam. Runtime explode. DeepSeek V3.2 caiu nessa.",
+      "replyTo": "auto"
+    },
+    {
+      "text": "Kimi K3: 95 pts a $6. Opus 5: 95 pts a $39. Mesma nota, 6x mais caro. 'O melhor' depende do que você otimiza — qualidade, custo, ou velocidade.",
+      "replyTo": "auto"
+    },
+    {
+      "text": "Ranking genérico de LLM é marketing. resultado = modelo × harness × prompt. Mude uma variável, mude o resultado. Use o harness que o modelo foi projetado pra.",
+      "replyTo": "auto"
+    },
+    {
+      "text": "Relatório completo: akitaonrails.com/2026/07/30/novo-llm-benchmark-refiz-todos-os-testes/ — 30 modelos, 3 fases, auditoria humana. O mais honesto que vi.",
+      "replyTo": "auto"
+    }
+  ],
+  "settings": {
+    "minDelay": 180,
+    "maxDelay": 360,
+    "typingSpeed": "normal",
+    "headed": true,
+    "timeout": 120000
+  }
+}

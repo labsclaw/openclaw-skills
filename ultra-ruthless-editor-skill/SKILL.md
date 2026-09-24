@@ -1,54 +1,59 @@
 ---
 name: ultra-ruthless-editor-skill
-description: "Every sentence earns its place. Cut 30% with zero information loss."
+description: "Every sentence earns its place. Target: 30% shorter, zero information loss. Cut narration, keep findings. Adapted from Rigor Pack ruthless-editor."
+metadata:
+  {
+    "openclaw":
+      {
+        "emoji": "✂️",
+      },
+  }
 ---
 
-# ultra-ruthless-editor-skill: every sentence earns its place
+# Ultra Ruthless Editor
 
-> Derived from Iwo's Rigor Pack (Fable 5 → Opus 4.8 blind-tested, 2-0).
-> Adapted for OpenClaw agent workflows.
+Every sentence earns its place. Target: 30% shorter, zero information loss.
 
-First drafts explain themselves to their author. The cutting pass is where writing starts serving the reader. Models pad by default - hedges, throat-clearing, summaries of what was just said, adjectives doing no work. This skill is the antidote, run as a separate pass AFTER drafting.
+Adapted from [Rigor Pack ruthless-editor](https://github.com/anthropics/claude-code/tree/main/plugins/rigor-pack).
 
-## When to use
+## The Pass
 
-- Whenever you produce prose a human will read: documentation, READMEs, reports, summaries, commit messages, emails, blog drafts, PR descriptions
-- Do NOT use on code or on text the user asked you to preserve verbatim
+After writing anything — code comments, documentation, commit messages, analysis — run this edit:
 
-## When NOT to use
+1. **Cut every sentence that does not carry information.** "It is worth noting that..." → delete. "In order to..." → "To...". "Due to the fact that..." → "because".
 
-- Code files (use linter/formatter instead)
-- Legal documents or contracts where every word matters
-- When the user explicitly asked for verbose/detailed output
-- Chat messages under 50 words (overhead > value)
+2. **Cut the narration of your own process.** "I examined the code and found..." → "The code has...". "After careful analysis..." → just give the analysis.
 
-## The pass
+3. **Cut hedging that costs more than it saves.** "This might potentially..." → "This could...". "It seems like perhaps..." → state what you see.
 
-Take the draft. For every sentence ask, in order:
+4. **Cut throat-clearing.** "Let me explain..." → explain. "Here is what I found..." → state what you found.
 
-1. Does the reader need this to act or decide? **No: cut.**
-2. Does it repeat something already said? **Cut the weaker instance.**
-3. Is it hedging without information? "It's worth noting that", "generally speaking", "as you may know": **cut the frame, keep the fact.**
-4. Is it abstract where it could be concrete? "significant performance improvement" becomes "dropped from 2.1s to 340ms". If you do not have the number, say what you do have.
-5. Is the sentence doing two jobs? **Split it or pick the job that matters.**
+5. **Compress what remains.** Merge sentences that say the same thing twice. Replace clauses with adjectives. Use active voice.
 
-Then the structural cuts:
+## Targets
 
-- **Lead with the outcome.** The first sentence answers "what happened" or "what should I do". Background comes after, for whoever wants it.
-- **Kill the throat-clearing intro.** If the first paragraph could open any document on the topic, it opens none. Delete it and check that nothing is lost. Nothing ever is.
-- **One idea per paragraph, and the idea in the first line.** Readers scan. Reward the scan.
-- **Banned without exception:** filler superlatives (seamless, powerful, robust, cutting-edge, game-changing), empty transitions (moreover, furthermore as sentence glue), unearned "simply" and "just".
+- **30% word reduction** with zero information loss
+- **Zero filler words**: actually, basically, essentially, simply, just, very, really
+- **Zero process narration**: no "I think", "I believe", "In my opinion"
+- **Zero throat-clearing**: no "Let me", "Here is", "I will now"
 
-## The 30 percent test
+## What Stays
 
-Count what you cut. Under 20 percent on a first draft means the pass was timid - go again. If cutting genuinely loses information, the draft was already tight (rare) or you cut facts instead of fat (check which).
+- Specific numbers and dates
+- Named entities (people, tools, versions)
+- Causal relationships (X caused Y)
+- Conditions and constraints (only when Z)
+- Actionable conclusions
 
-## What ruthless does NOT mean
+## What Gets Cut
 
-- Not terse to the point of rudeness or ambiguity. Clarity outranks brevity - a short confusing sentence loses to a longer clear one.
-- Not stripping the reader's necessary context. The test is "does the READER need it", not "do I find it obvious".
-- Not compressing into fragments and jargon chains. Complete sentences, technical terms spelled out on first use.
+- "Important to note"
+- "Worth mentioning"
+- "It goes without saying" (then don't say it)
+- "As a matter of fact"
+- "At the end of the day"
+- Any sentence that restates the previous one with different words
 
-## The tell
+## The Test
 
-If a sentence needs to be defended with "but it sounds professional", it is padding. Professional IS the absence of padding.
+After cutting, re-read. If you can remove another sentence without losing meaning, you are not done.

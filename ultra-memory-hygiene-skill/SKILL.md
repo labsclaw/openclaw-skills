@@ -1,57 +1,74 @@
 ---
 name: ultra-memory-hygiene-skill
-description: "What deserves persisting, how to write it so it survives time, and when to re-verify what you recall."
+description: "What deserves to persist, how to write for survival, when to re-verify. Complements OpenClaw memory architecture (segments/daily/checkpoints). Adapted from Rigor Pack memory-hygiene."
+metadata:
+  {
+    "openclaw":
+      {
+        "emoji": "🧹",
+      },
+  }
 ---
 
-# ultra-memory-hygiene-skill: memory is a claim about the past, not a fact about the present
+# Ultra Memory Hygiene
 
-> Derived from Iwo's Rigor Pack (Fable 5 → Opus 4.8 blind-tested, 2-0).
-> Adapted for OpenClaw agent workflows.
+What deserves to persist, how to write for survival, when to re-verify.
 
-An agent's persistent memory is its highest-leverage asset and its most dangerous one. Good memory compounds: every session starts smarter. Bad memory compounds too: one stale "fact" confidently recalled can outvote the live system in front of you. This skill governs both directions - what goes in, and how what comes out gets trusted.
+Adapted from [Rigor Pack memory-hygiene](https://github.com/anthropics/claude-code/tree/main/plugins/rigor-pack).
 
-## When to use
+## Three Filters Before Writing
 
-- When writing to or reading from any persistent memory an agent keeps across sessions
-- CLAUDE.md, memory files, notes, project docs meant for future sessions
-- When a session starts by loading old memory
+Before committing anything to persistent memory, ask:
 
-## When NOT to use
+1. **Will this matter in 48 hours?** If no, skip it. Daily noise is not memory.
+2. **Is this already stored somewhere?** If yes, update in place. Duplication rots.
+3. **Can someone act on this without asking me?** If no, rewrite until they can.
 
-- Ephemeral session notes that have no future value
-- When the memory file is already clean and current (don't add ceremony)
-- For single-use reminders (use cron instead)
+## How to Write for Survival
 
-## Writing: what deserves persistence
+### One fact per entry, dated
+Every persistent note gets a date and says one thing. "As of 2026-07-02" ages honestly. Undated memory is unreliable memory.
 
-Persist the things a future session cannot rederive:
+### Decisions, not events
+- Bad: "Discussed the API design and decided to use REST"
+- Good: "API: REST over GraphQL (reason: team knows REST, no graph schema needed)"
 
-- **Decisions and their WHY.** "We chose X over Y because Z" - the why is the part that evaporates.
-- **Corrections received.** When a human corrects you, that is the single most valuable thing to persist - with the reason, so the future session applies the principle, not just the rule.
-- **Non-obvious constraints.** The gotcha that cost an hour. The API that lies. The step that must come first.
-- **Preferences of the humans you work with.** How they like to be asked, what they care about.
+### Include the rejection
+- What was considered and WHY it was rejected matters more than what was chosen.
+- "Chose X over Y because Z" survives context loss. "Chose X" does not.
 
-Do NOT persist what the codebase, git history, or docs already record - memory that duplicates a derivable fact is bloat that ages into contradiction. And never persist secrets.
+### Prefer facts over interpretations
+- Bad: "The deployment was problematic"
+- Good: "Deploy failed: rollback took 12 minutes, caused by missing env var DATABASE_URL"
 
-## Writing: how
+## What NOT to Persist
 
-- **One fact per entry, dated.** "As of 2026-07-02, the deploy hook is armed" ages honestly. Undated facts rot invisibly.
-- **Write the trigger with the fact.** A future session needs to know WHEN this matters: "when touching the publish pipeline, remember X".
-- **Small and curated beats large and complete.** Memory is loaded into a finite context. Every stale line taxes every future session. Prune when you add.
+- Derivable facts (git history, docker-compose output, file contents you can re-read)
+- One-off fixes without the WHY
+- Passwords, tokens, temporary credentials
+- Narrative of process ("I then checked...")
 
-## Recall: the verification rule
+## When to Re-Verify
 
-Remembered facts are point-in-time observations. Before ACTING on one:
+| Content Type | Re-verify After | How |
+|---|---|---|
+| Version numbers | 7 days | Check actual files/configs |
+| API endpoints | 30 days | Test the endpoint |
+| File paths | 14 days | Confirm file exists |
+| Decisions | When context changes | Re-read the decision record |
+| Person/role info | 90 days | Confirm still accurate |
 
-1. **Grade the staleness risk.** Preferences and decisions age slowly. System state (versions, configs, file locations, what is deployed) ages fast.
-2. **Fast-aging fact + consequential action = verify first.** One live probe (does the file still exist, is the flag still set, does the endpoint still respond) before building on the memory.
-3. **When memory and live state disagree, live state wins** - and update the memory in the same breath. A contradicted memory left standing will bite the next session too.
-4. **Say which you are using.** "Per memory from June" versus "verified just now" - the reader deserves to know the vintage of your facts.
+## Integration with OpenClaw Memory
 
-## The maintenance habit
+- **daily/** → Raw events. Fold into segments every 7 days.
+- **segments/** → Thematic knowledge. Re-verify quarterly.
+- **checkpoints/** → Resolved states. Archive after 90 days.
+- **hot.md** → Session context. Reset every session.
+- **MEMORY.md** → Derived working memory. Update when segments change.
 
-When a memory proves wrong: fix it immediately, do not just route around it. When a memory proves right and important: consider promoting it (clearer trigger, better placement). A memory store nobody prunes becomes a liability with a good reputation.
+## Anti-Patterns
 
-## The honest limit
-
-This skill gives memory DISCIPLINE inside the tools you already have. What it cannot give is persistence itself - a skill file cannot remember your decisions for you, and everything a session learns still evaporates when the session ends unless something durable catches it. Discipline plus durable storage is the complete system. This skill is the discipline half.
+- **Diary mode**: Writing what happened instead of what matters.
+- **Fear-of-forgetting**: Storing everything "just in case." Rotates out real signal.
+- **Duplicate sources**: Same fact in 3 places, each slightly different.
+- **Stale authority**: Citing a source you haven't checked in months.

@@ -1,6 +1,6 @@
 ---
 name: ultra-plan-with-diagrams-skill
-description: >-
+description: "Generate implementation plans with architecture and flow diagrams. Use when planning multi-step technical work."
   Generate structured plans with Mermaid/ASCII diagrams. Trigger: plan, roadmap,
   brainstorm, architecture, diagram, visualize, task decomposition.
 ---

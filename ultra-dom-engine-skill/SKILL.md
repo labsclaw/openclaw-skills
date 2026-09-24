@@ -1,3 +1,8 @@
+---
+name: ultra-dom-engine-skill
+description: DOM extraction engine for AI agents injecting agenticPurposeId into interactive elements. Use when automating complex web forms and dynamic UIs.
+---
+
 # Skill: ultra-dom-engine
 
 **Depends on:** `@agentic-intelligence/dom-engine` (npm, installed in workspace)

@@ -1,6 +1,6 @@
 ---
 name: ultra-models-skill
-description: >-
+description: "Monitor, compare, and maintain free AI models across providers. Use to audit model availability and health."
   Use when auditing free AI model availability across providers (OpenRouter,
   OpenCode, KiloCode, NVIDIA), checking if configured models still exist in
   live APIs, discovering new free models worth adding, diagnosing silent

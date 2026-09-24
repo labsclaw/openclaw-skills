@@ -1,3 +1,8 @@
+---
+name: ultra-chrome-assistente-skill
+description: Chrome Assistant browser extension bridge via WebSocket (port 3032). Use when controlling the user's active Chrome session via the extension sidepanel and content script.
+---
+
 # Chrome Assistente Extension Skill
 
 **Versão:** 0.2.0  

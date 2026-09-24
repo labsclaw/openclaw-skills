@@ -1,98 +1,128 @@
 ---
 name: ultra-x-stealth-skill
-description: >-
-  Post X.com threads with Playwright stealth + human behavior simulation.
-  Gera imagens via Grok no browser. Upload de mídia em tweets.
-  Bypasses bot detection. Trigger: X stealth, X ban, stealth tweet, anti-detection.
+description: "Post content on X.com using Playwright with anti-detection and human behavior simulation. Use when publishing to X."
+  Post threads on X.com (Twitter) using Playwright with stealth plugin and
+  human behavior simulation. Bypasses bot detection with Bézier mouse curves,
+  variable typing, random delays, and anti-fingerprinting. Use when x-poster
+  gets blocked or when stealth posting is needed. Trigger terms: X stealth,
+  X ban, post X safely, stealth tweet, anti-detection X, post without ban.
 user-invocable: true
 metadata:
   author: ClawLabs
-  version: "1.1.0"
+  version: "1.0.0"
   domain: social-media
-  triggers: [X stealth, X ban, stealth tweet, anti-detection, Grok image, Grok generate]
+  triggers:
+    - X stealth
+    - X ban
+    - post X safely
+    - stealth tweet
+    - anti-detection
+    - post without ban
+    - x-poster blocked
   role: specialist
   scope: browser-automation
   output-format: action
-  related-skills: [x-poster, browser-automation, agente-redes-sociais]
+  related-skills: x-poster, browser-automation
 ---
 
 # Ultra X Stealth Skill
 
-Post X.com with Playwright stealth + human simulation. Use when x-poster blocked.
-**Agora com geração de imagem via Grok e upload de mídia.**
+Post content on X.com using Playwright with anti-detection and human behavior
+simulation. Designed to bypass X's bot detection systems that block standard
+CDP/browser automation.
+
+> **When to use this skill:**
+> - x-poster was blocked or detected
+> - You need to post threads without triggering bot detection
+> - You need human-like behavior simulation for X.com
+> - Standard browser automation failed with rate limits or bans
+
+> **When NOT to use:**
+> - Simple single posts (use x-poster instead)
+> - Reading/scraping X.com (use browser-automation skill)
+> - The account is already suspended
+
+---
 
 ## Architecture
 
 ```
-                      ┌─ Stealth Layer ─┐
-                      │  playwright-extra│
-                      │  webdriver=false │
-Thread Config ────────┤  real UA          ├───→ Headed Browser
-  JSON               │  Chrome emulation │      persistent cookies
-                     └──────────────────┘
-                              │
-                      ┌──────▼──────┐
-                      │  Grok Image │  ← NEW
-                      │  Generator  │
-                      └─────┬───────┘
-                            │
-                      ┌─────▼───────┐
-                      │ Media Upload│  ← NEW
-                      │  to tweets  │
-                      └─────────────┘
+┌─────────────────────────────────────────────┐
+│  Thread Config (JSON)                       │
+│  tweets: [{text, replyTo?, media?}]        │
+├─────────────────────────────────────────────┤
+│  Stealth Layer                              │
+│  playwright-extra + stealth-plugin          │
+│  ├── navigator.webdriver = false            │
+│  ├── Real User-Agent                        │
+│  ├── Chrome plugin emulation                │
+│  └── Canvas/WebGL fingerprint masking       │
+├─────────────────────────────────────────────┤
+│  Human Behavior Layer                       │
+│  ├── Bézier mouse curves with jitter        │
+│  ├── Variable typing (50-150ms/char)        │
+│  ├── Realistic scroll (accel/decel)         │
+│  ├── Random delays (3-8s between actions)   │
+│  └── Hover before click                     │
+├─────────────────────────────────────────────┤
+│  Cadence Layer                              │
+│  ├── 3-5 min between tweets in thread       │
+│  ├── Max 15-20 tweets/day                   │
+│  ├── Post only 8h-22h local time            │
+│  └── Session max 6 tweets per session       │
+├─────────────────────────────────────────────┤
+│  Browser (headed, Chrome profile)           │
+│  └── Persistent cookies/session             │
+└─────────────────────────────────────────────┘
 ```
 
-## Scripts
-
-| Script | Purpose |
-|--------|---------|
-| `scripts/stealth-post.js` | Post tweets/threads with media support + dom-engine |
-| `scripts/grok-image.js` | Generate images via Grok browser conversation |
-| `scripts/inject-dom-engine.js` | DOM engine for semantic element interaction (used by stealth-post.js) |
+---
 
 ## Quick Start
 
-### Posting
+### Option A: Use the Node.js Script (Recommended)
 
 ```bash
-node scripts/stealth-post.js --config examples/thread-sample.json   # thread from JSON
-node scripts/stealth-post.js --text "Hello world!"                   # single tweet
-node scripts/stealth-post.js --text "Reply" --reply-to 1234567890    # reply
-node scripts/stealth-post.js --text "With image" --media image.jpg   # tweet with image
+# Post a thread from JSON config
+node scripts/stealth-post.js --config examples/thread-sample.json
+
+# Post a single tweet
+node scripts/stealth-post.js --text "Hello world!"
+
+# Post a reply
+node scripts/stealth-post.js --text "Reply content" --reply-to 1234567890
 ```
 
-### Grok Image Generation
+### Option B: Use from Agent (Delegated)
 
-```bash
-node scripts/grok-image.js --prompt "A dramatic photorealistic image of books being destroyed by industrial machines, dark amber lighting, dystopian atmosphere, wide shot, cinematic"
-# Saves to grok-image.jpg by default
+When the agent needs to post stealthily:
 
-node scripts/grok-image.js --prompt "Description in Portuguese" --output /path/to/output.jpg
+1. Create a thread config JSON file
+2. Run `node scripts/stealth-post.js --config <path>`
+3. Wait for completion
+4. Report results to user
 
-node scripts/grok-image.js --prompt "Cinematic scene..." --profile openclaw
-```
+---
 
-### Full Pipeline: Grok → Tweet
-
-```bash
-# Step 1: Generate image via Grok
-node scripts/grok-image.js --prompt "Dramatic scene of..." --output grok-image.jpg
-
-# Step 2: Post tweet with the generated image (needs --media flag)
-node scripts/stealth-post.js --text "Image caption" --media grok-image.jpg
-
-# Or use the thread config with "media" field
-node scripts/stealth-post.js --config examples/grok-image-thread.json
-```
-
-## Thread Config
+## Thread Config Format
 
 ```json
 {
   "profile": "openclaw",
   "tweets": [
-    { "text": "Hook tweet with image", "media": "path/to/image.jpg", "replyTo": null },
-    { "text": "Thread continuation", "replyTo": "auto" }
+    {
+      "text": "First tweet (hook)",
+      "media": null
+    },
+    {
+      "text": "Second tweet (reply to first)",
+      "replyTo": "auto"
+    },
+    {
+      "text": "Third tweet with image",
+      "replyTo": "auto",
+      "media": "/path/to/image.png"
+    }
   ],
   "settings": {
     "minDelay": 180,
@@ -107,333 +137,213 @@ node scripts/stealth-post.js --config examples/grok-image-thread.json
 ### Config Fields
 
 | Field | Type | Default | Description |
-|-------|------|---------|-------------|
-| `profile` | string | `"openclaw"` | Browser profile name |
-| `tweets[].text` | string | required | Tweet content |
-| `tweets[].replyTo` | string | `null` | `null` for new, `"auto"` for thread chain, or status ID |
-| `tweets[].media` | string | `null` | **NEW** Path to image file for upload |
-| `settings.minDelay` | number | `180` | Min delay between tweets (seconds) |
-| `settings.maxDelay` | number | `360` | Max delay between tweets (seconds) |
+|---|---|---|---|
+| `profile` | string | `"openclaw"` | Chrome profile to use |
+| `tweets[].text` | string | required | Tweet content (max 280 free / 25000 premium) |
+| `tweets[].replyTo` | string | `null` | `"auto"` = reply to previous tweet, or status ID |
+| `tweets[].media` | string | `null` | File path to image/video |
+| `settings.minDelay` | number | `180` | Min seconds between tweets |
+| `settings.maxDelay` | number | `360` | Max seconds between tweets |
 | `settings.typingSpeed` | string | `"normal"` | `"slow"`, `"normal"`, `"fast"` |
-| `settings.headed` | boolean | `true` | Show browser window |
+| `settings.headed` | boolean | `true` | Run browser visibly (recommended) |
+| `settings.timeout` | number | `60000` | Page load timeout in ms |
 
-## Method 1: Text Posting (stealth-post.js)
+---
 
-### Typing
+## Human Behavior Simulation
+
+### Mouse Movement (Bézier Curves)
+
+The script generates natural mouse paths using cubic Bézier curves:
+
+```
+Start Point → Control Point 1 → Control Point 2 → End Point
+     + random jitter (±5px) on each control point
+     + varying duration (200-800ms per segment)
+```
+
+This creates curved, slightly wobbly paths that mimic real hand movement.
+
+### Typing Simulation
 
 | Speed | ms/char | Pauses | Typos |
-|-------|---------|--------|-------|
-| `"slow"` | 100-200 | After space/punct | 5% |
-| `"normal"` | 50-120 | After spaces | 2% |
-| `"fast"` | 30-70 | Minimal | 1% |
+|---|---|---|---|
+| `"slow"` | 100-200ms | After spaces, punctuation | 5% chance |
+| `"normal"` | 50-120ms | After spaces | 2% chance |
+| `"fast"` | 30-70ms | Minimal | 1% chance |
 
-Typo: wrong → 200-500ms → Backspace → 100-200ms → correct.
+When a "typo" occurs, the script:
+1. Types the wrong character
+2. Pauses 200-500ms (realization delay)
+3. Presses Backspace
+4. Pauses 100-200ms
+5. Types the correct character
 
-### Scroll Sim
+### Scroll Simulation
 
 ```javascript
-await page.mouse.wheel(0, 300);
+// Realistic scroll: fast start, decelerate, slight overshoot, correct back
+await page.mouse.wheel(0, 300);  // fast
 await page.waitForTimeout(100);
-await page.mouse.wheel(0, 100);
-await page.mouse.wheel(0, -30);
+await page.mouse.wheel(0, 100);  // slower
+await page.waitForTimeout(200);
+await page.mouse.wheel(0, -30);  // overshoot correction
 ```
 
-## Method 2: Grok Image Generation (grok-image.js) — NEW
+### Delays Between Actions
 
-Use the Grok AI on X.com to generate images directly from text descriptions.
+| Action | Delay Range | Rationale |
+|---|---|---|
+| Page load → first action | 3-8s | "Reading" the page |
+| Click → next click | 2-5s | "Thinking" between actions |
+| Type → click post | 3-8s | "Reviewing" before posting |
+| Post → next tweet | 180-360s | Human pace for threads |
+| Scroll → next action | 1-3s | "Scanning" content |
 
-### Prompt Tips
+---
 
-Grok understands both English and Portuguese. For best results, include:
+## Anti-Detection Techniques
 
-- **Style**: `photorealistic`, `cinematic`, `illustration`, `dark fantasy`
-- **Lighting**: `dark amber lighting`, `dramatic shadows`, `golden hour`
-- **Composition**: `wide shot`, `close-up`, `aerial view`, `low angle`
-- **Details**: colors, textures, specific objects, atmosphere
-- **Scale**: indicate the scope (massive, epic, intimate)
+### What X Detects
 
-Example: *"A dramatic, dark, cinematic photorealistic illustration showing a massive industrial hydraulic cutting machine slicing through stacks of old hardcover books. Pages flying through the air, conveyor belt feeding books into a high-speed scanner, dystopian atmosphere, dark amber lighting, wide shot showing the destruction scale, books piled high in a warehouse setting."*
+1. **`navigator.webdriver = true`** — instant ban signal
+2. **HeadlessChrome User-Agent** — obvious bot
+3. **Empty plugin list** — real Chrome has 3-5 plugins
+4. **Missing `chrome.app`** — DevTools protocol leak
+5. **Linear mouse paths** — no human moves in straight lines
+6. **Constant typing speed** — humans vary speed naturally
+7. **Zero-delay actions** — humans pause to "think"
+8. **Datacenter IPs** — easily identified and blocked
 
-### Extraction Flow
+### What This Skill Does
 
-```
-Grok generates image
-       │
-       ├── Method A: Screenshot (most reliable)
-       │   → page.screenshot() → file
-       │
-       ├── Method B: CDN URL (if already posted)
-       │   → document.querySelector('img[alt*="Image"]')?.src
-       │
-       └── Method C: Canvas toDataURL (for blobs)
-           → canvas.toDataURL('image/jpeg', 0.95)
-```
+1. ✅ Removes `navigator.webdriver` flag
+2. ✅ Sets real Chrome User-Agent string
+3. ✅ Emulates standard Chrome plugins
+4. ✅ Adds `chrome.app`, `chrome.csi` objects
+5. ✅ Bézier curve mouse movements with jitter
+6. ✅ Variable-speed typing with typos
+7. ✅ Random delays between all actions
+8. ✅ Uses headed mode (real browser window)
 
-### Common Issues
+### What This Skill Does NOT Do
 
-| Issue | Fix |
-|-------|-----|
-| Grok input not found | Try `--profile` with logged-in browser profile |
-| Image generation timeout | Increase prompt specificity; Grok can take 30-60s |
-| Corrupted image (< 1KB) | Re-extract via screenshot method |
-| Browser not logged in | Login to X.com manually first |
-| File chooser not triggered | Ensure the media button selector matches current X UI |
+- ❌ IP rotation / residential proxy (use external proxy config)
+- ❌ TLS fingerprint modification (requires custom browser build)
+- ❌ Guaranteed bypass of advanced ML detection
+- ❌ Account warming (manual process)
 
-## Method 3: Media Upload (stealth-post.js) — NEW
-
-The `--media` flag and `tweets[].media` field enable attaching images to tweets.
-
-```bash
-# Single tweet with image
-node scripts/stealth-post.js --text "Cool image" --media screenshot.jpg
-
-# Reply with image
-node scripts/stealth-post.js --text "Check this" --reply-to 1234567890 --media image.jpg
-```
-
-### Media Validation
-
-Before upload, the script checks:
-- File exists (throws if not found)
-- File size > 1KB (throws if corrupted/empty)
-- File chooser completes within timeout
-
-### Pipeline: Generate + Post
-
-```
-1. grok-image.js --prompt "..." --output image.jpg
-2. stealth-post.js --text "Caption" --media image.jpg
-```
-
-Or use the thread JSON with `media` field for threaded content.
-
-## Architecture: dom-engine Integration
-
-This skill integrates `@agentic-intelligence/dom-engine` (via `scripts/inject-dom-engine.js`) for **robust, semantic element interaction**.
-
-Instead of relying solely on fragile CSS selectors (`[data-testid="..."]`), the dom-engine:
-1. Scans the page for all interactive elements
-2. Assigns unique `agenticPurposeId` identifiers
-3. Provides `window.getInteractiveContext()` → structured JSON
-4. Executes clicks/types via `window.executeActions()` with human-like mouse/keyboard events
-
-### How It Works
-
-```
-stealth-post.js
-      │
-      ├── Inject dom-engine into page context
-      │     └── page.evaluate(injectDomEngine)
-      │
-      ├── Find element via getInteractiveContext()
-      │     └── Match by data-testid, aria-label, or fuzzy text
-      │
-      ├── Execute action via executeActions()
-      │     └── { agenticPurposeId, actionType: "click" | "type", value }
-      │
-      └── Fallback to Playwright native selectors
-            └── humanClick() / humanType() with Bézier curves
-```
-
-### Why Dom-Engine?
-
-| Problem | dom-engine Solution |
-|---------|-------------------|
-| `data-testid="tweetTextarea_0"` can change | Finds by role, placeholder, or fuzzy match |
-| Generic refs (e1, e2) in snapshot | Returns descriptive `agenticPurposeId` |
-| Playwright click lacks mouseover/mousemove | Dispatches full event chain |
-| Hard to verify element state | `getInteractiveContext()` returns full element info |
-
-### When Dom-Engine Falls Back
-
-If `useDomEngine: false` in config or injection fails, the script falls back to:
-- `humanClick()` — Playwright click with Bézier mouse curves
-- `humanType()` — Variable speed typing with typos
-- Standard CSS selectors
-
-## Anti-Detection
-
-| X Detects | This Skill Does |
-|-----------|----------------|
-| `webdriver=true` | ✅ Removes flag |
-| Headless UA | ✅ Real UA |
-| Empty plugins | ✅ Chrome emulation |
-| Missing `chrome.app` | ✅ Adds it |
-| Linear mouse | ✅ Bézier curves |
-| Constant typing | ✅ Variable + typos |
-| Zero delays | ✅ Random 3-8s |
-| Datacenter IPs | ❌ Not covered |
-| Grok automation | ✅ Human-like typing in Grok input |
-| DOM interaction detection | ✅ dom-engine simulates real browser events (mouseover→mousedown→mouseup→click) |
+---
 
 ## Safety Limits
 
-| Limit | Value |
-|-------|-------|
-| Max tweets/session | 6 |
-| Max tweets/day | 20 |
-| Min delay | 180s |
-| Max delay | 360s |
-| Active hours | 08:00-22:00 |
-| Account age min | 90 days |
-| Max media size | 5 MB (X limit) |
+| Limit | Value | Reason |
+|---|---|---|
+| Max tweets per session | 6 | Prevents session-level detection |
+| Max tweets per day | 20 | Account-level safety |
+| Min delay between tweets | 180s (3 min) | Mimics human thread pace |
+| Max delay between tweets | 360s (6 min) | Keeps thread coherent |
+| Active hours | 08:00-22:00 | No 3am bot activity |
+| Account age minimum | 90 days | New accounts have stricter limits |
 
-Exceeding → script stops.
+**If any limit is exceeded, the script STOPS and reports to the user.**
 
-## Profile Setup
-
-The scripts use a **dedicated browser profile** to avoid conflicting with OpenClaw's browser tool.
-
-### Create the stealth-x profile
-
-```bash
-# 1. Stop the OpenClaw browser first
-openclaw browser stop
-
-# 2. Copy the existing logged-in profile
-robocopy "~/.openclaw/browser/openclaw/user-data" \
-          "~/.openclaw/browser/stealth-x/user-data" /E /COPY:DAT
-
-# 3. Restart the OpenClaw browser
-openclaw browser start --profile openclaw
-```
-
-### Use the profile in scripts
-
-```bash
-# Single tweet
-node scripts/stealth-post.js --text "Hello" --profile stealth-x
-
-# Or set default profile in thread JSON
-# { "profile": "stealth-x", ... }
-```
-
-> **Note:** X.com stores session via IndexedDB, not just Cookies. The profile copy preserves both.
+---
 
 ## Installation
 
+### Prerequisites
+
 ```bash
+# Node.js 18+ required
+node --version  # >= 18.0.0
+
+# Install dependencies
 cd ~/.openclaw/skills/ultra-x-stealth-skill
 npm install playwright-extra puppeteer-extra-plugin-stealth humanization-playwright
 npx playwright install chromium
 ```
 
+### Quick Setup
+
+```bash
+# One-liner install
+cd ~/.openclaw/skills/ultra-x-stealth-skill && npm install
+```
+
+---
+
 ## Session Recovery
 
-1. Login page → attempt Google OAuth
-2. Recovery fails → STOP, report
-3. Manual re-login: `openclaw browser open --url https://x.com`
+If the browser session expires during posting:
 
-**NEVER type passwords.**
+1. Script detects login page instead of home feed
+2. Attempts Google OAuth recovery (credentials saved in profile)
+3. If recovery fails → stops and reports to user
+4. User must manually re-login: `openclaw browser open --url https://x.com`
 
-### Profile Conflicts
+**NEVER type passwords. The browser has them saved.**
 
-The OpenClaw browser tool and Playwright scripts **cannot share the same profile simultaneously**.
-- Browser tool uses `profile=openclaw`
-- Scripts should use `profile=stealth-x` (copied from openclaw)
-- If you see `Target page, context or browser has been closed`, the profile is in use
-
-## Test Results (2026-07-29)
-
-Real test on X.com with stealth-x profile:
-
-| Test | Result | Notes |
-|------|--------|-------|
-| Stealth detection (`navigator.webdriver`) | ✅ PASS | `false` (undetectable) |
-| Login session preserved | ✅ PASS | Logged in via profile copy |
-| Dom-engine injection | ✅ PASS | 35 elements detected |
-| "tweetButton" found | ✅ PASS | DOM element with agenticPurposeId |
-| Profile copy (robocopy) | ⚠️ Exit code 1 | Files copied, minor warnings OK |
-| `waitUntil: 'networkidle'` | ❌ FAIL | X.com never reaches idle (WebSocket) |
-| `waitUntil: 'load'` | ✅ PASS | Fast, reliable |
-
-**Key lesson:** Always use `waitUntil: 'load'` (not `'networkidle'`) for X.com.
-
-### Performance Comparison
-
-| Method | Time to page ready | Reliability |
-|--------|-------------------|-------------|
-| `networkidle` | 30-60s+ timeout | ❌ Never completes |
-| `load` | 3-5s | ✅ Always works |
-| `load` + 3s settle | 6-8s | ✅ Best balance |
+---
 
 ## Error Handling
 
 | Error | Action |
-|-------|--------|
-| Login page | Google OAuth recovery |
-| CAPTCHA | STOP — report |
-| Rate limit | Wait 60s, retry once, STOP |
-| Post disabled | Re-snapshot, retry |
+|---|---|
+| Login page detected | Attempt Google OAuth recovery |
+| CAPTCHA / verification | STOP — report to user |
+| Rate limit hit | Wait 60s, retry once, then STOP |
+| Post button disabled | Re-snapshot, find correct ref, retry |
 | Network timeout | Wait 10s, retry once |
-| Suspended | STOP — report |
-| Session limit | STOP — report |
-| Media not found | Check file path and size |
-| Media corrupted | Re-generate or re-download |
-| Grok timeout | Increase prompt detail, retry |
-| File chooser failed | Manual upload via browser UI |
+| Account suspended | STOP — report immediately |
+| Session limit reached | STOP — report count posted |
 
-## Comparison
+---
 
-| Feature | x-poster | ultra-x-stealth (v1.0) | ultra-x-stealth (v1.1 w/ Grok) |
-|---------|----------|----------------------|-------------------------------|
-| Stealth plugins | ❌ | ✅ | ✅ |
-| Human mouse/typing | ❌ | ✅ | ✅ |
-| Random delays | ❌ | ✅ | ✅ |
-| Thread support | Basic | Full | Full |
-| Media upload | ❌ | ❌ | **✅ NEW** |
-| Grok image generation | ❌ | ❌ | **✅ NEW** |
-| Safety limits | None | Enforced | Enforced |
-| Detection risk | HIGH | LOW | LOW |
+## Comparison with x-poster
 
-## Rules
+| Feature | x-poster | ultra-x-stealth |
+|---|---|---|
+| Stealth plugins | ❌ | ✅ |
+| Human mouse curves | ❌ | ✅ |
+| Variable typing | ❌ | ✅ |
+| Random delays | ❌ | ✅ |
+| Anti-fingerprinting | ❌ | ✅ |
+| Thread support | Basic | Full (auto-reply chain) |
+| Safety limits | None | Enforced |
+| Detection risk | HIGH | LOW |
+| Speed | Fast | Deliberate |
 
-1. NEVER exceed limits
-2. NEVER post without approval
-3. NEVER use `headed=false` unless tested
-4. ALWAYS verify login
-5. ALWAYS report results
-6. ALWAYS use persistent profile
-7. STOP on CAPTCHA/2FA
-8. STOP if user says stop
-9. Verify media file integrity before posting (min 5KB)
-10. Wait for Grok generation to complete before extracting
+---
 
-## Settings Reference
+## Monitoring
 
-| Setting | Type | Default | Description |
-|---------|------|---------|-------------|
-| `useDomEngine` | boolean | `true` | **NEW** Enable dom-engine for element interaction |
-| `minDelay` | number | `180` | Min delay between tweets (seconds) |
-| `maxDelay` | number | `360` | Max delay between tweets (seconds) |
-| `typingSpeed` | string | `"normal"` | `"slow"`, `"normal"`, `"fast"` |
-| `headed` | boolean | `true` | Show browser window |
-| `timeout` | number | `60000` | Navigation timeout (ms) |
-| `maxTweetsPerSession` | number | `6` | Max tweets per session |
-| `maxTweetsPerDay` | number | `20` | Max tweets per day |
+After posting, check:
 
-## Files
+1. **X.com notifications** — any "suspicious activity" warnings?
+2. **Tweet analytics** — are tweets getting impressions normally?
+3. **Account status** — any restrictions or shadow bans?
+4. **Follower changes** — sudden drops indicate detection
 
-| File | Purpose |
-|------|---------|
-| `SKILL.md` | This file |
-| `scripts/stealth-post.js` | Main stealth posting script with dom-engine |
-| `scripts/grok-image.js` | Grok image generator |
-| `scripts/inject-dom-engine.js` | **NEW** DOM engine injection (origin: ultra-dom-engine-skill) |
-| `examples/thread-sample.json` | Thread config example |
-| `examples/grok-image-thread.json` | Thread with media example |
-| `references/anti-detection-guide.md` | Anti-detection reference |
-| `package.json` | Dependencies and scripts |
+If any warning appears, STOP all automation for 24-48 hours.
+
+---
+
+## Important Rules
+
+1. **NEVER exceed safety limits** — they exist to protect the account
+2. **NEVER post without user approval** — get explicit go-ahead first
+3. **NEVER use in headed=false mode** unless specifically tested
+4. **ALWAYS verify login before posting** — check for login page
+5. **ALWAYS report results** — success count + any warnings
+6. **ALWAYS use persistent Chrome profile** — cookies must persist
+7. **STOP immediately** on any CAPTCHA, 2FA, or verification prompt
+8. **STOP if user says stop** — no questions asked
+
+---
 
 ## References
 
-- `references/anti-detection-guide.md`
-- `examples/thread-sample.json`
-- `examples/grok-image-thread.json`
-- `ultra-dom-engine-skill` for standalone dom-engine usage
-- `x-poster` for simple posting
-- `agente-redes-sociais` for Grok image + QA gate workflows
-
-## License
-
-Apache-2.0.
+- See `references/anti-detection-guide.md` for detailed techniques
+- See `examples/thread-sample.json` for thread config format
+- Related skill: `x-poster` for simple, non-stealth posting
