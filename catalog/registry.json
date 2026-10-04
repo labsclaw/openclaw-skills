@@ -20,7 +20,7 @@
         "configMutation": false
       },
       "verifiedAt": "2026-10-04",
-      "workshopManaged": false,
+      "workshopStatus": "unmanaged",
       "routingEval": {
         "status": "pass",
         "model": "openai/gpt-5.6-sol",
@@ -46,7 +46,7 @@
         "configMutation": false
       },
       "verifiedAt": "2026-10-04",
-      "workshopManaged": false,
+      "workshopStatus": "unmanaged",
       "routingEval": {
         "status": "pass",
         "model": "openai/gpt-5.6-sol",
@@ -72,7 +72,7 @@
         "configMutation": true
       },
       "verifiedAt": "2026-10-04",
-      "workshopManaged": true,
+      "workshopStatus": "applied",
       "routingEval": {
         "status": "pass",
         "model": "openai/gpt-5.6-sol",
@@ -81,7 +81,7 @@
         "total": 5,
         "report": "evals/results/2026-10-04-openai-gpt-5.6-sol.md"
       },
-      "notes": "Live SKILL.md is Workshop-managed and concise. The repository projection and pre-existing support reference remain stale, so the skill stays experimental."
+      "notes": "Concise proposals are applied in the Workshop artifact store. The external runtime and repository files remain physically unchanged, so synchronization is unverified and the skill stays experimental."
     }
   ]
 }

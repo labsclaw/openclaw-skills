@@ -72,7 +72,7 @@ for (const entry of registry.skills ?? []) {
   if (!risks.has(entry.risk)) finding(target, `invalid risk ${entry.risk}`);
   if (!entry.owner || !entry.category) finding(target, "owner and category are required");
   if (!/^\d{4}-\d{2}-\d{2}$/.test(entry.verifiedAt ?? "")) finding(target, "verifiedAt must be YYYY-MM-DD");
-  if (typeof entry.workshopManaged !== "boolean") finding(target, "workshopManaged must be boolean");
+  if (!["unmanaged", "pending", "applied", "quarantined"].includes(entry.workshopStatus)) finding(target, "workshopStatus is invalid");
   const routingEval = entry.routingEval;
   if (!routingEval || !["pass", "fail", "not-run"].includes(routingEval.status)) finding(target, "routingEval status is invalid");
   else {

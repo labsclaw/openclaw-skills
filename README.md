@@ -33,6 +33,10 @@ The first baseline passed 15/15 cases. Results retain the model, run ID,
 per-skill score, prompt, and machine-readable case outcomes under
 `evals/results/`.
 
+`workshopStatus` records the Workshop proposal lifecycle. It does not imply
+that an external runtime installation or repository projection has been
+synchronized; those states require separate verification.
+
 Benchmark sources and the patterns accepted or rejected by LabsClaw are recorded
 in `docs/references/skill-library-benchmarks.md`.
 

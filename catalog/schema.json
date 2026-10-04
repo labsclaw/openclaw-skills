@@ -23,7 +23,7 @@
         "type": "object",
         "required": [
           "name", "path", "trustTier", "owner", "category", "risk",
-          "platforms", "capabilities", "verifiedAt", "workshopManaged",
+          "platforms", "capabilities", "verifiedAt", "workshopStatus",
           "routingEval"
         ],
         "additionalProperties": false,
@@ -54,7 +54,9 @@
             }
           },
           "verifiedAt": { "type": "string", "format": "date" },
-          "workshopManaged": { "type": "boolean" },
+          "workshopStatus": {
+            "enum": ["unmanaged", "pending", "applied", "quarantined"]
+          },
           "routingEval": {
             "type": "object",
             "required": ["status", "model", "executedAt", "passed", "total", "report"],
