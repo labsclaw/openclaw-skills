@@ -26,6 +26,15 @@
         "configMutation": false
       },
       "verifiedAt": "2026-10-04",
+      "workshopManaged": false,
+      "routingEval": {
+        "status": "pass",
+        "model": "openai/gpt-5.6-sol",
+        "executedAt": "2026-10-04T21:38:10.416Z",
+        "passed": 5,
+        "total": 5,
+        "report": "evals/results/2026-10-04-openai-gpt-5.6-sol.md"
+      },
       "contentDigest": "sha256:4ec64d88f2ea3c6814bbc7a1c4a8290bcf5ead2c39b2ca599daea4c30987c551"
     },
     {
@@ -46,6 +55,15 @@
         "configMutation": true
       },
       "verifiedAt": "2026-10-04",
+      "workshopManaged": true,
+      "routingEval": {
+        "status": "pass",
+        "model": "openai/gpt-5.6-sol",
+        "executedAt": "2026-10-04T21:38:10.416Z",
+        "passed": 5,
+        "total": 5,
+        "report": "evals/results/2026-10-04-openai-gpt-5.6-sol.md"
+      },
       "contentDigest": "sha256:d1d41c6b0e68318708bf27f6c1e0dfd0b0aea46e508dfdd2506bd9b822fd7035"
     },
     {
@@ -68,6 +86,15 @@
         "configMutation": false
       },
       "verifiedAt": "2026-10-04",
+      "workshopManaged": false,
+      "routingEval": {
+        "status": "pass",
+        "model": "openai/gpt-5.6-sol",
+        "executedAt": "2026-10-04T21:38:10.416Z",
+        "passed": 5,
+        "total": 5,
+        "report": "evals/results/2026-10-04-openai-gpt-5.6-sol.md"
+      },
       "contentDigest": "sha256:d9a6a1ec5e04a5bd0c7779f32fbdfbbb5c1d317d81f9552c6bf65af58b1da2a2"
     }
   ]

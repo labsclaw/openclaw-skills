@@ -76,6 +76,8 @@ for (const entry of registry.skills) {
     platforms: entry.platforms,
     capabilities: entry.capabilities,
     verifiedAt: entry.verifiedAt,
+    workshopManaged: entry.workshopManaged,
+    routingEval: entry.routingEval,
     contentDigest: await digestDirectory(skillDirectory)
   });
 }

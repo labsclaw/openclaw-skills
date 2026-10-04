@@ -23,6 +23,16 @@ node scripts/validate-library.mjs
 node scripts/build-catalog.mjs --check
 ```
 
+Run the model-based routing eval with an explicit OpenClaw model:
+
+```bash
+node scripts/run-routing-eval.mjs openai/gpt-5.6-sol
+```
+
+The first baseline passed 15/15 cases. Results retain the model, run ID,
+per-skill score, prompt, and machine-readable case outcomes under
+`evals/results/`.
+
 Benchmark sources and the patterns accepted or rejected by LabsClaw are recorded
 in `docs/references/skill-library-benchmarks.md`.
 

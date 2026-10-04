@@ -20,6 +20,15 @@
         "configMutation": false
       },
       "verifiedAt": "2026-10-04",
+      "workshopManaged": false,
+      "routingEval": {
+        "status": "pass",
+        "model": "openai/gpt-5.6-sol",
+        "executedAt": "2026-10-04T21:38:10.416Z",
+        "passed": 5,
+        "total": 5,
+        "report": "evals/results/2026-10-04-openai-gpt-5.6-sol.md"
+      },
       "notes": "Pilot skill. Enforces evidence-backed planning before edits."
     },
     {
@@ -37,6 +46,15 @@
         "configMutation": false
       },
       "verifiedAt": "2026-10-04",
+      "workshopManaged": false,
+      "routingEval": {
+        "status": "pass",
+        "model": "openai/gpt-5.6-sol",
+        "executedAt": "2026-10-04T21:38:10.416Z",
+        "passed": 5,
+        "total": 5,
+        "report": "evals/results/2026-10-04-openai-gpt-5.6-sol.md"
+      },
       "notes": "Pilot skill. Requires an attacker-style verification pass before delivery."
     },
     {
@@ -54,7 +72,16 @@
         "configMutation": true
       },
       "verifiedAt": "2026-10-04",
-      "notes": "Pilot skill. Kept experimental until progressive-disclosure and script-safety findings are resolved."
+      "workshopManaged": true,
+      "routingEval": {
+        "status": "pass",
+        "model": "openai/gpt-5.6-sol",
+        "executedAt": "2026-10-04T21:38:10.416Z",
+        "passed": 5,
+        "total": 5,
+        "report": "evals/results/2026-10-04-openai-gpt-5.6-sol.md"
+      },
+      "notes": "Live SKILL.md is Workshop-managed and concise. The repository projection and pre-existing support reference remain stale, so the skill stays experimental."
     }
   ]
 }

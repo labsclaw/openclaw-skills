@@ -72,6 +72,16 @@ for (const entry of registry.skills ?? []) {
   if (!risks.has(entry.risk)) finding(target, `invalid risk ${entry.risk}`);
   if (!entry.owner || !entry.category) finding(target, "owner and category are required");
   if (!/^\d{4}-\d{2}-\d{2}$/.test(entry.verifiedAt ?? "")) finding(target, "verifiedAt must be YYYY-MM-DD");
+  if (typeof entry.workshopManaged !== "boolean") finding(target, "workshopManaged must be boolean");
+  const routingEval = entry.routingEval;
+  if (!routingEval || !["pass", "fail", "not-run"].includes(routingEval.status)) finding(target, "routingEval status is invalid");
+  else {
+    if (!routingEval.model || !routingEval.executedAt || !routingEval.report) finding(target, "routingEval model, executedAt, and report are required");
+    if (!Number.isInteger(routingEval.passed) || !Number.isInteger(routingEval.total) || routingEval.passed < 0 || routingEval.total < 0 || routingEval.passed > routingEval.total) finding(target, "routingEval score is invalid");
+    if (routingEval.status === "pass" && routingEval.passed !== routingEval.total) finding(target, "routingEval pass requires all cases to pass");
+    try { await fs.access(path.join(root, routingEval.report)); }
+    catch { finding(target, `missing routing eval report ${routingEval.report}`); }
+  }
   if (!Array.isArray(entry.platforms) || !entry.platforms.length || entry.platforms.some((item) => !platforms.has(item))) finding(target, "invalid platforms");
   for (const capability of ["network", "shell", "filesystemWrite", "configMutation"]) {
     if (typeof entry.capabilities?.[capability] !== "boolean") finding(target, `capability ${capability} must be boolean`);
