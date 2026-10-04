@@ -1,0 +1,17 @@
+[
+  { "id": "plan-positive-1", "skill": "ultra-plan-gate-skill", "type": "positive", "query": "Plan this multi-step migration before changing any files.", "expect": ["ultra-plan-gate-skill"] },
+  { "id": "plan-positive-2", "skill": "ultra-plan-gate-skill", "type": "positive", "query": "We need to modify the gateway, cron jobs, and documentation. Establish success criteria and scope first.", "expect": ["ultra-plan-gate-skill"] },
+  { "id": "plan-positive-3", "skill": "ultra-plan-gate-skill", "type": "positive", "query": "Do not edit yet. Identify unknowns and produce an executable implementation plan.", "expect": ["ultra-plan-gate-skill"] },
+  { "id": "plan-negative-1", "skill": "ultra-plan-gate-skill", "type": "negative", "query": "Correct this typo in one README sentence.", "expect": [] },
+  { "id": "plan-negative-2", "skill": "ultra-plan-gate-skill", "type": "negative", "query": "What is the current gateway port?", "expect": [] },
+  { "id": "verify-positive-1", "skill": "ultra-adversarial-verify-skill", "type": "positive", "query": "Try to disprove your implementation before you hand it over.", "expect": ["ultra-adversarial-verify-skill"] },
+  { "id": "verify-positive-2", "skill": "ultra-adversarial-verify-skill", "type": "positive", "query": "Red-team this report and classify every claim as survived, refuted, or untestable.", "expect": ["ultra-adversarial-verify-skill"] },
+  { "id": "verify-positive-3", "skill": "ultra-adversarial-verify-skill", "type": "positive", "query": "Before presenting the result, attack the assumptions and check for counterexamples.", "expect": ["ultra-adversarial-verify-skill"] },
+  { "id": "verify-negative-1", "skill": "ultra-adversarial-verify-skill", "type": "negative", "query": "Summarize this paragraph in two sentences.", "expect": [] },
+  { "id": "verify-negative-2", "skill": "ultra-adversarial-verify-skill", "type": "negative", "query": "Run the existing unit test once and report its exit code.", "expect": [] },
+  { "id": "models-positive-1", "skill": "ultra-models-skill", "type": "positive", "query": "Audit our configured model catalog against the providers and remove confirmed dead entries.", "expect": ["ultra-models-skill"] },
+  { "id": "models-positive-2", "skill": "ultra-models-skill", "type": "positive", "query": "Which free models are available now, and are any fallbacks pointing to dead IDs?", "expect": ["ultra-models-skill"] },
+  { "id": "models-positive-3", "skill": "ultra-models-skill", "type": "positive", "query": "Compare the Antigravity proxy model endpoint with openclaw.json.", "expect": ["ultra-models-skill"] },
+  { "id": "models-negative-1", "skill": "ultra-models-skill", "type": "negative", "query": "Explain the transformer attention mechanism.", "expect": [] },
+  { "id": "models-negative-2", "skill": "ultra-models-skill", "type": "negative", "query": "Which model should I choose for a fictional character in my novel?", "expect": [] }
+]

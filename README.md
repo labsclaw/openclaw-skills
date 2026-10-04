@@ -2,6 +2,30 @@
 
 A collection of 'Ultra' level skills for the OpenClaw / OpenCode agent ecosystems, created with strict adherence to the [agentskills.io](https://agentskills.io) specification.
 
+## Organizational library pilot
+
+The repository is evolving from a folder collection into a governed capability
+library. The initial pilot catalogs three skills:
+
+- `ultra-plan-gate-skill`
+- `ultra-adversarial-verify-skill`
+- `ultra-models-skill`
+
+Governance metadata lives in `catalog/registry.json`. `catalog/index.json` is a
+deterministic, content-addressed projection for humans and agents. External
+publication is intentionally blocked until the repository has an explicit
+license.
+
+Run the local gates with:
+
+```bash
+node scripts/validate-library.mjs
+node scripts/build-catalog.mjs --check
+```
+
+Benchmark sources and the patterns accepted or rejected by LabsClaw are recorded
+in `docs/references/skill-library-benchmarks.md`.
+
 ## Skills Included
 
 - **ultra-create-skill**: The definitive guide and toolset for creating new skills.
@@ -13,6 +37,6 @@ A collection of 'Ultra' level skills for the OpenClaw / OpenCode agent ecosystem
 
 You can install these skills directly into your agent's workspace:
 
-``bash
+```bash
 npx skills add labsclaw/openclaw-skills --skill ultra-drawio-skill
-``
+```

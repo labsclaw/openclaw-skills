@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "publication": {
+    "status": "blocked",
+    "reason": "The repository has no LICENSE file. External publication requires an explicit license decision."
+  },
+  "versioning": "content-sha256",
+  "skills": [
+    {
+      "name": "ultra-adversarial-verify-skill",
+      "description": "Refute your own work before presenting it. Switch from author to attacker. SURVIVED/REFUTED/UNTESTABLE verdicts. Adapted from Rigor Pack adversarial-verify for OpenClaw.",
+      "path": "ultra-adversarial-verify-skill",
+      "trustTier": "core",
+      "owner": "LabsClaw",
+      "category": "quality",
+      "risk": "low",
+      "platforms": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "capabilities": {
+        "network": false,
+        "shell": false,
+        "filesystemWrite": false,
+        "configMutation": false
+      },
+      "verifiedAt": "2026-10-04",
+      "contentDigest": "sha256:4ec64d88f2ea3c6814bbc7a1c4a8290bcf5ead2c39b2ca599daea4c30987c551"
+    },
+    {
+      "name": "ultra-models-skill",
+      "description": "Monitor, compare, and maintain free AI models across providers. Use to audit model availability and health.",
+      "path": "ultra-models-skill",
+      "trustTier": "experimental",
+      "owner": "LabsClaw",
+      "category": "model-operations",
+      "risk": "high",
+      "platforms": [
+        "windows"
+      ],
+      "capabilities": {
+        "network": true,
+        "shell": true,
+        "filesystemWrite": true,
+        "configMutation": true
+      },
+      "verifiedAt": "2026-10-04",
+      "contentDigest": "sha256:d1d41c6b0e68318708bf27f6c1e0dfd0b0aea46e508dfdd2506bd9b822fd7035"
+    },
+    {
+      "name": "ultra-plan-gate-skill",
+      "description": "No edits until a written plan exists. Forces GOAL/UNKNOWNS/SUCCESS/STEPS/OUT-OF-SCOPE before any multi-step work. Adapted from Rigor Pack plan-gate for OpenClaw.",
+      "path": "ultra-plan-gate-skill",
+      "trustTier": "core",
+      "owner": "LabsClaw",
+      "category": "governance",
+      "risk": "low",
+      "platforms": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "capabilities": {
+        "network": false,
+        "shell": false,
+        "filesystemWrite": false,
+        "configMutation": false
+      },
+      "verifiedAt": "2026-10-04",
+      "contentDigest": "sha256:d9a6a1ec5e04a5bd0c7779f32fbdfbbb5c1d317d81f9552c6bf65af58b1da2a2"
+    }
+  ]
+}

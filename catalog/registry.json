@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "publication": {
+    "status": "blocked",
+    "reason": "The repository has no LICENSE file. External publication requires an explicit license decision."
+  },
+  "skills": [
+    {
+      "name": "ultra-plan-gate-skill",
+      "path": "ultra-plan-gate-skill",
+      "trustTier": "core",
+      "owner": "LabsClaw",
+      "category": "governance",
+      "risk": "low",
+      "platforms": ["windows", "linux", "macos"],
+      "capabilities": {
+        "network": false,
+        "shell": false,
+        "filesystemWrite": false,
+        "configMutation": false
+      },
+      "verifiedAt": "2026-10-04",
+      "notes": "Pilot skill. Enforces evidence-backed planning before edits."
+    },
+    {
+      "name": "ultra-adversarial-verify-skill",
+      "path": "ultra-adversarial-verify-skill",
+      "trustTier": "core",
+      "owner": "LabsClaw",
+      "category": "quality",
+      "risk": "low",
+      "platforms": ["windows", "linux", "macos"],
+      "capabilities": {
+        "network": false,
+        "shell": false,
+        "filesystemWrite": false,
+        "configMutation": false
+      },
+      "verifiedAt": "2026-10-04",
+      "notes": "Pilot skill. Requires an attacker-style verification pass before delivery."
+    },
+    {
+      "name": "ultra-models-skill",
+      "path": "ultra-models-skill",
+      "trustTier": "experimental",
+      "owner": "LabsClaw",
+      "category": "model-operations",
+      "risk": "high",
+      "platforms": ["windows"],
+      "capabilities": {
+        "network": true,
+        "shell": true,
+        "filesystemWrite": true,
+        "configMutation": true
+      },
+      "verifiedAt": "2026-10-04",
+      "notes": "Pilot skill. Kept experimental until progressive-disclosure and script-safety findings are resolved."
+    }
+  ]
+}
