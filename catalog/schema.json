@@ -24,7 +24,7 @@
         "required": [
           "name", "path", "trustTier", "owner", "category", "risk",
           "platforms", "capabilities", "verifiedAt", "workshopStatus",
-          "routingEval"
+          "syncStatus", "routingEval"
         ],
         "additionalProperties": false,
         "properties": {
@@ -56,6 +56,9 @@
           "verifiedAt": { "type": "string", "format": "date" },
           "workshopStatus": {
             "enum": ["unmanaged", "pending", "applied", "quarantined"]
+          },
+          "syncStatus": {
+            "enum": ["repository-only", "repository-pending-runtime", "repository-and-runtime"]
           },
           "routingEval": {
             "type": "object",

@@ -37,6 +37,9 @@ per-skill score, prompt, and machine-readable case outcomes under
 that an external runtime installation or repository projection has been
 synchronized; those states require separate verification.
 
+`syncStatus` records whether the governed source exists only in Git, is pending
+runtime installation, or has been verified in both the repository and runtime.
+
 Benchmark sources and the patterns accepted or rejected by LabsClaw are recorded
 in `docs/references/skill-library-benchmarks.md`.
 
