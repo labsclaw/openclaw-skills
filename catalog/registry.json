@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "publication": {
+    "status": "blocked",
+    "reason": "The repository has no LICENSE file. External publication requires an explicit license decision."
+  },
+  "skills": [
+    {
+      "name": "ultra-plan-gate-skill",
+      "path": "ultra-plan-gate-skill",
+      "trustTier": "core",
+      "owner": "LabsClaw",
+      "category": "governance",
+      "risk": "low",
+      "platforms": ["windows", "linux", "macos"],
+      "capabilities": {
+        "network": false,
+        "shell": false,
+        "filesystemWrite": false,
+        "configMutation": false
+      },
+      "verifiedAt": "2026-10-04",
+      "workshopStatus": "unmanaged",
+      "syncStatus": "repository-and-runtime",
+      "routingEval": {
+        "status": "pass",
+        "model": "openai/gpt-5.6-sol",
+        "executedAt": "2026-10-04T21:38:10.416Z",
+        "passed": 5,
+        "total": 5,
+        "report": "evals/results/2026-10-04-openai-gpt-5.6-sol.md"
+      },
+      "notes": "Pilot skill. Enforces evidence-backed planning before edits."
+    },
+    {
+      "name": "ultra-adversarial-verify-skill",
+      "path": "ultra-adversarial-verify-skill",
+      "trustTier": "core",
+      "owner": "LabsClaw",
+      "category": "quality",
+      "risk": "low",
+      "platforms": ["windows", "linux", "macos"],
+      "capabilities": {
+        "network": false,
+        "shell": false,
+        "filesystemWrite": false,
+        "configMutation": false
+      },
+      "verifiedAt": "2026-10-04",
+      "workshopStatus": "unmanaged",
+      "syncStatus": "repository-and-runtime",
+      "routingEval": {
+        "status": "pass",
+        "model": "openai/gpt-5.6-sol",
+        "executedAt": "2026-10-04T21:38:10.416Z",
+        "passed": 5,
+        "total": 5,
+        "report": "evals/results/2026-10-04-openai-gpt-5.6-sol.md"
+      },
+      "notes": "Pilot skill. Requires an attacker-style verification pass before delivery."
+    },
+    {
+      "name": "ultra-models-skill",
+      "path": "ultra-models-skill",
+      "trustTier": "experimental",
+      "owner": "LabsClaw",
+      "category": "model-operations",
+      "risk": "high",
+      "platforms": ["windows"],
+      "capabilities": {
+        "network": true,
+        "shell": true,
+        "filesystemWrite": true,
+        "configMutation": true
+      },
+      "verifiedAt": "2026-10-04",
+      "workshopStatus": "applied",
+      "syncStatus": "repository-and-runtime",
+      "routingEval": {
+        "status": "pass",
+        "model": "openai/gpt-5.6-sol",
+        "executedAt": "2026-10-04T21:38:10.416Z",
+        "passed": 5,
+        "total": 5,
+        "report": "evals/results/2026-10-04-openai-gpt-5.6-sol.md"
+      },
+      "notes": "The applied Workshop proposal is materialized in the repository and verified byte-for-byte in the managed runtime installation. The skill stays experimental because it can mutate provider configuration."
+    }
+  ]
+}

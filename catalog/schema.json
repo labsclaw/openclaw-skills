@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://labsclaw.ai/schemas/skill-registry-v1.json",
+  "title": "LabsClaw organizational skill registry",
+  "type": "object",
+  "required": ["schemaVersion", "publication", "skills"],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "publication": {
+      "type": "object",
+      "required": ["status", "reason"],
+      "additionalProperties": false,
+      "properties": {
+        "status": { "enum": ["ready", "blocked"] },
+        "reason": { "type": "string", "minLength": 1 }
+      }
+    },
+    "skills": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "name", "path", "trustTier", "owner", "category", "risk",
+          "platforms", "capabilities", "verifiedAt", "workshopStatus",
+          "syncStatus", "routingEval"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+          "path": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+          "trustTier": {
+            "enum": ["core", "approved", "experimental", "deprecated", "quarantined"]
+          },
+          "owner": { "type": "string", "minLength": 1 },
+          "category": { "type": "string", "minLength": 1 },
+          "risk": { "enum": ["low", "medium", "high", "critical"] },
+          "platforms": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": { "enum": ["windows", "linux", "macos"] }
+          },
+          "capabilities": {
+            "type": "object",
+            "required": ["network", "shell", "filesystemWrite", "configMutation"],
+            "additionalProperties": false,
+            "properties": {
+              "network": { "type": "boolean" },
+              "shell": { "type": "boolean" },
+              "filesystemWrite": { "type": "boolean" },
+              "configMutation": { "type": "boolean" }
+            }
+          },
+          "verifiedAt": { "type": "string", "format": "date" },
+          "workshopStatus": {
+            "enum": ["unmanaged", "pending", "applied", "quarantined"]
+          },
+          "syncStatus": {
+            "enum": ["repository-only", "repository-pending-runtime", "repository-and-runtime"]
+          },
+          "routingEval": {
+            "type": "object",
+            "required": ["status", "model", "executedAt", "passed", "total", "report"],
+            "additionalProperties": false,
+            "properties": {
+              "status": { "enum": ["pass", "fail", "not-run"] },
+              "model": { "type": "string", "minLength": 1 },
+              "executedAt": { "type": "string", "format": "date-time" },
+              "passed": { "type": "integer", "minimum": 0 },
+              "total": { "type": "integer", "minimum": 0 },
+              "report": { "type": "string", "minLength": 1 }
+            }
+          },
+          "notes": { "type": "string" }
+        }
+      }
+    }
+  }
+}

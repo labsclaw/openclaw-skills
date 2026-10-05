@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "publication": {
+    "status": "blocked",
+    "reason": "The repository has no LICENSE file. External publication requires an explicit license decision."
+  },
+  "versioning": "content-sha256",
+  "skills": [
+    {
+      "name": "ultra-adversarial-verify-skill",
+      "description": "Refute your own work before presenting it. Switch from author to attacker. SURVIVED/REFUTED/UNTESTABLE verdicts. Adapted from Rigor Pack adversarial-verify for OpenClaw.",
+      "path": "ultra-adversarial-verify-skill",
+      "trustTier": "core",
+      "owner": "LabsClaw",
+      "category": "quality",
+      "risk": "low",
+      "platforms": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "capabilities": {
+        "network": false,
+        "shell": false,
+        "filesystemWrite": false,
+        "configMutation": false
+      },
+      "verifiedAt": "2026-10-04",
+      "workshopStatus": "unmanaged",
+      "syncStatus": "repository-and-runtime",
+      "routingEval": {
+        "status": "pass",
+        "model": "openai/gpt-5.6-sol",
+        "executedAt": "2026-10-04T21:38:10.416Z",
+        "passed": 5,
+        "total": 5,
+        "report": "evals/results/2026-10-04-openai-gpt-5.6-sol.md"
+      },
+      "contentDigest": "sha256:676d0c8c49d0bbdfbde1c46264ae93a6059e721d6806216398f16f56ba3708af"
+    },
+    {
+      "name": "ultra-models-skill",
+      "description": "Audit model catalogs, dead entries, provider health, fallbacks, and routing with dated evidence.",
+      "path": "ultra-models-skill",
+      "trustTier": "experimental",
+      "owner": "LabsClaw",
+      "category": "model-operations",
+      "risk": "high",
+      "platforms": [
+        "windows"
+      ],
+      "capabilities": {
+        "network": true,
+        "shell": true,
+        "filesystemWrite": true,
+        "configMutation": true
+      },
+      "verifiedAt": "2026-10-04",
+      "workshopStatus": "applied",
+      "syncStatus": "repository-and-runtime",
+      "routingEval": {
+        "status": "pass",
+        "model": "openai/gpt-5.6-sol",
+        "executedAt": "2026-10-04T21:38:10.416Z",
+        "passed": 5,
+        "total": 5,
+        "report": "evals/results/2026-10-04-openai-gpt-5.6-sol.md"
+      },
+      "contentDigest": "sha256:14ab4086ae6228ef717d15ad7f459617635b799053de5e6ac8ba8a1e352d97ce"
+    },
+    {
+      "name": "ultra-plan-gate-skill",
+      "description": "No edits until a written plan exists. Forces GOAL/UNKNOWNS/SUCCESS/STEPS/OUT-OF-SCOPE before any multi-step work. Adapted from Rigor Pack plan-gate for OpenClaw.",
+      "path": "ultra-plan-gate-skill",
+      "trustTier": "core",
+      "owner": "LabsClaw",
+      "category": "governance",
+      "risk": "low",
+      "platforms": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "capabilities": {
+        "network": false,
+        "shell": false,
+        "filesystemWrite": false,
+        "configMutation": false
+      },
+      "verifiedAt": "2026-10-04",
+      "workshopStatus": "unmanaged",
+      "syncStatus": "repository-and-runtime",
+      "routingEval": {
+        "status": "pass",
+        "model": "openai/gpt-5.6-sol",
+        "executedAt": "2026-10-04T21:38:10.416Z",
+        "passed": 5,
+        "total": 5,
+        "report": "evals/results/2026-10-04-openai-gpt-5.6-sol.md"
+      },
+      "contentDigest": "sha256:99cd6bf7a7acbc4839ce781f09156b5595016df634d15a58bb8a7a77fd4f7825"
+    }
+  ]
+}
