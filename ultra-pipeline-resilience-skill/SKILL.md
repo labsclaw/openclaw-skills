@@ -1,6 +1,7 @@
 ---
 name: ultra-pipeline-resilience-skill
 description: Multi-step pipeline execution with atomic state writes, zombie detection, and handoff protocols. Use when orchestrating complex multi-agent workflows.
+license: Apache-2.0
 ---
 
 # Pipeline Resilience Skill

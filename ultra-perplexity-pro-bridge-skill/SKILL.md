@@ -1,6 +1,7 @@
 ---
 name: ultra-perplexity-pro-bridge-skill
 description: "Open Perplexity AI in the browser, select a model, toggle thinking, search, and return full results."
+license: Apache-2.0
 allowed-tools:
   - browser
 user-invocable: true

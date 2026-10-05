@@ -12,9 +12,10 @@ library. The initial pilot catalogs three skills:
 - `ultra-models-skill`
 
 Governance metadata lives in `catalog/registry.json`. `catalog/index.json` is a
-deterministic, content-addressed projection for humans and agents. External
-publication is intentionally blocked until the repository has an explicit
-license.
+deterministic, content-addressed projection for humans and agents.
+LabsClaw-authored content is licensed under Apache-2.0. Separately licensed
+MIT components retain their original terms and are listed in
+`THIRD_PARTY_NOTICES.md`.
 
 Content digests normalize line endings for text files, so the same skill has
 the same version hash on Windows and Linux.
@@ -24,6 +25,7 @@ Run the local gates with:
 ```bash
 node scripts/validate-library.mjs
 node scripts/build-catalog.mjs --check
+node scripts/validate-licenses.mjs
 ```
 
 Run the model-based routing eval with an explicit OpenClaw model:
@@ -45,6 +47,17 @@ runtime installation, or has been verified in both the repository and runtime.
 
 Benchmark sources and the patterns accepted or rejected by LabsClaw are recorded
 in `docs/references/skill-library-benchmarks.md`.
+
+## Licensing
+
+- `LICENSE`: Apache License 2.0 for LabsClaw-authored content.
+- `NOTICE`: attribution required by the Apache distribution.
+- `THIRD_PARTY_NOTICES.md`: MIT scopes, sources, and license locations.
+- Each `SKILL.md` declares an SPDX identifier in its `license` frontmatter field.
+
+The license validator rejects missing or inconsistent SPDX metadata and blocks
+reintroduction of the unresolved Anthropic/Rigor Pack provenance paths removed
+by the licensing hygiene work.
 
 ## Skills Included
 

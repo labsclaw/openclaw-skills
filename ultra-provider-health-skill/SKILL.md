@@ -1,15 +1,10 @@
 ---
 name: ultra-provider-health-skill
-description: "Track provider client configuration health, including rate-limit bypass headers. Use when diagnosing provider/model failures."
-  Monitor provider client health — version, headers, endpoints, and
-  API contract drift. Tracks OpenCode client version against npm
-  registry, validates rate-limit bypass headers, and periodically
-  checks if provider endpoints still respond as expected. Use when
-  agents report "couldn't generate a response" with no clear model
-  failure, after OpenCode CLI updates, when rate-limit patterns
-  change, or during incident investigation for provider-side issues.
-  Trigger terms: provider health, client version, header check,
-  opencode version, provider incident, endpoint check, agent error.
+description: >-
+  Track provider client versions, headers, endpoints, and API contract drift.
+  Use when diagnosing provider or model failures, after client updates, when
+  rate-limit behavior changes, or during provider-side incident investigation.
+license: Apache-2.0
 ---
 
 # Ultra Provider Health Skill

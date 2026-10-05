@@ -1,6 +1,7 @@
 ---
 name: ultra-chrome-stealth-navigator-skill
 description: Connect to user's running Chrome instance via CDP remote debugging with existing profile and cookies. Use when bypassing Cloudflare, DataDome, or perimeter bot detection.
+license: Apache-2.0
 ---
 
 # Skill: chrome-stealth-navigator

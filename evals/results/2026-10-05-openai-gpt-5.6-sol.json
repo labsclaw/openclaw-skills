@@ -1,0 +1,166 @@
+{
+  "schemaVersion": 1,
+  "executedAt": "2026-10-05T04:17:25.575Z",
+  "model": "openai/gpt-5.6-sol",
+  "provider": "openai",
+  "responseModel": "gpt-5.6-sol",
+  "sessionKey": "agent:main:routing-eval-1791173829489",
+  "runId": "d773ed33-ea57-4525-b3b5-242542aec0dd",
+  "promptPath": "evals/results/2026-10-05-openai-gpt-5.6-sol-prompt.md",
+  "candidateSkills": [
+    {
+      "name": "ultra-plan-gate-skill",
+      "description": "Requires an evidence-based written plan before multi-step edits. Use when work spans several files, has meaningful unknowns, changes external state, or needs explicit success criteria and scope control.",
+      "contentDigest": "sha256:89d494078df882524c7b416727229c08a9ce63b06fbeb3a1828feb5b5add26ce"
+    },
+    {
+      "name": "ultra-adversarial-verify-skill",
+      "description": "Challenges completed work before delivery by testing claims, assumptions, edge cases, and evidence. Use for high-risk changes, completion claims, migrations, releases, and work that needs an explicit SURVIVED, REFUTED, or UNTESTABLE verdict.",
+      "contentDigest": "sha256:72119766d65a355cc349485a5bca753e2e2accaab01211bb8a7831910e4e494c"
+    },
+    {
+      "name": "ultra-models-skill",
+      "description": "Audit model catalogs, dead entries, provider health, fallbacks, and routing with dated evidence.",
+      "contentDigest": "sha256:4c9b95b8ed0d37c6cc67235516c599dfefbc5cf5d948f3e9d4b669f41efa0bba"
+    }
+  ],
+  "passed": 15,
+  "total": 15,
+  "accuracy": 1,
+  "perSkill": {
+    "ultra-plan-gate-skill": {
+      "passed": 5,
+      "total": 5
+    },
+    "ultra-adversarial-verify-skill": {
+      "passed": 5,
+      "total": 5
+    },
+    "ultra-models-skill": {
+      "passed": 5,
+      "total": 5
+    }
+  },
+  "cases": [
+    {
+      "id": "plan-positive-1",
+      "skill": "ultra-plan-gate-skill",
+      "type": "positive",
+      "expected": "ultra-plan-gate-skill",
+      "selected": "ultra-plan-gate-skill",
+      "pass": true
+    },
+    {
+      "id": "plan-positive-2",
+      "skill": "ultra-plan-gate-skill",
+      "type": "positive",
+      "expected": "ultra-plan-gate-skill",
+      "selected": "ultra-plan-gate-skill",
+      "pass": true
+    },
+    {
+      "id": "plan-positive-3",
+      "skill": "ultra-plan-gate-skill",
+      "type": "positive",
+      "expected": "ultra-plan-gate-skill",
+      "selected": "ultra-plan-gate-skill",
+      "pass": true
+    },
+    {
+      "id": "plan-negative-1",
+      "skill": "ultra-plan-gate-skill",
+      "type": "negative",
+      "expected": "NONE",
+      "selected": "NONE",
+      "pass": true
+    },
+    {
+      "id": "plan-negative-2",
+      "skill": "ultra-plan-gate-skill",
+      "type": "negative",
+      "expected": "NONE",
+      "selected": "NONE",
+      "pass": true
+    },
+    {
+      "id": "verify-positive-1",
+      "skill": "ultra-adversarial-verify-skill",
+      "type": "positive",
+      "expected": "ultra-adversarial-verify-skill",
+      "selected": "ultra-adversarial-verify-skill",
+      "pass": true
+    },
+    {
+      "id": "verify-positive-2",
+      "skill": "ultra-adversarial-verify-skill",
+      "type": "positive",
+      "expected": "ultra-adversarial-verify-skill",
+      "selected": "ultra-adversarial-verify-skill",
+      "pass": true
+    },
+    {
+      "id": "verify-positive-3",
+      "skill": "ultra-adversarial-verify-skill",
+      "type": "positive",
+      "expected": "ultra-adversarial-verify-skill",
+      "selected": "ultra-adversarial-verify-skill",
+      "pass": true
+    },
+    {
+      "id": "verify-negative-1",
+      "skill": "ultra-adversarial-verify-skill",
+      "type": "negative",
+      "expected": "NONE",
+      "selected": "NONE",
+      "pass": true
+    },
+    {
+      "id": "verify-negative-2",
+      "skill": "ultra-adversarial-verify-skill",
+      "type": "negative",
+      "expected": "NONE",
+      "selected": "NONE",
+      "pass": true
+    },
+    {
+      "id": "models-positive-1",
+      "skill": "ultra-models-skill",
+      "type": "positive",
+      "expected": "ultra-models-skill",
+      "selected": "ultra-models-skill",
+      "pass": true
+    },
+    {
+      "id": "models-positive-2",
+      "skill": "ultra-models-skill",
+      "type": "positive",
+      "expected": "ultra-models-skill",
+      "selected": "ultra-models-skill",
+      "pass": true
+    },
+    {
+      "id": "models-positive-3",
+      "skill": "ultra-models-skill",
+      "type": "positive",
+      "expected": "ultra-models-skill",
+      "selected": "ultra-models-skill",
+      "pass": true
+    },
+    {
+      "id": "models-negative-1",
+      "skill": "ultra-models-skill",
+      "type": "negative",
+      "expected": "NONE",
+      "selected": "NONE",
+      "pass": true
+    },
+    {
+      "id": "models-negative-2",
+      "skill": "ultra-models-skill",
+      "type": "negative",
+      "expected": "NONE",
+      "selected": "NONE",
+      "pass": true
+    }
+  ]
+}

@@ -1,11 +1,10 @@
 ---
 name: ultra-x-stealth-skill
-description: "Post content on X.com using Playwright with anti-detection and human behavior simulation. Use when publishing to X."
-  Post threads on X.com (Twitter) using Playwright with stealth plugin and
-  human behavior simulation. Bypasses bot detection with Bézier mouse curves,
-  variable typing, random delays, and anti-fingerprinting. Use when x-poster
-  gets blocked or when stealth posting is needed. Trigger terms: X stealth,
-  X ban, post X safely, stealth tweet, anti-detection X, post without ban.
+description: >-
+  Post content or threads on X.com with Playwright, human-like interaction, and
+  anti-detection measures. Use when x-poster is blocked or stealth publishing
+  is explicitly needed.
+license: MIT
 user-invocable: true
 metadata:
   author: ClawLabs

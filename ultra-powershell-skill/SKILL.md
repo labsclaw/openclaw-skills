@@ -1,6 +1,7 @@
 ---
 name: ultra-powershell-skill
 description: "Master PowerShell 7 (pwsh) and Windows scripting safely. Native commands, path escaping, encoding safety, and process lifecycle."
+license: MIT
 ---
 
 # Ultra PowerShell Skill

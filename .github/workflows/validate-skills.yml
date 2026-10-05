@@ -20,3 +20,7 @@ jobs:
         run: node scripts/validate-library.mjs
       - name: Verify generated catalog index
         run: node scripts/build-catalog.mjs --check
+      - name: Validate SPDX metadata and third-party notices
+        run: node scripts/validate-licenses.mjs
+      - name: Test code review evidence helper
+        run: node ultra-code-review-skill/scripts/code-review.test.cjs

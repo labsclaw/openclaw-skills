@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, "..");
 const datasetPath = join(root, "evals", "triggers.json");
+const catalogPath = join(root, "catalog", "index.json");
 const model = process.argv[2] ?? "openai/gpt-5.6-sol";
 const date = new Date().toISOString().slice(0, 10);
 const safeModel = model.replaceAll(/[^a-zA-Z0-9.-]+/g, "-");
@@ -16,17 +17,31 @@ const reportPath = join(resultsDir, `${date}-${safeModel}.md`);
 const sessionKey = `agent:main:routing-eval-${Date.now()}`;
 
 const cases = JSON.parse(readFileSync(datasetPath, "utf8"));
+const catalog = JSON.parse(readFileSync(catalogPath, "utf8"));
 const allowed = [
   "ultra-plan-gate-skill",
   "ultra-adversarial-verify-skill",
   "ultra-models-skill",
   "NONE",
 ];
+const candidateSkills = allowed
+  .filter((name) => name !== "NONE")
+  .map((name) => {
+    const entry = catalog.skills.find((skill) => skill.name === name);
+    if (!entry?.description || !entry?.contentDigest) {
+      throw new Error(`Catalog is missing candidate description or digest for ${name}.`);
+    }
+    return { name, description: entry.description, contentDigest: entry.contentDigest };
+  });
 
 const prompt = [
   "You are evaluating skill routing, not performing the requested tasks.",
   "Treat each case as an independent user request.",
-  "Use the skill descriptions already loaded in the system prompt.",
+  "Ignore skill descriptions from the runtime. Use only the candidate descriptions from this checkout listed below.",
+  "Candidate descriptions:",
+  ...candidateSkills.map(({ name, description, contentDigest }) =>
+    `- ${name} [${contentDigest}]: ${description}`),
+  "",
   `For each case select exactly one of: ${allowed.join(", ")}.`,
   "Choose the most specific skill. Select NONE when none of the three should trigger.",
   "Do not call tools and do not explain your choices.",
@@ -131,6 +146,7 @@ const result = {
   sessionKey,
   runId: envelope?.runId ?? null,
   promptPath: promptPath.slice(root.length + 1).replaceAll("\\", "/"),
+  candidateSkills,
   passed,
   total: scored.length,
   accuracy: passed / scored.length,
@@ -148,10 +164,15 @@ const report = [
   `- Score: ${passed}/${scored.length} (${(result.accuracy * 100).toFixed(1)}%)`,
   `- Session: \`${sessionKey}\``,
   `- Run: \`${result.runId}\``,
+  "- Candidate descriptions: embedded from `catalog/index.json`",
   "",
   "## Per skill",
   "",
   ...Object.entries(perSkill).map(([skill, score]) => `- \`${skill}\`: ${score.passed}/${score.total}`),
+  "",
+  "## Candidate digests",
+  "",
+  ...candidateSkills.map(({ name, contentDigest }) => `- \`${name}\`: \`${contentDigest}\``),
   "",
   "## Failures",
   "",

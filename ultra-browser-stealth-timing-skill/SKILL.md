@@ -1,6 +1,7 @@
 ---
 name: "browser-stealth-timing"
 description: "Add human-like timing and anti-detection patterns to browser automation"
+license: Apache-2.0
 ---
 
 # Skill: browser-stealth-timing

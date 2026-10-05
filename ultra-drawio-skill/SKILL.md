@@ -1,15 +1,16 @@
 ---
 name: ultra-drawio-skill
-description: "Generate, edit, validate, and export draw.io (.drawio) XML diagrams. Use for architecture and flow diagrams."
-  Use when creating, editing, validating, or converting draw.io diagrams (.drawio, .xml).
-  Also use when the user asks for flowcharts, ER diagrams, sequence diagrams, UML,
-  or cloud architecture visuals. Trigger terms: diagram, flowchart, architecture,
-  draw.io, UML, network topology, sequence diagram.
-category: development
-tags:
-  - design
-  - architecture
-  - documentation
+description: >-
+  Generate, edit, validate, and export draw.io XML diagrams. Use when creating,
+  editing, validating, or converting draw.io files, flowcharts, ER diagrams,
+  sequence diagrams, UML, network topology, or cloud architecture visuals.
+license: Apache-2.0
+metadata:
+  category: development
+  tags:
+    - design
+    - architecture
+    - documentation
 ---
 
 # Ultra Draw.io Skill

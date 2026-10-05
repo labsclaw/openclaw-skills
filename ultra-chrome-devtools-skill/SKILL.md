@@ -1,6 +1,7 @@
 ---
 name: ultra-chrome-devtools-skill
 description: "Diagnóstico e otimização de performance web usando Chrome DevTools MCP."
+license: Apache-2.0
 ---
 
 # Chrome DevTools Performance Skill
