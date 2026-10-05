@@ -1,6 +1,7 @@
 ---
 name: ultra-create-skill
 description: "Author, review, and evaluate AgentSkills following Anthropic and OpenAI best practices. Use when creating or improving skills."
+license: Apache-2.0
 ---
 
 # Ultra Create Skill

@@ -1,6 +1,7 @@
 ---
 name: ultra-memory-skill
 description: "Segmented Structured Context (SSC) memory architecture for LLM agents. Gated zero-cost retrieval, index routing, and hybrid wiki caching."
+license: MIT
 ---
 
 # Ultra Memory Skill (SSC Core)

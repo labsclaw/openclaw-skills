@@ -1,6 +1,7 @@
 ---
 name: ultra-live-state-truth-skill
-description: "Docs are stale by default. Verify against the LIVE system before acting. Cheapest sufficient check rule. Adapted from Rigor Pack live-state-truth."
+description: "Verifies mutable facts against the authoritative live source before acting or reporting. Use for service health, configuration, versions, PR status, deployments, files, processes, provider catalogs, and other state that may have changed."
+license: Apache-2.0
 metadata:
   {
     "openclaw":
@@ -12,52 +13,33 @@ metadata:
 
 # Ultra Live State Truth
 
-Docs are stale by default. Verify against the live system before acting.
+Mutable claims require current evidence from the system that owns the state.
 
-Adapted from [Rigor Pack live-state-truth](https://github.com/anthropics/claude-code/tree/main/plugins/rigor-pack).
+## Procedure
 
-## The Rule
+1. Name the fact the task depends on.
+2. Identify its authoritative source.
+3. Choose the least expensive check that can settle the fact.
+4. Observe the state before mutating it.
+5. Observe it again after mutation when success depends on the result.
+6. Attach a timestamp or revision when the evidence can become stale.
 
-When you need a fact to do your work, and that fact could have changed since it was last written down, **check the live source** before relying on it. Documentation is a snapshot. Systems move.
+## Source Selection
 
-## Cheapest Sufficient Check
-
-The check should be proportional to the risk:
-
-| Situation | Sufficient Check |
+| Claim | Preferred evidence |
 |---|---|
-| Config value in a file you can read | Read the file |
-| API endpoint behavior | Call the endpoint |
-| Database schema | Query `INFORMATION_SCHEMA` or equivalent |
-| Running process status | Check the process |
-| File exists at path | `stat` or `ls` the path |
-| Version of a dependency | Check lockfile or `--version` |
+| File or configuration value | Read the effective file or configuration API |
+| Service availability | Health endpoint, listener, or service manager |
+| Database shape or record | Database query |
+| Dependency version | Lockfile, package manager, or executable version |
+| GitHub state | Current GitHub API or CLI response |
+| Deployed behavior | Request against the deployed target |
 
-**Do NOT:**
-- Claim "I ran the code" when you only read the source.
-- Assume a service is up because it was up yesterday.
-- Trust a README over the actual running config.
+Documentation and memory can locate the check. They do not replace it.
 
-## When to Apply
+## Constraints
 
-1. **Before acting on any configuration** — config files, env vars, feature flags
-2. **Before assuming a service state** — running, stopped, healthy, degraded
-3. **Before citing a version** — dependencies, APIs, protocols
-4. **Before relying on file existence** — paths, directories, data files
-
-## What NOT to Do
-
-- Do not add ceremony. "I am now checking the live state..." is narration, not action.
-- Do not check things that cannot change (mathematical facts, language syntax).
-- Do not re-verify static facts that were just verified in this session.
-
-## Integration with OpenClaw
-
-- Before `exec` commands that depend on service state, check with a lightweight probe
-- Before editing config, read current state first
-- Before reporting "PR is open/closed", verify with `gh pr view`
-- Before citing a file path, confirm it exists
-
-## The Tell
-
-If you are about to write a fact you learned from a document older than 24 hours, stop and verify.
+- Do not repeat a state-changing action merely because its result was not observed.
+- Do not claim execution from source inspection.
+- Do not recheck immutable facts or a mutable fact already verified in the current operation unless it could have changed.
+- If the authoritative source is unavailable, report the fact as unverified and name the missing check.

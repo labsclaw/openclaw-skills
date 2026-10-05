@@ -1,6 +1,7 @@
 ---
 name: ultra-find-skill
 description: "Skill discovery engine across all known OpenClaw skill directories. Use when searching for agent skills, asking 'how do I do X', 'find a skill for X', exploring what skills exist locally or remotely, or evaluating whether a skill exists."
+license: Apache-2.0
 ---
 
 # Ultra Find Skill

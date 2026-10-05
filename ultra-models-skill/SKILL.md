@@ -1,6 +1,7 @@
 ---
 name: ultra-models-skill
 description: "Audit model catalogs, dead entries, provider health, fallbacks, and routing with dated evidence."
+license: Apache-2.0
 ---
 
 # Model Catalog Operations

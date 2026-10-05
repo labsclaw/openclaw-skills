@@ -1,6 +1,7 @@
 ---
 name: ultra-grok-image-skill
 description: "Generate images via Grok on X.com browser and extract via mediaId API URL."
+license: Apache-2.0
 user-invocable: true
 metadata:
   author: ClawLabs

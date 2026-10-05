@@ -1,6 +1,7 @@
 ---
 name: ultra-ruthless-editor-skill
-description: "Every sentence earns its place. Target: 30% shorter, zero information loss. Cut narration, keep findings. Adapted from Rigor Pack ruthless-editor."
+description: "Compresses technical and executive writing without losing facts, causal links, constraints, or actions. Use to tighten reports, documentation, reviews, incident summaries, commit messages, and user-facing explanations."
+license: Apache-2.0
 metadata:
   {
     "openclaw":
@@ -12,48 +13,31 @@ metadata:
 
 # Ultra Ruthless Editor
 
-Every sentence earns its place. Target: 30% shorter, zero information loss.
+Make the text shorter by removing low-value language, not by deleting evidence.
 
-Adapted from [Rigor Pack ruthless-editor](https://github.com/anthropics/claude-code/tree/main/plugins/rigor-pack).
+## Editing Pass
 
-## The Pass
+1. Identify the audience and the decision or action the text supports.
+2. Mark facts, numbers, dates, ownership, causality, constraints, uncertainty, and next actions as protected content.
+3. Remove repeated claims, throat-clearing, process narration, empty intensifiers, and generic conclusions.
+4. Replace indirect phrases with direct verbs and concrete subjects.
+5. Merge sentences only when their causal or conditional relationship remains clear.
+6. Re-read for altered meaning, missing qualifiers, or unsupported certainty.
 
-After writing anything — code comments, documentation, commit messages, analysis — run this edit:
+## Preserve
 
-1. **Cut every sentence that does not carry information.** "It is worth noting that..." → delete. "In order to..." → "To...". "Due to the fact that..." → "because".
+- exact evidence and attribution;
+- important uncertainty and exceptions;
+- why a decision was made;
+- what failed and its cause;
+- who acts next and under which condition.
 
-2. **Cut the narration of your own process.** "I examined the code and found..." → "The code has...". "After careful analysis..." → just give the analysis.
+## Remove
 
-3. **Cut hedging that costs more than it saves.** "This might potentially..." → "This could...". "It seems like perhaps..." → state what you see.
+- announcements that content is about to appear;
+- narration of obvious analysis steps;
+- duplicate summaries;
+- praise, filler, and hedging that do not change the claim;
+- decorative structure that makes a short answer longer.
 
-4. **Cut throat-clearing.** "Let me explain..." → explain. "Here is what I found..." → state what you found.
-
-5. **Compress what remains.** Merge sentences that say the same thing twice. Replace clauses with adjectives. Use active voice.
-
-## Targets
-
-- **30% word reduction** with zero information loss
-- **Zero filler words**: actually, basically, essentially, simply, just, very, really
-- **Zero process narration**: no "I think", "I believe", "In my opinion"
-- **Zero throat-clearing**: no "Let me", "Here is", "I will now"
-
-## What Stays
-
-- Specific numbers and dates
-- Named entities (people, tools, versions)
-- Causal relationships (X caused Y)
-- Conditions and constraints (only when Z)
-- Actionable conclusions
-
-## What Gets Cut
-
-- "Important to note"
-- "Worth mentioning"
-- "It goes without saying" (then don't say it)
-- "As a matter of fact"
-- "At the end of the day"
-- Any sentence that restates the previous one with different words
-
-## The Test
-
-After cutting, re-read. If you can remove another sentence without losing meaning, you are not done.
+There is no mandatory reduction percentage. Stop when every remaining sentence changes understanding, confidence, or action.
