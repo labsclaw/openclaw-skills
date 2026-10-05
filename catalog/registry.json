@@ -21,7 +21,7 @@
       },
       "verifiedAt": "2026-10-05",
       "workshopStatus": "unmanaged",
-      "syncStatus": "repository-pending-runtime",
+      "syncStatus": "repository-and-runtime",
       "routingEval": {
         "status": "pass",
         "model": "openai/gpt-5.6-sol",
@@ -48,7 +48,7 @@
       },
       "verifiedAt": "2026-10-05",
       "workshopStatus": "unmanaged",
-      "syncStatus": "repository-pending-runtime",
+      "syncStatus": "repository-and-runtime",
       "routingEval": {
         "status": "pass",
         "model": "openai/gpt-5.6-sol",
@@ -75,7 +75,7 @@
       },
       "verifiedAt": "2026-10-05",
       "workshopStatus": "applied",
-      "syncStatus": "repository-pending-runtime",
+      "syncStatus": "repository-and-runtime",
       "routingEval": {
         "status": "pass",
         "model": "openai/gpt-5.6-sol",
