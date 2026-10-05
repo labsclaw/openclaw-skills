@@ -16,6 +16,9 @@ deterministic, content-addressed projection for humans and agents. External
 publication is intentionally blocked until the repository has an explicit
 license.
 
+Content digests normalize line endings for text files, so the same skill has
+the same version hash on Windows and Linux.
+
 Run the local gates with:
 
 ```bash

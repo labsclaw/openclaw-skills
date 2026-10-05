@@ -50,11 +50,21 @@ async function walkFiles(directory) {
   return output.sort((a, b) => a.localeCompare(b));
 }
 
+const textExtensions = new Set([
+  ".cjs", ".js", ".json", ".md", ".mjs", ".ps1", ".txt", ".yaml", ".yml"
+]);
+
+async function readCanonicalContent(file) {
+  const content = await fs.readFile(file);
+  if (!textExtensions.has(path.extname(file).toLowerCase())) return content;
+  return content.toString("utf8").replace(/\r\n?/g, "\n");
+}
+
 async function digestDirectory(directory) {
   const hash = createHash("sha256");
   for (const file of await walkFiles(directory)) {
     const relative = path.relative(directory, file).replaceAll(path.sep, "/");
-    hash.update(relative).update("\0").update(await fs.readFile(file)).update("\0");
+    hash.update(relative).update("\0").update(await readCanonicalContent(file)).update("\0");
   }
   return `sha256:${hash.digest("hex")}`;
 }

@@ -36,7 +36,7 @@
         "total": 5,
         "report": "evals/results/2026-10-04-openai-gpt-5.6-sol.md"
       },
-      "contentDigest": "sha256:4ec64d88f2ea3c6814bbc7a1c4a8290bcf5ead2c39b2ca599daea4c30987c551"
+      "contentDigest": "sha256:676d0c8c49d0bbdfbde1c46264ae93a6059e721d6806216398f16f56ba3708af"
     },
     {
       "name": "ultra-models-skill",
@@ -66,7 +66,7 @@
         "total": 5,
         "report": "evals/results/2026-10-04-openai-gpt-5.6-sol.md"
       },
-      "contentDigest": "sha256:af5133eab688124cfe2597ff52b1499b7bc9774dddabee3f610ac265fbf2b70d"
+      "contentDigest": "sha256:14ab4086ae6228ef717d15ad7f459617635b799053de5e6ac8ba8a1e352d97ce"
     },
     {
       "name": "ultra-plan-gate-skill",
@@ -98,7 +98,7 @@
         "total": 5,
         "report": "evals/results/2026-10-04-openai-gpt-5.6-sol.md"
       },
-      "contentDigest": "sha256:d9a6a1ec5e04a5bd0c7779f32fbdfbbb5c1d317d81f9552c6bf65af58b1da2a2"
+      "contentDigest": "sha256:99cd6bf7a7acbc4839ce781f09156b5595016df634d15a58bb8a7a77fd4f7825"
     }
   ]
 }
