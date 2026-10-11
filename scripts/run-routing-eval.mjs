@@ -22,6 +22,7 @@ const allowed = [
   "ultra-plan-gate-skill",
   "ultra-adversarial-verify-skill",
   "ultra-models-skill",
+  "opencode-cli-bridge",
   "NONE",
 ];
 const candidateSkills = allowed
