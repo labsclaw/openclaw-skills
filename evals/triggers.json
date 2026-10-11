@@ -13,5 +13,10 @@
   { "id": "models-positive-2", "skill": "ultra-models-skill", "type": "positive", "query": "Which free models are available now, and are any fallbacks pointing to dead IDs?", "expect": ["ultra-models-skill"] },
   { "id": "models-positive-3", "skill": "ultra-models-skill", "type": "positive", "query": "Compare the Antigravity proxy model endpoint with openclaw.json.", "expect": ["ultra-models-skill"] },
   { "id": "models-negative-1", "skill": "ultra-models-skill", "type": "negative", "query": "Explain the transformer attention mechanism.", "expect": [] },
-  { "id": "models-negative-2", "skill": "ultra-models-skill", "type": "negative", "query": "Which model should I choose for a fictional character in my novel?", "expect": [] }
+  { "id": "models-negative-2", "skill": "ultra-models-skill", "type": "negative", "query": "Which model should I choose for a fictional character in my novel?", "expect": [] },
+  { "id": "bridge-positive-1", "skill": "opencode-cli-bridge", "type": "positive", "query": "Delegate this multi-file refactor to the OpenCode CLI and stream the result back.", "expect": ["opencode-cli-bridge"] },
+  { "id": "bridge-positive-2", "skill": "opencode-cli-bridge", "type": "positive", "query": "My direct model call came back with 403 FreeTierError. Run the task through the installed opencode CLI instead.", "expect": ["opencode-cli-bridge"] },
+  { "id": "bridge-positive-3", "skill": "opencode-cli-bridge", "type": "positive", "query": "Resume the previous OpenCode session and continue the work where it stopped.", "expect": ["opencode-cli-bridge"] },
+  { "id": "bridge-negative-1", "skill": "opencode-cli-bridge", "type": "negative", "query": "Summarize this paragraph in two sentences.", "expect": [] },
+  { "id": "bridge-negative-2", "skill": "opencode-cli-bridge", "type": "negative", "query": "What is the current gateway port?", "expect": [] }
 ]

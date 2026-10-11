@@ -7,6 +7,38 @@
   "versioning": "content-sha256",
   "skills": [
     {
+      "name": "opencode-cli-bridge",
+      "description": "Delegate engineering work to the OpenCode CLI instead of calling a Zen model API key directly. Use when a task needs heavy multi-file work, an OpenCode agent such as the Sisyphus ultraworker, session resume, or when a direct model call fails with a 403 FreeTierError.",
+      "path": "opencode-cli-bridge",
+      "trustTier": "experimental",
+      "owner": "LabsClaw",
+      "category": "agent-orchestration",
+      "risk": "medium",
+      "platforms": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "capabilities": {
+        "network": false,
+        "shell": true,
+        "filesystemWrite": false,
+        "configMutation": false
+      },
+      "verifiedAt": "2026-10-11",
+      "workshopStatus": "unmanaged",
+      "syncStatus": "repository-only",
+      "routingEval": {
+        "status": "not-run",
+        "model": "pending approval for a live model call",
+        "executedAt": "2026-10-11",
+        "passed": 0,
+        "total": 5,
+        "report": "evals/results/2026-10-11-opencode-cli-bridge-not-run.md"
+      },
+      "contentDigest": "sha256:bdae99781b33d49ac2057385685506fe0219596b2e6c214916e6e4a4f80e08d3"
+    },
+    {
       "name": "ultra-adversarial-verify-skill",
       "description": "Challenges completed work before delivery by testing claims, assumptions, edge cases, and evidence. Use for high-risk changes, completion claims, migrations, releases, and work that needs an explicit SURVIVED, REFUTED, or UNTESTABLE verdict.",
       "path": "ultra-adversarial-verify-skill",

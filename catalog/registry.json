@@ -85,6 +85,33 @@
         "report": "evals/results/2026-10-05-openai-gpt-5.6-sol.md"
       },
       "notes": "The applied Workshop proposal is materialized in the repository. Runtime synchronization is pending because SPDX metadata changed. The skill stays experimental because it can mutate provider configuration."
+    },
+    {
+      "name": "opencode-cli-bridge",
+      "path": "opencode-cli-bridge",
+      "trustTier": "experimental",
+      "owner": "LabsClaw",
+      "category": "agent-orchestration",
+      "risk": "medium",
+      "platforms": ["windows", "linux", "macos"],
+      "capabilities": {
+        "network": false,
+        "shell": true,
+        "filesystemWrite": false,
+        "configMutation": false
+      },
+      "verifiedAt": "2026-10-11",
+      "workshopStatus": "unmanaged",
+      "syncStatus": "repository-only",
+      "routingEval": {
+        "status": "not-run",
+        "model": "pending approval for a live model call",
+        "executedAt": "2026-10-11",
+        "passed": 0,
+        "total": 5,
+        "report": "evals/results/2026-10-11-opencode-cli-bridge-not-run.md"
+      },
+      "notes": "CLI-backed delegation bridge to an installed opencode process. Shell capability is required because the bridge spawns a child process. Stays experimental until the routing eval runs and the CLI path is exercised on more than one platform."
     }
   ]
 }
