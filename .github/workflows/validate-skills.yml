@@ -1,0 +1,26 @@
+name: Validate organizational skill library
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate governance, structure, security, and trigger fixtures
+        run: node scripts/validate-library.mjs
+      - name: Verify generated catalog index
+        run: node scripts/build-catalog.mjs --check
+      - name: Validate SPDX metadata and third-party notices
+        run: node scripts/validate-licenses.mjs
+      - name: Test code review evidence helper
+        run: node ultra-code-review-skill/scripts/code-review.test.cjs

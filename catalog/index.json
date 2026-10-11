@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "publication": {
+    "status": "ready",
+    "reason": "LabsClaw-authored content is Apache-2.0 and separately licensed MIT scopes are declared in THIRD_PARTY_NOTICES.md."
+  },
+  "versioning": "content-sha256",
+  "skills": [
+    {
+      "name": "ultra-adversarial-verify-skill",
+      "description": "Refute your own work before presenting it. Findings in the deliverable, never the narration.",
+      "path": "ultra-adversarial-verify-skill",
+      "trustTier": "core",
+      "owner": "LabsClaw",
+      "category": "quality",
+      "risk": "low",
+      "platforms": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "capabilities": {
+        "network": false,
+        "shell": false,
+        "filesystemWrite": false,
+        "configMutation": false
+      },
+      "verifiedAt": "2026-10-05",
+      "workshopStatus": "unmanaged",
+      "syncStatus": "repository-and-runtime",
+      "routingEval": {
+        "status": "pass",
+        "model": "openai/gpt-5.6-sol",
+        "executedAt": "2026-10-05T04:17:25.575Z",
+        "passed": 5,
+        "total": 5,
+        "report": "evals/results/2026-10-05-openai-gpt-5.6-sol.md"
+      },
+      "contentDigest": "sha256:c0fb4a70a04e76259bd3afb6072bfe9b290b057f3782673e11585dd23300fa0f"
+    },
+    {
+      "name": "ultra-models-skill",
+      "description": "Use when auditing free AI model availability across providers (OpenRouter, OpenCode, KiloCode, NVIDIA), checking if configured models still exist in live APIs, discovering new free models worth adding, diagnosing silent fallback failures, comparing openclaw.json config against actual API responses, building capability maps for agent allocation, or generating routing plans by mission type. Also use when users say \"check models\", \"list free models\", \"which models are available\", \"are my fallbacks working\", \"audit models\", \"model health check\", \"free model monitor\", \"build model map\", \"plan routing\", \"allocate models\", or want to verify provider model status. Trigger terms: free models, model audit, model check, fallback broken, model status, provider models, model monitor, compare config, model health, list providers, model map, routing plan, agent allocation.",
+      "path": "ultra-models-skill",
+      "trustTier": "experimental",
+      "owner": "LabsClaw",
+      "category": "model-operations",
+      "risk": "high",
+      "platforms": [
+        "windows"
+      ],
+      "capabilities": {
+        "network": true,
+        "shell": true,
+        "filesystemWrite": true,
+        "configMutation": true
+      },
+      "verifiedAt": "2026-10-05",
+      "workshopStatus": "applied",
+      "syncStatus": "repository-and-runtime",
+      "routingEval": {
+        "status": "pass",
+        "model": "openai/gpt-5.6-sol",
+        "executedAt": "2026-10-05T04:17:25.575Z",
+        "passed": 5,
+        "total": 5,
+        "report": "evals/results/2026-10-05-openai-gpt-5.6-sol.md"
+      },
+      "contentDigest": "sha256:6577996773fcd54dde8a689a5f11f854078c4c4ecebe2f777a2c0735e2030316"
+    },
+    {
+      "name": "ultra-plan-gate-skill",
+      "description": "No edits until a written plan exists: goal, unknowns, success criteria, step order.",
+      "path": "ultra-plan-gate-skill",
+      "trustTier": "core",
+      "owner": "LabsClaw",
+      "category": "governance",
+      "risk": "low",
+      "platforms": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "capabilities": {
+        "network": false,
+        "shell": false,
+        "filesystemWrite": false,
+        "configMutation": false
+      },
+      "verifiedAt": "2026-10-05",
+      "workshopStatus": "unmanaged",
+      "syncStatus": "repository-and-runtime",
+      "routingEval": {
+        "status": "pass",
+        "model": "openai/gpt-5.6-sol",
+        "executedAt": "2026-10-05T04:17:25.575Z",
+        "passed": 5,
+        "total": 5,
+        "report": "evals/results/2026-10-05-openai-gpt-5.6-sol.md"
+      },
+      "contentDigest": "sha256:893b3a395bf8d3d744ecbea83ca0db64baf7863bfea6dea639ebd1d02f0180a8"
+    }
+  ]
+}
