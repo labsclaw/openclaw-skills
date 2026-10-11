@@ -23,10 +23,11 @@ function whichOpencode() {
 
 function detectOMO() {
   try {
-    const res = spawnSync('opencode', ['agent', 'list'], { encoding: 'utf8', timeout: 15000, env: { ...process.env, ...HEADLESS_ENV } });
+    const res = spawnSync(whichOpencode(), ['agent', 'list'], { encoding: 'utf8', timeout: 20000, env: { ...process.env, ...HEADLESS_ENV } });
     if (res.error) return false;
-    const out = res.stdout || '';
-    return out.includes('Sisyphus') || out.includes('sisyphus') || out.includes('Prometheus') || out.includes('prometheus') || out.includes('hephaestus') || out.includes('Hephaestus');
+    const out = (res.stdout || '') + (res.stderr || '');
+    const t = out.toLowerCase();
+    return t.includes('sisyphus') || t.includes('prometheus') || t.includes('atlas') || t.includes('hephaestus') || t.includes('ultraworker');
   } catch (e) { return false; }
 }
 
