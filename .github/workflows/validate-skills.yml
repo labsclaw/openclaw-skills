@@ -20,7 +20,11 @@ jobs:
         run: node scripts/validate-library.mjs
       - name: Verify generated catalog index
         run: node scripts/build-catalog.mjs --check
+      - name: Test portable catalog checks
+        run: node --test scripts/build-catalog.test.mjs
       - name: Validate SPDX metadata and third-party notices
         run: node scripts/validate-licenses.mjs
       - name: Test code review evidence helper
         run: node ultra-code-review-skill/scripts/code-review.test.cjs
+      - name: Test bounded code context helper
+        run: node --test ultra-code-context-skill/scripts/context-pack.test.mjs

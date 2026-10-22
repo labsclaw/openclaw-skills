@@ -13,5 +13,11 @@
   { "id": "models-positive-2", "skill": "ultra-models-skill", "type": "positive", "query": "Which free models are available now, and are any fallbacks pointing to dead IDs?", "expect": ["ultra-models-skill"] },
   { "id": "models-positive-3", "skill": "ultra-models-skill", "type": "positive", "query": "Compare the Antigravity proxy model endpoint with openclaw.json.", "expect": ["ultra-models-skill"] },
   { "id": "models-negative-1", "skill": "ultra-models-skill", "type": "negative", "query": "Explain the transformer attention mechanism.", "expect": [] },
-  { "id": "models-negative-2", "skill": "ultra-models-skill", "type": "negative", "query": "Which model should I choose for a fictional character in my novel?", "expect": [] }
+  { "id": "models-negative-2", "skill": "ultra-models-skill", "type": "negative", "query": "Which model should I choose for a fictional character in my novel?", "expect": [] },
+  {"id": "context-positive-1", "skill": "ultra-code-context-skill", "type": "positive", "query": "Mapeie o caminho de chamadas entre autenticacao e handler com contexto de codigo delimitado e referencias para expandir depois.", "expect": ["ultra-code-context-skill"]},
+  {"id": "context-positive-2", "skill": "ultra-code-context-skill", "type": "positive", "query": "Avalie impacto de uma refatoracao entre arquivos usando o grafo existente sem inundar a janela do agente.", "expect": ["ultra-code-context-skill"]},
+  {"id": "context-positive-3", "skill": "ultra-code-context-skill", "type": "positive", "query": "Combine o mapa por modulo com uma consulta CodeGraph e recupere sob demanda os trechos de codigo adiados por budget.", "expect": ["ultra-code-context-skill"]},
+  {"id": "context-negative-1", "skill": "ultra-code-context-skill", "type": "negative", "query": "Qual e a porta atual do servidor Paperclip?", "expect": []},
+  {"id": "context-negative-2", "skill": "ultra-code-context-skill", "type": "negative", "query": "Ache a string literal welcome em um arquivo e mostre a linha.", "expect": []},
+  {"id": "context-negative-3", "skill": "ultra-code-context-skill", "type": "negative", "query": "Pesquise politicas de ferias nos documentos corporativos do Notion.", "expect": []}
 ]

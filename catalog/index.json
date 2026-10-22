@@ -39,6 +39,38 @@
       "contentDigest": "sha256:72119766d65a355cc349485a5bca753e2e2accaab01211bb8a7831910e4e494c"
     },
     {
+      "name": "ultra-code-context-skill",
+      "description": "Recuperar contexto de codigo sob demanda para arquitetura, caminhos de chamadas e impacto de mudancas, combinando grafos existentes, mapas por modulo e briefs delimitados com referencias recuperaveis. Usar em exploracao estrutural e refatoracao entre arquivos; nao para buscas literais simples, memoria pessoal ou pesquisa corporativa geral.",
+      "path": "ultra-code-context-skill",
+      "trustTier": "experimental",
+      "owner": "LabsClaw",
+      "category": "code-intelligence",
+      "risk": "medium",
+      "platforms": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "capabilities": {
+        "network": false,
+        "shell": true,
+        "filesystemWrite": true,
+        "configMutation": false
+      },
+      "verifiedAt": "2026-10-21",
+      "workshopStatus": "unmanaged",
+      "syncStatus": "repository-only",
+      "routingEval": {
+        "status": "not-run",
+        "model": "not-run",
+        "executedAt": "2026-10-22T00:00:00Z",
+        "passed": 0,
+        "total": 0,
+        "report": "evals/results/2026-10-22-ultra-code-context-status.md"
+      },
+      "contentDigest": "sha256:56473472c14f306bbfc34ecc804f4f50eea707e8fdaaee34e71658e47a3df615"
+    },
+    {
       "name": "ultra-models-skill",
       "description": "Audit model catalogs, dead entries, provider health, fallbacks, and routing with dated evidence.",
       "path": "ultra-models-skill",

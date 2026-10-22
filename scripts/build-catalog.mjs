@@ -102,7 +102,7 @@ const index = {
 const rendered = `${JSON.stringify(index, null, 2)}\n`;
 
 if (process.argv.includes("--check")) {
-  const current = await fs.readFile(indexPath, "utf8").catch(() => "");
+  const current = (await fs.readFile(indexPath, "utf8").catch(() => "")).replaceAll("\r\n", "\n");
   if (current !== rendered) {
     console.error("catalog/index.json is stale. Run: node scripts/build-catalog.mjs");
     process.exit(1);
