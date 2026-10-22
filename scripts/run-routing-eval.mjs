@@ -18,12 +18,7 @@ const sessionKey = `agent:main:routing-eval-${Date.now()}`;
 
 const cases = JSON.parse(readFileSync(datasetPath, "utf8"));
 const catalog = JSON.parse(readFileSync(catalogPath, "utf8"));
-const allowed = [
-  "ultra-plan-gate-skill",
-  "ultra-adversarial-verify-skill",
-  "ultra-models-skill",
-  "NONE",
-];
+const allowed = [...catalog.skills.map((skill) => skill.name), "NONE"];
 const candidateSkills = allowed
   .filter((name) => name !== "NONE")
   .map((name) => {
@@ -43,7 +38,7 @@ const prompt = [
     `- ${name} [${contentDigest}]: ${description}`),
   "",
   `For each case select exactly one of: ${allowed.join(", ")}.`,
-  "Choose the most specific skill. Select NONE when none of the three should trigger.",
+  "Choose the most specific skill. Select NONE when none of the supplied candidates should trigger.",
   "Do not call tools and do not explain your choices.",
   "Return only a JSON array of objects with exactly these keys: id, selected.",
   "",

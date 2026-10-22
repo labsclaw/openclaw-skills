@@ -24,3 +24,5 @@ jobs:
         run: node scripts/validate-licenses.mjs
       - name: Test code review evidence helper
         run: node ultra-code-review-skill/scripts/code-review.test.cjs
+      - name: Test bounded code context helper
+        run: node --test ultra-code-context-skill/scripts/context-pack.test.mjs

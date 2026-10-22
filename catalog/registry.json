@@ -85,6 +85,37 @@
         "report": "evals/results/2026-10-05-openai-gpt-5.6-sol.md"
       },
       "notes": "The applied Workshop proposal is materialized in the repository. Runtime synchronization is pending because SPDX metadata changed. The skill stays experimental because it can mutate provider configuration."
+    },
+    {
+      "name": "ultra-code-context-skill",
+      "path": "ultra-code-context-skill",
+      "trustTier": "experimental",
+      "owner": "LabsClaw",
+      "category": "code-intelligence",
+      "risk": "medium",
+      "platforms": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "capabilities": {
+        "network": false,
+        "shell": true,
+        "filesystemWrite": true,
+        "configMutation": false
+      },
+      "verifiedAt": "2026-10-21",
+      "workshopStatus": "unmanaged",
+      "syncStatus": "repository-only",
+      "routingEval": {
+        "status": "not-run",
+        "model": "not-run",
+        "executedAt": "2026-10-22T00:00:00Z",
+        "passed": 0,
+        "total": 0,
+        "report": "evals/results/2026-10-22-ultra-code-context-status.md"
+      },
+      "notes": "Original procedural synthesis with a local byte-budget helper. Optional Jev score contract only; no live backend benchmark, runtime sync or model routing eval yet."
     }
   ]
 }
