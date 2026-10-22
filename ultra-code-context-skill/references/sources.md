@@ -37,6 +37,7 @@ raiz; nao redistribuir codigo v2 com suposicao de licenca resolvida.
 
 - [API](https://docs.typesafe.ai/api/system-one.md), [modelos](https://docs.typesafe.ai/models.md).
 - [SDK JavaScript](https://docs.typesafe.ai/sdk/javascript.md), fonte [b844cd1](https://github.com/typesafe-ai/typesafe-sdk-js/tree/b844cd1aca12855a5d24a2df52a1401c86e7d37a).
+- [SDK Python](https://docs.typesafe.ai/sdk/python.md), fonte [f36e685](https://github.com/typesafe-ai/typesafe-sdk-python/tree/f36e68549ceca3191e5791e5f99ea1baa1a258b5).
 - [Classificacao RAG](https://docs.typesafe.ai/cookbooks/classifying_rag_passages.md).
 - [Semantic find](https://docs.typesafe.ai/cookbooks/semantic_find.md).
 - [Limites Jev](https://docs.typesafe.ai/model-jaggedness/jev-1.13.md), [privacidade](https://typesafe.ai/legal/privacy-policy).

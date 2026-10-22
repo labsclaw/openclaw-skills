@@ -41,10 +41,12 @@ Nao expor codigo ou executar instaladores copiados dos documentos.
 ## Cartographer
 
 Combinar seu mapa de responsabilidades por modulo com consultas estruturais
-focadas. O CLI v2 inclui `index`, `brief`, `verify`, `audit removal`, `audit
-verify`, `notes` e `adoption`; resolver o binario/comando por `package.json` e
-`--help` da instalacao presente. Nao presumir que o comando slash do plugin
-Claude Code e o mesmo executavel do CLI standalone.
+focadas. O CLI v2 inclui `index`/`update`, `brief`, `verify` (com `--fresh`),
+`audit removal`/`audit verify`, `notes ingest`/`audit`/`accept`/`retire`,
+`adoption`, `slice`, `impact`, `context` e `export`, mais um wrapper MCP fino;
+resolver o binario/comando por `package.json` e `--help` da instalacao presente.
+Nao presumir que o comando slash do plugin Claude Code e o mesmo executavel do
+CLI standalone.
 
 Tres limites da revisao de fonte:
 
@@ -57,6 +59,10 @@ Tres limites da revisao de fonte:
 3. `notes.ts` carimba aceitacao/aposentadoria como revisao humana. Um agente pode
    propor/auditar nota, nao fabricar essa identidade. `adoption` mede sinais nos
    traces; nao e prova de corretude, completude ou ganho economico.
+4. `--require-graph-first` pode reprovar leitura de fonte anterior ao contexto do
+   grafo. Isso nao substitui a regra desta skill: conferir o trecho atual na
+   fonte antes de editar, e tratar o grafo como mapa, nunca como prova de
+   existencia ou de seguranca de remocao.
 
 `audit removal` e evidencia complementar, nao autorizacao automatica para
 deletar. Conferir registros dinamicos, exports publicos, configuracao e testes.
