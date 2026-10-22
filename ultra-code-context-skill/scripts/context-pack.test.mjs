@@ -202,6 +202,31 @@ test('output cannot overwrite source, input, score input, or source through hard
   assert.equal(await fs.readFile(path.join(f.repo, 'a.txt'), 'utf8'), 'hello\n');
 });
 
+test('distinct output inodes beyond Number precision do not become false aliases', async t => {
+  const f = await fixture(t);
+  await fs.writeFile(f.out, 'previous packet');
+  await fs.writeFile(f.manifest, 'previous manifest');
+  const first = 2n ** 53n, second = first + 1n;
+  assert.equal(Number(first), Number(second), 'fixture forces the precision collision on every platform');
+  const identities = new Map([[await fs.realpath(f.out), first], [await fs.realpath(f.manifest), second]]);
+  const realStat = fs.stat;
+  t.mock.method(fs, 'stat', async (filename, options) => {
+    const stat = await realStat(filename, options);
+    const ino = identities.get(filename);
+    if (ino !== undefined) {
+      stat.dev = options?.bigint ? 999n : 999;
+      stat.ino = options?.bigint ? ino : Number(ino);
+    }
+    return stat;
+  });
+  await pack(f);
+  const packet = await fs.readFile(f.out), manifest = await fs.readFile(f.manifest);
+  assert.equal(JSON.parse(packet).selected[0].content, 'hello\n');
+  await pack(f);
+  assert.deepEqual(await fs.readFile(f.out), packet);
+  assert.deepEqual(await fs.readFile(f.manifest), manifest);
+});
+
 test('tampered manifest hashes and references are rejected', async t => {
   const f = await fixture(t);
   await pack(f);

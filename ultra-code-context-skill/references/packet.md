@@ -11,7 +11,9 @@ Entrada UTF-8:
   "schemaVersion": 1,
   "task": "Entender como a validacao chega ao handler",
   "candidates": [
-    {"id": "flow-entry", "path": "src/handler.ts", "startLine": 1, "endLine": 20, "required": true, "score": 1},
+    {"id": "caller", "path": "src/routes.ts", "startLine": 5, "endLine": 20, "required": true, "score": 1},
+    {"id": "interface", "path": "src/contracts.ts", "startLine": 1, "endLine": 15, "required": true, "score": 1},
+    {"id": "implementation", "path": "src/handler.ts", "startLine": 1, "endLine": 20, "required": true, "score": 1},
     {"id": "regression-test", "path": "tests/handler.test.ts", "startLine": 5, "endLine": 25, "required": true, "score": 0.9},
     {"id": "neighbor", "path": "src/utils.ts", "startLine": 1, "endLine": 15, "required": false, "score": 0.4}
   ]
@@ -22,6 +24,11 @@ Os caminhos e intervalos acima sao exemplos, nao arquivos fornecidos. Intervalos
 sao inclusivos, com linhas comecando em 1. `score` e opcional; sem ele usa 0.
 `required` e booleano. Um caller/interface/teste indispensavel deve ser incluido
 explicitamente; o helper nao descobre sua relevancia ou garante recall.
+No exemplo, o caller mostra como a validacao e invocada, a interface define o
+contrato, o handler implementa a regra e o teste comprova o comportamento. Todos
+sao obrigatorios para essa pergunta, mesmo que um reranker de score baixo tente
+rebaixar algum deles. O utilitario vizinho pode ficar adiado. Antes de montar a
+entrada, o adapter deve descobrir e conferir esses quatro intervalos na fonte.
 
 ## Saidas
 
@@ -57,6 +64,12 @@ ou referencia gerada e retorna um trecho apos conferir o hash do arquivo atual.
 Se o arquivo mudou, desapareceu ou foi renomeado, recuperar a fonte novamente e
 recriar o pacote; nao servir snapshot antigo como atual. Uma alteracao fora do
 intervalo tambem invalida a referencia (checagem conservadora).
+
+`read` recupera o intervalo inteiro registrado; nao aceita flags de sub-faixa.
+Se o trecho adiado nao couber, aumentar deliberadamente o budget ou regenerar o
+pacote com intervalos menores na entrada de `pack`. O budget deve cobrir tambem
+o JSON e os metadados da resposta, nao apenas os bytes do trecho. Pedir uma faixa
+menor exige essa nova entrada; nao e uma opcao implicita de `read`.
 
 Sem timestamps no conteudo, repetir com mesma fonte, entrada, scores e limite
 produz o mesmo resultado. Dedupe semantico entre IDs distintos continua sendo

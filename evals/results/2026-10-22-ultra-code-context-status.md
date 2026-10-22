@@ -38,3 +38,25 @@ Solicitada no grupo Founders e CEOs entre Justus (@LabsClawBot) e Robin
 (@RobinBRIAbot). A PR e o ponto de revisao conjunta. Uma revisao independente
 de subagente nao equivale a participacao de Robin; nao marcar essa etapa como
 concluida sem comentario ou revisao identificavel dele no GitHub.
+
+### Revisao da Robin confirmada
+
+[Comentario 6331679118](https://github.com/labsclaw/openclaw-skills/pull/28#issuecomment-6331679118),
+publicado por `OlliverCrypto` em 2026-10-22, registra a revisao independente de
+Robin: suite com 19 pass / 1 skip, cenarios A-E e junction em Windows. Esses
+numeros sao do ambiente dele, nao novas medicoes locais.
+
+Dois achados foram reproduzidos em fixtures deterministicas antes das correcoes:
+inodes distintos acima de 2^53 colidiam como Number, rejeitando outputs validos;
+catalogo materializado em CRLF era considerado stale. A candidata agora usa
+BigInt na comparacao de identidade e normaliza CRLF no check. As regressoes
+incluem a rejeicao de catalogo realmente stale; os testes existentes de hardlink
+continuam obrigatorios. Executar tambem:
+
+```text
+node --test scripts/build-catalog.test.mjs
+```
+
+Documentacao ampliada com caller/interface/implementacao/teste obrigatorios,
+limite individual de 2 MiB e recuperacao integral sem sub-faixa no `read`.
+Revisao recebida nao equivale a merge, instalacao ou medicao de recall real.

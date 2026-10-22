@@ -53,6 +53,9 @@ nao ao diretorio instalado. Ler [contrato do pacote](references/packet.md) para
 schema e exemplos. O limite e de bytes UTF-8 do JSON completo, nao tokens. Para
 limite exato de tokens, usar o tokenizer do modelo sobre o pacote final e reservar
 orcamento tambem para ferramentas, instrucao, resposta e resultados anteriores.
+Entrada JSON, manifest e cada arquivo de fonte tem limite individual de 2 MiB,
+independente do budget do pacote. Muitos candidatos podem exceder o manifest;
+nesse caso, estreitar a consulta antes de gerar outro pacote.
 
 - Marcar como `required` os alvos explicitos e evidencias sem as quais a tarefa
   fica incorreta, como uma interface e seu teste de regressao. Nao marcar tudo por

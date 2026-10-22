@@ -89,7 +89,8 @@ async function protectOutputs(outputs, protectedFiles) {
   const protectedPaths = await Promise.all(protectedFiles.filter(Boolean).map(canonical));
   if (equivalent(destinations[0], destinations[1]) || destinations.some(d => protectedPaths.some(p => equivalent(d, p)))) fail('Output would overwrite source, input, or another output');
   // A hardlink has a distinct realpath but aliases the same source inode.
-  const existing = await Promise.all([...destinations, ...protectedPaths].map(p => fs.stat(p).catch(e => e.code === 'ENOENT' ? null : Promise.reject(e))));
+  // NTFS identities can exceed Number's exact range; rounding creates false aliases.
+  const existing = await Promise.all([...destinations, ...protectedPaths].map(p => fs.stat(p, { bigint: true }).catch(e => e.code === 'ENOENT' ? null : Promise.reject(e))));
   for (let i = 0; i < destinations.length; i++) for (let j = 0; j < existing.length; j++) {
     if (i !== j && existing[i] && existing[j] && existing[i].dev === existing[j].dev && existing[i].ino === existing[j].ino) fail('Output aliases a protected file');
   }
