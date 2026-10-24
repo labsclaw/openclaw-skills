@@ -54,11 +54,12 @@ $orFree = Query-Provider "OpenRouter" "https://openrouter.ai/api/v1/models" $orH
 }
 
 # OpenCode
-$ocHeaders = @{ "Authorization" = "Bearer $($envVars['OPENCODE_API_KEY'])"; "Content-Type" = "application/json" }
-$ocFree = Query-Provider "OpenCode" "https://opencode.ai/zen/v1/models" $ocHeaders {
-    param($all)
-    $all | Where-Object { $_.id -match "-free" -or $_.id -eq "big-pickle" }
-}
+$ocFree = @()
+try {
+    $ocCatalog = Get-OpenCodeCliCatalog
+    $ocFree = @($ocCatalog.models)
+    Write-Status "OpenCode CLI: $($ocCatalog.free) gratuitos, somente catálogo" "OK"
+} catch { Write-Status "OpenCode CLI indisponível; acesso não verificado" "WARN" }
 
 # KiloCode
 $kcHeaders = @{ "Authorization" = "Bearer $($envVars['KILOCODE_API_KEY'])"; "Content-Type" = "application/json" }
@@ -101,7 +102,7 @@ function Add-ToIndex($provider, $rawId, $name, $ownedBy) {
         provider    = $provider
         model_id    = "$provider/$rawId"
         is_free     = $true
-        status      = "healthy"
+        status      = if ($provider -eq 'opencode') { 'catalog_only' } else { 'healthy' }
         tps_estimated = Get-ModelTPSScore $cid
     }
 }

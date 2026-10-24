@@ -6,6 +6,7 @@
 # ============================================================
 
 $ErrorActionPreference = "Continue"
+. (Join-Path $PSScriptRoot '_opencode.ps1')
 
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 [Console]::InputEncoding = [System.Text.Encoding]::UTF8
@@ -125,10 +126,8 @@ try {
 # OpenCode
 Write-Host "[2/5] Consultando OpenCode..." -ForegroundColor DarkGray
 try {
-    $headers = @{ "Authorization" = "Bearer $($envVars['OPENCODE_API_KEY'])"; "Content-Type" = "application/json" }
-    $resp = Invoke-RestMethod -Uri "https://opencode.ai/zen/v1/models" -Headers $headers -Method Get -TimeoutSec 30
-    $all = if ($resp.data) { $resp.data } else { $resp }
-    $free = $all | Where-Object { $_.id -match "-free" -or $_.id -eq "big-pickle" }
+    $ocCatalog = Get-OpenCodeCliCatalog
+    $free = @($ocCatalog.models)
     foreach ($m in $free) {
         $liveModels["opencode/$($m.id)"] = @{ provider="opencode"; id=$m.id; name=$m.name }
     }
@@ -241,8 +240,10 @@ foreach ($base in $crossProviderMap.Keys) {
 
 # 2a. Aliases que NAO existem na API (MORTOS)
 Write-Section "ALIASES MORTOS (no config, ausente na API)"
+Write-Host 'OpenCode excluído dos diagnósticos de remoção: catálogo CLI não comprova exclusão autenticada.' -ForegroundColor Yellow
 $deadCount = 0
 foreach ($fullId in $configModels.Keys) {
+    if ($fullId -like 'opencode/*') { continue } # Catalog-only is not exclusion evidence.
     if (-not $liveModels.ContainsKey($fullId)) {
         $m = $configModels[$fullId]
         $aliasInfo = if ($m.name) { " -> $($m.name)" } else { "" }
@@ -270,6 +271,7 @@ if ($newCount -eq 0) { Write-Host "  (nenhum)" -ForegroundColor Green }
 Write-Section "ALIASES ORFOS"
 $orphanCount = 0
 foreach ($aliasPath in $configModels.Keys) {
+    if ($aliasPath -like 'opencode/*') { continue }
     if (-not $liveModels.ContainsKey($aliasPath)) {
         Write-Host "  ! $aliasPath -> $($configModels[$aliasPath].name)" -ForegroundColor Yellow
         $orphanCount++
@@ -281,6 +283,7 @@ if ($orphanCount -eq 0) { Write-Host "  (nenhum)" -ForegroundColor Green }
 Write-Section "FALLBACKS QUEBRADOS"
 $brokenFb = 0
 foreach ($fb in $fallbacks) {
+    if ($fb -like 'opencode/*') { continue }
     if (-not $liveModels.ContainsKey($fb)) {
         Write-Host "  X $fb" -ForegroundColor Red
         $brokenFb++
@@ -291,7 +294,9 @@ if ($brokenFb -eq 0) { Write-Host "  (todos OK)" -ForegroundColor Green }
 # 2e. Primary model status
 Write-Section "PRIMARY MODEL"
 if ($primaryModel) {
-    if ($liveModels.ContainsKey($primaryModel)) {
+    if ($primaryModel -like 'opencode/*') {
+        Write-Host "  ? $primaryModel : catálogo CLI somente; acesso não verificado" -ForegroundColor Yellow
+    } elseif ($liveModels.ContainsKey($primaryModel)) {
         Write-Host "  OK $primaryModel" -ForegroundColor Green
     } else {
         Write-Host "  X $primaryModel (SILENT FALLBACK RISK!)" -ForegroundColor Red

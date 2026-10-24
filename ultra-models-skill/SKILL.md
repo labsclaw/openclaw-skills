@@ -22,6 +22,7 @@ Compare configured model catalogs with current provider evidence. Keep credentia
 1. Define the provider and catalog in scope. Finish when unrelated providers and paid-model decisions are excluded.
 2. Read `references/model-catalog-operations.md` only for the relevant command and evidence format. Finish when the smallest applicable operation is selected.
 3. Run the operation read-only first. Finish when provider failures are separated from missing model IDs.
+   For OpenCode, use `scripts/list-opencode-models.ps1 -Json`. The collector invokes the native CLI with `models opencode --verbose --refresh --pure`, not Zen HTTP/API-key authentication. Catalog listing does not prove login, account eligibility or inference health. Read the OpenCode section in the reference before interpreting missing IDs.
 4. Classify a model as dead only when an authenticated live catalog excludes it. Preserve entries for unavailable or unauthenticated providers.
 5. Before a repair, inspect aliases, fallback chains, and policies for each affected ID. Finish when every downstream reference is accounted for.
 6. Apply the smallest reversible change only when the user authorized mutation. Re-run the audit and finish when catalogs match with no orphan aliases or broken fallbacks.

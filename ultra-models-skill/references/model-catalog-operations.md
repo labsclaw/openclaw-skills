@@ -8,6 +8,7 @@ Consult only the section needed for the current request.
 | --- | --- | --- |
 | Compare config with live catalogs | `scripts/sync-config.ps1` | Dead IDs, new IDs, orphan aliases, and broken fallbacks |
 | Generate provider inventory | `scripts/list-free-models.ps1` | Provider-grouped live model IDs |
+| Inspect OpenCode only | `scripts/list-opencode-models.ps1 -Json` | Refreshed CLI catalog, zero-price IDs, explicit catalog-only evidence |
 | Inspect Antigravity | `scripts/list-antigravity-models.ps1` | IDs returned by the local proxy |
 | Inspect KiloCode metadata | `scripts/kilo-free-detail.ps1` | Free-model metadata from KiloCode |
 | Build capability map | `scripts/build-model-map.ps1` | Dated JSON map with provider availability and heuristic scores |
@@ -22,12 +23,20 @@ Do not execute `scripts/_shared.ps1` directly. It contains shared functions used
 | Provider | Catalog evidence | Availability rule |
 | --- | --- | --- |
 | OpenRouter | Authenticated models endpoint | Treat a model as free only when catalog pricing is zero |
-| OpenCode Zen | Authenticated models endpoint | Use the current returned IDs; do not infer availability from historical names |
+| OpenCode | Native CLI `models opencode --verbose --refresh --pure` | Zero numeric input/output and cache prices; listing is not auth or inference evidence |
 | KiloCode | Authenticated gateway catalog | Use the provider free-model flag |
 | NVIDIA NIM | Authenticated models endpoint | Use the current catalog and the script's free-model filter |
 | Antigravity | Local `/v1/models` endpoint | Treat returned IDs as currently served by the proxy |
 
 A missing credential or unreachable endpoint means `unauthenticated` or `unavailable`, not `dead`.
+
+## OpenCode CLI boundary
+
+OpenCode uses its existing local login. Do not read/copy its auth store, require `OPENCODE_API_KEY`, call the old `/zen/v1/models` endpoint, or recreate CLI headers for catalog discovery. The shared collector resolves the native Windows executable (or `OPENCODE_BIN`), uses no shell, and bounds execution to 45 seconds. It refreshes the CLI model cache; this is not authenticated live API exclusion evidence.
+
+The five inventory/comparison consumers use `_opencode.ps1` and `opencode-catalog.cjs`. The collector returns an allowlisted metadata shape, `status: catalog_only`, `authenticated: null`, and `inferenceHealthy: null`. CLI failure, partial/invalid output, or nonzero exit returns unavailable, never an empty successful catalog. Keep configured OpenCode entries when absent, including paid/out-of-scope IDs. Do not recommend automatic deletion from this evidence. Price zero is advertised catalog pricing, not proof of account eligibility or actual billing.
+
+Verify inference separately only when requested: one bounded exact free-model wrapper canary, then a Gateway-mediated canary with the same model. Confirm `provider=opencode-cli` in Gateway logs. A successful CLI list or a Gateway admission receipt alone is insufficient. Never substitute a paid route.
 
 ## Audit sequence
 
