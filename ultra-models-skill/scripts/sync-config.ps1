@@ -27,7 +27,7 @@ if (Test-Path $sharedPath) { . $sharedPath } else {
 
 # -- Load .env keys -------------------------------------------
 $envVars = Get-AllEnvKeys
-$requiredKeys = @("OPENROUTER_API_KEY", "OPENCODE_API_KEY", "KILOCODE_API_KEY", "NVIDIA_API_KEY")
+$requiredKeys = @("OPENROUTER_API_KEY", "KILOCODE_API_KEY", "NVIDIA_API_KEY")
 $missing = @()
 foreach ($key in $requiredKeys) {
     if (-not $envVars.ContainsKey($key) -or [string]::IsNullOrWhiteSpace($envVars[$key])) {
@@ -76,13 +76,8 @@ function Get-OpenRouterModels {
 
 function Get-OpenCodeModels {
     try {
-        $headers = @{
-            "Authorization" = "Bearer $($envVars['OPENCODE_API_KEY'])"
-            "Content-Type"  = "application/json"
-        }
-        $resp = Invoke-RestMethod -Uri "https://opencode.ai/zen/v1/models" -Headers $headers -Method Get -TimeoutSec 30
-        $all = if ($resp.data) { $resp.data } else { $resp }
-        $free = $all | Where-Object { $_.id -match "-free" -or $_.id -eq "big-pickle" }
+        $script:ocCatalog = Get-OpenCodeCliCatalog
+        $free = @($script:ocCatalog.models)
         $result = @()
         foreach ($m in $free) {
             $id = if ($m.id) { $m.id } else { $m }
@@ -174,7 +169,7 @@ Write-Status "NVIDIA NIM..." "STEP"
 $nvModels = Get-NVIDIAModels
 Write-Status "$($nvModels.Count) modelos free" "OK"
 
-$allLiveModels = $orModels + $ocModels + $kcModels + $nvModels
+$allLiveModels = @($orModels) + @($ocModels) + @($kcModels) + @($nvModels)
 
 # ============================================================
 # 2. EXTRACT CONFIG MODELS
@@ -188,8 +183,9 @@ $configFallbacks = @()
 
 # Extract from models.providers
 if ($config.models -and $config.models.providers) {
-    foreach ($prov in $config.models.providers) {
-        $provName = $prov.name
+    foreach ($providerEntry in $config.models.providers.PSObject.Properties) {
+        $provName = $providerEntry.Name
+        $prov = $providerEntry.Value
         if ($prov.models) {
             foreach ($m in $prov.models) {
                 $fullId = "$provName/$($m.id)"
@@ -245,12 +241,17 @@ foreach ($m in $allLiveModels) {
 }
 
 $deadModels = @()
+$unverifiedModels = @()
 $newModels = @()
 $orphanAliases = @()
 $brokenFallbacks = @()
 
 # 3a. Dead models (in config but not in any live API)
 foreach ($cm in $configModels) {
+    if ($cm.provider -eq 'opencode') {
+        if ($ocModels.full_id -notcontains $cm.full_id) { $unverifiedModels += $cm }
+        continue # CLI catalog is not authenticated exclusion evidence.
+    }
     $found = $false
     # Check exact provider match
     $key = "$($cm.provider):$($cm.base_id)"
@@ -330,6 +331,7 @@ foreach ($fb in $configFallbacks) {
 # ============================================================
 
 Write-Section "4. Resultado"
+Write-Status "OpenCode: $($unverifiedModels.Count) entradas não verificadas; catálogo CLI não autoriza remoção" "WARN"
 
 Write-Host ""
 Write-Status "MORTOS (no config, nao na API): $($deadModels.Count)" $(if ($deadModels.Count -gt 0) { "ERROR" } else { "OK" })
@@ -398,6 +400,8 @@ if ($Json) {
             total      = $allLiveModels.Count
         }
         config_models = $configModels.Count
+        opencode_evidence = $script:ocCatalog
+        unverified = @($unverifiedModels | ForEach-Object { $_.full_id })
         dead          = $deadModels | ForEach-Object { @{ full_id = $_.full_id; base_id = $_.base_id; provider = $_.provider; name = $_.name } }
         new           = $newUnique | ForEach-Object { @{ full_id = $_.full_id; base_id = $_.base_id; provider = $_.provider; name = $_.name } }
         orphan_aliases = $orphanAliases | ForEach-Object { @{ alias = $_.alias; target = $_.target } }
