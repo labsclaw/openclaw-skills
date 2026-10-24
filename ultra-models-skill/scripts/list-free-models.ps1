@@ -6,6 +6,7 @@
 # ============================================================
 
 $ErrorActionPreference = "Continue"
+. (Join-Path $PSScriptRoot '_opencode.ps1')
 
 # -- Forcar UTF-8 no PowerShell --------------------------------
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
@@ -42,7 +43,7 @@ Get-Content $envFile | ForEach-Object {
 }
 
 # -- Validar chaves necessarias --------------------------------
-$requiredKeys = @("OPENROUTER_API_KEY", "OPENCODE_API_KEY", "KILOCODE_API_KEY", "NVIDIA_API_KEY")
+$requiredKeys = @("OPENROUTER_API_KEY", "KILOCODE_API_KEY", "NVIDIA_API_KEY")
 $missing = @()
 foreach ($key in $requiredKeys) {
     if (-not $envVars.ContainsKey($key) -or [string]::IsNullOrWhiteSpace($envVars[$key])) {
@@ -55,7 +56,7 @@ if ($missing.Count -gt 0) {
 }
 
 Write-Host "[OK] OpenClaw home: $openClawHome" -ForegroundColor DarkGray
-Write-Host "[OK] Todas as 4 chaves encontradas no .env`n" -ForegroundColor Green
+Write-Host "[OK] Chaves dos demais providers encontradas; OpenCode usa o CLI local`n" -ForegroundColor Green
 
 # -- Helper: separador visual ---------------------------------
 function Write-Section($title) {
@@ -95,22 +96,17 @@ try {
 }
 
 # ============================================================
-# 2. OPENCODE ZEN - GET https://opencode.ai/zen/v1/models
+# 2. OPENCODE ZEN - catálogo do CLI local
 # ============================================================
 Write-Section "2. OPENCODE ZEN - Modelos Free"
 
 try {
-    $headers = @{
-        "Authorization" = "Bearer $($envVars['OPENCODE_API_KEY'])"
-        "Content-Type" = "application/json"
-    }
-    $response = Invoke-RestMethod -Uri "https://opencode.ai/zen/v1/models" -Headers $headers -Method Get -TimeoutSec 30
-
-    $allModels = if ($response.data) { $response.data } else { $response }
-    $models = $allModels | Where-Object { $_.id -match "-free" -or $_.id -eq "big-pickle" }
+    $catalog = Get-OpenCodeCliCatalog
+    $models = @($catalog.models)
+    Write-Host '[INFO] Catálogo CLI; autenticação, elegibilidade e inferência não verificadas.' -ForegroundColor DarkGray
 
     if ($models.Count -gt 0) {
-        Write-Host "[>>] $($models.Count) modelos free encontrados (de $($allModels.Count) totais):`n" -ForegroundColor Green
+        Write-Host "[>>] $($models.Count) modelos free encontrados (de $($catalog.total) totais):`n" -ForegroundColor Green
         $models | ForEach-Object {
             $id = if ($_.id) { $_.id } else { $_ }
             $name = if ($_.name) { " ($($_.name))" } else { "" }
@@ -118,7 +114,6 @@ try {
         }
     } else {
         Write-Host "[!] Nenhum modelo retornado" -ForegroundColor Yellow
-        Write-Host " Resposta raw: $($response | ConvertTo-Json -Depth 3 -Compress)" -ForegroundColor DarkGray
     }
 } catch {
     Write-Host "[ERRO] Erro ao consultar OpenCode Zen: $($_.Exception.Message)" -ForegroundColor Red

@@ -53,11 +53,9 @@ $orResult = Safe-Query "OpenRouter" "https://openrouter.ai/api/v1/models" $orHea
 Write-Status "OpenRouter: $($orResult.free) free / $($orResult.total) total" $(if ($orResult.error) { "WARN" } else { "OK" })
 
 # OpenCode
-$ocHeaders = @{ "Authorization" = "Bearer $($envVars['OPENCODE_API_KEY'])"; "Content-Type" = "application/json" }
-$ocResult = Safe-Query "OpenCode" "https://opencode.ai/zen/v1/models" $ocHeaders {
-    param($all)
-    $all | Where-Object { $_.id -match "-free" -or $_.id -eq "big-pickle" }
-}
+$ocResult = @{ total = 0; free = 0; models = @(); error = 'CLI indisponível'; status = 'unavailable' }
+try { $ocResult = Get-OpenCodeCliCatalog } catch { }
+Write-Status 'OpenCode: evidência de catálogo CLI, não prova de autenticação ou inferência.' 'WARN'
 Write-Status "OpenCode: $($ocResult.free) free / $($ocResult.total) total" $(if ($ocResult.error) { "WARN" } else { "OK" })
 
 # KiloCode
@@ -101,6 +99,7 @@ function Add-ToInventory($provider, $models, $providerLabel) {
         if (-not $existing) {
             [void]$inventory.Add([PSCustomObject]@{
                 provider     = $provider
+                evidence_status = if ($provider -eq 'opencode') { 'catalog_only' } else { 'catalog' }
                 full_id      = "$provider/$id"
                 canonical_id = $cid
                 display_name = $name
@@ -169,7 +168,7 @@ Write-Section "4. Saude dos providers"
 
 $providers = @(
     @{ name = "OpenRouter"; result = $orResult; health = Get-ProviderHealthScore "openrouter" }
-    @{ name = "OpenCode";   result = $ocResult; health = Get-ProviderHealthScore "opencode" }
+    @{ name = "OpenCode";   result = $ocResult; health = $null }
     @{ name = "KiloCode";   result = $kcResult; health = Get-ProviderHealthScore "kilocode" }
     @{ name = "NVIDIA";     result = $nvResult; health = Get-ProviderHealthScore "nvidia" }
 )
@@ -177,6 +176,11 @@ $providers = @(
 Write-Host ("  {0,-12} {1,-8} {2,-8} {3,-8} {4,-10}" -f "PROVIDER", "FREE", "TOTAL", "HEALTH", "STATUS") -ForegroundColor Cyan
 Write-Host ("  {0,-12} {1,-8} {2,-8} {3,-8} {4,-10}" -f ("-"*12), ("-"*8), ("-"*8), ("-"*8), ("-"*10)) -ForegroundColor DarkGray
 foreach ($p in $providers) {
+    if ($p.name -eq 'OpenCode') {
+        $status = if ($p.result.error) { 'UNAVAILABLE' } else { 'CATALOG_ONLY' }
+        Write-Host ("  {0,-12} {1,-8} {2,-8} {3,-8} {4,-10}" -f $p.name, $p.result.free, $p.result.total, 'N/A', $status) -ForegroundColor Yellow
+        continue
+    }
     $status = if ($p.result.error) { "ERROR" } elseif ($p.result.free -eq 0) { "EMPTY" } else { "OK" }
     $color = switch ($status) { "OK" { "Green" } "EMPTY" { "Yellow" } "ERROR" { "Red" } }
     $healthPct = [Math]::Round($p.health * 100)
@@ -251,6 +255,7 @@ if ($Json) {
             total = $p.result.total
             health = $p.health
             error = $p.result.error
+            evidence_status = if ($p.name -eq 'OpenCode') { $p.result.status } else { 'catalog' }
         }
     }
 
@@ -258,6 +263,7 @@ if ($Json) {
         $output.inventory += @{
             provider     = $m.provider
             full_id      = $m.full_id
+            evidence_status = $m.evidence_status
             canonical_id = $m.canonical_id
             display_name = $m.display_name
             family       = $m.family

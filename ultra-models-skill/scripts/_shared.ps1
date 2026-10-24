@@ -5,6 +5,7 @@
 #                sync-config.ps1, build-model-map.ps1
 # Nao executar diretamente.
 # ============================================================
+. (Join-Path $PSScriptRoot '_opencode.ps1')
 
 # ── OpenClaw Home Detection ──────────────────────────────────
 function Get-OpenClawHome {
