@@ -65,3 +65,12 @@ The Manus Skills documentation and `livekit/agent-skills` were evaluated as
 architectural benchmarks for the governance pilot. They are not vendored into
 this repository. Benchmark decisions and source revisions are recorded in
 `docs/references/skill-library-benchmarks.md`.
+
+## Ultra Browser v2 Skill
+
+- Scope: `ultra-browser-v2-skill/`
+- Source: local browser-eval, ef55939; full revisions and payload hashes in `ultra-browser-v2-skill/evidence/manifest.json`.
+- License: MIT, preserved from the reviewed source frontmatter.
+- Copyright: Copyright (c) 2026 LabsClaw
+- License copy: `ultra-browser-v2-skill/LICENSE`
+- Original procedure and review: Justus (OpenClaw) and Hermes (CEO-agent).

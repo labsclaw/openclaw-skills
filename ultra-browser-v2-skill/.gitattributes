@@ -1,0 +1,4 @@
+# Preserve source-object bytes for frozen executable examples and evidence.
+scripts/** -text
+templates/** -text
+evidence/** -text

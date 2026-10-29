@@ -116,6 +116,35 @@
         "report": "evals/results/2026-10-22-ultra-code-context-status.md"
       },
       "notes": "Original procedural synthesis with a local byte-budget helper. Optional Jev score contract only; no live backend benchmark, runtime sync or model routing eval yet."
+    },
+    {
+      "name": "ultra-browser-v2-skill",
+      "path": "ultra-browser-v2-skill",
+      "trustTier": "experimental",
+      "owner": "LabsClaw",
+      "category": "browser-automation",
+      "risk": "high",
+      "platforms": [
+        "windows"
+      ],
+      "capabilities": {
+        "network": true,
+        "shell": true,
+        "filesystemWrite": true,
+        "configMutation": false
+      },
+      "verifiedAt": "2026-10-29",
+      "workshopStatus": "unmanaged",
+      "syncStatus": "repository-only",
+      "routingEval": {
+        "status": "not-run",
+        "model": "not-run",
+        "executedAt": "2026-10-29T00:00:00Z",
+        "passed": 0,
+        "total": 0,
+        "report": "evals/results/2026-10-29-ultra-browser-v2-status.md"
+      },
+      "notes": "Distribuição da v2.3.0 aprovada em ef55939. Evidência histórica exportada de ed963ec e 51631c1; scripts e recipe inalterados. Exemplos Windows com dependências externas; sem nova bateria, avaliação de roteamento ou sincronização de runtime."
     }
   ]
 }

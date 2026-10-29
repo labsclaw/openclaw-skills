@@ -39,6 +39,36 @@
       "contentDigest": "sha256:72119766d65a355cc349485a5bca753e2e2accaab01211bb8a7831910e4e494c"
     },
     {
+      "name": "ultra-browser-v2-skill",
+      "description": "Navegação em navegador visível com snapshots DOM, operações nativas e recipes revisadas. Use para executar uma recipe compatível, navegar com LLM+JEV ou preparar evidência verificável de formulários e fluxos de navegador. Distingue capacidades existentes de propostas; não concede acesso ao estado privado do judge.",
+      "path": "ultra-browser-v2-skill",
+      "trustTier": "experimental",
+      "owner": "LabsClaw",
+      "category": "browser-automation",
+      "risk": "high",
+      "platforms": [
+        "windows"
+      ],
+      "capabilities": {
+        "network": true,
+        "shell": true,
+        "filesystemWrite": true,
+        "configMutation": false
+      },
+      "verifiedAt": "2026-10-29",
+      "workshopStatus": "unmanaged",
+      "syncStatus": "repository-only",
+      "routingEval": {
+        "status": "not-run",
+        "model": "not-run",
+        "executedAt": "2026-10-29T00:00:00Z",
+        "passed": 0,
+        "total": 0,
+        "report": "evals/results/2026-10-29-ultra-browser-v2-status.md"
+      },
+      "contentDigest": "sha256:57404e0feed537a1813b49461b19a8f59179688b340ac0fd2b3d04170633887a"
+    },
+    {
       "name": "ultra-code-context-skill",
       "description": "Recuperar contexto de codigo sob demanda para arquitetura, caminhos de chamadas e impacto de mudancas, combinando grafos existentes, mapas por modulo e briefs delimitados com referencias recuperaveis. Usar em exploracao estrutural e refatoracao entre arquivos; nao para buscas literais simples, memoria pessoal ou pesquisa corporativa geral.",
       "path": "ultra-code-context-skill",

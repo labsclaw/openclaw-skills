@@ -61,6 +61,8 @@ by the licensing hygiene work.
 
 ## Skills Included
 
+- **[ultra-browser-v2-skill](ultra-browser-v2-skill/SKILL.md)**: Navegação visível com snapshots DOM, recipes revisadas e evidência rastreável. v2.3.0; exemplos Windows dependentes do harness externo.
+
 - **ultra-code-context-skill**: Contexto estrutural de codigo sob demanda, mapas por modulo, briefs com limite verificavel e referencias recuperaveis. Jev e um contrato opcional de reranking, desligado por padrao.
 - **ultra-create-skill**: The definitive guide and toolset for creating new skills.
 - **ultra-find-skill**: A cross-platform search and evaluation engine for discovering skills.
