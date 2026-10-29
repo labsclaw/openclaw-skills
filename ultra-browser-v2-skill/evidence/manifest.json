@@ -1,0 +1,172 @@
+{
+  "source_repository": "browser-eval (local Git history)",
+  "revisions": {
+    "ef55939": "ef55939aeb19891ce47f9dc944edc02b4625a5a9",
+    "ed963ec": "ed963eca968698bdce1cdaeb33557ca51502e221",
+    "51631c1": "51631c1e834fc3203b1fecae333f5a4964863d01"
+  },
+  "files": [
+    {
+      "path": "scripts/agent_loop.py",
+      "source_commit": "ed963eca968698bdce1cdaeb33557ca51502e221",
+      "source_path": "ultra-browser-v2/scripts/agent_loop.py",
+      "sha256": "a8ff636b8d2d2cd1053ffb0fe33b8202d9f4cbea5ff66218d610e969f2fa9d3f"
+    },
+    {
+      "path": "scripts/battery_pilot.py",
+      "source_commit": "ed963eca968698bdce1cdaeb33557ca51502e221",
+      "source_path": "ultra-browser-v2/scripts/battery_pilot.py",
+      "sha256": "dff8329c4e42d61a5d4e3c57500875f4a9fb5bc326a68bdeeec216704a21a904"
+    },
+    {
+      "path": "scripts/recipe.py",
+      "source_commit": "ed963eca968698bdce1cdaeb33557ca51502e221",
+      "source_path": "ultra-browser-v2/scripts/recipe.py",
+      "sha256": "b0ee68c97613c4649e4e469cdb318c2e69088b9a89495884074093d6aa2f8f26"
+    },
+    {
+      "path": "scripts/screencast_rec.py",
+      "source_commit": "ed963eca968698bdce1cdaeb33557ca51502e221",
+      "source_path": "ultra-browser-v2/scripts/screencast_rec.py",
+      "sha256": "2fdad8a7663743c7751b4986aef6c7edf9432e206b83233f2f78b6a47b33661f"
+    },
+    {
+      "path": "scripts/snapshot.js",
+      "source_commit": "ed963eca968698bdce1cdaeb33557ca51502e221",
+      "source_path": "ultra-browser-v2/scripts/snapshot.js",
+      "sha256": "b72d5d4f1b151aebe07ab274082647b8b2007478186be1c82e4ec7f5e424bf16"
+    },
+    {
+      "path": "scripts/verifier.js",
+      "source_commit": "ed963eca968698bdce1cdaeb33557ca51502e221",
+      "source_path": "ultra-browser-v2/scripts/verifier.js",
+      "sha256": "20d8bdd8453511cd17060c84c82db27cb0a84f238ef039e496b9d2b4e4366894"
+    },
+    {
+      "path": "templates/task-log.json",
+      "source_commit": "ed963eca968698bdce1cdaeb33557ca51502e221",
+      "source_path": "ultra-browser-v2/templates/task-log.json",
+      "sha256": "626972c1de03307de84c389bc0d8547751a4a3673e2c8b752497f0ded9bb50a5"
+    },
+    {
+      "path": "evidence/ed963ec/results/v22-logs/battery-p1.json",
+      "source_commit": "ed963eca968698bdce1cdaeb33557ca51502e221",
+      "source_path": "results/v22-logs/battery-p1.json",
+      "sha256": "0a8e12ca0300c9ea6ea825dd280bfc5e032aa637603d7d9a9ad3435d8c457737"
+    },
+    {
+      "path": "evidence/ed963ec/results/v22-logs/battery-p1-judge.json",
+      "source_commit": "ed963eca968698bdce1cdaeb33557ca51502e221",
+      "source_path": "results/v22-logs/battery-p1-judge.json",
+      "sha256": "cd4574272e9fe6de3ccec2ab155577538d6aafc93077853a693d984ff3342a00"
+    },
+    {
+      "path": "evidence/ed963ec/results/v22-logs/battery-p2.json",
+      "source_commit": "ed963eca968698bdce1cdaeb33557ca51502e221",
+      "source_path": "results/v22-logs/battery-p2.json",
+      "sha256": "b492813e45fa03f87de95d32174a51e3e440d0d3b87a293ebe558ecba5e57cdf"
+    },
+    {
+      "path": "evidence/ed963ec/results/v22-logs/battery-p2-judge.json",
+      "source_commit": "ed963eca968698bdce1cdaeb33557ca51502e221",
+      "source_path": "results/v22-logs/battery-p2-judge.json",
+      "sha256": "cee8c30d3555719aa4a843c4bc929affba4342ea422f2515ca706e873af3a2fb"
+    },
+    {
+      "path": "evidence/ed963ec/results/v22-logs/battery-p3.json",
+      "source_commit": "ed963eca968698bdce1cdaeb33557ca51502e221",
+      "source_path": "results/v22-logs/battery-p3.json",
+      "sha256": "10671a840e6c62901249035c96c86a81adbd23908f0b22429fd829ae8d2b2920"
+    },
+    {
+      "path": "evidence/ed963ec/results/v22-logs/battery-p3-judge.json",
+      "source_commit": "ed963eca968698bdce1cdaeb33557ca51502e221",
+      "source_path": "results/v22-logs/battery-p3-judge.json",
+      "sha256": "e9165a4f69126c3459d5c00abbb236f98039beeba73a58295658bc17dc1e120f"
+    },
+    {
+      "path": "evidence/51631c1/results/v22-logs/battery-p1.json",
+      "source_commit": "51631c1e834fc3203b1fecae333f5a4964863d01",
+      "source_path": "results/v22-logs/battery-p1.json",
+      "sha256": "285536d954da72008c206f62a16812d53b1f5581568dd03b90dc5ee63d0f22f9"
+    },
+    {
+      "path": "evidence/51631c1/results/v22-logs/battery-p1-judge.json",
+      "source_commit": "51631c1e834fc3203b1fecae333f5a4964863d01",
+      "source_path": "results/v22-logs/battery-p1-judge.json",
+      "sha256": "6b6b8a2d4a52d13d39e45802c267c455edc86f9dc2bde313b40a16f92a7dbc6f"
+    },
+    {
+      "path": "evidence/51631c1/results/v22-logs/battery-p2.json",
+      "source_commit": "51631c1e834fc3203b1fecae333f5a4964863d01",
+      "source_path": "results/v22-logs/battery-p2.json",
+      "sha256": "07753644beb9b716b1616d5572d19e85f3bb4237af970541c3a6271c7b3f639c"
+    },
+    {
+      "path": "evidence/51631c1/results/v22-logs/battery-p2-judge.json",
+      "source_commit": "51631c1e834fc3203b1fecae333f5a4964863d01",
+      "source_path": "results/v22-logs/battery-p2-judge.json",
+      "sha256": "4d87cfad14a077ddb4e43da472713372525f496a34b121067fb88300847f7b7b"
+    },
+    {
+      "path": "evidence/51631c1/results/v22-logs/battery-p3.json",
+      "source_commit": "51631c1e834fc3203b1fecae333f5a4964863d01",
+      "source_path": "results/v22-logs/battery-p3.json",
+      "sha256": "970d931817102abf28991dd2ac2310a58678388efb1e0b7ade7054012a4e234e"
+    },
+    {
+      "path": "evidence/51631c1/results/v22-logs/battery-p3-judge.json",
+      "source_commit": "51631c1e834fc3203b1fecae333f5a4964863d01",
+      "source_path": "results/v22-logs/battery-p3-judge.json",
+      "sha256": "1af7a2cb73a698ee2dd7cceebbb031beca20fefb221331ce0dd5875e1449797e"
+    },
+    {
+      "path": "evidence/ed963ec/results/v22-logs/battery-v251-20261029-162410-p1.json",
+      "source_commit": "ed963eca968698bdce1cdaeb33557ca51502e221",
+      "source_path": "results/v22-logs/battery-v251-20261029-162410-p1.json",
+      "sha256": "dbde2d33872b45c69c829451edd10c432f4f25ea05a862c65eee16d86e155e93"
+    },
+    {
+      "path": "evidence/ed963ec/results/v22-logs/battery-v251-20261029-162410-p1-judge.json",
+      "source_commit": "ed963eca968698bdce1cdaeb33557ca51502e221",
+      "source_path": "results/v22-logs/battery-v251-20261029-162410-p1-judge.json",
+      "sha256": "f5e73c8e39fdfc8b8345f9fc1861fffc9bcf6cfa4bfafc62102e4eef30f57357"
+    },
+    {
+      "path": "evidence/ed963ec/results/v22-logs/battery-v251-20261029-162410-p2.json",
+      "source_commit": "ed963eca968698bdce1cdaeb33557ca51502e221",
+      "source_path": "results/v22-logs/battery-v251-20261029-162410-p2.json",
+      "sha256": "75279d634b3cf357c94afc97941f68dd7da2b9241e0adeae3a37aa83ef4ae26e"
+    },
+    {
+      "path": "evidence/ed963ec/results/v22-logs/battery-v251-20261029-162410-p2-judge.json",
+      "source_commit": "ed963eca968698bdce1cdaeb33557ca51502e221",
+      "source_path": "results/v22-logs/battery-v251-20261029-162410-p2-judge.json",
+      "sha256": "1d696515631534bcb6508bb036282d1af549c3146da9fcf6a22bdd99033120e4"
+    },
+    {
+      "path": "evidence/ed963ec/results/v22-logs/battery-v251-20261029-162410-p3.json",
+      "source_commit": "ed963eca968698bdce1cdaeb33557ca51502e221",
+      "source_path": "results/v22-logs/battery-v251-20261029-162410-p3.json",
+      "sha256": "c3d959f7d9b92d815da39c7f07780adc4ddad4904e74d9a3e4756fef286950f7"
+    },
+    {
+      "path": "evidence/ed963ec/results/v22-logs/battery-v251-20261029-162410-p3-judge.json",
+      "source_commit": "ed963eca968698bdce1cdaeb33557ca51502e221",
+      "source_path": "results/v22-logs/battery-v251-20261029-162410-p3-judge.json",
+      "sha256": "fd1f36ce5a618bc8c435bdb97f3c5cc57f618840e8bf962800ec8c5aa81626df"
+    },
+    {
+      "path": "evidence/ed963ec/results/recipes/xt24ds7-recipe.json",
+      "source_commit": "ed963eca968698bdce1cdaeb33557ca51502e221",
+      "source_path": "results/recipes/xt24ds7-recipe.json",
+      "sha256": "5defc9c2bf86ec8357cc16c063d03bb18ce6554bfd7848ca18e1f409d971fd71"
+    },
+    {
+      "path": "evidence/ed963ec/results/v22-logs/xt24ds7-jev-deepseek.json",
+      "source_commit": "ed963eca968698bdce1cdaeb33557ca51502e221",
+      "source_path": "results/v22-logs/xt24ds7-jev-deepseek.json",
+      "sha256": "8bf31d78d148af3665215056308668f5f9913aec026e603ab5166c7bada0580e"
+    }
+  ]
+}

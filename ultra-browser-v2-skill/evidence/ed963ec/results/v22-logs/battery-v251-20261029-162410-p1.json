@@ -1,0 +1,170 @@
+{
+ "url": "http://127.0.0.1:8791/xt-web-form-01",
+ "recipe": "xt24ds7-recipe.json",
+ "steps": [
+  {
+   "i": 0,
+   "op": {
+    "id": "channel",
+    "value": "WEB",
+    "action": "select"
+   },
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "select",
+      "ok": true,
+      "id": "channel",
+      "value": "WEB"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "i": 1,
+   "op": {
+    "id": "status",
+    "value": "",
+    "action": "click"
+   },
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "status",
+      "text": "Todos\nEm análise\nAberta"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "i": 2,
+   "op": {
+    "id": "status",
+    "value": "Em analise",
+    "action": "select"
+   },
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "select",
+      "ok": true,
+      "id": "status",
+      "value": "Em análise"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "i": 3,
+   "op": {
+    "id": "filter",
+    "value": "",
+    "action": "click"
+   },
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "i": 4,
+   "op": {
+    "id": "next",
+    "value": "",
+    "action": "click"
+   },
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "i": 5,
+   "op": {
+    "id": "",
+    "label": "Criar plano DEMO-024",
+    "value": "",
+    "action": "click"
+   },
+   "exec": {
+    "results": [],
+    "stopped_at": 0,
+    "reason": "exec parse fail: Traceback (most recent call last):\n  File \"C:\\Users\\ClawLabs\\AppData\\Local\\hermes\\installs\\bde0425e6fa3eeac\\environments"
+   }
+  },
+  {
+   "i": 5,
+   "op": {
+    "id": "",
+    "label": "Criar plano DEMO-024",
+    "value": "",
+    "action": "click"
+   },
+   "exec": {
+    "results": [],
+    "stopped_at": 0,
+    "reason": "exec parse fail: Traceback (most recent call last):\n  File \"C:\\Users\\ClawLabs\\AppData\\Local\\hermes\\installs\\bde0425e6fa3eeac\\environments"
+   }
+  },
+  {
+   "i": 5,
+   "op": {
+    "id": "",
+    "label": "Criar plano DEMO-024",
+    "value": "",
+    "action": "click"
+   },
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "error": "element not found (waited)",
+      "label": "Criar plano DEMO-024"
+     }
+    ],
+    "stopped_at": 0,
+    "reason": "element not found"
+   }
+  },
+  {
+   "i": 5,
+   "op": {
+    "id": "",
+    "label": "Criar plano DEMO-024",
+    "value": "",
+    "action": "click"
+   },
+   "exec": {
+    "results": [],
+    "stopped_at": 0,
+    "reason": "exec parse fail: Traceback (most recent call last):\n  File \"C:\\Users\\ClawLabs\\AppData\\Local\\hermes\\installs\\bde0425e6fa3eeac\\environments"
+   }
+  }
+ ],
+ "result": "RECIPE-FAIL verifier=FAIL (FAIL: not after reload)",
+ "verifier": "FAIL (FAIL: not after reload)"
+}

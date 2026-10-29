@@ -9,12 +9,14 @@ const allowedLicenses = new Set(["Apache-2.0", "MIT"]);
 const separateScopes = new Map([
   ["c-level-advisor", "MIT"],
   ["ultra-browser-skill", "MIT"],
+  ["ultra-browser-v2-skill", "MIT"],
   ["ultra-dom-engine-skill", "MIT"],
   ["ultra-memory-skill", "MIT"],
   ["ultra-powershell-skill", "MIT"],
   ["ultra-x-stealth-skill", "MIT"],
 ]);
 const expectedLicenseDigests = new Map([
+  ["ultra-browser-v2-skill/LICENSE", "149639bb0b8c99922c7ad47231164300c5d2ecc9123af779af577e846e7f8279"],
   ["LICENSE", "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"],
   ["c-level-advisor/LICENSE", "a20126646f93d32a8989c3cf4772d59194f405034f7babe7daebeac22b8ab151"],
   ["ultra-browser-skill/LICENSE", "d5e0820ce3fc4f4d44314995aebcf769a336f20ee9e1d45851c59a3f2a3ab925"],

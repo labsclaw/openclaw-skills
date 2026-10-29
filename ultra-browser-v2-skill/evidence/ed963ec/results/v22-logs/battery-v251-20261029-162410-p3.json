@@ -1,0 +1,80 @@
+{
+ "url": "http://127.0.0.1:8793/xt-web-form-01",
+ "recipe": "xt24ds7-recipe.json",
+ "steps": [
+  {
+   "i": 0,
+   "op": {
+    "id": "channel",
+    "value": "WEB",
+    "action": "select"
+   },
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "error": "element not found (waited)"
+     }
+    ],
+    "stopped_at": 0,
+    "reason": "element not found"
+   }
+  },
+  {
+   "i": 0,
+   "op": {
+    "id": "channel",
+    "value": "WEB",
+    "action": "select"
+   },
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "error": "element not found (waited)"
+     }
+    ],
+    "stopped_at": 0,
+    "reason": "element not found"
+   }
+  },
+  {
+   "i": 0,
+   "op": {
+    "id": "channel",
+    "value": "WEB",
+    "action": "select"
+   },
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "error": "element not found (waited)"
+     }
+    ],
+    "stopped_at": 0,
+    "reason": "element not found"
+   }
+  },
+  {
+   "i": 0,
+   "op": {
+    "id": "channel",
+    "value": "WEB",
+    "action": "select"
+   },
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "error": "element not found (waited)"
+     }
+    ],
+    "stopped_at": 0,
+    "reason": "element not found"
+   }
+  }
+ ],
+ "result": "RECIPE-FAIL verifier=FAIL (FAIL: not after reload)",
+ "verifier": "FAIL (FAIL: not after reload)"
+}
