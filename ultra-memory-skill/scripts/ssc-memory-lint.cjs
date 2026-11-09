@@ -36,34 +36,10 @@ const STALE_DAYS = 90;
 
 /**
  * Find the workspace by walking up and collecting every memory/index.json.
- * Pick the one with the MOST segments — an empty or stub index higher up the
- * tree must never shadow the real one. A 0-segment index would otherwise make
- * the linter report "Clean", which is a false negative (fail-open) and defeats
- * the purpose of the tool.
+ * Use the shared resolver: explicit workspace is authoritative; otherwise the
+ * nearest ancestor wins. Never select scope by counting segments.
  */
-function findWorkspace(startDir) {
-  const candidates = [];
-  let dir = startDir;
-  for (let i = 0; i < 8; i++) {
-    const indexPath = path.join(dir, 'memory', 'index.json');
-    if (fs.existsSync(indexPath)) {
-      let count = -1;
-      try {
-        const parsed = JSON.parse(fs.readFileSync(indexPath, 'utf8'));
-        count = Array.isArray(parsed.segments) ? parsed.segments.length : 0;
-      } catch {
-        count = -1;
-      }
-      candidates.push({ dir, count });
-    }
-    const parent = path.dirname(dir);
-    if (parent === dir) break;
-    dir = parent;
-  }
-  if (candidates.length === 0) return null;
-  candidates.sort((a, b) => b.count - a.count);
-  return candidates[0].dir;
-}
+const { resolveWorkspace } = require('./ssc-workspace.cjs');
 
 function resolvePaths(opts) {
   if (opts.index) {
@@ -71,7 +47,7 @@ function resolvePaths(opts) {
     return { indexPath, workspaceDir: path.dirname(path.dirname(indexPath)) };
   }
   const workspaceDir =
-    process.env.OPENCLAW_WORKSPACE || findWorkspace(__dirname);
+    resolveWorkspace(__dirname);
   if (!workspaceDir) {
     throw new Error(
       'Could not locate workspace (no memory/index.json found upward from script). Set OPENCLAW_WORKSPACE.'
@@ -100,11 +76,19 @@ function lintIndex(index, fileExists) {
   const errors = [];
   const warnings = [];
 
-  const segments = Array.isArray(index.segments) ? index.segments : [];
+  const raw = index && Array.isArray(index.segments) ? index.segments : [];
+  const segments = raw.filter(s => s && typeof s === 'object');
+  if (!segments.length) errors.push({ code: 'E0', message: 'Index has zero segments; unverified, never clean.' });
+  if (segments.length !== raw.length) errors.push({ code: 'E8', message: 'Invalid segment shape' });
   const byId = new Map();
   const byFile = new Map();
 
   for (const seg of segments) {
+    for (const field of ['supersedes', 'supersededBy']) {
+      if (seg[field] !== undefined && (!Array.isArray(seg[field]) || seg[field].some(id => typeof id !== 'string' || !id.trim()))) {
+        errors.push({ code: 'E8', id: seg.id, message: `${field} must be an array of non-empty IDs` });
+      }
+    }
     // E1 duplicate id
     if (byId.has(seg.id)) {
       errors.push({
@@ -154,14 +138,14 @@ function lintIndex(index, fileExists) {
     }
 
     // E7 certified without attestation
-    if (seg.confidence === 'certified' && !seg.certifiedBy) {
+    if (seg.confidence === 'certified' && (typeof seg.certifiedBy !== 'string' || !seg.certifiedBy.trim())) {
       errors.push({
         code: 'E7',
         id: seg.id,
         message: 'confidence "certified" requires certifiedBy',
       });
     }
-    if (seg.confidence === 'certified' && !seg.certifiedAt) {
+    if (seg.confidence === 'certified' && (typeof seg.certifiedAt !== 'string' || !Number.isFinite(Date.parse(seg.certifiedAt)))) {
       errors.push({
         code: 'E7',
         id: seg.id,
@@ -202,7 +186,7 @@ function lintIndex(index, fileExists) {
 
     // W4 stale HOT
     const age = daysSince(seg.lastUpdated || seg.created);
-    if (seg.tier === 'HOT' && age !== null && age > STALE_DAYS) {
+    if ((seg.cacheTier === 'HOT' || seg.tier === 'HOT') && age !== null && age > STALE_DAYS) {
       warnings.push({
         code: 'W4',
         id: seg.id,
@@ -257,6 +241,17 @@ function lintIndex(index, fileExists) {
     }
   }
 
+  const visiting = new Set(), visited = new Set();
+  function visit(id) {
+    if (visiting.has(id)) { errors.push({ code: 'E9', id, message: 'Supersession cycle' }); return; }
+    if (visited.has(id) || !byId.has(id)) return;
+    visiting.add(id);
+    const links = byId.get(id).supersedes;
+    if (Array.isArray(links)) links.forEach(visit);
+    visiting.delete(id); visited.add(id);
+  }
+  segments.forEach(s => visit(s.id));
+
   const certified = segments.filter((s) => s.confidence === 'certified').length;
   const observed = segments.filter((s) => s.confidence === 'observed').length;
   const inferred = segments.filter((s) => s.confidence === 'inferred').length;
@@ -303,17 +298,6 @@ function main() {
 
   const fileExists = (rel) => fs.existsSync(path.join(paths.workspaceDir, rel));
   const result = lintIndex(index, fileExists);
-
-  // Fail closed: an index with zero segments is not "clean", it is unverified.
-  // Reporting "Clean" here would hide a wrong path or a corrupted index.
-  if (result.stats.segments === 0) {
-    result.errors.push({
-      code: 'E0',
-      id: null,
-      message: `index has 0 segments — refusing to report clean. Check the path (${paths.indexPath}) or rebuild the index.`,
-    });
-    result.stats.errors = result.errors.length;
-  }
 
   if (asJson) {
     console.log(JSON.stringify({ indexPath: paths.indexPath, ...result }, null, 2));

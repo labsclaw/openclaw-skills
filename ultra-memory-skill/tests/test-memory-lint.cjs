@@ -265,9 +265,9 @@ describe('[Suite 5/5] Stats and resilience', () => {
     assertEqual(r.stats.segments, 4, 'total');
   });
 
-  it('empty segments array does not throw', () => {
+  it('empty segments array fails closed without throwing', () => {
     const r = lintIndex({ segments: [] }, allFilesExist);
-    assertEqual(r.errors.length, 0, 'errors on empty');
+    assert(hasCode(r.errors, 'E0'), 'empty index must report E0');
     assertEqual(r.warnings.length, 0, 'warnings on empty');
   });
 
@@ -276,10 +276,10 @@ describe('[Suite 5/5] Stats and resilience', () => {
     assertEqual(r.stats.segments, 0, 'segments on index without segments key');
   });
 
-  it('malformed supersedes (non-array) is ignored, not crashed on', () => {
+  it('malformed supersedes (non-array) is rejected without crashing', () => {
     const index = { segments: [{ id: 's1', file: 'a.md', supersedes: 's0' }] };
     const r = lintIndex(index, allFilesExist);
-    assertEqual(r.errors.length, 0, 'non-array supersedes should be ignored');
+    assert(hasCode(r.errors, 'E8'), 'non-array supersedes must be rejected');
   });
 
   it('date parsing failure does not throw', () => {
@@ -356,7 +356,8 @@ describe('[Suite 6/6] Rebuild must preserve the epistemic layer', () => {
     assertEqual(seg.correctionCount, 2, 'correctionCount erased by rebuild');
     assert(Array.isArray(seg.supersedes) && seg.supersedes[0] === 's899-old', 'supersedes erased by rebuild');
     assert(Array.isArray(seg.lastUsedIn) && seg.lastUsedIn[0] === 'task-xyz', 'lastUsedIn erased by rebuild');
-    assertEqual(seg.tier, 'HOT', 'tier was reset by rebuild');
+    assertEqual(seg.tier, 1, 'routing tier must remain numeric');
+    assertEqual(seg.cacheTier, 'HOT', 'cache priority erased by rebuild');
     assertEqual(seg.weight, 1.5, 'weight was reset by rebuild');
 
     fs.rmSync(tmp, { recursive: true, force: true });

@@ -45,7 +45,7 @@ node scripts/ssc-memory-lint.cjs --strict   # exit 1 on blocking errors
 node scripts/ssc-memory-lint.cjs --json     # machine-readable
 ```
 
-Checks E0-E7 (blocking under `--strict`) and W1-W4 (advisory) are documented in `references/epistemic-integrity.md`. Its E0 empty-index check is CLI-only; importing `lintIndex()` alone does not enforce E0. Never choose a workspace because it has more segments.
+Checks E0-E9 (blocking under `--strict`) and W1-W4 (advisory) are documented in `references/epistemic-integrity.md`. E0 is enforced by both the CLI and exported `lintIndex()`. E8 rejects malformed relations and E9 rejects supersession cycles. Never choose a workspace because it has more segments; an invalid explicit `OPENCLAW_WORKSPACE` must fail, not fall back to another index.
 
 For operational use, follow `references/evidence-gate.md`: declare required facets, resolve scoped aliases, inspect successors and conflicts, verify exact source bytes and return evidence receipts or explicit gaps. The optional helper enforces this contract on declared structured claims, not free-text understanding or corpus completeness. Do not overwrite a newer runtime router/rebuild with bundled older copies; test and synchronize exact files with backups. Before storing metadata in an existing index, test that the deployed rebuild preserves it; the PR's fix does not prove deployment. Separate claims JSON files used by the optional gate are not rewritten by the router/rebuild. Do not auto-certify legacy entries.
 

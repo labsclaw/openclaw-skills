@@ -33,21 +33,8 @@ async function getHybridSearch() {
 // author's machine and silently read/wrote the WRONG index elsewhere — queries
 // returned results but accessCount never persisted. Priority:
 // 1. OPENCLAW_WORKSPACE  2. nearest ancestor containing memory/index.json
-function findWorkspace() {
-  if (process.env.OPENCLAW_WORKSPACE && fs.existsSync(path.join(process.env.OPENCLAW_WORKSPACE, 'memory', 'index.json'))) {
-    return process.env.OPENCLAW_WORKSPACE;
-  }
-  let dir = __dirname;
-  for (let i = 0; i < 8; i++) {
-    if (fs.existsSync(path.join(dir, 'memory', 'index.json'))) return dir;
-    const parent = path.dirname(dir);
-    if (parent === dir) break;
-    dir = parent;
-  }
-  throw new Error('Cannot locate OpenClaw workspace (set OPENCLAW_WORKSPACE or run inside a workspace with memory/index.json)');
-}
-
-const workspaceDir = findWorkspace();
+const { resolveWorkspace } = require('./ssc-workspace.cjs');
+const workspaceDir = resolveWorkspace(__dirname);
 const memoryDir = path.join(workspaceDir, 'memory');
 const indexPath = path.join(memoryDir, 'index.json');
 

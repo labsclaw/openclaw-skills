@@ -28,3 +28,9 @@ jobs:
         run: node ultra-code-review-skill/scripts/code-review.test.cjs
       - name: Test bounded code context helper
         run: node --test ultra-code-context-skill/scripts/context-pack.test.mjs
+      - name: Test SSC integrity and review regressions
+        run: |
+          node ultra-memory-skill/tests/test-memory-lint.cjs
+          node --test ultra-memory-skill/tests/test-review-regressions.cjs
+      - name: Test SSC evidence gate and isolated retrieval pilot
+        run: node ultra-memory-skill/tests/test-evidence.cjs
