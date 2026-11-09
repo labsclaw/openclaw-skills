@@ -1,5 +1,16 @@
 # Epistemic integrity layer
 
+## Review qualification, 2026-11-09
+
+This reference preserves Robin's original proposal and source-candidate description below, not a deployment certificate. There are **seven**, not six, metadata fields. The authoritative operational procedure is [evidence-gate.md](evidence-gate.md). In particular:
+
+- Human certification is not universal permission to act or proof of current truth; observed live-source facts are usable without certifying every memory, and certified facts can expire or conflict.
+- Select an explicit workspace/index, never the ancestor with most segments. Use `--strict`; warn-mode exit zero is not a trustworthy gate. E0 is enforced in the CLI, not in exported `lintIndex()`.
+- The original counts below describe the collaborator's workspace at the cited date, not Justus's current index. No bulk certification has been performed.
+- Rebuild-preservation tests validate the candidate script only. Existing installed/deployed rebuild scripts must pass their own preservation test before index metadata can be relied on. Never replace a newer multi-collection rebuild with this older two-collection implementation.
+- `tier` is numeric in the live ranker; a string `HOT` is not a compatible cache-priority representation. Use a separate cache marker. Do not reset correction history to regain certification; create a new attested version.
+- The current router already returns zero matches for unrelated tokens. Partial matches, not unconditional top-K, are the concern. The optional evidence helper checks exact source bytes and structured facets but cannot establish semantic entailment or completeness of the provided claims.
+
 Added 2026-11-08. Answers the question the SSC architecture did not answer: **can I trust this fact?**
 
 The original design optimised *retrieval* — where is the information, how do I find it, when do I promote it. It never encoded *how well-attested* a fact is. A decision the owner made and an agent's guess entered `index.json` with identical weight and identical standing. This layer fixes that.
