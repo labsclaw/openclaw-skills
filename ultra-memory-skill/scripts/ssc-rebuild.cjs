@@ -13,7 +13,24 @@
 const fs = require('fs');
 const path = require('path');
 
-const workspaceDir = 'C:\\Users\\ClawLabs\\.openclaw\\workspace';
+// Resolve the workspace portably. The previous hardcoded path only worked on the
+// author's machine; everywhere else the rebuild wrote to a non-existent tree and
+// silently failed. Priority: OPENCLAW_WORKSPACE -> nearest ancestor with memory/.
+function findWorkspace() {
+  if (process.env.OPENCLAW_WORKSPACE && fs.existsSync(path.join(process.env.OPENCLAW_WORKSPACE, 'memory'))) {
+    return process.env.OPENCLAW_WORKSPACE;
+  }
+  let dir = __dirname;
+  for (let i = 0; i < 8; i++) {
+    if (fs.existsSync(path.join(dir, 'memory', 'index.json'))) return dir;
+    const parent = path.dirname(dir);
+    if (parent === dir) break;
+    dir = parent;
+  }
+  throw new Error('Cannot locate OpenClaw workspace (set OPENCLAW_WORKSPACE or run inside a workspace with memory/index.json)');
+}
+
+const workspaceDir = findWorkspace();
 const memoryDir = path.join(workspaceDir, 'memory');
 const segmentsDir = path.join(memoryDir, 'segments');
 const dailyDir = path.join(memoryDir, 'daily');
@@ -85,15 +102,28 @@ function rebuild() {
       id: f.replace(/\.md$/, ''),
       file: relPath,
       summary: summary,
-      tier: 1,
-      weight: 2.0,
+      // Preserve a promoted tier (e.g. "HOT") — a rebuild is a mechanical refresh,
+      // not a demotion. Forcing tier 1 here silently cancelled every promotion.
+      tier: existing && existing.tier ? existing.tier : 1,
+      weight: existing && typeof existing.weight === 'number' ? existing.weight : 2.0,
       keywords: keywords,
       tags: existing && existing.tags ? existing.tags : [],
       accessCount: existing ? (existing.accessCount || 0) : 0,
       lastUpdated: stat.mtime.toISOString(),
       size: stat.size,
       tokenCount: fullTokens.length,
-      tokens: fullTokens
+      tokens: fullTokens,
+      // Epistemic layer — MUST survive a rebuild. Rebuilding regenerates the
+      // mechanical fields (size, tokens, mtime) but must never discard what a
+      // human asserted about the segment. Losing these silently demotes every
+      // certified fact back to "unverified" on the next rebuild.
+      ...(existing && existing.confidence ? { confidence: existing.confidence } : {}),
+      ...(existing && existing.certifiedBy ? { certifiedBy: existing.certifiedBy } : {}),
+      ...(existing && existing.certifiedAt ? { certifiedAt: existing.certifiedAt } : {}),
+      ...(existing && Array.isArray(existing.supersedes) ? { supersedes: existing.supersedes } : {}),
+      ...(existing && Array.isArray(existing.supersededBy) ? { supersededBy: existing.supersededBy } : {}),
+      ...(existing && Array.isArray(existing.lastUsedIn) ? { lastUsedIn: existing.lastUsedIn } : {}),
+      ...(existing && typeof existing.correctionCount === 'number' ? { correctionCount: existing.correctionCount } : {})
     });
   }
 
@@ -169,7 +199,7 @@ function rebuild() {
   });
 
   const newIndex = {
-    version: "4.0",
+    version: "4.1",
     lastUpdated: new Date().toISOString(),
     description: `SSC v4.0 Hybrid BM25 Index (${cleanedSegments.length} Segments [Tier 1], ${cleanedDaily.length} Daily Logs [Tier 2])`,
     config: {
