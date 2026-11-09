@@ -29,7 +29,12 @@ async function getHybridSearch() {
   return _hybridSearch;
 }
 
-const workspaceDir = 'C:\\Users\\ClawLabs\\.openclaw\\workspace';
+// Resolve the workspace portably. The original hardcoded path only worked on the
+// author's machine and silently read/wrote the WRONG index elsewhere — queries
+// returned results but accessCount never persisted. Priority:
+// 1. OPENCLAW_WORKSPACE  2. nearest ancestor containing memory/index.json
+const { resolveWorkspace } = require('./ssc-workspace.cjs');
+const workspaceDir = resolveWorkspace(__dirname);
 const memoryDir = path.join(workspaceDir, 'memory');
 const indexPath = path.join(memoryDir, 'index.json');
 
@@ -69,6 +74,33 @@ function computeBM25Score(queryTokens, docTokens, docLen, avgDocLength, idfStats
   return score;
 }
 
+/**
+ * Resolve an entry's weight without collapsing an explicit 0 into the default.
+ * `entry.weight || 1.0` looks harmless but treats 0 as "missing", so a segment
+ * deliberately weighted 0 (muted) silently scores as weight 1.0. Explicit zero
+ * must survive: it means "do not boost", not "use the default".
+ */
+function resolveEntryWeight(entry) {
+  if (entry && typeof entry.weight === 'number' && Number.isFinite(entry.weight)) {
+    return entry.weight;
+  }
+  return 1.0;
+}
+
+/**
+ * Resolve the tier multiplier from index.config, preserving an explicit 0.
+ * Same reasoning as resolveEntryWeight: `config.tier1Weight || 2.0` turns a
+ * deliberate 0 (disable tier boost) into 2.0.
+ */
+function resolveTierMultiplier(config, tier) {
+  const key = tier === 1 ? 'tier1Weight' : 'tier2Weight';
+  const fallback = tier === 1 ? 2.0 : 0.5;
+  if (config && typeof config[key] === 'number' && Number.isFinite(config[key])) {
+    return config[key];
+  }
+  return fallback;
+}
+
 function querySSC(queryText, options = {}) {
   const topK = options.topK || 5;
   const dryRun = !!options.dryRun;
@@ -82,16 +114,15 @@ function querySSC(queryText, options = {}) {
   }
 
   const queryTokenSet = new Set(queryTokens);
-  const t1Weight = (index.config && index.config.tier1Weight) || 2.0;
-  const t2Weight = (index.config && index.config.tier2Weight) || 0.5;
+  const t1Weight = resolveTierMultiplier(index.config, 1);
+  const t2Weight = resolveTierMultiplier(index.config, 2);
   const idfStats = (index.bm25Stats && index.bm25Stats.idf) || {};
   const avgDocLength = (index.bm25Stats && index.bm25Stats.avgDocLength) || 100;
 
   const scoredEntries = [];
 
   function scoreEntry(entry, tier) {
-    const isTier1 = tier === 1;
-    const tierMultiplier = isTier1 ? t1Weight : t2Weight;
+    const tierMultiplier = tier === 1 ? t1Weight : t2Weight;
     
     // 1. Keyword & Tag Exact Word Boundary Hits
     let keywordHits = 0;
@@ -132,7 +163,7 @@ function querySSC(queryText, options = {}) {
     // 3. Combined Score: BM25 + Keyword Hits + Weight
     // ONLY include entry if there is a real BM25 or Keyword match
     if (bm25Score > 0 || keywordHits > 0 || tagHits > 0) {
-      const rawScore = (bm25Score * 1.2) + (keywordHits * 2.0) + (tagHits * 1.5) + ((entry.weight || 1.0) * 0.5);
+      const rawScore = (bm25Score * 1.2) + (keywordHits * 2.0) + (tagHits * 1.5) + (resolveEntryWeight(entry) * 0.5);
       const finalScore = rawScore * tierMultiplier;
 
       scoredEntries.push({
@@ -348,4 +379,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { querySSC, loadIndex, rebuild, getHybridSearch };
+module.exports = { querySSC, loadIndex, rebuild, getHybridSearch, resolveEntryWeight, resolveTierMultiplier };

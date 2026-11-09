@@ -13,7 +13,11 @@
 const fs = require('fs');
 const path = require('path');
 
-const workspaceDir = 'C:\\Users\\ClawLabs\\.openclaw\\workspace';
+// Resolve the workspace portably. The previous hardcoded path only worked on the
+// author's machine; everywhere else the rebuild wrote to a non-existent tree and
+// silently failed. Priority: OPENCLAW_WORKSPACE -> nearest ancestor with memory/.
+const { resolveWorkspace } = require('./ssc-workspace.cjs');
+const workspaceDir = resolveWorkspace(__dirname);
 const memoryDir = path.join(workspaceDir, 'memory');
 const segmentsDir = path.join(memoryDir, 'segments');
 const dailyDir = path.join(memoryDir, 'daily');
@@ -44,10 +48,11 @@ function rebuild() {
   if (fs.existsSync(indexPath)) {
     try {
       existingIndex = JSON.parse(fs.readFileSync(indexPath, 'utf8'));
-    } catch (e) {}
+    } catch (e) { throw new Error(`Cannot rebuild corrupt index without losing metadata: ${e.message}`); }
   }
 
   const existingSegMap = new Map();
+  const existingDailyMap = new Map((existingIndex.daily || []).map(entry => [entry.file, entry]));
   if (existingIndex.segments) {
     for (const s of existingIndex.segments) {
       existingSegMap.set(s.file, s);
@@ -82,18 +87,32 @@ function rebuild() {
     const fullTokens = tokenize(content);
 
     segments.push({
+      ...existing,
       id: f.replace(/\.md$/, ''),
       file: relPath,
       summary: summary,
-      tier: 1,
-      weight: 2.0,
+      // Routing tiers remain numeric; migrate legacy cache labels separately.
+      tier: existing && typeof existing.tier === 'number' && Number.isFinite(existing.tier) ? existing.tier : 1,
+      ...(existing && typeof existing.tier === 'string' ? { cacheTier: existing.tier } : {}),
+      weight: existing && typeof existing.weight === 'number' ? existing.weight : 2.0,
       keywords: keywords,
       tags: existing && existing.tags ? existing.tags : [],
       accessCount: existing ? (existing.accessCount || 0) : 0,
       lastUpdated: stat.mtime.toISOString(),
       size: stat.size,
       tokenCount: fullTokens.length,
-      tokens: fullTokens
+      tokens: fullTokens,
+      // Epistemic layer — MUST survive a rebuild. Rebuilding regenerates the
+      // mechanical fields (size, tokens, mtime) but must never discard what a
+      // human asserted about the segment. Losing these silently demotes every
+      // certified fact back to "unverified" on the next rebuild.
+      ...(existing && existing.confidence ? { confidence: existing.confidence } : {}),
+      ...(existing && existing.certifiedBy ? { certifiedBy: existing.certifiedBy } : {}),
+      ...(existing && existing.certifiedAt ? { certifiedAt: existing.certifiedAt } : {}),
+      ...(existing && Array.isArray(existing.supersedes) ? { supersedes: existing.supersedes } : {}),
+      ...(existing && Array.isArray(existing.supersededBy) ? { supersededBy: existing.supersededBy } : {}),
+      ...(existing && Array.isArray(existing.lastUsedIn) ? { lastUsedIn: existing.lastUsedIn } : {}),
+      ...(existing && typeof existing.correctionCount === 'number' ? { correctionCount: existing.correctionCount } : {})
     });
   }
 
@@ -121,14 +140,15 @@ function rebuild() {
     const fullTokens = tokenize(content);
 
     dailyEntries.push({
+      ...existingDailyMap.get(relPath),
       id: `daily-${f.replace(/\.md$/, '')}`,
       file: relPath,
       summary: summaryHeader,
       tier: 2,
-      weight: 0.5,
+      weight: existingDailyMap.get(relPath)?.weight ?? 0.5,
       date: dateStr,
       keywords: keywords,
-      accessCount: 0,
+      accessCount: existingDailyMap.get(relPath)?.accessCount ?? 0,
       lastUpdated: stat.mtime.toISOString(),
       size: stat.size,
       tokenCount: fullTokens.length,
@@ -169,14 +189,16 @@ function rebuild() {
   });
 
   const newIndex = {
-    version: "4.0",
+    ...existingIndex,
+    version: "4.1",
     lastUpdated: new Date().toISOString(),
     description: `SSC v4.0 Hybrid BM25 Index (${cleanedSegments.length} Segments [Tier 1], ${cleanedDaily.length} Daily Logs [Tier 2])`,
     config: {
       maxSegmentsPerQuery: 5,
       tier1Weight: 2.0,
       tier2Weight: 0.5,
-      bm25: { k1: 1.5, b: 0.75 }
+      bm25: { k1: 1.5, b: 0.75 },
+      ...existingIndex.config
     },
     bm25Stats: {
       docCount,
