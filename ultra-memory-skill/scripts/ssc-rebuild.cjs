@@ -102,15 +102,28 @@ function rebuild() {
       id: f.replace(/\.md$/, ''),
       file: relPath,
       summary: summary,
-      tier: 1,
-      weight: 2.0,
+      // Preserve a promoted tier (e.g. "HOT") — a rebuild is a mechanical refresh,
+      // not a demotion. Forcing tier 1 here silently cancelled every promotion.
+      tier: existing && existing.tier ? existing.tier : 1,
+      weight: existing && typeof existing.weight === 'number' ? existing.weight : 2.0,
       keywords: keywords,
       tags: existing && existing.tags ? existing.tags : [],
       accessCount: existing ? (existing.accessCount || 0) : 0,
       lastUpdated: stat.mtime.toISOString(),
       size: stat.size,
       tokenCount: fullTokens.length,
-      tokens: fullTokens
+      tokens: fullTokens,
+      // Epistemic layer — MUST survive a rebuild. Rebuilding regenerates the
+      // mechanical fields (size, tokens, mtime) but must never discard what a
+      // human asserted about the segment. Losing these silently demotes every
+      // certified fact back to "unverified" on the next rebuild.
+      ...(existing && existing.confidence ? { confidence: existing.confidence } : {}),
+      ...(existing && existing.certifiedBy ? { certifiedBy: existing.certifiedBy } : {}),
+      ...(existing && existing.certifiedAt ? { certifiedAt: existing.certifiedAt } : {}),
+      ...(existing && Array.isArray(existing.supersedes) ? { supersedes: existing.supersedes } : {}),
+      ...(existing && Array.isArray(existing.supersededBy) ? { supersededBy: existing.supersededBy } : {}),
+      ...(existing && Array.isArray(existing.lastUsedIn) ? { lastUsedIn: existing.lastUsedIn } : {}),
+      ...(existing && typeof existing.correctionCount === 'number' ? { correctionCount: existing.correctionCount } : {})
     });
   }
 
