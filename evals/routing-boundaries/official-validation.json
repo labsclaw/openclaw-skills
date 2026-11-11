@@ -1,0 +1,36 @@
+{
+  "total": 77,
+  "passed": 72,
+  "failures": [
+    {
+      "path": "ultra-browser-stealth-timing-skill/SKILL.md",
+      "errors": [
+        "Directory name 'ultra-browser-stealth-timing-skill' must match skill name 'browser-stealth-timing'"
+      ]
+    },
+    {
+      "path": "ultra-gemini-image-skill/SKILL.md",
+      "errors": [
+        "Unexpected fields in frontmatter: user-invocable. Only ['allowed-tools', 'compatibility', 'description', 'license', 'metadata', 'name'] are allowed."
+      ]
+    },
+    {
+      "path": "ultra-grok-image-skill/SKILL.md",
+      "errors": [
+        "Unexpected fields in frontmatter: user-invocable. Only ['allowed-tools', 'compatibility', 'description', 'license', 'metadata', 'name'] are allowed."
+      ]
+    },
+    {
+      "path": "ultra-perplexity-pro-bridge-skill/SKILL.md",
+      "errors": [
+        "Unexpected fields in frontmatter: user-invocable. Only ['allowed-tools', 'compatibility', 'description', 'license', 'metadata', 'name'] are allowed."
+      ]
+    },
+    {
+      "path": "ultra-x-stealth-skill/SKILL.md",
+      "errors": [
+        "Unexpected fields in frontmatter: user-invocable. Only ['allowed-tools', 'compatibility', 'description', 'license', 'metadata', 'name'] are allowed."
+      ]
+    }
+  ]
+}

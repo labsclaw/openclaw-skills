@@ -1,14 +1,10 @@
 ---
 name: ultra-plan-gate-skill
-description: "Requires an evidence-based written plan before multi-step edits. Use when work spans several files, has meaningful unknowns, changes external state, or needs explicit success criteria and scope control."
+description: "Establish an evidence-backed plan before nontrivial multi-file edits, uncertain migrations or consequential external changes. Not for a typo fix, a bounded routine command, a read-only status lookup or a conceptual question."
 license: Apache-2.0
 metadata:
-  {
-    "openclaw":
-      {
-        "emoji": "🚧",
-      },
-  }
+  openclaw:
+    emoji: 🚧
 ---
 
 # Ultra Plan Gate

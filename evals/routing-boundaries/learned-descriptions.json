@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "skills": [
+    {
+      "name": "bpmn-process-modeling",
+      "scope": "workshop-runtime",
+      "decision": "corrected",
+      "beforeSourceLine": "description: \"BPMN 2.0 XML generation, validation, and viewer-safe diagram interchange for process artifacts.\"",
+      "description": "Create, repair, validate or export BPMN 2.0 XML process artifacts. Not for notation definitions or diagrams requested in another format.",
+      "publication": "description-only; private workflow body is not distributed"
+    },
+    {
+      "name": "research-feed-digest",
+      "scope": "workshop-runtime",
+      "decision": "corrected",
+      "beforeSourceLine": "description: \"Digest a noisy document feed: substring-safe matching, weighted scoring, domain and area gates, re-score stored records, LLM judging, summary plus artifact.\"",
+      "description": "Build or repair recurring research/news-feed digests, relevance filters, rescoring and delivery. Not for summarizing one paper or a one-off research question.",
+      "publication": "description-only; private workflow body is not distributed"
+    },
+    {
+      "name": "staged-work-resume",
+      "scope": "workshop-runtime",
+      "decision": "corrected",
+      "beforeSourceLine": "description: \"Run or resume a long multi-step tool sequence in one turn without stalling silently or repeating completed work: register a monitor, record progress, verify state on resume.\"",
+      "description": "Track or resume long multi-step tool work with interruption risk and state reconciliation. Not for short tasks, continuing prose or scheduled-job recovery.",
+      "publication": "description-only; private workflow body is not distributed"
+    },
+    {
+      "name": "telegram-message-streaming",
+      "scope": "workshop-runtime",
+      "decision": "corrected",
+      "beforeSourceLine": "description: \"Configure OpenClaw Telegram streaming modes so long work stays readable: truncated progress drafts, missing previews, patch verification.\"",
+      "description": "Diagnose missing/truncated OpenClaw Telegram previews or change streaming modes when requested. Not for normal replies or merely reporting progress.",
+      "publication": "description-only; private workflow body is not distributed"
+    },
+    {
+      "name": "skill-library-governance",
+      "scope": "workshop-runtime",
+      "decision": "corrected",
+      "beforeSourceLine": "description: \"Govern, license, version, synchronize, or publish an OpenClaw skill repository. Use for catalog hashes, SPDX and third-party notices, Workshop artifacts, routing evals, runtime sync, stacked PRs, releases, or ClawHub readiness.\"",
+      "description": "Govern, validate, synchronize or publish OpenClaw skill libraries: catalogs, licenses, routing evals and runtime copies. Not for app releases, general PRs or skill definitions.",
+      "publication": "description-only; private workflow body is not distributed"
+    },
+    {
+      "name": "requirements-ledger-walk",
+      "scope": "workshop-runtime",
+      "decision": "corrected",
+      "beforeSourceLine": "description: \"Source-to-implementation ledger audits: enumerate requirements, verify omissions and structural drift, filter superseded decisions, deliver bounded reports.\"",
+      "description": "Audit a bounded source set against implementation with an atomic requirements ledger and evidence. Not for one requirement lookup, routine diff review or definitions.",
+      "publication": "description-only; private workflow body is not distributed"
+    },
+    {
+      "name": "study-material-to-ebook",
+      "scope": "workshop-runtime",
+      "decision": "corrected",
+      "beforeSourceLine": "description: \"Study DOCX to organized ebooks, audience-specific editions, and verified PDF/DOCX delivery.\"",
+      "description": "Restructure supplied study material into a requested ebook or audience-specific PDF/DOCX edition. Not for one-off explanations, study questions or simple format conversion.",
+      "publication": "description-only; private workflow body is not distributed"
+    },
+    {
+      "name": "video-transcript-critical-review",
+      "scope": "workshop-runtime",
+      "decision": "corrected",
+      "beforeSourceLine": "description: Long-video or podcast critical reports: extract transcripts, map ideas with timestamps, audit contradictions and calculations, deliver evidence.",
+      "description": "Produce requested critical reports on long videos/podcasts using full timestamped transcripts and evidence checks. Not for brief summaries, one quote or media downloads.",
+      "publication": "description-only; private workflow body is not distributed"
+    },
+    {
+      "name": "shared-link-tool-assessment",
+      "scope": "workshop-runtime",
+      "decision": "corrected",
+      "beforeSourceLine": "description: X/GitHub launches, repo-selection emails, community invites, financial claims and B3 screens: verify evidence, rights, costs and risks in pt-BR.",
+      "description": "Assess shared launches, selection emails, community invites, financial claims or B3 screens when verification or a decision is requested or clear from context. Not for bare URL lookups, definitions or media downloads.",
+      "publication": "description-only; private workflow body is not distributed"
+    },
+    {
+      "name": "memory-viewer-query",
+      "scope": "workshop-runtime",
+      "decision": "corrected",
+      "beforeSourceLine": "description: \"Query OpenClaw memory via Memory Viewer API (3101): find docs, list sections, read content. Use for memory/wiki/tutorial lookups before grepping files.\"",
+      "description": "Retrieve recorded workspace memory, wiki notes or tutorials via SSC first, then Memory Viewer. Not for web research, code search or memory-theory explanations.",
+      "publication": "description-only; private workflow body is not distributed"
+    },
+    {
+      "name": "model-catalog-reconciliation",
+      "scope": "workshop-runtime",
+      "decision": "corrected",
+      "beforeSourceLine": "description: \"Refresh configured free-model catalogs, repair stale routing references, and diagnose a slow or over-broad /models picker.\"",
+      "description": "Refresh configured model catalogs/routing or diagnose a slow/broad /models picker. Not for general model advice, single-provider admission or proxy recovery.",
+      "publication": "description-only; private workflow body is not distributed"
+    },
+    {
+      "name": "provider-model-admission",
+      "scope": "workshop-runtime",
+      "decision": "corrected",
+      "beforeSourceLine": "description: \"Diagnose a model missing or unselectable in /models, bench-test a new OpenAI-compatible provider, and onboard its key into the protected store.\"",
+      "description": "Diagnose one model missing from /models or evaluate/onboard one provider. Historical test-status queries use records only, not new probes. Not for bulk catalog refresh or generic comparisons.",
+      "publication": "description-only; private workflow body is not distributed"
+    },
+    {
+      "name": "automation-job-recovery",
+      "scope": "workshop-runtime",
+      "decision": "corrected",
+      "beforeSourceLine": "description: \"Fix failing OpenClaw automations: agent-runner failures, model-call timeouts, helpers reading zero data after storage migration, owner-policy rejection.\"",
+      "description": "Repair evidenced automation failures, empty helpers, owner-policy rejection or runtime idle timeouts. Not for scheduling, cron definitions or reruns based only on unrelated warnings.",
+      "publication": "description-only; private workflow body is not distributed"
+    }
+  ]
+}

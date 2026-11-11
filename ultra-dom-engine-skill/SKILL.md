@@ -1,6 +1,6 @@
 ---
 name: ultra-dom-engine-skill
-description: DOM extraction engine for AI agents injecting agenticPurposeId into interactive elements. Use when automating complex web forms and dynamic UIs.
+description: "Use DOM-engine extraction in complex dynamic forms when native browser observations cannot reliably identify interactive targets. Not for simple page reads, ordinary navigation with adequate native refs, or a conceptual DOM question."
 license: MIT
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: ultra-grok-image-skill
-description: "Generate images via Grok on X.com browser and extract via mediaId API URL."
+description: "Generate an image specifically with Grok on X and retrieve its media attachment. Not for a generic image request without a Grok preference, analyzing an existing image, text-only Grok questions, or publishing an X post."
 license: Apache-2.0
 user-invocable: true
 metadata:

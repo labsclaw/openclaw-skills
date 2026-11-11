@@ -1,6 +1,6 @@
 ---
 name: ultra-pipeline-resilience-skill
-description: Multi-step pipeline execution with atomic state writes, zombie detection, and handoff protocols. Use when orchestrating complex multi-agent workflows.
+description: "Coordinate a long-running multi-step workflow needing durable state, interruption recovery or agent/external-dependency handoffs. Not for short sequential tasks, ordinary questions, or merely mentioning pipeline, architecture or implementation."
 license: Apache-2.0
 ---
 
@@ -13,7 +13,7 @@ license: Apache-2.0
 
 ## When to Use
 
-**ACTIVATE** when: >2 steps, >5min, sub-agents/external deps, or keywords (implementar/orquestrar/pipeline/modules/arquitetura). Manual: `/resilience` or `@pipeline`.
+**ACTIVATE** for a long-running workflow whose interruption, external dependencies or handoffs need durable state and recovery, or on explicit `/resilience` / `@pipeline` invocation. Step count and words such as pipeline, implementation or architecture alone do not activate it.
 
 **Don't** for simple questions, 1-step tasks.
 

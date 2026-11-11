@@ -1,6 +1,6 @@
 ---
 name: ultra-create-skill
-description: "Author, review, and evaluate AgentSkills following Anthropic and OpenAI best practices. Use when creating or improving skills."
+description: "Create, repair, review or evaluate an AgentSkill and its discovery description or bundled resources. Not for finding an existing skill, editing project-only configuration, or explaining a topic without requesting a reusable skill."
 license: Apache-2.0
 ---
 
@@ -96,7 +96,9 @@ extract answers from conversation history first.
 1. **What** should this skill enable the agent to do?
 2. **When** should this skill trigger? (specific phrases, contexts, scenarios)
 3. **What** is the expected output format?
-4. **Should we test?** Skills with objectively verifiable outputs benefit from
+4. **What should not trigger it?** Name nearby requests that need a direct answer or a different skill. Put useful exclusions beside the positive trigger in frontmatter.
+
+5. **Should we test?** Skills with objectively verifiable outputs benefit from
    test cases. Subjective skills (writing style, design quality) often don't.
 
 **Adapt communication** to the user's technical level. Pay attention to context
@@ -146,7 +148,8 @@ Use the appropriate template from `templates/`:
    - Write in third person
    - Describe the PROBLEM, not the workflow
    - Include trigger terms the agent would search for
-   - Be slightly "pushy" to combat under-triggering
+   - Put the specific task trigger and likely near-miss exclusions in the same description string; a body-only exclusion arrives too late for routing
+   - Test positive requests and realistic negative requests; do not expand scope merely to increase activation
    - **NEVER** summarize the skill's process in the description
 
 3. **Body structure** — Include ALL of these sections:

@@ -12,25 +12,29 @@
       "owner": "LabsClaw",
       "category": "governance",
       "risk": "low",
-      "platforms": ["windows", "linux", "macos"],
+      "platforms": [
+        "windows",
+        "linux",
+        "macos"
+      ],
       "capabilities": {
         "network": false,
         "shell": false,
         "filesystemWrite": false,
         "configMutation": false
       },
-      "verifiedAt": "2026-10-05",
+      "verifiedAt": "2026-11-10",
       "workshopStatus": "unmanaged",
-      "syncStatus": "repository-and-runtime",
+      "syncStatus": "repository-pending-runtime",
       "routingEval": {
-        "status": "pass",
-        "model": "openai/gpt-5.6-sol",
-        "executedAt": "2026-10-05T04:17:25.575Z",
-        "passed": 5,
-        "total": 5,
-        "report": "evals/results/2026-10-05-openai-gpt-5.6-sol.md"
+        "status": "not-run",
+        "model": "not-run; independent description-only native-agent review recorded separately",
+        "executedAt": "2026-11-10",
+        "passed": 0,
+        "total": 0,
+        "report": "docs/skill-routing-boundaries-20261110.md"
       },
-      "notes": "Pilot skill. Enforces evidence-backed planning before edits."
+      "notes": "Routing description revised. See the 112-case independent description-only review; it is not the provider-based routing benchmark. Runtime description patching does not certify whole-payload synchronization."
     },
     {
       "name": "ultra-adversarial-verify-skill",
@@ -39,25 +43,29 @@
       "owner": "LabsClaw",
       "category": "quality",
       "risk": "low",
-      "platforms": ["windows", "linux", "macos"],
+      "platforms": [
+        "windows",
+        "linux",
+        "macos"
+      ],
       "capabilities": {
         "network": false,
         "shell": false,
         "filesystemWrite": false,
         "configMutation": false
       },
-      "verifiedAt": "2026-10-05",
+      "verifiedAt": "2026-11-10",
       "workshopStatus": "unmanaged",
-      "syncStatus": "repository-and-runtime",
+      "syncStatus": "repository-pending-runtime",
       "routingEval": {
-        "status": "pass",
-        "model": "openai/gpt-5.6-sol",
-        "executedAt": "2026-10-05T04:17:25.575Z",
-        "passed": 5,
-        "total": 5,
-        "report": "evals/results/2026-10-05-openai-gpt-5.6-sol.md"
+        "status": "not-run",
+        "model": "not-run; independent description-only native-agent review recorded separately",
+        "executedAt": "2026-11-10",
+        "passed": 0,
+        "total": 0,
+        "report": "docs/skill-routing-boundaries-20261110.md"
       },
-      "notes": "Pilot skill. Requires an attacker-style verification pass before delivery."
+      "notes": "Routing description revised. See the 112-case independent description-only review; it is not the provider-based routing benchmark. Runtime description patching does not certify whole-payload synchronization."
     },
     {
       "name": "ultra-models-skill",
@@ -66,25 +74,27 @@
       "owner": "LabsClaw",
       "category": "model-operations",
       "risk": "high",
-      "platforms": ["windows"],
+      "platforms": [
+        "windows"
+      ],
       "capabilities": {
         "network": true,
         "shell": true,
         "filesystemWrite": true,
         "configMutation": true
       },
-      "verifiedAt": "2026-10-05",
+      "verifiedAt": "2026-11-10",
       "workshopStatus": "applied",
-      "syncStatus": "repository-and-runtime",
+      "syncStatus": "repository-pending-runtime",
       "routingEval": {
-        "status": "pass",
-        "model": "openai/gpt-5.6-sol",
-        "executedAt": "2026-10-05T04:17:25.575Z",
-        "passed": 5,
-        "total": 5,
-        "report": "evals/results/2026-10-05-openai-gpt-5.6-sol.md"
+        "status": "not-run",
+        "model": "not-run; independent description-only native-agent review recorded separately",
+        "executedAt": "2026-11-10",
+        "passed": 0,
+        "total": 0,
+        "report": "docs/skill-routing-boundaries-20261110.md"
       },
-      "notes": "The applied Workshop proposal is materialized in the repository. Runtime synchronization is pending because SPDX metadata changed. The skill stays experimental because it can mutate provider configuration."
+      "notes": "Routing description revised. See the 112-case independent description-only review; it is not the provider-based routing benchmark. Runtime description patching does not certify whole-payload synchronization."
     },
     {
       "name": "ultra-code-context-skill",
@@ -133,18 +143,18 @@
         "filesystemWrite": true,
         "configMutation": false
       },
-      "verifiedAt": "2026-10-29",
+      "verifiedAt": "2026-11-10",
       "workshopStatus": "unmanaged",
       "syncStatus": "repository-only",
       "routingEval": {
         "status": "not-run",
-        "model": "not-run",
-        "executedAt": "2026-10-29T00:00:00Z",
+        "model": "not-run; independent description-only native-agent review recorded separately",
+        "executedAt": "2026-11-10",
         "passed": 0,
         "total": 0,
-        "report": "evals/results/2026-10-29-ultra-browser-v2-status.md"
+        "report": "docs/skill-routing-boundaries-20261110.md"
       },
-      "notes": "Distribuição da v2.3.0 aprovada em ef55939. Evidência histórica exportada de ed963ec e 51631c1; scripts e recipe inalterados. Exemplos Windows com dependências externas; sem nova bateria, avaliação de roteamento ou sincronização de runtime."
+      "notes": "Routing description revised. See the 112-case independent description-only review; it is not the provider-based routing benchmark. Runtime description patching does not certify whole-payload synchronization."
     }
   ]
 }

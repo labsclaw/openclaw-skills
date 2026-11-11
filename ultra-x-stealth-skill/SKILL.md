@@ -1,9 +1,6 @@
 ---
 name: ultra-x-stealth-skill
-description: >-
-  Post content or threads on X.com with Playwright, human-like interaction, and
-  anti-detection measures. Use when x-poster is blocked or stealth publishing
-  is explicitly needed.
+description: "Publish authorized posts or threads on X through the stealth fallback when x-poster is blocked or that path is explicitly requested. Not for drafting without publication, reading an X link, ordinary x-poster success, or generic anti-detection questions."
 license: MIT
 user-invocable: true
 metadata:

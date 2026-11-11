@@ -1,6 +1,6 @@
 ---
 name: ultra-browser-skill
-description: "Advanced browser automation — ARIA grounding, multi-agent loop, DevTools, CDP attach, and self-healing interaction. Use when executing web navigation, form fill, or scraping."
+description: "Control web pages for navigation, forms or extraction using grounded browser observations. Not for a simple URL fetch, a conceptual web question, or a dedicated JEV/recipe workflow handled by ultra-browser-v2-skill."
 license: MIT
 ---
 

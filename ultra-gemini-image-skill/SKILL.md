@@ -1,6 +1,6 @@
 ---
 name: ultra-gemini-image-skill
-description: "Generate images via Gemini web browser with CDP blob extraction, bypassing Chrome's broken blob:null download."
+description: "Generate images specifically through the Gemini web UI, or recover its broken blob download using CDP extraction. Not for general image generation with another available provider, image analysis, or questions about Gemini."
 license: Apache-2.0
 user-invocable: true
 metadata:

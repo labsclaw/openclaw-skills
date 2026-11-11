@@ -1,9 +1,6 @@
 ---
 name: ultra-plan-with-diagrams-skill
-description: >-
-  Generate implementation plans with architecture and flow diagrams. Use when
-  planning multi-step technical work, roadmaps, brainstorming, architecture,
-  visualization, or task decomposition with Mermaid or ASCII diagrams.
+description: "Produce an implementation plan, roadmap or visual brainstorming when architecture/flow diagrams materially clarify the requested work. Not for every multi-step task, a conceptual answer, review-only work or a plan without useful diagrams."
 license: Apache-2.0
 ---
 

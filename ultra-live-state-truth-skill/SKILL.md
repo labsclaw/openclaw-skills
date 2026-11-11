@@ -1,14 +1,10 @@
 ---
 name: ultra-live-state-truth-skill
-description: "Verifies mutable facts against the authoritative live source before acting or reporting. Use for service health, configuration, versions, PR status, deployments, files, processes, provider catalogs, and other state that may have changed."
+description: "Verify a mutable operational fact against its authoritative source when an action or status answer depends on current state. Not for timeless definitions, arithmetic, historical facts fixed to a supplied snapshot, or an unrelated broad system audit."
 license: Apache-2.0
 metadata:
-  {
-    "openclaw":
-      {
-        "emoji": "🔴",
-      },
-  }
+  openclaw:
+    emoji: 🔴
 ---
 
 # Ultra Live State Truth

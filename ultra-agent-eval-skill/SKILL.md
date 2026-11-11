@@ -1,10 +1,15 @@
 ---
 name: ultra-agent-eval-skill
-description: Adversarial verification of agent work. Treats any "done" as a set of claims, re-runs verifications, diffs what changed, detects weakened tests and false completion claims, delivers evidence-based verdict. Part of the agent-method procedural gates framework. Use after any agent claims work is complete.
+description: "Audit a completed agent implementation for unsupported completion claims, changed files, weakened tests and reproducible evidence. Not for every agent reply or routine verification; use adversarial-verify for a general report or non-agent deliverable."
 license: Apache-2.0
 metadata:
   version: 1.0.0
-  tags: [eval, verification, agent-method, adversarial, quality]
+  tags:
+  - eval
+  - verification
+  - agent-method
+  - adversarial
+  - quality
 ---
 
 # Ultra Agent Eval Skill

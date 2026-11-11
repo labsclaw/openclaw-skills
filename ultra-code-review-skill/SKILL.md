@@ -3,12 +3,8 @@ name: ultra-code-review-skill
 description: "Reviews pull requests for correctness, security, regression risk, and repository policy using current GitHub evidence and confidence-filtered findings. Use when asked to review a PR, assess merge readiness, or produce actionable inline findings."
 license: Apache-2.0
 metadata:
-  {
-    "openclaw":
-      {
-        "emoji": "🔍",
-      },
-  }
+  openclaw:
+    emoji: 🔍
 ---
 
 # Ultra Code Review

@@ -3,7 +3,7 @@ name: your-skill-name
 description: >-
   Use when [specific triggering conditions, symptoms, and contexts].
   Also use when [additional triggers]. Trigger terms: [term1], [term2],
-  [term3], [term4].
+  [term3], [term4]. Not for [likely near-miss request, if applicable].
 ---
 
 # Skill Title

@@ -1,6 +1,6 @@
 ---
 name: "browser-stealth-timing"
-description: "Add human-like timing and anti-detection patterns to browser automation"
+description: "Add human-like timing to a multi-step browser flow with an observed or relevant bot-detection risk. Not for localhost/internal tools, a single page read, ordinary browsing without that risk, or explaining browser timing."
 license: Apache-2.0
 ---
 

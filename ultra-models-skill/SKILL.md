@@ -1,6 +1,6 @@
 ---
 name: ultra-models-skill
-description: "Audit model catalogs, dead entries, provider health, fallbacks, and routing with dated evidence."
+description: "Audit configured model catalogs, current free-model availability, dead IDs, provider health or fallback routing with dated evidence. Not for a general explanation of LLMs, an unrelated meaning of model, or an abstract model comparison without a catalog/operational decision."
 license: Apache-2.0
 ---
 

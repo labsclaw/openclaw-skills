@@ -12,7 +12,7 @@ name: skill-name
 
 description: >-
   Use when [triggering conditions and symptoms]. Also use when [additional
-  triggers]. Trigger terms: term1, term2, term3.
+  triggers]. Trigger terms: term1, term2, term3. Not for [likely near-miss request, if applicable].
 # Type: string
 # Constraints: Max 1024 chars, non-empty
 # Format: Start with "Use when...", third person, no workflow summary

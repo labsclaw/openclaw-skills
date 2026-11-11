@@ -1,6 +1,6 @@
 ---
 name: "chief-of-staff"
-description: "C-suite orchestration layer. Routes founder questions to the right advisor role(s), triggers multi-role board meetings for complex decisions, synthesizes outputs, and tracks decisions. Every C-suite interaction starts here. Loads company context automatically. Use when a founder question needs routing to the right advisor — e.g. 'should we raise now or cut burn?' — or when a multi-domain decision needs a board meeting convened."
+description: "Route an executive decision when the needed advisor is unclear or coordinate an explicitly multi-domain C-suite analysis. Not a mandatory entry point for a known advisor, a single-domain answer, or a simple business definition; a board meeting needs its own applicable trigger."
 license: MIT
 metadata:
   version: 1.0.0
@@ -13,16 +13,18 @@ metadata:
 
 # Chief of Staff
 
-The orchestration layer between founder and C-suite. Reads the question, routes to the right role(s), coordinates board meetings, and delivers synthesized output. Loads company context for every interaction.
+The orchestration layer between founder and C-suite. Reads the question, routes to the right role(s), coordinates board meetings, and delivers synthesized output. Loads relevant company context only when the routed decision depends on it.
 
 ## Keywords
 chief of staff, orchestrator, routing, c-suite coordinator, board meeting, multi-agent, advisor coordination, decision log, synthesis
 
 ---
 
-## Session Protocol (Every Interaction)
+## Session Protocol (Applicable Executive Routing Only)
 
-1. Load company context via context-engine skill
+For a simple definition or an already identified single advisor, answer directly or use that advisor; do not start this orchestration protocol.
+
+1. Load relevant company context via context-engine only when needed
 2. Score decision complexity
 3. Route to role(s) or trigger board meeting
 4. Synthesize output
@@ -91,7 +93,7 @@ Full rules in `references/routing-matrix.md`.
 
 ## Board Meeting Protocol
 
-**Trigger:** Score ≥ 4, or multi-function irreversible decision.
+**Trigger:** An applicable consequential multi-function decision scoring ≥ 4, or an explicit board-meeting request. A mention of board/strategy or a simple question is not sufficient.
 
 ```
 BOARD MEETING: [Topic]
@@ -160,10 +162,10 @@ Migration: a legacy single-file log at `~/.claude/decision-log.md` may exist fro
 
 ## Quality Standards
 
-Before delivering ANY output to the founder:
+Before delivering an applicable executive-routing result to the founder:
 - [ ] Follows User Communication Standard (see `../agent-protocol/SKILL.md`)
 - [ ] Bottom line is first — no preamble, no process narration
-- [ ] Company context loaded (not generic advice)
+- [ ] Relevant company context consulted when material to the decision; no interview for a generic answer
 - [ ] Every finding has WHAT + WHY + HOW
 - [ ] Actions have owners and deadlines (no "we should consider")
 - [ ] Decisions framed as options with trade-offs and recommendation
