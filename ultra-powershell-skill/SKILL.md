@@ -1,6 +1,6 @@
 ---
 name: ultra-powershell-skill
-description: "Master PowerShell 7 (pwsh) and Windows scripting safely. Native commands, path escaping, encoding safety, and process lifecycle."
+description: "Write, repair or execute PowerShell/Windows automation involving native CLI quoting, paths, encoding or process lifecycle. Not merely because the host is Windows, or for a generic Windows question with no scripting task."
 license: MIT
 ---
 

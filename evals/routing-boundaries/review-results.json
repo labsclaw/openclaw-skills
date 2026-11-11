@@ -1,0 +1,796 @@
+{
+  "schemaVersion": 1,
+  "evaluation": "independent native-agent description-only classification",
+  "reviewer": "/root/route_candidate",
+  "model": "inherited parent model; no separate provider call or inference receipt recorded",
+  "limitations": "Synthetic authored cases, no baseline/control or production adoption measurement; not an end-to-end task benchmark.",
+  "passed": 112,
+  "total": 112,
+  "inputSha256": "3757a5e8a9b04352a7ecf1d5ad487a6ff6ea646c47efc822a2b3e532bf479c65",
+  "cases": [
+    {
+      "id": "arquiteto-de-empresa-positive",
+      "skill": "arquiteto-de-empresa",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "arquiteto-de-empresa-negative",
+      "skill": "arquiteto-de-empresa",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "chief-ai-officer-advisor-positive",
+      "skill": "chief-ai-officer-advisor",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "chief-ai-officer-advisor-negative",
+      "skill": "chief-ai-officer-advisor",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "chief-data-officer-advisor-positive",
+      "skill": "chief-data-officer-advisor",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "chief-data-officer-advisor-negative",
+      "skill": "chief-data-officer-advisor",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "board-prep-positive",
+      "skill": "board-prep",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "board-prep-negative",
+      "skill": "board-prep",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "challenge-positive",
+      "skill": "challenge",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "challenge-negative",
+      "skill": "challenge",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "general-counsel-advisor-positive",
+      "skill": "general-counsel-advisor",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "general-counsel-advisor-negative",
+      "skill": "general-counsel-advisor",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "board-deck-builder-positive",
+      "skill": "board-deck-builder",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "board-deck-builder-negative",
+      "skill": "board-deck-builder",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "ceo-advisor-positive",
+      "skill": "ceo-advisor",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "ceo-advisor-negative",
+      "skill": "ceo-advisor",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "cfo-advisor-positive",
+      "skill": "cfo-advisor",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "cfo-advisor-negative",
+      "skill": "cfo-advisor",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "change-management-positive",
+      "skill": "change-management",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "change-management-negative",
+      "skill": "change-management",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "chief-of-staff-positive",
+      "skill": "chief-of-staff",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "chief-of-staff-negative",
+      "skill": "chief-of-staff",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "chro-advisor-positive",
+      "skill": "chro-advisor",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "chro-advisor-negative",
+      "skill": "chro-advisor",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "ciso-advisor-positive",
+      "skill": "ciso-advisor",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "ciso-advisor-negative",
+      "skill": "ciso-advisor",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "cmo-advisor-positive",
+      "skill": "cmo-advisor",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "cmo-advisor-negative",
+      "skill": "cmo-advisor",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "company-os-positive",
+      "skill": "company-os",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "company-os-negative",
+      "skill": "company-os",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "competitive-intel-positive",
+      "skill": "competitive-intel",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "competitive-intel-negative",
+      "skill": "competitive-intel",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "context-engine-positive",
+      "skill": "context-engine",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "context-engine-negative",
+      "skill": "context-engine",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "coo-advisor-positive",
+      "skill": "coo-advisor",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "coo-advisor-negative",
+      "skill": "coo-advisor",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "cpo-advisor-positive",
+      "skill": "cpo-advisor",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "cpo-advisor-negative",
+      "skill": "cpo-advisor",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "cro-advisor-positive",
+      "skill": "cro-advisor",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "cro-advisor-negative",
+      "skill": "cro-advisor",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "cs-onboard-positive",
+      "skill": "cs-onboard",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "cs-onboard-negative",
+      "skill": "cs-onboard",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "cto-advisor-positive",
+      "skill": "cto-advisor",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "cto-advisor-negative",
+      "skill": "cto-advisor",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "culture-architect-positive",
+      "skill": "culture-architect",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "culture-architect-negative",
+      "skill": "culture-architect",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "founder-coach-positive",
+      "skill": "founder-coach",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "founder-coach-negative",
+      "skill": "founder-coach",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "internal-narrative-positive",
+      "skill": "internal-narrative",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "internal-narrative-negative",
+      "skill": "internal-narrative",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "org-health-diagnostic-positive",
+      "skill": "org-health-diagnostic",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "org-health-diagnostic-negative",
+      "skill": "org-health-diagnostic",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "scenario-war-room-positive",
+      "skill": "scenario-war-room",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "scenario-war-room-negative",
+      "skill": "scenario-war-room",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "strategic-alignment-positive",
+      "skill": "strategic-alignment",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "strategic-alignment-negative",
+      "skill": "strategic-alignment",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "ultra-adversarial-verify-skill-positive",
+      "skill": "ultra-adversarial-verify-skill",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "ultra-adversarial-verify-skill-negative",
+      "skill": "ultra-adversarial-verify-skill",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "ultra-agent-eval-skill-positive",
+      "skill": "ultra-agent-eval-skill",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "ultra-agent-eval-skill-negative",
+      "skill": "ultra-agent-eval-skill",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "ultra-browser-skill-positive",
+      "skill": "ultra-browser-skill",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "ultra-browser-skill-negative",
+      "skill": "ultra-browser-skill",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "browser-stealth-timing-positive",
+      "skill": "browser-stealth-timing",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "browser-stealth-timing-negative",
+      "skill": "browser-stealth-timing",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "ultra-browser-v2-skill-positive",
+      "skill": "ultra-browser-v2-skill",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "ultra-browser-v2-skill-negative",
+      "skill": "ultra-browser-v2-skill",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "ultra-chrome-assistente-skill-positive",
+      "skill": "ultra-chrome-assistente-skill",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "ultra-chrome-assistente-skill-negative",
+      "skill": "ultra-chrome-assistente-skill",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "ultra-chrome-devtools-skill-positive",
+      "skill": "ultra-chrome-devtools-skill",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "ultra-chrome-devtools-skill-negative",
+      "skill": "ultra-chrome-devtools-skill",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "ultra-chrome-stealth-navigator-skill-positive",
+      "skill": "ultra-chrome-stealth-navigator-skill",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "ultra-chrome-stealth-navigator-skill-negative",
+      "skill": "ultra-chrome-stealth-navigator-skill",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "ultra-confluence-docs-skill-positive",
+      "skill": "ultra-confluence-docs-skill",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "ultra-confluence-docs-skill-negative",
+      "skill": "ultra-confluence-docs-skill",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "ultra-create-skill-positive",
+      "skill": "ultra-create-skill",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "ultra-create-skill-negative",
+      "skill": "ultra-create-skill",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "ultra-dom-engine-skill-positive",
+      "skill": "ultra-dom-engine-skill",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "ultra-dom-engine-skill-negative",
+      "skill": "ultra-dom-engine-skill",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "ultra-drawio-skill-positive",
+      "skill": "ultra-drawio-skill",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "ultra-drawio-skill-negative",
+      "skill": "ultra-drawio-skill",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "ultra-find-skill-positive",
+      "skill": "ultra-find-skill",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "ultra-find-skill-negative",
+      "skill": "ultra-find-skill",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "ultra-gemini-image-skill-positive",
+      "skill": "ultra-gemini-image-skill",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "ultra-gemini-image-skill-negative",
+      "skill": "ultra-gemini-image-skill",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "ultra-grok-image-skill-positive",
+      "skill": "ultra-grok-image-skill",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "ultra-grok-image-skill-negative",
+      "skill": "ultra-grok-image-skill",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "ultra-live-state-truth-skill-positive",
+      "skill": "ultra-live-state-truth-skill",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "ultra-live-state-truth-skill-negative",
+      "skill": "ultra-live-state-truth-skill",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "ultra-memory-hygiene-skill-positive",
+      "skill": "ultra-memory-hygiene-skill",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "ultra-memory-hygiene-skill-negative",
+      "skill": "ultra-memory-hygiene-skill",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "ultra-memory-skill-positive",
+      "skill": "ultra-memory-skill",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "ultra-memory-skill-negative",
+      "skill": "ultra-memory-skill",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "ultra-models-skill-positive",
+      "skill": "ultra-models-skill",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "ultra-models-skill-negative",
+      "skill": "ultra-models-skill",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "ultra-perplexity-pro-bridge-skill-positive",
+      "skill": "ultra-perplexity-pro-bridge-skill",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "ultra-perplexity-pro-bridge-skill-negative",
+      "skill": "ultra-perplexity-pro-bridge-skill",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "ultra-pipeline-resilience-skill-positive",
+      "skill": "ultra-pipeline-resilience-skill",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "ultra-pipeline-resilience-skill-negative",
+      "skill": "ultra-pipeline-resilience-skill",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "ultra-plan-gate-skill-positive",
+      "skill": "ultra-plan-gate-skill",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "ultra-plan-gate-skill-negative",
+      "skill": "ultra-plan-gate-skill",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "ultra-plan-with-diagrams-skill-positive",
+      "skill": "ultra-plan-with-diagrams-skill",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "ultra-plan-with-diagrams-skill-negative",
+      "skill": "ultra-plan-with-diagrams-skill",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "ultra-powershell-skill-positive",
+      "skill": "ultra-powershell-skill",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "ultra-powershell-skill-negative",
+      "skill": "ultra-powershell-skill",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "ultra-provider-health-skill-positive",
+      "skill": "ultra-provider-health-skill",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "ultra-provider-health-skill-negative",
+      "skill": "ultra-provider-health-skill",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "ultra-qa-testing-skill-positive",
+      "skill": "ultra-qa-testing-skill",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "ultra-qa-testing-skill-negative",
+      "skill": "ultra-qa-testing-skill",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "ultra-ruthless-editor-skill-positive",
+      "skill": "ultra-ruthless-editor-skill",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "ultra-ruthless-editor-skill-negative",
+      "skill": "ultra-ruthless-editor-skill",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    },
+    {
+      "id": "ultra-x-stealth-skill-positive",
+      "skill": "ultra-x-stealth-skill",
+      "expected": true,
+      "activate": true,
+      "passed": true
+    },
+    {
+      "id": "ultra-x-stealth-skill-negative",
+      "skill": "ultra-x-stealth-skill",
+      "expected": false,
+      "activate": false,
+      "passed": true
+    }
+  ]
+}

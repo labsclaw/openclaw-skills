@@ -1,9 +1,6 @@
 ---
 name: ultra-drawio-skill
-description: >-
-  Generate, edit, validate, and export draw.io XML diagrams. Use when creating,
-  editing, validating, or converting draw.io files, flowcharts, ER diagrams,
-  sequence diagrams, UML, network topology, or cloud architecture visuals.
+description: "Create, edit, validate or export draw.io XML artifacts, including flowcharts, ER/UML, sequence, network and cloud diagrams. Not for a diagram requested only in Mermaid/SVG, or a one-off explanation of diagram notation."
 license: Apache-2.0
 metadata:
   category: development

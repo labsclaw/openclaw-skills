@@ -1,14 +1,10 @@
 ---
 name: ultra-ruthless-editor-skill
-description: "Compresses technical and executive writing without losing facts, causal links, constraints, or actions. Use to tighten reports, documentation, reviews, incident summaries, commit messages, and user-facing explanations."
+description: "Tighten an existing technical or executive draft while preserving facts, uncertainty, constraints and actions. Not for every newly composed answer, fact-checking without an editing request, or a simple definition."
 license: Apache-2.0
 metadata:
-  {
-    "openclaw":
-      {
-        "emoji": "✂️",
-      },
-  }
+  openclaw:
+    emoji: ✂️
 ---
 
 # Ultra Ruthless Editor

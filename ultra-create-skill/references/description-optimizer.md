@@ -22,7 +22,7 @@
 2. **Write in third person** — Description is injected into system prompt
 3. **Describe the PROBLEM** — Not language-specific symptoms
 4. **Include trigger terms** — Words the agent would search for
-5. **Be slightly "pushy"** — Combat under-triggering (agents tend to not use skills when they should)
+5. **Disambiguate near misses**: put relevant exclusions beside positive triggers in the same `description` string; do not maximize invocation frequency
 6. **NEVER summarize the skill's process or workflow**
 7. **Keep to 100-500 characters** — Sweet spot for triggering accuracy
 8. **Hard limit: 1024 characters** — agentskills.io spec
@@ -51,7 +51,7 @@ description: Use for TDD - write test first, watch it fail, write minimal code, 
 
 ### ✅ GOOD: Problem-focused
 ```yaml
-description: Use when implementing any feature or bugfix, before writing implementation code
+description: "Use when implementing behavior with a testable contract where a test-first workflow is requested or useful. Not for a typo, documentation-only edit or a definition of TDD."
 ```
 
 ---
@@ -87,7 +87,7 @@ description: Helps with documents
 
 ### ✅ GOOD: Specific with trigger terms
 ```yaml
-description: Extract text and tables from PDF files, fill forms, merge documents. Use when working with PDF files or when the user mentions PDFs, forms, or document extraction.
+description: "Use when extracting PDF text/tables, filling a PDF form or merging PDF files. Not for merely mentioning PDFs or asking what a PDF is."
 ```
 
 ---
@@ -114,7 +114,7 @@ Include words the agent would search for:
 | **Symptoms** | "flaky", "hanging", "zombie", "pollution", "slow" |
 | **Synonyms** | "timeout/hang/freeze", "cleanup/teardown/afterEach" |
 | **Tools & commands** | Library names, CLI commands, file types |
-| **User phrases** | "how do I", "help me with", "I need to" |
+| **User intent** | Specific requested artifact/action, not generic phrases such as "how do I" alone |
 
 ---
 
@@ -135,18 +135,16 @@ Include words the agent would search for:
 
 ---
 
-## Anti-Undertriggering Strategy
+## Balanced Routing: Positive Triggers and Anti-Triggers
 
-Agents tend to "undertrigger" — to not use skills when they should. To combat:
+Descriptions are visible before the body. Put the requested task and its most likely false-positive boundary in the same YAML string. A `When NOT to Use` section in the body is useful during execution, but cannot prevent initial misrouting.
 
-1. Make descriptions slightly "pushy":
-   ```yaml
-   # Instead of:
-   description: How to build dashboards to display data.
-   
-   # Write:
-   description: How to build dashboards to display data. Make sure to use this skill whenever the user mentions dashboards, data visualization, metrics, or wants to display any kind of data, even if they don't explicitly ask for a 'dashboard.'
-   ```
+```yaml
+description: "Use when the user requests a guided study session with practice and feedback. Not for a one-off explanation or definition unless a study session is requested."
+```
 
-2. Include broad trigger terms alongside specific ones
-3. Add "even if they don't explicitly ask" language for skills that should trigger proactively
+Do not require the literal phrase "Not for" in every skill. A precise scope can already exclude unrelated work. Add a negative clause only for a plausible near miss or sibling-skill collision. Do not exclude a legitimate operational task just because it is short or phrased as a question.
+
+For a routing edit, record at least one positive request that must still activate and one near-miss request that must not. Cover definitions, incidental keyword mentions, status-only requests, small reversible tasks and sibling workflows where relevant. Keep quoted/folded YAML valid, especially when a description contains `: `.
+
+Freeze the candidate descriptions and content digests when running model-based evaluations; label synthetic fixtures and editorial review separately from an executed model benchmark. A structural check cannot prove semantic routing accuracy.

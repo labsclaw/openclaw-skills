@@ -1,6 +1,6 @@
 ---
 name: ultra-find-skill
-description: "Skill discovery engine across all known OpenClaw skill directories. Use when searching for agent skills, asking 'how do I do X', 'find a skill for X', exploring what skills exist locally or remotely, or evaluating whether a skill exists."
+description: "Find, inventory or compare installed or remote agent skills, or check for a reusable capability before authoring one. Not for ordinary how-to questions, general knowledge, directly invoking a known skill, or editing a skill already identified."
 license: Apache-2.0
 ---
 
@@ -44,9 +44,9 @@ is active and adjusts search paths accordingly.
 
 Use this skill when:
 
-- The user asks "how do I do X" where X might be a common task with an existing skill
+- The user asks how to find a skill for X, or a specialized task exposes a genuine missing capability; an ordinary "how do I do X" question is not itself a discovery request
 - The user says "find a skill for X" or "is there a skill for X"
-- The user asks "can you do X" where X is a specialized capability
+- The user asks whether an installed or available skill supports X; do not turn every capability question into a catalog search
 - The user wants to know what skills are currently installed
 - The user wants to extend agent capabilities with new skills
 - The user mentions they wish they had help with a specific domain

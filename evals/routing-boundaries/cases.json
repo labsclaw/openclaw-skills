@@ -1,0 +1,674 @@
+[
+  {
+    "id": "arquiteto-de-empresa-positive",
+    "skill": "arquiteto-de-empresa",
+    "query": "Estruture minha empresa como um bundle OKF e conduza a entrevista por fases.",
+    "expected": true
+  },
+  {
+    "id": "arquiteto-de-empresa-negative",
+    "skill": "arquiteto-de-empresa",
+    "query": "O que significa OKF?",
+    "expected": false
+  },
+  {
+    "id": "chief-ai-officer-advisor-positive",
+    "skill": "chief-ai-officer-advisor",
+    "query": "Compare API versus fine-tuning como decisão de investimento de IA da empresa.",
+    "expected": true
+  },
+  {
+    "id": "chief-ai-officer-advisor-negative",
+    "skill": "chief-ai-officer-advisor",
+    "query": "O que é fine-tuning?",
+    "expected": false
+  },
+  {
+    "id": "chief-data-officer-advisor-positive",
+    "skill": "chief-data-officer-advisor",
+    "query": "Avalie direitos de dados dos clientes e estratégia de monetização.",
+    "expected": true
+  },
+  {
+    "id": "chief-data-officer-advisor-negative",
+    "skill": "chief-data-officer-advisor",
+    "query": "O que é um lakehouse?",
+    "expected": false
+  },
+  {
+    "id": "board-prep-positive",
+    "skill": "board-prep",
+    "query": "Simule perguntas difíceis do conselho para eu ensaiar minha apresentação.",
+    "expected": true
+  },
+  {
+    "id": "board-prep-negative",
+    "skill": "board-prep",
+    "query": "O que é um conselho de administração?",
+    "expected": false
+  },
+  {
+    "id": "challenge-positive",
+    "skill": "challenge",
+    "query": "Faça um pre-mortem do plano de expansão antes de comprometermos o orçamento.",
+    "expected": true
+  },
+  {
+    "id": "challenge-negative",
+    "skill": "challenge",
+    "query": "O que é risco operacional?",
+    "expected": false
+  },
+  {
+    "id": "general-counsel-advisor-positive",
+    "skill": "general-counsel-advisor",
+    "query": "Revise os riscos e cláusulas deste NDA e identifique perguntas para o advogado.",
+    "expected": true
+  },
+  {
+    "id": "general-counsel-advisor-negative",
+    "skill": "general-counsel-advisor",
+    "query": "O que significa NDA?",
+    "expected": false
+  },
+  {
+    "id": "board-deck-builder-positive",
+    "skill": "board-deck-builder",
+    "query": "Monte o deck trimestral para o conselho com estes indicadores.",
+    "expected": true
+  },
+  {
+    "id": "board-deck-builder-negative",
+    "skill": "board-deck-builder",
+    "query": "O que é um board deck?",
+    "expected": false
+  },
+  {
+    "id": "ceo-advisor-positive",
+    "skill": "ceo-advisor",
+    "query": "Avalie as opções estratégicas da empresa e o alinhamento com investidores.",
+    "expected": true
+  },
+  {
+    "id": "ceo-advisor-negative",
+    "skill": "ceo-advisor",
+    "query": "O que significa CEO?",
+    "expected": false
+  },
+  {
+    "id": "cfo-advisor-positive",
+    "skill": "cfo-advisor",
+    "query": "Modele nosso runway e compare cenários de captação e corte de custos.",
+    "expected": true
+  },
+  {
+    "id": "cfo-advisor-negative",
+    "skill": "cfo-advisor",
+    "query": "Calcule 19352 vezes 0,25.",
+    "expected": false
+  },
+  {
+    "id": "change-management-positive",
+    "skill": "change-management",
+    "query": "Planeje a comunicação e adoção desta reorganização de equipes.",
+    "expected": true
+  },
+  {
+    "id": "change-management-negative",
+    "skill": "change-management",
+    "query": "Mude a cor deste botão.",
+    "expected": false
+  },
+  {
+    "id": "chief-of-staff-positive",
+    "skill": "chief-of-staff",
+    "query": "Coordene os pareceres de finanças, produto e operações para esta decisão.",
+    "expected": true
+  },
+  {
+    "id": "chief-of-staff-negative",
+    "skill": "chief-of-staff",
+    "query": "Explique CAC em uma frase.",
+    "expected": false
+  },
+  {
+    "id": "chro-advisor-positive",
+    "skill": "chro-advisor",
+    "query": "Desenhe o plano de contratação e a estrutura de remuneração da empresa.",
+    "expected": true
+  },
+  {
+    "id": "chro-advisor-negative",
+    "skill": "chro-advisor",
+    "query": "O que é headcount?",
+    "expected": false
+  },
+  {
+    "id": "ciso-advisor-positive",
+    "skill": "ciso-advisor",
+    "query": "Defina o programa de segurança e o orçamento para SOC 2.",
+    "expected": true
+  },
+  {
+    "id": "ciso-advisor-negative",
+    "skill": "ciso-advisor",
+    "query": "O que significa zero trust?",
+    "expected": false
+  },
+  {
+    "id": "cmo-advisor-positive",
+    "skill": "cmo-advisor",
+    "query": "Compare PLG e vendas assistidas para nossa estratégia de marketing.",
+    "expected": true
+  },
+  {
+    "id": "cmo-advisor-negative",
+    "skill": "cmo-advisor",
+    "query": "Escreva uma legenda curta para esta foto.",
+    "expected": false
+  },
+  {
+    "id": "company-os-positive",
+    "skill": "company-os",
+    "query": "Desenhe a cadência de gestão e os scorecards da empresa.",
+    "expected": true
+  },
+  {
+    "id": "company-os-negative",
+    "skill": "company-os",
+    "query": "Como funciona o sistema operacional Windows?",
+    "expected": false
+  },
+  {
+    "id": "competitive-intel-positive",
+    "skill": "competitive-intel",
+    "query": "Compare estes concorrentes e prepare battlecards com evidências.",
+    "expected": true
+  },
+  {
+    "id": "competitive-intel-negative",
+    "skill": "competitive-intel",
+    "query": "O que é análise competitiva?",
+    "expected": false
+  },
+  {
+    "id": "context-engine-positive",
+    "skill": "context-engine",
+    "query": "Carregue o contexto da empresa para a análise estratégica que estamos fazendo.",
+    "expected": true
+  },
+  {
+    "id": "context-engine-negative",
+    "skill": "context-engine",
+    "query": "O que significa runway?",
+    "expected": false
+  },
+  {
+    "id": "coo-advisor-positive",
+    "skill": "coo-advisor",
+    "query": "Analise os gargalos operacionais e redesenhe a cadência de execução.",
+    "expected": true
+  },
+  {
+    "id": "coo-advisor-negative",
+    "skill": "coo-advisor",
+    "query": "O que são OKRs?",
+    "expected": false
+  },
+  {
+    "id": "cpo-advisor-positive",
+    "skill": "cpo-advisor",
+    "query": "Priorize o portfólio de produtos e avalie sinais de product-market fit.",
+    "expected": true
+  },
+  {
+    "id": "cpo-advisor-negative",
+    "skill": "cpo-advisor",
+    "query": "Corrija o alinhamento deste botão.",
+    "expected": false
+  },
+  {
+    "id": "cro-advisor-positive",
+    "skill": "cro-advisor",
+    "query": "Modele capacidade de vendas, quotas e previsão de receita B2B SaaS.",
+    "expected": true
+  },
+  {
+    "id": "cro-advisor-negative",
+    "skill": "cro-advisor",
+    "query": "O que significa ARR?",
+    "expected": false
+  },
+  {
+    "id": "cs-onboard-positive",
+    "skill": "cs-onboard",
+    "query": "Execute /cs:setup e conduza a entrevista inicial da empresa.",
+    "expected": true
+  },
+  {
+    "id": "cs-onboard-negative",
+    "skill": "cs-onboard",
+    "query": "Qual a diferença entre CAC e LTV?",
+    "expected": false
+  },
+  {
+    "id": "cto-advisor-positive",
+    "skill": "cto-advisor",
+    "query": "Compare as opções arquiteturais e seus impactos na estratégia tecnológica.",
+    "expected": true
+  },
+  {
+    "id": "cto-advisor-negative",
+    "skill": "cto-advisor",
+    "query": "O que significa dívida técnica?",
+    "expected": false
+  },
+  {
+    "id": "culture-architect-positive",
+    "skill": "culture-architect",
+    "query": "Traduza os valores da empresa em comportamentos e rituais observáveis.",
+    "expected": true
+  },
+  {
+    "id": "culture-architect-negative",
+    "skill": "culture-architect",
+    "query": "O que significa cultura organizacional?",
+    "expected": false
+  },
+  {
+    "id": "founder-coach-positive",
+    "skill": "founder-coach",
+    "query": "Sou o gargalo da empresa; ajude a redesenhar minha delegação e agenda.",
+    "expected": true
+  },
+  {
+    "id": "founder-coach-negative",
+    "skill": "founder-coach",
+    "query": "Delegue esta revisão de código ao agente.",
+    "expected": false
+  },
+  {
+    "id": "internal-narrative-positive",
+    "skill": "internal-narrative",
+    "query": "Alinhe a narrativa da empresa para investidores, equipe e candidatos.",
+    "expected": true
+  },
+  {
+    "id": "internal-narrative-negative",
+    "skill": "internal-narrative",
+    "query": "Defina storytelling em uma frase.",
+    "expected": false
+  },
+  {
+    "id": "org-health-diagnostic-positive",
+    "skill": "org-health-diagnostic",
+    "query": "Faça um diagnóstico da saúde organizacional nas oito dimensões.",
+    "expected": true
+  },
+  {
+    "id": "org-health-diagnostic-negative",
+    "skill": "org-health-diagnostic",
+    "query": "Verifique a saúde do servidor Paperclip.",
+    "expected": false
+  },
+  {
+    "id": "scenario-war-room-positive",
+    "skill": "scenario-war-room",
+    "query": "Modele conjuntamente perda do maior cliente, corte de crédito e atraso no produto.",
+    "expected": true
+  },
+  {
+    "id": "scenario-war-room-negative",
+    "skill": "scenario-war-room",
+    "query": "Se eu vender 100 ações a R$ 2, quanto recebo?",
+    "expected": false
+  },
+  {
+    "id": "strategic-alignment-positive",
+    "skill": "strategic-alignment",
+    "query": "Identifique conflitos entre OKRs dos departamentos e realinhe a execução.",
+    "expected": true
+  },
+  {
+    "id": "strategic-alignment-negative",
+    "skill": "strategic-alignment",
+    "query": "Alinhe este texto à direita.",
+    "expected": false
+  },
+  {
+    "id": "ultra-adversarial-verify-skill-positive",
+    "skill": "ultra-adversarial-verify-skill",
+    "query": "Tente refutar as premissas deste relatório antes da entrega.",
+    "expected": true
+  },
+  {
+    "id": "ultra-adversarial-verify-skill-negative",
+    "skill": "ultra-adversarial-verify-skill",
+    "query": "Rode este teste uma vez e informe o exit code.",
+    "expected": false
+  },
+  {
+    "id": "ultra-agent-eval-skill-positive",
+    "skill": "ultra-agent-eval-skill",
+    "query": "Audite o trabalho deste agente e verifique se os testes foram enfraquecidos.",
+    "expected": true
+  },
+  {
+    "id": "ultra-agent-eval-skill-negative",
+    "skill": "ultra-agent-eval-skill",
+    "query": "O agente respondeu que a porta é 3100. Obrigado.",
+    "expected": false
+  },
+  {
+    "id": "ultra-browser-skill-positive",
+    "skill": "ultra-browser-skill",
+    "query": "Preencha este formulário web e confira o resultado no navegador.",
+    "expected": true
+  },
+  {
+    "id": "ultra-browser-skill-negative",
+    "skill": "ultra-browser-skill",
+    "query": "O que é um formulário HTML?",
+    "expected": false
+  },
+  {
+    "id": "browser-stealth-timing-positive",
+    "skill": "browser-stealth-timing",
+    "query": "Ajuste o timing deste fluxo de navegador bloqueado por detecção de automação.",
+    "expected": true
+  },
+  {
+    "id": "browser-stealth-timing-negative",
+    "skill": "browser-stealth-timing",
+    "query": "Leia uma página do nosso dashboard localhost.",
+    "expected": false
+  },
+  {
+    "id": "ultra-browser-v2-skill-positive",
+    "skill": "ultra-browser-v2-skill",
+    "query": "Execute a recipe compatível neste navegador visível com JEV e confira os recibos.",
+    "expected": true
+  },
+  {
+    "id": "ultra-browser-v2-skill-negative",
+    "skill": "ultra-browser-v2-skill",
+    "query": "Explique HTTP e HTTPS em duas frases.",
+    "expected": false
+  },
+  {
+    "id": "ultra-chrome-assistente-skill-positive",
+    "skill": "ultra-chrome-assistente-skill",
+    "query": "Controle esta aba pela extensão Chrome Assistant e sua bridge WebSocket.",
+    "expected": true
+  },
+  {
+    "id": "ultra-chrome-assistente-skill-negative",
+    "skill": "ultra-chrome-assistente-skill",
+    "query": "Como altero a página inicial do Chrome?",
+    "expected": false
+  },
+  {
+    "id": "ultra-chrome-devtools-skill-positive",
+    "skill": "ultra-chrome-devtools-skill",
+    "query": "Use o DevTools MCP para diagnosticar o LCP ruim deste site.",
+    "expected": true
+  },
+  {
+    "id": "ultra-chrome-devtools-skill-negative",
+    "skill": "ultra-chrome-devtools-skill",
+    "query": "O que significa LCP?",
+    "expected": false
+  },
+  {
+    "id": "ultra-chrome-stealth-navigator-skill-positive",
+    "skill": "ultra-chrome-stealth-navigator-skill",
+    "query": "Conecte via CDP ao Chrome já logado para retomar este fluxo bloqueado.",
+    "expected": true
+  },
+  {
+    "id": "ultra-chrome-stealth-navigator-skill-negative",
+    "skill": "ultra-chrome-stealth-navigator-skill",
+    "query": "O que é Cloudflare?",
+    "expected": false
+  },
+  {
+    "id": "ultra-confluence-docs-skill-positive",
+    "skill": "ultra-confluence-docs-skill",
+    "query": "Escreva um runbook com recuperação e rollback para este serviço.",
+    "expected": true
+  },
+  {
+    "id": "ultra-confluence-docs-skill-negative",
+    "skill": "ultra-confluence-docs-skill",
+    "query": "O que é um ADR?",
+    "expected": false
+  },
+  {
+    "id": "ultra-create-skill-positive",
+    "skill": "ultra-create-skill",
+    "query": "Corrija os gatilhos desta skill e seus exemplos de roteamento.",
+    "expected": true
+  },
+  {
+    "id": "ultra-create-skill-negative",
+    "skill": "ultra-create-skill",
+    "query": "Me explique o que é duration.",
+    "expected": false
+  },
+  {
+    "id": "ultra-dom-engine-skill-positive",
+    "skill": "ultra-dom-engine-skill",
+    "query": "Extraia alvos deste formulário dinâmico com dom-engine; os refs nativos são insuficientes.",
+    "expected": true
+  },
+  {
+    "id": "ultra-dom-engine-skill-negative",
+    "skill": "ultra-dom-engine-skill",
+    "query": "O que é DOM?",
+    "expected": false
+  },
+  {
+    "id": "ultra-drawio-skill-positive",
+    "skill": "ultra-drawio-skill",
+    "query": "Crie um arquivo draw.io para esta topologia de rede.",
+    "expected": true
+  },
+  {
+    "id": "ultra-drawio-skill-negative",
+    "skill": "ultra-drawio-skill",
+    "query": "Explique um diagrama de sequência em duas frases.",
+    "expected": false
+  },
+  {
+    "id": "ultra-find-skill-positive",
+    "skill": "ultra-find-skill",
+    "query": "Encontre uma skill instalada para converter apostilas em ebook.",
+    "expected": true
+  },
+  {
+    "id": "ultra-find-skill-negative",
+    "skill": "ultra-find-skill",
+    "query": "Como faço uma soma no Excel?",
+    "expected": false
+  },
+  {
+    "id": "ultra-gemini-image-skill-positive",
+    "skill": "ultra-gemini-image-skill",
+    "query": "Gere esta imagem pelo Gemini web e extraia o arquivo por CDP.",
+    "expected": true
+  },
+  {
+    "id": "ultra-gemini-image-skill-negative",
+    "skill": "ultra-gemini-image-skill",
+    "query": "Quais modelos Gemini existem?",
+    "expected": false
+  },
+  {
+    "id": "ultra-grok-image-skill-positive",
+    "skill": "ultra-grok-image-skill",
+    "query": "Crie uma imagem pelo Grok no X e baixe o anexo gerado.",
+    "expected": true
+  },
+  {
+    "id": "ultra-grok-image-skill-negative",
+    "skill": "ultra-grok-image-skill",
+    "query": "Escreva um post para o X sem publicar.",
+    "expected": false
+  },
+  {
+    "id": "ultra-live-state-truth-skill-positive",
+    "skill": "ultra-live-state-truth-skill",
+    "query": "Confira se o PR 42 está merged agora antes de reportar o status.",
+    "expected": true
+  },
+  {
+    "id": "ultra-live-state-truth-skill-negative",
+    "skill": "ultra-live-state-truth-skill",
+    "query": "O que é um pull request?",
+    "expected": false
+  },
+  {
+    "id": "ultra-memory-hygiene-skill-positive",
+    "skill": "ultra-memory-hygiene-skill",
+    "query": "Consolide estas decisões duráveis e elimine duplicação na memória.",
+    "expected": true
+  },
+  {
+    "id": "ultra-memory-hygiene-skill-negative",
+    "skill": "ultra-memory-hygiene-skill",
+    "query": "Qual decisão já registramos sobre esse serviço?",
+    "expected": false
+  },
+  {
+    "id": "ultra-memory-skill-positive",
+    "skill": "ultra-memory-skill",
+    "query": "Consulte o SSC e recupere nossa decisão registrada sobre backups.",
+    "expected": true
+  },
+  {
+    "id": "ultra-memory-skill-negative",
+    "skill": "ultra-memory-skill",
+    "query": "Explique memória de curto prazo em LLMs.",
+    "expected": false
+  },
+  {
+    "id": "ultra-models-skill-positive",
+    "skill": "ultra-models-skill",
+    "query": "Audite os modelos gratuitos configurados e os fallbacks com IDs mortos.",
+    "expected": true
+  },
+  {
+    "id": "ultra-models-skill-negative",
+    "skill": "ultra-models-skill",
+    "query": "Explique o mecanismo de atenção de um transformer.",
+    "expected": false
+  },
+  {
+    "id": "ultra-perplexity-pro-bridge-skill-positive",
+    "skill": "ultra-perplexity-pro-bridge-skill",
+    "query": "Pesquise este assunto no Perplexity Pro usando o modelo selecionado.",
+    "expected": true
+  },
+  {
+    "id": "ultra-perplexity-pro-bridge-skill-negative",
+    "skill": "ultra-perplexity-pro-bridge-skill",
+    "query": "O que é Perplexity?",
+    "expected": false
+  },
+  {
+    "id": "ultra-pipeline-resilience-skill-positive",
+    "skill": "ultra-pipeline-resilience-skill",
+    "query": "Retome esta pipeline longa com agentes e reconcilie o estado após a interrupção.",
+    "expected": true
+  },
+  {
+    "id": "ultra-pipeline-resilience-skill-negative",
+    "skill": "ultra-pipeline-resilience-skill",
+    "query": "O que é uma pipeline de CI?",
+    "expected": false
+  },
+  {
+    "id": "ultra-plan-gate-skill-positive",
+    "skill": "ultra-plan-gate-skill",
+    "query": "Planeje esta migração entre gateway, cron e documentação antes das alterações.",
+    "expected": true
+  },
+  {
+    "id": "ultra-plan-gate-skill-negative",
+    "skill": "ultra-plan-gate-skill",
+    "query": "Corrija um erro de digitação nesta frase do README.",
+    "expected": false
+  },
+  {
+    "id": "ultra-plan-with-diagrams-skill-positive",
+    "skill": "ultra-plan-with-diagrams-skill",
+    "query": "Planeje a migração e desenhe em Mermaid o fluxo entre os componentes.",
+    "expected": true
+  },
+  {
+    "id": "ultra-plan-with-diagrams-skill-negative",
+    "skill": "ultra-plan-with-diagrams-skill",
+    "query": "Explique em uma frase o que é arquitetura de software.",
+    "expected": false
+  },
+  {
+    "id": "ultra-powershell-skill-positive",
+    "skill": "ultra-powershell-skill",
+    "query": "Corrija o escaping e o controle de processos deste script PowerShell.",
+    "expected": true
+  },
+  {
+    "id": "ultra-powershell-skill-negative",
+    "skill": "ultra-powershell-skill",
+    "query": "Qual a diferença entre Windows e Linux?",
+    "expected": false
+  },
+  {
+    "id": "ultra-provider-health-skill-positive",
+    "skill": "ultra-provider-health-skill",
+    "query": "Após atualizar o cliente, investigue a mudança de headers no provedor.",
+    "expected": true
+  },
+  {
+    "id": "ultra-provider-health-skill-negative",
+    "skill": "ultra-provider-health-skill",
+    "query": "O que significa HTTP 429?",
+    "expected": false
+  },
+  {
+    "id": "ultra-qa-testing-skill-positive",
+    "skill": "ultra-qa-testing-skill",
+    "query": "Execute os casos de QA desta aplicação web e entregue evidências por caso.",
+    "expected": true
+  },
+  {
+    "id": "ultra-qa-testing-skill-negative",
+    "skill": "ultra-qa-testing-skill",
+    "query": "O que é um teste de regressão?",
+    "expected": false
+  },
+  {
+    "id": "ultra-ruthless-editor-skill-positive",
+    "skill": "ultra-ruthless-editor-skill",
+    "query": "Enxugue este relatório sem perder números, ressalvas e próximos passos.",
+    "expected": true
+  },
+  {
+    "id": "ultra-ruthless-editor-skill-negative",
+    "skill": "ultra-ruthless-editor-skill",
+    "query": "Qual é a capital da França?",
+    "expected": false
+  },
+  {
+    "id": "ultra-x-stealth-skill-positive",
+    "skill": "ultra-x-stealth-skill",
+    "query": "O x-poster está bloqueado; publique este texto autorizado pelo fallback stealth.",
+    "expected": true
+  },
+  {
+    "id": "ultra-x-stealth-skill-negative",
+    "skill": "ultra-x-stealth-skill",
+    "query": "Rascunhe um tweet, sem publicar.",
+    "expected": false
+  }
+]

@@ -1,6 +1,6 @@
 ---
 name: ultra-chrome-devtools-skill
-description: "Diagnóstico e otimização de performance web usando Chrome DevTools MCP."
+description: "Investigar performance web com traces, Lighthouse, rede ou console pelo Chrome DevTools MCP. Não usar para navegação comum, criação de interface ou explicação pontual de métricas sem diagnóstico solicitado."
 license: Apache-2.0
 ---
 

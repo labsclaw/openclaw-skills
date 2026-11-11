@@ -1,9 +1,6 @@
 ---
 name: ultra-confluence-docs-skill
-description: >-
-  Documentation templates generating ADRs, runbooks, architecture docs, and
-  KT handoffs. Use for technical documentation. Triggers include ADR, runbook,
-  architecture decision, knowledge transfer, write docs, and doc template.
+description: "Create or revise a structured ADR, runbook, architecture document, technical specification or knowledge-transfer handoff. Not for quick notes, a one-off explanation of these formats, ticket management or code implementation."
 license: Apache-2.0
 ---
 

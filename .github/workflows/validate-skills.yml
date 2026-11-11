@@ -16,6 +16,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install YAML parser for routing audit
+        run: python -m pip install PyYAML==6.0.2
+      - name: Validate routing descriptions and negative gate fixtures
+        run: |
+          python scripts/validate-routing-boundaries.py
+          python scripts/test-routing-boundaries.py
       - name: Validate governance, structure, security, and trigger fixtures
         run: node scripts/validate-library.mjs
       - name: Verify generated catalog index

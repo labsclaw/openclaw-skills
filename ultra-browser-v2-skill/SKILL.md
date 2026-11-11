@@ -1,6 +1,6 @@
 ---
 name: ultra-browser-v2-skill
-description: "Navegação em navegador visível com snapshots DOM, operações nativas e recipes revisadas. Use para executar uma recipe compatível, navegar com LLM+JEV ou preparar evidência verificável de formulários e fluxos de navegador. Distingue capacidades existentes de propostas; não concede acesso ao estado privado do judge."
+description: "Executar recipes revisadas, navegação visível com LLM+JEV e snapshots DOM, ou revisar sua evidência de execução. Não usar para leitura simples de URL, dúvidas sobre navegadores ou navegação comum sem esse harness; não concede acesso ao judge privado."
 metadata:
   version: "2.3.0"
   evidence_commit: "ed963ec"

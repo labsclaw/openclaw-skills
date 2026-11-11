@@ -1,6 +1,6 @@
 ---
 name: "challenge"
-description: "Pre-mortem plan analysis. Imagine the plan failed 12 months from now and work backwards to find the weaknesses. Surfaces assumptions, dependencies, and execution risks before committing resources. Use when before significant resource commitment, before presenting to a board or investors, when feedback has been one-sidedly positive, or when there is pressure to move fast and figure it out later."
+description: "Run a requested pre-mortem or challenge a consequential business plan before commitment, identifying assumptions and dependencies. Not for every plan, a small reversible task, or a simple request to explain risk."
 license: MIT
 ---
 

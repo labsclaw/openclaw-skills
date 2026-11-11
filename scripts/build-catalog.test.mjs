@@ -33,3 +33,25 @@ test('catalog check accepts CRLF materialization but rejects stale content', asy
   assert.equal(stale.status, 1);
   assert.match(stale.stderr, /stale/);
 });
+
+test('extensionless text is EOL-portable while actual content changes remain stale', async t => {
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), 'catalog-text-names-'));
+  t.after(() => fs.rm(root, { recursive: true, force: true }));
+  for (const name of ['scripts', 'catalog', 'demo']) await fs.mkdir(path.join(root, name));
+  const script = path.join(root, 'scripts', 'build-catalog.mjs');
+  await fs.copyFile(new URL('./build-catalog.mjs', import.meta.url), script);
+  await fs.writeFile(path.join(root, 'catalog', 'registry.json'), JSON.stringify({
+    schemaVersion: 1, publication: { status: 'blocked', reason: 'isolated fixture' },
+    skills: [{ name: 'demo', path: 'demo' }]
+  }));
+  await fs.writeFile(path.join(root, 'demo', 'SKILL.md'), '---\nname: demo\ndescription: Fixture\n---\n');
+  const names = ['LICENSE', 'NOTICE', '.gitattributes', '.gitignore'];
+  for (const name of names) await fs.writeFile(path.join(root, 'demo', name), 'first line\nsecond line\n');
+  const run = (...args) => spawnSync(process.execPath, [script, ...args], { encoding: 'utf8' });
+  assert.equal(run().status, 0);
+  for (const name of names) await fs.writeFile(path.join(root, 'demo', name), 'first line\r\nsecond line\r\n');
+  const portable = run('--check');
+  assert.equal(portable.status, 0, portable.stderr);
+  await fs.writeFile(path.join(root, 'demo', 'LICENSE'), 'actual changed license content\r\n');
+  assert.equal(run('--check').status, 1);
+});

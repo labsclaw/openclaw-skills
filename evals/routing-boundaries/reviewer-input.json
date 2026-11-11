@@ -1,0 +1,847 @@
+{
+  "instructions": "For each independent query, decide whether the named skill should activate from its candidate description. Judge task intent, not isolated keywords. Return id and activate boolean for every case. Do not execute any requested workflow.",
+  "skills": [
+    {
+      "name": "arquiteto-de-empresa",
+      "description": "Create or document an entire company as an OKF Markdown knowledge bundle, including a requested guided founder interview. Not for a single business definition, a quick business idea, or editing one existing company document.",
+      "descriptionDigest": "sha256:8c52a7b996e7d727def46965aa502f12df2dd5ebcce8ba770380c26775103144"
+    },
+    {
+      "name": "chief-ai-officer-advisor",
+      "description": "Chief AI Officer advisory for startups: model build-vs-buy decisions (API vs fine-tune vs in-house), AI risk classification under EU AI Act + US state patchwork, AI cost economics (API-to-self-hosted breakeven), and AI team org evolution. Use when deciding whether to call an API or fine-tune, classifying AI use cases for regulatory risk, calculating when self-hosting pays off, sequencing AI hires. Not for implementing ML code, a general model definition, or merely mentioning a model name.",
+      "descriptionDigest": "sha256:626cec7912f66c5d65df7a38aa50fbdd5ebe782f6796a88f602479b911e82456"
+    },
+    {
+      "name": "chief-data-officer-advisor",
+      "description": "Chief Data Officer advisory for startups: AI training data rights and consent provenance, data product strategy (warehouse vs lakehouse vs mesh, build-vs-buy), B2B customer-data-as-asset valuation and M&A readiness, data team org evolution. Use when deciding whether to train models on customer data, choosing data architecture, valuing data for fundraising or M&A, sequencing data hires. Not for tactical data engineering, a data-term definition, or merely mentioning a database.",
+      "descriptionDigest": "sha256:ffdcd71b88f0dc24678ba683ce017016009c1d46fb5681e69119b459dd02f2f4"
+    },
+    {
+      "name": "board-prep",
+      "description": "Rehearse a founder/executive for adversarial board or investor questions with numerical mastery and narrative defense. Not for building slide artifacts alone, ordinary status updates, or defining a board term.",
+      "descriptionDigest": "sha256:fb2dd2eb3c6664d62b659296b2b890bc0210fb4b5500a859d7078e5d60654e4d"
+    },
+    {
+      "name": "challenge",
+      "description": "Run a requested pre-mortem or challenge a consequential business plan before commitment, identifying assumptions and dependencies. Not for every plan, a small reversible task, or a simple request to explain risk.",
+      "descriptionDigest": "sha256:5448ca3779134a86a812f70bab9e270fa49e16dfd1514317d40f9c2f862779f3"
+    },
+    {
+      "name": "general-counsel-advisor",
+      "description": "General Counsel advisory for startups: contract review (MSA, SaaS, NDA, DPA, employment), IP strategy, term sheet decoding, and regulatory landscape mapping. Use when reviewing any contract or term sheet, deciding when to engage outside counsel, defining IP strategy, evaluating regulatory exposure (HIPAA, GDPR, FDA, fintech). Not for a one-off legal-term definition or merely mentioning a regulation without a legal review/decision.",
+      "descriptionDigest": "sha256:137fbe3a808834a0f9a8ae92f363f4984def7e06344aaa5cc6fe09fa340b7315"
+    },
+    {
+      "name": "board-deck-builder",
+      "description": "Build or restructure an actual board/investor update deck, quarterly review or fundraising narrative artifact. Not for a short investor message, a definition, or adversarial rehearsal without a deck deliverable.",
+      "descriptionDigest": "sha256:75d9dba71150623a188dad68090d3a64b1e259ff63e44442863814aa08716ded"
+    },
+    {
+      "name": "ceo-advisor",
+      "description": "Executive leadership guidance for strategic decision-making, organizational development, and stakeholder management. Use when planning strategy, preparing board presentations, managing investors, developing organizational culture, making executive decisions, fundraising. Not for single financial calculations, basic business definitions or a specialist task solely because CEO/strategy is mentioned.",
+      "descriptionDigest": "sha256:4e58076c7f264cff092caaedc49674708930ff72ae4a10092e7968f72d842aea"
+    },
+    {
+      "name": "cfo-advisor",
+      "description": "Financial leadership for startups and scaling companies. Financial modeling, unit economics, fundraising strategy, cash management, and board financial packages. Use when building financial models, analyzing unit economics, planning fundraising, managing cash runway, preparing board materials. Not for a standalone calculation, a definition of CAC/LTV/runway, or personal stock/subscription analysis.",
+      "descriptionDigest": "sha256:c026098fa7b20c13ae5659c7f1246c38af846dd695c6c58bf0c33fe7a1fc7ac3"
+    },
+    {
+      "name": "change-management",
+      "description": "Framework for rolling out organizational changes without chaos. Covers the ADKAR model adapted for startups, communication templates, resistance patterns, and change fatigue management. Handles process changes, org restructures, strategy pivots, and culture changes. Use when announcing a reorg, switching tools, pivoting strategy, killing a product, changing leadership. Not for a routine code/tool setting change or a definition without an organizational rollout.",
+      "descriptionDigest": "sha256:8b2e35475475b523eca70388adf735ecc91e527f36ff68faf78a1f7c5c9e0bc7"
+    },
+    {
+      "name": "chief-of-staff",
+      "description": "Route an executive decision when the needed advisor is unclear or coordinate an explicitly multi-domain C-suite analysis. Not a mandatory entry point for a known advisor, a single-domain answer, or a simple business definition; a board meeting needs its own applicable trigger.",
+      "descriptionDigest": "sha256:726aaa2fa675c6f2c4e6bd141230074df40941fb6ce6c00d8a85cf341dfcd0a6"
+    },
+    {
+      "name": "chro-advisor",
+      "description": "People leadership for scaling companies. Hiring strategy, compensation design, org structure, culture, and retention. Use when building hiring plans, designing comp frameworks, restructuring teams, managing performance, building culture. Not for a one-off HR definition, individual scheduling, or merely mentioning headcount.",
+      "descriptionDigest": "sha256:696f76024d31f36afe5af1c294175203321c8e7b32ae74d097ab036f8118bf72"
+    },
+    {
+      "name": "ciso-advisor",
+      "description": "Security leadership for growth-stage companies. Risk quantification in dollars, compliance roadmap (SOC 2/ISO 27001/HIPAA/GDPR), security architecture strategy, incident response leadership, and board-level security reporting. Use when building security programs, justifying security budget, selecting compliance frameworks, managing incidents, assessing vendor risk. Not for a security-term definition or a routine code fix without security-program or incident leadership scope.",
+      "descriptionDigest": "sha256:47a6f680a37d52caf68a8cbbb5a7902fcdfd67cbc9667016c1cb08b6f2bb9ec4"
+    },
+    {
+      "name": "cmo-advisor",
+      "description": "Marketing leadership for scaling companies. Brand positioning, growth model design, marketing budget allocation, and marketing org design. Use when designing brand strategy, selecting growth models (PLG vs sales-led vs community-led), allocating marketing budgets, building marketing teams. Not for drafting one social post, defining CAC/LTV, or merely mentioning marketing.",
+      "descriptionDigest": "sha256:a73bfb41480d80f9ff9f1bbae5323ceb819749112e4ce516af5bbcc731c7eafe"
+    },
+    {
+      "name": "company-os",
+      "description": "The meta-framework for how a company runs — the connective tissue between all C-suite roles. Covers operating system selection (EOS, Scaling Up, OKR-native, hybrid), accountability charts, scorecards, meeting pulse, issue resolution, and 90-day rocks. Use when setting up company operations, selecting a management framework, designing meeting rhythms, building accountability systems, implementing OKRs. Not for an operating-system software question or a one-off OKR definition.",
+      "descriptionDigest": "sha256:2960219dfb1f20ad3ca32abd6e1d2f5efa8b53ce5c4668c4d6680e550f75cf97"
+    },
+    {
+      "name": "competitive-intel",
+      "description": "Systematic competitor tracking that feeds CMO positioning, CRO battlecards, and CPO roadmap decisions. Use when analyzing competitors, building sales battlecards, tracking market moves, positioning against alternatives. Not for a single fact about another company, a definition, or unrelated web research.",
+      "descriptionDigest": "sha256:ad184e5a2b492de089198e707978c09583afce82788633e4447e70e9f6004b35"
+    },
+    {
+      "name": "context-engine",
+      "description": "Load or maintain company context needed by an active C-suite advisory task, including privacy checks before external use. Not a trigger to start advising, launch onboarding, or collect company data for a simple definition; missing/stale context alone does not authorize an interview.",
+      "descriptionDigest": "sha256:a305b0e29cde3cd69d1714e863148067efba87a57cb52aeda824c0c72561e232"
+    },
+    {
+      "name": "coo-advisor",
+      "description": "Operations leadership for scaling companies. Process design, OKR execution, operational cadence, and scaling playbooks. Use when designing operations, setting up OKRs, building processes, scaling teams, analyzing bottlenecks, planning operational cadence. Not for a one-off operational definition, ordinary task execution or a single software-process bug.",
+      "descriptionDigest": "sha256:c7a69a9ac6d894e321f09eacf097b88071f9d0cfb0fb859ec9eb8ca6cd4de2ad"
+    },
+    {
+      "name": "cpo-advisor",
+      "description": "Product leadership for scaling companies. Product vision, portfolio strategy, product-market fit, and product org design. Use when setting product vision, managing a product portfolio, measuring PMF, designing product teams, prioritizing at the portfolio level, reporting to the board on product. Not for implementing one feature, a one-off PMF definition or a narrow UI change.",
+      "descriptionDigest": "sha256:33927805f50c3c6a38aa4d0441c51b4223d71217227a8342d329071813885787"
+    },
+    {
+      "name": "cro-advisor",
+      "description": "Revenue leadership for B2B SaaS companies. Revenue forecasting, sales model design, pricing strategy, net revenue retention, and sales team scaling. Use when designing the revenue engine, setting quotas, modeling NRR, evaluating pricing, building board forecasts. Not for a one-off ARR/NRR definition, a simple arithmetic question or an unrelated use of CRO.",
+      "descriptionDigest": "sha256:9a569f1866d08c40fe4175476f48a06e65794c64b302de2d3cc3b19380c46b4e"
+    },
+    {
+      "name": "cs-onboard",
+      "description": "Run the company-context interview when the user requests initial C-suite setup, /cs:setup, /cs:update or a context refresh. Not merely because context is absent or older than 90 days, and not for an isolated business question.",
+      "descriptionDigest": "sha256:8ae657beeb4a6482769ced486cfa6c7ce02ff869ca63e3517663d81a1254179e"
+    },
+    {
+      "name": "cto-advisor",
+      "description": "Technical leadership guidance for engineering teams, architecture decisions, and technology strategy. Use when assessing technical debt, scaling engineering teams, evaluating technologies, making architecture decisions, establishing engineering metrics. Not for a small code/debugging task, a technical-term definition or merely mentioning architecture.",
+      "descriptionDigest": "sha256:abb5bce6288b4c06df3d6aea023166355f6ffd8135fb64b7c815757f60008042"
+    },
+    {
+      "name": "culture-architect",
+      "description": "Build, measure, and evolve company culture as operational behavior — not wall posters. Covers mission/vision/values workshops, values-to-behaviors translation, culture code creation, culture health assessment, and cultural rituals by stage. Use when building company values, assessing culture health, designing cultural rituals, creating culture codes, handling culture clashes. Not for a dictionary meaning of culture/values or a single wording edit without culture-design scope.",
+      "descriptionDigest": "sha256:995d1301099654d5e2562775ad07dcb38fa2c0cc5a72a68b896ec187bb30d9eb"
+    },
+    {
+      "name": "founder-coach",
+      "description": "Personal leadership development for founders and first-time CEOs. Covers founder archetype identification, delegation frameworks, energy management, CEO calendar audits, leadership style evolution, blind spot identification, imposter syndrome, founder mental health, and succession planning. Use when a founder feels like the bottleneck, struggles to delegate, is burning out, transitioning from IC to executive, managing a board. Not for a definition of delegation/burnout or ordinary task delegation without founder coaching needs.",
+      "descriptionDigest": "sha256:0e9e2bb2de8ec5dc1fbd499460b33633d213d2ba1f89c85f1c42057d82802030"
+    },
+    {
+      "name": "internal-narrative",
+      "description": "Build and maintain one coherent company story across all audiences — employees, investors, customers, candidates, and partners. Detects narrative contradictions and ensures the same truth is framed for each audience's needs. Use when preparing investor updates, all-hands presentations, board communications, recruiting narratives, crisis communications. Not for a short isolated message or a storytelling definition without cross-audience company-narrative work.",
+      "descriptionDigest": "sha256:aaa931b3e1eefe0d6cd76c8f5f2a327848f0cc0cb81066317343b170b0d7500c"
+    },
+    {
+      "name": "org-health-diagnostic",
+      "description": "Assess overall organizational health across business functions with a requested diagnostic or evidence of cross-functional dysfunction. Not for service/server health, a single operational metric, or a general definition of organizational health.",
+      "descriptionDigest": "sha256:718369ba9e9d029e35fb151ce695eee4b26d93d3d39db2b4e561d70b13fb568c"
+    },
+    {
+      "name": "scenario-war-room",
+      "description": "Model a consequential business scenario with interacting risks cascading across several functions. Not for every what-if question, a simple calculation with two variables, or a single-assumption stress test.",
+      "descriptionDigest": "sha256:a1e3eaae5df836a8d9ec2852280897b67a299a0d630acd8b60d99a84e70cc7f9"
+    },
+    {
+      "name": "strategic-alignment",
+      "description": "Cascades strategy from boardroom to individual contributor. Detects and fixes misalignment between company goals and team execution. Covers strategy articulation, cascade mapping, orphan goal detection, silo identification, communication gap analysis, and realignment protocols. Use when teams are pulling in different directions, OKRs don't connect, departments optimize locally at company expense. Not for CSS/text alignment, a definition of strategy or a single routine task.",
+      "descriptionDigest": "sha256:7c1ee4fce5d9e77269d8748117d50499c88fae8ad5b54f04a425c6e231171981"
+    },
+    {
+      "name": "ultra-adversarial-verify-skill",
+      "description": "Challenge material claims in a completed deliverable, high-risk migration or release, or perform a requested adversarial review. Not for every completion message, a routine test run, or a simple factual answer.",
+      "descriptionDigest": "sha256:e5d1254a3f47c82bd2c523b4bbda06519d30969e07fec9c68e8ab869394e9b25"
+    },
+    {
+      "name": "ultra-agent-eval-skill",
+      "description": "Audit a completed agent implementation for unsupported completion claims, changed files, weakened tests and reproducible evidence. Not for every agent reply or routine verification; use adversarial-verify for a general report or non-agent deliverable.",
+      "descriptionDigest": "sha256:d7bee7a5bf49c4dcc8552f84cf1ffd30705d03d1125800e5e85d35a1cccf19bf"
+    },
+    {
+      "name": "ultra-browser-skill",
+      "description": "Control web pages for navigation, forms or extraction using grounded browser observations. Not for a simple URL fetch, a conceptual web question, or a dedicated JEV/recipe workflow handled by ultra-browser-v2-skill.",
+      "descriptionDigest": "sha256:f58e1289c3b94f966e37a6036eafeae3036a7f5076a8ef9293a5c7fe15c66ef3"
+    },
+    {
+      "name": "browser-stealth-timing",
+      "description": "Add human-like timing to a multi-step browser flow with an observed or relevant bot-detection risk. Not for localhost/internal tools, a single page read, ordinary browsing without that risk, or explaining browser timing.",
+      "descriptionDigest": "sha256:aa28ca485f4a282366b338db97e6abb153f6fc60932634f87bb94f7e019a794b"
+    },
+    {
+      "name": "ultra-browser-v2-skill",
+      "description": "Executar recipes revisadas, navegação visível com LLM+JEV e snapshots DOM, ou revisar sua evidência de execução. Não usar para leitura simples de URL, dúvidas sobre navegadores ou navegação comum sem esse harness; não concede acesso ao judge privado.",
+      "descriptionDigest": "sha256:19e4ead1e92b35942401f035830c5a2996d92275f8692969d66274e1c7b98d21"
+    },
+    {
+      "name": "ultra-chrome-assistente-skill",
+      "description": "Control the active Chrome session through the installed Chrome Assistant extension, WebSocket bridge and sidepanel. Not for general browser navigation, Chrome settings questions, or direct CDP control without that extension.",
+      "descriptionDigest": "sha256:3d700082eef82d391bfb9d9f165fbae399b8df4e504da6400e7dd54287a6621f"
+    },
+    {
+      "name": "ultra-chrome-devtools-skill",
+      "description": "Investigar performance web com traces, Lighthouse, rede ou console pelo Chrome DevTools MCP. Não usar para navegação comum, criação de interface ou explicação pontual de métricas sem diagnóstico solicitado.",
+      "descriptionDigest": "sha256:39aef9ff75013395ea7aafa3d29ec7f1ae57da999ea4202369a8330b0efabb42"
+    },
+    {
+      "name": "ultra-chrome-stealth-navigator-skill",
+      "description": "Attach through CDP to an existing Chrome profile when an authorized workflow needs its session or has encountered bot-detection blocking. Not for ordinary page fetches, extension-bridge control, or a general explanation of Cloudflare/CDP.",
+      "descriptionDigest": "sha256:090263333c2be13fb709ebbbc67530172d462bd474d25b65872f173416016dcb"
+    },
+    {
+      "name": "ultra-confluence-docs-skill",
+      "description": "Create or revise a structured ADR, runbook, architecture document, technical specification or knowledge-transfer handoff. Not for quick notes, a one-off explanation of these formats, ticket management or code implementation.",
+      "descriptionDigest": "sha256:b9300468d313a97d05b62f8f17af2feab981f69eeac57d5b05dbbf6bc5d11552"
+    },
+    {
+      "name": "ultra-create-skill",
+      "description": "Create, repair, review or evaluate an AgentSkill and its discovery description or bundled resources. Not for finding an existing skill, editing project-only configuration, or explaining a topic without requesting a reusable skill.",
+      "descriptionDigest": "sha256:a3d260bec036341651ea938340b9d02740b67f89707063b52f2d55545289d225"
+    },
+    {
+      "name": "ultra-dom-engine-skill",
+      "description": "Use DOM-engine extraction in complex dynamic forms when native browser observations cannot reliably identify interactive targets. Not for simple page reads, ordinary navigation with adequate native refs, or a conceptual DOM question.",
+      "descriptionDigest": "sha256:36f48c1340ba73ae2b91f0e04fafd78c6a11cc7026a2edc0a05f99ae7f03c4c6"
+    },
+    {
+      "name": "ultra-drawio-skill",
+      "description": "Create, edit, validate or export draw.io XML artifacts, including flowcharts, ER/UML, sequence, network and cloud diagrams. Not for a diagram requested only in Mermaid/SVG, or a one-off explanation of diagram notation.",
+      "descriptionDigest": "sha256:acdcee94fed35219570abae28df027388c5f5d5bcb2d9bfb7355bc55624ff163"
+    },
+    {
+      "name": "ultra-find-skill",
+      "description": "Find, inventory or compare installed or remote agent skills, or check for a reusable capability before authoring one. Not for ordinary how-to questions, general knowledge, directly invoking a known skill, or editing a skill already identified.",
+      "descriptionDigest": "sha256:f5ac00ec6de66959b41750b98dd2403a6d66069003ef083764b4caa19b9c2f12"
+    },
+    {
+      "name": "ultra-gemini-image-skill",
+      "description": "Generate images specifically through the Gemini web UI, or recover its broken blob download using CDP extraction. Not for general image generation with another available provider, image analysis, or questions about Gemini.",
+      "descriptionDigest": "sha256:1d02691a3ff53f4e2880522463bd84a36b25f535a1e965cdf5e987027b433d18"
+    },
+    {
+      "name": "ultra-grok-image-skill",
+      "description": "Generate an image specifically with Grok on X and retrieve its media attachment. Not for a generic image request without a Grok preference, analyzing an existing image, text-only Grok questions, or publishing an X post.",
+      "descriptionDigest": "sha256:5722f61c29c00f7990645d9fe4c094be4aa9ade67b00e73c3ca34bc01706da6a"
+    },
+    {
+      "name": "ultra-live-state-truth-skill",
+      "description": "Verify a mutable operational fact against its authoritative source when an action or status answer depends on current state. Not for timeless definitions, arithmetic, historical facts fixed to a supplied snapshot, or an unrelated broad system audit.",
+      "descriptionDigest": "sha256:47b902fe17d74e71758501b1d71aab38219387ed213bc05ee27c70e02d2e7509"
+    },
+    {
+      "name": "ultra-memory-hygiene-skill",
+      "description": "Decide what to persist or revise in agent memory, consolidate durable notes, or remove stale/duplicate stored context. Not for a read-only memory lookup, temporary task output, or explaining memory concepts without a persistence decision.",
+      "descriptionDigest": "sha256:e8904722771e900da7e26407f1ba2ef3ed661e43b6bd80a78ae7bfd880050436"
+    },
+    {
+      "name": "ultra-memory-skill",
+      "description": "Retrieve or maintain recorded workspace context through SSC routing, segmented memory and evidence/integrity checks. Not for general knowledge questions, source-code lookup, or explaining LLM memory without consulting stored context.",
+      "descriptionDigest": "sha256:cf11fd04bfe5ebd12ef2f9fde8ab1c282e1c4777d7b83bb0225ee5a23d56f911"
+    },
+    {
+      "name": "ultra-models-skill",
+      "description": "Audit configured model catalogs, current free-model availability, dead IDs, provider health or fallback routing with dated evidence. Not for a general explanation of LLMs, an unrelated meaning of model, or an abstract model comparison without a catalog/operational decision.",
+      "descriptionDigest": "sha256:1fe418e0b0078e53c82f4647a2100af434dd9121b8faa729c0bd4e94e0b41185"
+    },
+    {
+      "name": "ultra-perplexity-pro-bridge-skill",
+      "description": "Search or run a model session specifically through Perplexity web when requested or selected for that workflow. Not for every web search, a simple URL fetch, or general questions about Perplexity.",
+      "descriptionDigest": "sha256:20d1f9b46f7d542438d79df00f06d35bd5d50583ba5bbd39378fedafa013311a"
+    },
+    {
+      "name": "ultra-pipeline-resilience-skill",
+      "description": "Coordinate a long-running multi-step workflow needing durable state, interruption recovery or agent/external-dependency handoffs. Not for short sequential tasks, ordinary questions, or merely mentioning pipeline, architecture or implementation.",
+      "descriptionDigest": "sha256:6b654da175d0207799d6d476f52e60954cfcf168e1f5e8e1c8e4e65023980a05"
+    },
+    {
+      "name": "ultra-plan-gate-skill",
+      "description": "Establish an evidence-backed plan before nontrivial multi-file edits, uncertain migrations or consequential external changes. Not for a typo fix, a bounded routine command, a read-only status lookup or a conceptual question.",
+      "descriptionDigest": "sha256:d10bbb03d8d63ce4cfd87196cf5dc59268f12c3348c3c6a47835561c8901e7c9"
+    },
+    {
+      "name": "ultra-plan-with-diagrams-skill",
+      "description": "Produce an implementation plan, roadmap or visual brainstorming when architecture/flow diagrams materially clarify the requested work. Not for every multi-step task, a conceptual answer, review-only work or a plan without useful diagrams.",
+      "descriptionDigest": "sha256:e236f27f93591561d2d8d63ee3ea59d36eb5991c5cd44971ea844943c3007438"
+    },
+    {
+      "name": "ultra-powershell-skill",
+      "description": "Write, repair or execute PowerShell/Windows automation involving native CLI quoting, paths, encoding or process lifecycle. Not merely because the host is Windows, or for a generic Windows question with no scripting task.",
+      "descriptionDigest": "sha256:e7d2c5c69fbee0a2407e54eed1beb85cb856ea930501954f575ba0aa3f73eb00"
+    },
+    {
+      "name": "ultra-provider-health-skill",
+      "description": "Investigate provider/client contract drift, endpoint/header changes, rate-limit changes or an evidenced model-provider failure. Not for generic model selection, an unrelated application timeout or a full catalog refresh without a provider incident.",
+      "descriptionDigest": "sha256:11e09b6a7e29c095b41334a4308c5aa60de5644a919bd8066640b8100c30d9f5"
+    },
+    {
+      "name": "ultra-qa-testing-skill",
+      "description": "Execute a structured web-app QA suite or requested exploratory test with pass/fail evidence, screenshots and a report. Not for a one-off browser check, unit-test command, static code review, or explaining testing terminology.",
+      "descriptionDigest": "sha256:e43024e2219e58173f1a273b467310f71360dcf02c1c950d4b5fec4f146376ad"
+    },
+    {
+      "name": "ultra-ruthless-editor-skill",
+      "description": "Tighten an existing technical or executive draft while preserving facts, uncertainty, constraints and actions. Not for every newly composed answer, fact-checking without an editing request, or a simple definition.",
+      "descriptionDigest": "sha256:54d8cac377605002a08f50c2c036c122b6db10ac93ebfcd19a6bd7940cf54ec1"
+    },
+    {
+      "name": "ultra-x-stealth-skill",
+      "description": "Publish authorized posts or threads on X through the stealth fallback when x-poster is blocked or that path is explicitly requested. Not for drafting without publication, reading an X link, ordinary x-poster success, or generic anti-detection questions.",
+      "descriptionDigest": "sha256:dbfe760abfd071a84cad314dfc5100b8f63d7c6d6c01e779e59c834ba50f36ef"
+    }
+  ],
+  "cases": [
+    {
+      "id": "arquiteto-de-empresa-positive",
+      "skill": "arquiteto-de-empresa",
+      "query": "Estruture minha empresa como um bundle OKF e conduza a entrevista por fases."
+    },
+    {
+      "id": "arquiteto-de-empresa-negative",
+      "skill": "arquiteto-de-empresa",
+      "query": "O que significa OKF?"
+    },
+    {
+      "id": "chief-ai-officer-advisor-positive",
+      "skill": "chief-ai-officer-advisor",
+      "query": "Compare API versus fine-tuning como decisão de investimento de IA da empresa."
+    },
+    {
+      "id": "chief-ai-officer-advisor-negative",
+      "skill": "chief-ai-officer-advisor",
+      "query": "O que é fine-tuning?"
+    },
+    {
+      "id": "chief-data-officer-advisor-positive",
+      "skill": "chief-data-officer-advisor",
+      "query": "Avalie direitos de dados dos clientes e estratégia de monetização."
+    },
+    {
+      "id": "chief-data-officer-advisor-negative",
+      "skill": "chief-data-officer-advisor",
+      "query": "O que é um lakehouse?"
+    },
+    {
+      "id": "board-prep-positive",
+      "skill": "board-prep",
+      "query": "Simule perguntas difíceis do conselho para eu ensaiar minha apresentação."
+    },
+    {
+      "id": "board-prep-negative",
+      "skill": "board-prep",
+      "query": "O que é um conselho de administração?"
+    },
+    {
+      "id": "challenge-positive",
+      "skill": "challenge",
+      "query": "Faça um pre-mortem do plano de expansão antes de comprometermos o orçamento."
+    },
+    {
+      "id": "challenge-negative",
+      "skill": "challenge",
+      "query": "O que é risco operacional?"
+    },
+    {
+      "id": "general-counsel-advisor-positive",
+      "skill": "general-counsel-advisor",
+      "query": "Revise os riscos e cláusulas deste NDA e identifique perguntas para o advogado."
+    },
+    {
+      "id": "general-counsel-advisor-negative",
+      "skill": "general-counsel-advisor",
+      "query": "O que significa NDA?"
+    },
+    {
+      "id": "board-deck-builder-positive",
+      "skill": "board-deck-builder",
+      "query": "Monte o deck trimestral para o conselho com estes indicadores."
+    },
+    {
+      "id": "board-deck-builder-negative",
+      "skill": "board-deck-builder",
+      "query": "O que é um board deck?"
+    },
+    {
+      "id": "ceo-advisor-positive",
+      "skill": "ceo-advisor",
+      "query": "Avalie as opções estratégicas da empresa e o alinhamento com investidores."
+    },
+    {
+      "id": "ceo-advisor-negative",
+      "skill": "ceo-advisor",
+      "query": "O que significa CEO?"
+    },
+    {
+      "id": "cfo-advisor-positive",
+      "skill": "cfo-advisor",
+      "query": "Modele nosso runway e compare cenários de captação e corte de custos."
+    },
+    {
+      "id": "cfo-advisor-negative",
+      "skill": "cfo-advisor",
+      "query": "Calcule 19352 vezes 0,25."
+    },
+    {
+      "id": "change-management-positive",
+      "skill": "change-management",
+      "query": "Planeje a comunicação e adoção desta reorganização de equipes."
+    },
+    {
+      "id": "change-management-negative",
+      "skill": "change-management",
+      "query": "Mude a cor deste botão."
+    },
+    {
+      "id": "chief-of-staff-positive",
+      "skill": "chief-of-staff",
+      "query": "Coordene os pareceres de finanças, produto e operações para esta decisão."
+    },
+    {
+      "id": "chief-of-staff-negative",
+      "skill": "chief-of-staff",
+      "query": "Explique CAC em uma frase."
+    },
+    {
+      "id": "chro-advisor-positive",
+      "skill": "chro-advisor",
+      "query": "Desenhe o plano de contratação e a estrutura de remuneração da empresa."
+    },
+    {
+      "id": "chro-advisor-negative",
+      "skill": "chro-advisor",
+      "query": "O que é headcount?"
+    },
+    {
+      "id": "ciso-advisor-positive",
+      "skill": "ciso-advisor",
+      "query": "Defina o programa de segurança e o orçamento para SOC 2."
+    },
+    {
+      "id": "ciso-advisor-negative",
+      "skill": "ciso-advisor",
+      "query": "O que significa zero trust?"
+    },
+    {
+      "id": "cmo-advisor-positive",
+      "skill": "cmo-advisor",
+      "query": "Compare PLG e vendas assistidas para nossa estratégia de marketing."
+    },
+    {
+      "id": "cmo-advisor-negative",
+      "skill": "cmo-advisor",
+      "query": "Escreva uma legenda curta para esta foto."
+    },
+    {
+      "id": "company-os-positive",
+      "skill": "company-os",
+      "query": "Desenhe a cadência de gestão e os scorecards da empresa."
+    },
+    {
+      "id": "company-os-negative",
+      "skill": "company-os",
+      "query": "Como funciona o sistema operacional Windows?"
+    },
+    {
+      "id": "competitive-intel-positive",
+      "skill": "competitive-intel",
+      "query": "Compare estes concorrentes e prepare battlecards com evidências."
+    },
+    {
+      "id": "competitive-intel-negative",
+      "skill": "competitive-intel",
+      "query": "O que é análise competitiva?"
+    },
+    {
+      "id": "context-engine-positive",
+      "skill": "context-engine",
+      "query": "Carregue o contexto da empresa para a análise estratégica que estamos fazendo."
+    },
+    {
+      "id": "context-engine-negative",
+      "skill": "context-engine",
+      "query": "O que significa runway?"
+    },
+    {
+      "id": "coo-advisor-positive",
+      "skill": "coo-advisor",
+      "query": "Analise os gargalos operacionais e redesenhe a cadência de execução."
+    },
+    {
+      "id": "coo-advisor-negative",
+      "skill": "coo-advisor",
+      "query": "O que são OKRs?"
+    },
+    {
+      "id": "cpo-advisor-positive",
+      "skill": "cpo-advisor",
+      "query": "Priorize o portfólio de produtos e avalie sinais de product-market fit."
+    },
+    {
+      "id": "cpo-advisor-negative",
+      "skill": "cpo-advisor",
+      "query": "Corrija o alinhamento deste botão."
+    },
+    {
+      "id": "cro-advisor-positive",
+      "skill": "cro-advisor",
+      "query": "Modele capacidade de vendas, quotas e previsão de receita B2B SaaS."
+    },
+    {
+      "id": "cro-advisor-negative",
+      "skill": "cro-advisor",
+      "query": "O que significa ARR?"
+    },
+    {
+      "id": "cs-onboard-positive",
+      "skill": "cs-onboard",
+      "query": "Execute /cs:setup e conduza a entrevista inicial da empresa."
+    },
+    {
+      "id": "cs-onboard-negative",
+      "skill": "cs-onboard",
+      "query": "Qual a diferença entre CAC e LTV?"
+    },
+    {
+      "id": "cto-advisor-positive",
+      "skill": "cto-advisor",
+      "query": "Compare as opções arquiteturais e seus impactos na estratégia tecnológica."
+    },
+    {
+      "id": "cto-advisor-negative",
+      "skill": "cto-advisor",
+      "query": "O que significa dívida técnica?"
+    },
+    {
+      "id": "culture-architect-positive",
+      "skill": "culture-architect",
+      "query": "Traduza os valores da empresa em comportamentos e rituais observáveis."
+    },
+    {
+      "id": "culture-architect-negative",
+      "skill": "culture-architect",
+      "query": "O que significa cultura organizacional?"
+    },
+    {
+      "id": "founder-coach-positive",
+      "skill": "founder-coach",
+      "query": "Sou o gargalo da empresa; ajude a redesenhar minha delegação e agenda."
+    },
+    {
+      "id": "founder-coach-negative",
+      "skill": "founder-coach",
+      "query": "Delegue esta revisão de código ao agente."
+    },
+    {
+      "id": "internal-narrative-positive",
+      "skill": "internal-narrative",
+      "query": "Alinhe a narrativa da empresa para investidores, equipe e candidatos."
+    },
+    {
+      "id": "internal-narrative-negative",
+      "skill": "internal-narrative",
+      "query": "Defina storytelling em uma frase."
+    },
+    {
+      "id": "org-health-diagnostic-positive",
+      "skill": "org-health-diagnostic",
+      "query": "Faça um diagnóstico da saúde organizacional nas oito dimensões."
+    },
+    {
+      "id": "org-health-diagnostic-negative",
+      "skill": "org-health-diagnostic",
+      "query": "Verifique a saúde do servidor Paperclip."
+    },
+    {
+      "id": "scenario-war-room-positive",
+      "skill": "scenario-war-room",
+      "query": "Modele conjuntamente perda do maior cliente, corte de crédito e atraso no produto."
+    },
+    {
+      "id": "scenario-war-room-negative",
+      "skill": "scenario-war-room",
+      "query": "Se eu vender 100 ações a R$ 2, quanto recebo?"
+    },
+    {
+      "id": "strategic-alignment-positive",
+      "skill": "strategic-alignment",
+      "query": "Identifique conflitos entre OKRs dos departamentos e realinhe a execução."
+    },
+    {
+      "id": "strategic-alignment-negative",
+      "skill": "strategic-alignment",
+      "query": "Alinhe este texto à direita."
+    },
+    {
+      "id": "ultra-adversarial-verify-skill-positive",
+      "skill": "ultra-adversarial-verify-skill",
+      "query": "Tente refutar as premissas deste relatório antes da entrega."
+    },
+    {
+      "id": "ultra-adversarial-verify-skill-negative",
+      "skill": "ultra-adversarial-verify-skill",
+      "query": "Rode este teste uma vez e informe o exit code."
+    },
+    {
+      "id": "ultra-agent-eval-skill-positive",
+      "skill": "ultra-agent-eval-skill",
+      "query": "Audite o trabalho deste agente e verifique se os testes foram enfraquecidos."
+    },
+    {
+      "id": "ultra-agent-eval-skill-negative",
+      "skill": "ultra-agent-eval-skill",
+      "query": "O agente respondeu que a porta é 3100. Obrigado."
+    },
+    {
+      "id": "ultra-browser-skill-positive",
+      "skill": "ultra-browser-skill",
+      "query": "Preencha este formulário web e confira o resultado no navegador."
+    },
+    {
+      "id": "ultra-browser-skill-negative",
+      "skill": "ultra-browser-skill",
+      "query": "O que é um formulário HTML?"
+    },
+    {
+      "id": "browser-stealth-timing-positive",
+      "skill": "browser-stealth-timing",
+      "query": "Ajuste o timing deste fluxo de navegador bloqueado por detecção de automação."
+    },
+    {
+      "id": "browser-stealth-timing-negative",
+      "skill": "browser-stealth-timing",
+      "query": "Leia uma página do nosso dashboard localhost."
+    },
+    {
+      "id": "ultra-browser-v2-skill-positive",
+      "skill": "ultra-browser-v2-skill",
+      "query": "Execute a recipe compatível neste navegador visível com JEV e confira os recibos."
+    },
+    {
+      "id": "ultra-browser-v2-skill-negative",
+      "skill": "ultra-browser-v2-skill",
+      "query": "Explique HTTP e HTTPS em duas frases."
+    },
+    {
+      "id": "ultra-chrome-assistente-skill-positive",
+      "skill": "ultra-chrome-assistente-skill",
+      "query": "Controle esta aba pela extensão Chrome Assistant e sua bridge WebSocket."
+    },
+    {
+      "id": "ultra-chrome-assistente-skill-negative",
+      "skill": "ultra-chrome-assistente-skill",
+      "query": "Como altero a página inicial do Chrome?"
+    },
+    {
+      "id": "ultra-chrome-devtools-skill-positive",
+      "skill": "ultra-chrome-devtools-skill",
+      "query": "Use o DevTools MCP para diagnosticar o LCP ruim deste site."
+    },
+    {
+      "id": "ultra-chrome-devtools-skill-negative",
+      "skill": "ultra-chrome-devtools-skill",
+      "query": "O que significa LCP?"
+    },
+    {
+      "id": "ultra-chrome-stealth-navigator-skill-positive",
+      "skill": "ultra-chrome-stealth-navigator-skill",
+      "query": "Conecte via CDP ao Chrome já logado para retomar este fluxo bloqueado."
+    },
+    {
+      "id": "ultra-chrome-stealth-navigator-skill-negative",
+      "skill": "ultra-chrome-stealth-navigator-skill",
+      "query": "O que é Cloudflare?"
+    },
+    {
+      "id": "ultra-confluence-docs-skill-positive",
+      "skill": "ultra-confluence-docs-skill",
+      "query": "Escreva um runbook com recuperação e rollback para este serviço."
+    },
+    {
+      "id": "ultra-confluence-docs-skill-negative",
+      "skill": "ultra-confluence-docs-skill",
+      "query": "O que é um ADR?"
+    },
+    {
+      "id": "ultra-create-skill-positive",
+      "skill": "ultra-create-skill",
+      "query": "Corrija os gatilhos desta skill e seus exemplos de roteamento."
+    },
+    {
+      "id": "ultra-create-skill-negative",
+      "skill": "ultra-create-skill",
+      "query": "Me explique o que é duration."
+    },
+    {
+      "id": "ultra-dom-engine-skill-positive",
+      "skill": "ultra-dom-engine-skill",
+      "query": "Extraia alvos deste formulário dinâmico com dom-engine; os refs nativos são insuficientes."
+    },
+    {
+      "id": "ultra-dom-engine-skill-negative",
+      "skill": "ultra-dom-engine-skill",
+      "query": "O que é DOM?"
+    },
+    {
+      "id": "ultra-drawio-skill-positive",
+      "skill": "ultra-drawio-skill",
+      "query": "Crie um arquivo draw.io para esta topologia de rede."
+    },
+    {
+      "id": "ultra-drawio-skill-negative",
+      "skill": "ultra-drawio-skill",
+      "query": "Explique um diagrama de sequência em duas frases."
+    },
+    {
+      "id": "ultra-find-skill-positive",
+      "skill": "ultra-find-skill",
+      "query": "Encontre uma skill instalada para converter apostilas em ebook."
+    },
+    {
+      "id": "ultra-find-skill-negative",
+      "skill": "ultra-find-skill",
+      "query": "Como faço uma soma no Excel?"
+    },
+    {
+      "id": "ultra-gemini-image-skill-positive",
+      "skill": "ultra-gemini-image-skill",
+      "query": "Gere esta imagem pelo Gemini web e extraia o arquivo por CDP."
+    },
+    {
+      "id": "ultra-gemini-image-skill-negative",
+      "skill": "ultra-gemini-image-skill",
+      "query": "Quais modelos Gemini existem?"
+    },
+    {
+      "id": "ultra-grok-image-skill-positive",
+      "skill": "ultra-grok-image-skill",
+      "query": "Crie uma imagem pelo Grok no X e baixe o anexo gerado."
+    },
+    {
+      "id": "ultra-grok-image-skill-negative",
+      "skill": "ultra-grok-image-skill",
+      "query": "Escreva um post para o X sem publicar."
+    },
+    {
+      "id": "ultra-live-state-truth-skill-positive",
+      "skill": "ultra-live-state-truth-skill",
+      "query": "Confira se o PR 42 está merged agora antes de reportar o status."
+    },
+    {
+      "id": "ultra-live-state-truth-skill-negative",
+      "skill": "ultra-live-state-truth-skill",
+      "query": "O que é um pull request?"
+    },
+    {
+      "id": "ultra-memory-hygiene-skill-positive",
+      "skill": "ultra-memory-hygiene-skill",
+      "query": "Consolide estas decisões duráveis e elimine duplicação na memória."
+    },
+    {
+      "id": "ultra-memory-hygiene-skill-negative",
+      "skill": "ultra-memory-hygiene-skill",
+      "query": "Qual decisão já registramos sobre esse serviço?"
+    },
+    {
+      "id": "ultra-memory-skill-positive",
+      "skill": "ultra-memory-skill",
+      "query": "Consulte o SSC e recupere nossa decisão registrada sobre backups."
+    },
+    {
+      "id": "ultra-memory-skill-negative",
+      "skill": "ultra-memory-skill",
+      "query": "Explique memória de curto prazo em LLMs."
+    },
+    {
+      "id": "ultra-models-skill-positive",
+      "skill": "ultra-models-skill",
+      "query": "Audite os modelos gratuitos configurados e os fallbacks com IDs mortos."
+    },
+    {
+      "id": "ultra-models-skill-negative",
+      "skill": "ultra-models-skill",
+      "query": "Explique o mecanismo de atenção de um transformer."
+    },
+    {
+      "id": "ultra-perplexity-pro-bridge-skill-positive",
+      "skill": "ultra-perplexity-pro-bridge-skill",
+      "query": "Pesquise este assunto no Perplexity Pro usando o modelo selecionado."
+    },
+    {
+      "id": "ultra-perplexity-pro-bridge-skill-negative",
+      "skill": "ultra-perplexity-pro-bridge-skill",
+      "query": "O que é Perplexity?"
+    },
+    {
+      "id": "ultra-pipeline-resilience-skill-positive",
+      "skill": "ultra-pipeline-resilience-skill",
+      "query": "Retome esta pipeline longa com agentes e reconcilie o estado após a interrupção."
+    },
+    {
+      "id": "ultra-pipeline-resilience-skill-negative",
+      "skill": "ultra-pipeline-resilience-skill",
+      "query": "O que é uma pipeline de CI?"
+    },
+    {
+      "id": "ultra-plan-gate-skill-positive",
+      "skill": "ultra-plan-gate-skill",
+      "query": "Planeje esta migração entre gateway, cron e documentação antes das alterações."
+    },
+    {
+      "id": "ultra-plan-gate-skill-negative",
+      "skill": "ultra-plan-gate-skill",
+      "query": "Corrija um erro de digitação nesta frase do README."
+    },
+    {
+      "id": "ultra-plan-with-diagrams-skill-positive",
+      "skill": "ultra-plan-with-diagrams-skill",
+      "query": "Planeje a migração e desenhe em Mermaid o fluxo entre os componentes."
+    },
+    {
+      "id": "ultra-plan-with-diagrams-skill-negative",
+      "skill": "ultra-plan-with-diagrams-skill",
+      "query": "Explique em uma frase o que é arquitetura de software."
+    },
+    {
+      "id": "ultra-powershell-skill-positive",
+      "skill": "ultra-powershell-skill",
+      "query": "Corrija o escaping e o controle de processos deste script PowerShell."
+    },
+    {
+      "id": "ultra-powershell-skill-negative",
+      "skill": "ultra-powershell-skill",
+      "query": "Qual a diferença entre Windows e Linux?"
+    },
+    {
+      "id": "ultra-provider-health-skill-positive",
+      "skill": "ultra-provider-health-skill",
+      "query": "Após atualizar o cliente, investigue a mudança de headers no provedor."
+    },
+    {
+      "id": "ultra-provider-health-skill-negative",
+      "skill": "ultra-provider-health-skill",
+      "query": "O que significa HTTP 429?"
+    },
+    {
+      "id": "ultra-qa-testing-skill-positive",
+      "skill": "ultra-qa-testing-skill",
+      "query": "Execute os casos de QA desta aplicação web e entregue evidências por caso."
+    },
+    {
+      "id": "ultra-qa-testing-skill-negative",
+      "skill": "ultra-qa-testing-skill",
+      "query": "O que é um teste de regressão?"
+    },
+    {
+      "id": "ultra-ruthless-editor-skill-positive",
+      "skill": "ultra-ruthless-editor-skill",
+      "query": "Enxugue este relatório sem perder números, ressalvas e próximos passos."
+    },
+    {
+      "id": "ultra-ruthless-editor-skill-negative",
+      "skill": "ultra-ruthless-editor-skill",
+      "query": "Qual é a capital da França?"
+    },
+    {
+      "id": "ultra-x-stealth-skill-positive",
+      "skill": "ultra-x-stealth-skill",
+      "query": "O x-poster está bloqueado; publique este texto autorizado pelo fallback stealth."
+    },
+    {
+      "id": "ultra-x-stealth-skill-negative",
+      "skill": "ultra-x-stealth-skill",
+      "query": "Rascunhe um tweet, sem publicar."
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 ---
 name: "cs-onboard"
-description: "Founder onboarding interview that captures company context across 7 dimensions. Invoke with /cs:setup for initial interview or /cs:update for quarterly refresh. Generates ~/.claude/company-context.md used by all C-suite advisor skills. Use when setting up the C-suite advisors for the first time, or when company context is missing or more than 90 days old — e.g. after a fundraise or pivot."
+description: "Run the company-context interview when the user requests initial C-suite setup, /cs:setup, /cs:update or a context refresh. Not merely because context is absent or older than 90 days, and not for an isolated business question."
 license: MIT
 metadata:
   version: 1.0.0
@@ -24,6 +24,10 @@ Structured founder interview that builds the company context file powering every
 cs:setup, cs:update, company context, founder interview, onboarding, company profile, c-suite setup, advisor setup
 
 ---
+
+## Activation Boundary
+
+Start this interview only for a requested setup or refresh. A missing or old context file is not permission to interrupt an isolated question with onboarding; use available context and ask only for facts needed by that question.
 
 ## Conversation Principles
 
@@ -82,7 +86,7 @@ Tell the founder: *"I've captured everything in your company context. Every advi
 
 ## /cs:update — Quarterly Refresh
 
-**Trigger:** Every 90 days or after a major change. Duration: ~15 minutes.
+**Trigger:** The user requests `/cs:update` or a company-context refresh, often after 90 days or a major change. Elapsed time alone does not start an interview. Duration: ~15 minutes.
 
 Open with: *"It's been [X time] since we did your company context. What's changed?"*
 

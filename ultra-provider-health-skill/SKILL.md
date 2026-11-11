@@ -1,9 +1,6 @@
 ---
 name: ultra-provider-health-skill
-description: >-
-  Track provider client versions, headers, endpoints, and API contract drift.
-  Use when diagnosing provider or model failures, after client updates, when
-  rate-limit behavior changes, or during provider-side incident investigation.
+description: "Investigate provider/client contract drift, endpoint/header changes, rate-limit changes or an evidenced model-provider failure. Not for generic model selection, an unrelated application timeout or a full catalog refresh without a provider incident."
 license: Apache-2.0
 ---
 

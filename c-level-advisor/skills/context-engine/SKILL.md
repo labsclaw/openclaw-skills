@@ -1,6 +1,6 @@
 ---
 name: "context-engine"
-description: "Loads and manages company context for all C-suite advisor skills. Reads ~/.claude/company-context.md, detects context older than 90 days, enriches context during conversations, and enforces privacy/anonymization rules before external API calls. Use when starting any C-suite advisor session, when context looks stale or missing, or before sending company data to an external service."
+description: "Load or maintain company context needed by an active C-suite advisory task, including privacy checks before external use. Not a trigger to start advising, launch onboarding, or collect company data for a simple definition; missing/stale context alone does not authorize an interview."
 license: MIT
 metadata:
   version: 1.0.0
@@ -13,23 +13,22 @@ metadata:
 
 # Company Context Engine
 
-The memory layer for C-suite advisors. Every advisor skill loads this first. Context is what turns generic advice into specific insight.
+The memory layer for context-dependent C-suite advisory tasks. Load only when the current decision needs company-specific facts; definitions and generic answers do not need a company interview.
 
 ## Keywords
 company context, context loading, context engine, company profile, advisor context, stale context, context refresh, privacy, anonymization
 
 ---
 
-## Load Protocol (Run at Start of Every C-Suite Session)
+## Load Protocol (When Company-Specific Context Is Needed)
 
 **Step 1 — Check for context file:** `~/.claude/company-context.md`
 - Exists → proceed to Step 2
-- Missing → prompt: *"Run /cs:setup to build your company context — it makes every advisor conversation significantly more useful."*
+- Missing → use context already supplied and ask only for facts material to the current task. Offer `/cs:setup` only when a full profile is useful and requested; do not launch it automatically.
 
 **Step 2 — Check staleness:** Read `Last updated` field.
 - **< 90 days:** Load and proceed.
-- **≥ 90 days:** Prompt: *"Your context is [N] days old. Quick 15-min refresh (/cs:update), or continue with what I have?"*
-  - If continue: load with `[STALE — last updated DATE]` noted internally.
+- **≥ 90 days:** Mark `[STALE — last updated DATE]` internally, verify only decision-critical facts and proceed with stated uncertainty. A full refresh requires a user request.
 
 **Step 3 — Parse into working memory.** Always active:
 - Company stage (pre-PMF / scaling / optimizing)
@@ -48,9 +47,9 @@ company context, context loading, context engine, company profile, advisor conte
 |-----------|-----------|--------|
 | < 30 days, full interview | High | Use directly |
 | 30–90 days, update done | Medium | Use, flag what may have changed |
-| > 90 days | Low | Flag stale, prompt refresh |
+| > 90 days | Low | Flag stale; verify only material facts |
 | Key fields missing | Low | Ask in-session |
-| No file | None | Prompt /cs:setup |
+| No file | None | Reuse supplied context; ask the minimum needed |
 
 If Low: *"My context is [stale/incomplete] — I'm assuming [X]. Correct me if I'm wrong."*
 

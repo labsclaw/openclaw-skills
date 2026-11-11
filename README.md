@@ -45,6 +45,22 @@ synchronized; those states require separate verification.
 `syncStatus` records whether the governed source exists only in Git, is pending
 runtime installation, or has been verified in both the repository and runtime.
 
+## Routing boundaries
+
+Descriptions should identify a concrete task and, when a plausible near miss
+exists, its exclusion in the same frontmatter string. Definitions and incidental
+keywords must not silently start interviews, audits or browser pipelines.
+See the [routing audit and compatibility notes](docs/skill-routing-boundaries-20261110.md).
+
+```bash
+python -m pip install PyYAML==6.0.2
+python scripts/validate-routing-boundaries.py
+python scripts/test-routing-boundaries.py
+```
+
+The gate validates the inventory, description digests and positive/negative
+fixtures. It does not claim to measure semantic model accuracy.
+
 Benchmark sources and the patterns accepted or rejected by LabsClaw are recorded
 in `docs/references/skill-library-benchmarks.md`.
 

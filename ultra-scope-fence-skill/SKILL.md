@@ -3,12 +3,8 @@ name: ultra-scope-fence-skill
 description: "Keeps implementation within the authorized task while preserving required follow-through. Use when a change exposes adjacent defects, a dirty worktree, broad refactoring opportunities, or other tempting work that was not requested."
 license: Apache-2.0
 metadata:
-  {
-    "openclaw":
-      {
-        "emoji": "📐",
-      },
-  }
+  openclaw:
+    emoji: 📐
 ---
 
 # Ultra Scope Fence

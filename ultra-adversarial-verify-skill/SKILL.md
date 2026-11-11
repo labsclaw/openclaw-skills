@@ -1,14 +1,10 @@
 ---
 name: ultra-adversarial-verify-skill
-description: "Challenges completed work before delivery by testing claims, assumptions, edge cases, and evidence. Use for high-risk changes, completion claims, migrations, releases, and work that needs an explicit SURVIVED, REFUTED, or UNTESTABLE verdict."
+description: "Challenge material claims in a completed deliverable, high-risk migration or release, or perform a requested adversarial review. Not for every completion message, a routine test run, or a simple factual answer."
 license: Apache-2.0
 metadata:
-  {
-    "openclaw":
-      {
-        "emoji": "⚔️",
-      },
-  }
+  openclaw:
+    emoji: ⚔️
 ---
 
 # Ultra Adversarial Verify

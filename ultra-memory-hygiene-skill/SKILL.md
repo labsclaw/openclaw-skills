@@ -1,14 +1,10 @@
 ---
 name: ultra-memory-hygiene-skill
-description: "Controls what enters persistent agent memory and how stale knowledge is revised. Use when recording decisions, updating durable context, consolidating daily notes, removing duplication, or deciding whether information should persist."
+description: "Decide what to persist or revise in agent memory, consolidate durable notes, or remove stale/duplicate stored context. Not for a read-only memory lookup, temporary task output, or explaining memory concepts without a persistence decision."
 license: Apache-2.0
 metadata:
-  {
-    "openclaw":
-      {
-        "emoji": "🧹",
-      },
-  }
+  openclaw:
+    emoji: 🧹
 ---
 
 # Ultra Memory Hygiene

@@ -1,6 +1,6 @@
 ---
 name: ultra-qa-testing-skill
-description: Automated web application testing with full traceability. Opens browser, executes test cases, records screen for audit, captures screenshots per step, and generates structured reports (pass/fail). Use when the user needs to "test this web app", "run QA tests", "automate browser tests", "execute test suite", or any task requiring structured web testing with audit evidence. Combines agent-browser automation with dogfood exploratory testing patterns.
+description: "Execute a structured web-app QA suite or requested exploratory test with pass/fail evidence, screenshots and a report. Not for a one-off browser check, unit-test command, static code review, or explaining testing terminology."
 license: Apache-2.0
 allowed-tools: Bash(agent-browser:*), Bash(npx agent-browser:*)
 ---

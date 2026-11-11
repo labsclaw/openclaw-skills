@@ -8,7 +8,7 @@
   "skills": [
     {
       "name": "ultra-adversarial-verify-skill",
-      "description": "Challenges completed work before delivery by testing claims, assumptions, edge cases, and evidence. Use for high-risk changes, completion claims, migrations, releases, and work that needs an explicit SURVIVED, REFUTED, or UNTESTABLE verdict.",
+      "description": "Challenge material claims in a completed deliverable, high-risk migration or release, or perform a requested adversarial review. Not for every completion message, a routine test run, or a simple factual answer.",
       "path": "ultra-adversarial-verify-skill",
       "trustTier": "core",
       "owner": "LabsClaw",
@@ -25,22 +25,22 @@
         "filesystemWrite": false,
         "configMutation": false
       },
-      "verifiedAt": "2026-10-05",
+      "verifiedAt": "2026-11-10",
       "workshopStatus": "unmanaged",
-      "syncStatus": "repository-and-runtime",
+      "syncStatus": "repository-pending-runtime",
       "routingEval": {
-        "status": "pass",
-        "model": "openai/gpt-5.6-sol",
-        "executedAt": "2026-10-05T04:17:25.575Z",
-        "passed": 5,
-        "total": 5,
-        "report": "evals/results/2026-10-05-openai-gpt-5.6-sol.md"
+        "status": "not-run",
+        "model": "not-run; independent description-only native-agent review recorded separately",
+        "executedAt": "2026-11-10",
+        "passed": 0,
+        "total": 0,
+        "report": "docs/skill-routing-boundaries-20261110.md"
       },
-      "contentDigest": "sha256:72119766d65a355cc349485a5bca753e2e2accaab01211bb8a7831910e4e494c"
+      "contentDigest": "sha256:10d2d5ef79fe7141ae8e5b1d7f388fb6ebb4a01c392e6c199957431481c15c33"
     },
     {
       "name": "ultra-browser-v2-skill",
-      "description": "Navegação em navegador visível com snapshots DOM, operações nativas e recipes revisadas. Use para executar uma recipe compatível, navegar com LLM+JEV ou preparar evidência verificável de formulários e fluxos de navegador. Distingue capacidades existentes de propostas; não concede acesso ao estado privado do judge.",
+      "description": "Executar recipes revisadas, navegação visível com LLM+JEV e snapshots DOM, ou revisar sua evidência de execução. Não usar para leitura simples de URL, dúvidas sobre navegadores ou navegação comum sem esse harness; não concede acesso ao judge privado.",
       "path": "ultra-browser-v2-skill",
       "trustTier": "experimental",
       "owner": "LabsClaw",
@@ -55,18 +55,18 @@
         "filesystemWrite": true,
         "configMutation": false
       },
-      "verifiedAt": "2026-10-29",
+      "verifiedAt": "2026-11-10",
       "workshopStatus": "unmanaged",
       "syncStatus": "repository-only",
       "routingEval": {
         "status": "not-run",
-        "model": "not-run",
-        "executedAt": "2026-10-29T00:00:00Z",
+        "model": "not-run; independent description-only native-agent review recorded separately",
+        "executedAt": "2026-11-10",
         "passed": 0,
         "total": 0,
-        "report": "evals/results/2026-10-29-ultra-browser-v2-status.md"
+        "report": "docs/skill-routing-boundaries-20261110.md"
       },
-      "contentDigest": "sha256:57404e0feed537a1813b49461b19a8f59179688b340ac0fd2b3d04170633887a"
+      "contentDigest": "sha256:e82ff53dad803680b155992163569d6be0de43c61a8dd563dfd55e8b0f0e7d91"
     },
     {
       "name": "ultra-code-context-skill",
@@ -102,7 +102,7 @@
     },
     {
       "name": "ultra-models-skill",
-      "description": "Audit model catalogs, dead entries, provider health, fallbacks, and routing with dated evidence.",
+      "description": "Audit configured model catalogs, current free-model availability, dead IDs, provider health or fallback routing with dated evidence. Not for a general explanation of LLMs, an unrelated meaning of model, or an abstract model comparison without a catalog/operational decision.",
       "path": "ultra-models-skill",
       "trustTier": "experimental",
       "owner": "LabsClaw",
@@ -117,22 +117,22 @@
         "filesystemWrite": true,
         "configMutation": true
       },
-      "verifiedAt": "2026-10-05",
+      "verifiedAt": "2026-11-10",
       "workshopStatus": "applied",
-      "syncStatus": "repository-and-runtime",
+      "syncStatus": "repository-pending-runtime",
       "routingEval": {
-        "status": "pass",
-        "model": "openai/gpt-5.6-sol",
-        "executedAt": "2026-10-05T04:17:25.575Z",
-        "passed": 5,
-        "total": 5,
-        "report": "evals/results/2026-10-05-openai-gpt-5.6-sol.md"
+        "status": "not-run",
+        "model": "not-run; independent description-only native-agent review recorded separately",
+        "executedAt": "2026-11-10",
+        "passed": 0,
+        "total": 0,
+        "report": "docs/skill-routing-boundaries-20261110.md"
       },
-      "contentDigest": "sha256:100a719ac63f0471fa0c2121b200abf6b7de60095a181d0c9e5146d257588220"
+      "contentDigest": "sha256:b354bc60f72092a4214a95bafa6accc93a1269ae5885362591e98f6f71a71df9"
     },
     {
       "name": "ultra-plan-gate-skill",
-      "description": "Requires an evidence-based written plan before multi-step edits. Use when work spans several files, has meaningful unknowns, changes external state, or needs explicit success criteria and scope control.",
+      "description": "Establish an evidence-backed plan before nontrivial multi-file edits, uncertain migrations or consequential external changes. Not for a typo fix, a bounded routine command, a read-only status lookup or a conceptual question.",
       "path": "ultra-plan-gate-skill",
       "trustTier": "core",
       "owner": "LabsClaw",
@@ -149,18 +149,18 @@
         "filesystemWrite": false,
         "configMutation": false
       },
-      "verifiedAt": "2026-10-05",
+      "verifiedAt": "2026-11-10",
       "workshopStatus": "unmanaged",
-      "syncStatus": "repository-and-runtime",
+      "syncStatus": "repository-pending-runtime",
       "routingEval": {
-        "status": "pass",
-        "model": "openai/gpt-5.6-sol",
-        "executedAt": "2026-10-05T04:17:25.575Z",
-        "passed": 5,
-        "total": 5,
-        "report": "evals/results/2026-10-05-openai-gpt-5.6-sol.md"
+        "status": "not-run",
+        "model": "not-run; independent description-only native-agent review recorded separately",
+        "executedAt": "2026-11-10",
+        "passed": 0,
+        "total": 0,
+        "report": "docs/skill-routing-boundaries-20261110.md"
       },
-      "contentDigest": "sha256:89d494078df882524c7b416727229c08a9ce63b06fbeb3a1828feb5b5add26ce"
+      "contentDigest": "sha256:2ac878e3a0c4503b4ae460394ba8c4e69c59b5ac2de3b33f0c13ddc151da8949"
     }
   ]
 }

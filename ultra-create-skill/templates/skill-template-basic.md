@@ -1,7 +1,7 @@
 ---
 name: your-skill-name
 description: >-
-  Use when [triggering conditions]. Trigger terms: [term1], [term2].
+  Use when [triggering conditions]. Trigger terms: [term1], [term2]. Not for [likely near-miss request, if applicable].
 ---
 
 # Skill Title

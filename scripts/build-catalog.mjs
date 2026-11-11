@@ -53,10 +53,11 @@ async function walkFiles(directory) {
 const textExtensions = new Set([
   ".cjs", ".js", ".json", ".md", ".mjs", ".ps1", ".txt", ".yaml", ".yml"
 ]);
+const textFileNames = new Set(["LICENSE", "NOTICE", ".gitattributes", ".gitignore"]);
 
 async function readCanonicalContent(file) {
   const content = await fs.readFile(file);
-  if (!textExtensions.has(path.extname(file).toLowerCase())) return content;
+  if (!textExtensions.has(path.extname(file).toLowerCase()) && !textFileNames.has(path.basename(file))) return content;
   return content.toString("utf8").replace(/\r\n?/g, "\n");
 }
 
