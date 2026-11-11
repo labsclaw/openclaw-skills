@@ -28,6 +28,7 @@ O inventário completo, decisões, descrições anteriores/candidatas e digests 
 - Casos: 112 consultas sintéticas, um positivo e um near miss por nome corrigido. Um agente independente recebeu apenas nomes, descrições candidatas, digests e consultas, sem expectativas, e classificou 112/112 conforme o resultado esperado.
 - Os IDs foram verificados contra duplicatas, ausências e valores inválidos antes de calcular o resultado. Entrada e resultados foram preservados em [reviewer-input.json](../evals/routing-boundaries/reviewer-input.json) e [review-results.json](../evals/routing-boundaries/review-results.json).
 - Oito testes do gate incluem rejeição de YAML inválido, decisão “mantida” falsa, exemplos não textuais, snapshot desatualizado, caso ausente e caminho duplicado.
+- A primeira execução de CI revelou uma divergência Windows/Linux nos hashes de `LICENSE` e `.gitattributes`, arquivos textuais sem extensão normalizada. A falha foi reproduzida com bytes de objetos Git e corrigida por nomes textuais explícitos no gerador de catálogo; um teste verifica CRLF/LF e rejeita alteração real do conteúdo.
 - Licenças, avisos de terceiros e hashes canônicos permanecem preservados. Um fixture negativo de licença foi exercitado separadamente para confirmar rejeição.
 
 Esta é uma avaliação semântica independente de descrições e casos sintéticos, não um benchmark controlado antes/depois, não execução dos workflows e não prova de adoção em produção. O agente herdou o modelo da sessão principal; não foi registrada uma chamada separada de provedor. O campo `routingEval` dos itens governados alterados fica `not-run` para o benchmark de provedor; os resultados históricos não são atribuídos às novas descrições.
@@ -44,6 +45,8 @@ Essas cinco incompatibilidades não são apresentadas como sucesso no validador 
 ## Runtime e publicação são estados distintos
 
 As 13 descriptions aprendidas foram alteradas via Workshop versionado e conferidas por leitura. Os procedimentos permaneceram iguais, desconsiderando a normalização de newline final e a anotação de arquivos adicionada pela ferramenta de visualização.
+
+Separadamente das correções de roteamento, o procedimento aprendido de governança foi aprimorado para verificar basenames textuais sem extensão e uma materialização limpa dos objetos Git ao validar hashes portáveis.
 
 As novas descrições também foram aplicadas a 52 cópias gerenciadas já existentes. Destas, 12 estavam visíveis ao modelo antes da mudança; filtros, ativação e configuração global foram preservados. Nas cópias com corpo diferente do repositório, o conteúdo mais novo foi mantido e o limite de ativação foi explicitado na entrada. Cinco recursos de autoria que coincidiam com a base foram atualizados. Backups e hashes anteriores/posteriores ficam fora das raízes ativas.
 
