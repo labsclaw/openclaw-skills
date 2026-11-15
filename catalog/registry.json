@@ -186,6 +186,37 @@
         "report": "docs/skill-distillation-acceptance-20261114.md"
       },
       "notes": "Original Apache-2.0 procedure; evaluators are separate roles and no model/provider is mandatory. Read-only inspector never approves semantics. Independent usage/review recorded separately; no provider routing benchmark or runtime installation."
+    },
+    {
+      "name": "ultra-modern-web-guidance-skill",
+      "path": "ultra-modern-web-guidance-skill",
+      "trustTier": "experimental",
+      "owner": "LabsClaw",
+      "category": "web-development",
+      "risk": "medium",
+      "platforms": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "capabilities": {
+        "network": true,
+        "shell": true,
+        "filesystemWrite": true,
+        "configMutation": false
+      },
+      "verifiedAt": "2026-11-15",
+      "workshopStatus": "unmanaged",
+      "syncStatus": "repository-only",
+      "routingEval": {
+        "status": "not-run",
+        "model": "not-run",
+        "executedAt": "2026-11-15",
+        "passed": 0,
+        "total": 0,
+        "report": "docs/modern-web-guidance-acceptance-20261115.md"
+      },
+      "notes": "OpenClaw adapter for the official pinned npm CLI. Live Windows search/retrieve tested; no runtime installation, provider routing benchmark or cross-browser application test."
     }
   ]
 }

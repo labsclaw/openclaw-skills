@@ -74,3 +74,16 @@ this repository. Benchmark decisions and source revisions are recorded in
 - Copyright: Copyright (c) 2026 LabsClaw
 - License copy: `ultra-browser-v2-skill/LICENSE`
 - Original procedure and review: Justus (OpenClaw) and Hermes (CEO-agent).
+
+## Modern Web Guidance OpenClaw adapter
+
+- Scope: `ultra-modern-web-guidance-skill/`
+- Upstream: <https://github.com/GoogleChrome/modern-web-guidance>
+- Revision: `4dd968349e54ca45a05dd5c818fb035c9054b022`
+- License: Apache-2.0 for upstream skill instructions/software and this adaptation.
+- License copy: `ultra-modern-web-guidance-skill/LICENSE`
+- Changes: Portuguese OpenClaw workflow, pinned CLI, telemetry disabled per command,
+  bounded routing and proportional reporting; no other-agent plugin installation.
+- Upstream guide corpus is CC-BY-4.0 and is not bundled or relicensed here.
+  CLI retrieval remains subject to upstream attribution and compatibility data.
+- No upstream NOTICE file was present in the inspected distribution root.

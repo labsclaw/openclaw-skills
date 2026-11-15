@@ -31,5 +31,12 @@
   {"id":"distill-negative-1","skill":"ultra-skill-distillation-skill","type":"negative","query":"Resuma esta notícia em duas frases.","expect":[]},
   {"id":"distill-negative-2","skill":"ultra-skill-distillation-skill","type":"negative","query":"Treine pesos de um modelo pequeno por knowledge distillation.","expect":[]},
   {"id":"distill-negative-3","skill":"ultra-skill-distillation-skill","type":"negative","query":"Apenas avalie a entrega concluída, sem reestruturar uma skill.","expect":[]},
-  {"id":"distill-negative-4","skill":"ultra-skill-distillation-skill","type":"negative","query":"Ajuste somente a descrição de uma skill para melhorar seu roteamento.","expect":[]}
+  {"id":"distill-negative-4","skill":"ultra-skill-distillation-skill","type":"negative","query":"Ajuste somente a descrição de uma skill para melhorar seu roteamento.","expect":[]},
+  {"id": "mwg-positive-1", "skill": "ultra-modern-web-guidance-skill", "type": "positive", "query": "Implemente confirmação modal acessível antes de excluir um item.", "expect": ["ultra-modern-web-guidance-skill"]},
+  {"id": "mwg-positive-2", "skill": "ultra-modern-web-guidance-skill", "type": "positive", "query": "Corrija o layout CSS usando container queries e confira suporte nos navegadores.", "expect": ["ultra-modern-web-guidance-skill"]},
+  {"id": "mwg-positive-3", "skill": "ultra-modern-web-guidance-skill", "type": "positive", "query": "Faça uma varredura ampla dos padrões web legados e proponha modernização.", "expect": ["ultra-modern-web-guidance-skill"]},
+  {"id": "mwg-negative-1", "skill": "ultra-modern-web-guidance-skill", "type": "negative", "query": "Corrija a consulta SQL do backend.", "expect": []},
+  {"id": "mwg-negative-2", "skill": "ultra-modern-web-guidance-skill", "type": "negative", "query": "Atualize somente o texto do título desta página.", "expect": []},
+  {"id": "mwg-negative-3", "skill": "ultra-modern-web-guidance-skill", "type": "negative", "query": "Use o navegador para consultar o status de um pedido.", "expect": []},
+  {"id": "mwg-negative-4", "skill": "ultra-modern-web-guidance-skill", "type": "negative", "query": "Ajuste o tsconfig sem mudar código do navegador.", "expect": []}
 ]

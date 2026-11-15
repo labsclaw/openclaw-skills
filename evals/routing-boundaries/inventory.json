@@ -825,6 +825,15 @@
       "rationale": "New original skill: explicit distillation/restructuring task, with exclusions for prose summarization, weight training, description-only routing and judging without skill changes.",
       "positive": "Destile a skill preservando obrigações e avalie independentemente.",
       "negative": "Resuma um texto sem modificar uma skill."
+    },
+    {
+      "path": "ultra-modern-web-guidance-skill/SKILL.md",
+      "name": "ultra-modern-web-guidance-skill",
+      "decision": "retained",
+      "before": "Consultar e aplicar guias atuais da plataforma web ao implementar ou corrigir HTML, CSS e JavaScript de navegador, inclusive em frameworks, ou ao modernizar padrões legados. Não usar para backend, infraestrutura, configuração de ferramentas, mudanças só de texto ou automação de navegador sem desenvolvimento web.",
+      "description": "Consultar e aplicar guias atuais da plataforma web ao implementar ou corrigir HTML, CSS e JavaScript de navegador, inclusive em frameworks, ou ao modernizar padrões legados. Não usar para backend, infraestrutura, configuração de ferramentas, mudanças só de texto ou automação de navegador sem desenvolvimento web.",
+      "descriptionDigest": "sha256:4a5447e04529ef4a14f126598e16703ed18d019dc1fd8d2e5d4ef5b1704f37bb",
+      "rationale": "Nova entrada, restrita ao desenvolvimento da plataforma web; exclui backend, infraestrutura, texto e navegação sem desenvolvimento."
     }
   ]
 }
