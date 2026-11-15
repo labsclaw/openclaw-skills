@@ -814,6 +814,17 @@
       "negative": "Rascunhe um tweet, sem publicar.",
       "descriptionDigest": "sha256:dbfe760abfd071a84cad314dfc5100b8f63d7c6d6c01e779e59c834ba50f36ef",
       "rationale": "Replace broad keyword/automatic workflow triggers with task intent and the concrete near-miss exclusion exercised below."
+    },
+    {
+      "path": "ultra-skill-distillation-skill/SKILL.md",
+      "name": "ultra-skill-distillation-skill",
+      "decision": "retained",
+      "before": "Destilar ou reestruturar skills extensas em procedimentos reutilizáveis, preservando obrigações e avaliando a candidata contra a versão original. Não usar para resumir texto comum, treinar pesos de modelos, otimizar apenas descrições ou julgar uma entrega sem alterar uma skill.",
+      "description": "Destilar ou reestruturar skills extensas em procedimentos reutilizáveis, preservando obrigações e avaliando a candidata contra a versão original. Não usar para resumir texto comum, treinar pesos de modelos, otimizar apenas descrições ou julgar uma entrega sem alterar uma skill.",
+      "descriptionDigest": "sha256:76cbca5bb9678078f50c0b4a616ec0d89cc85543f9dfbf532bdf5647de80d5c5",
+      "rationale": "New original skill: explicit distillation/restructuring task, with exclusions for prose summarization, weight training, description-only routing and judging without skill changes.",
+      "positive": "Destile a skill preservando obrigações e avalie independentemente.",
+      "negative": "Resuma um texto sem modificar uma skill."
     }
   ]
 }

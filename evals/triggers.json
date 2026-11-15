@@ -24,5 +24,12 @@
   {"id": "browser-v2-positive-2", "skill": "ultra-browser-v2-skill", "type": "positive", "query": "Navegue no formulário com snapshots DOM, JEV e operações nativas; preserve recibos por runId.", "expect": ["ultra-browser-v2-skill"]},
   {"id": "browser-v2-positive-3", "skill": "ultra-browser-v2-skill", "type": "positive", "query": "Revise evidências de uma recipe browser e diferencie recursos implementados das propostas v2.6.", "expect": ["ultra-browser-v2-skill"]},
   {"id": "browser-v2-negative-4", "skill": "ultra-browser-v2-skill", "type": "negative", "query": "Explique a diferença entre HTTP e HTTPS em duas frases.", "expect": []},
-  {"id": "browser-v2-negative-5", "skill": "ultra-browser-v2-skill", "type": "negative", "query": "Calcule a média destes três números sem abrir navegador.", "expect": []}
+  {"id": "browser-v2-negative-5", "skill": "ultra-browser-v2-skill", "type": "negative", "query": "Calcule a média destes três números sem abrir navegador.", "expect": []},
+  {"id":"distill-positive-1","skill":"ultra-skill-distillation-skill","type":"positive","query":"Destile esta skill extensa sem perder condições e exceções; compare a candidata com a original.","expect":["ultra-skill-distillation-skill"]},
+  {"id":"distill-positive-2","skill":"ultra-skill-distillation-skill","type":"positive","query":"Reestruture nosso SKILL.md em procedimento e referências com matriz de obrigações e avaliação independente.","expect":["ultra-skill-distillation-skill"]},
+  {"id":"distill-positive-3","skill":"ultra-skill-distillation-skill","type":"positive","query":"Empacote a destilação de skills e use MiniMax e DeepSeek apenas para avaliar os resultados.","expect":["ultra-skill-distillation-skill"]},
+  {"id":"distill-negative-1","skill":"ultra-skill-distillation-skill","type":"negative","query":"Resuma esta notícia em duas frases.","expect":[]},
+  {"id":"distill-negative-2","skill":"ultra-skill-distillation-skill","type":"negative","query":"Treine pesos de um modelo pequeno por knowledge distillation.","expect":[]},
+  {"id":"distill-negative-3","skill":"ultra-skill-distillation-skill","type":"negative","query":"Apenas avalie a entrega concluída, sem reestruturar uma skill.","expect":[]},
+  {"id":"distill-negative-4","skill":"ultra-skill-distillation-skill","type":"negative","query":"Ajuste somente a descrição de uma skill para melhorar seu roteamento.","expect":[]}
 ]

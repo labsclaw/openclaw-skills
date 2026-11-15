@@ -161,6 +161,38 @@
         "report": "docs/skill-routing-boundaries-20261110.md"
       },
       "contentDigest": "sha256:2ac878e3a0c4503b4ae460394ba8c4e69c59b5ac2de3b33f0c13ddc151da8949"
+    },
+    {
+      "name": "ultra-skill-distillation-skill",
+      "description": "Destilar ou reestruturar skills extensas em procedimentos reutilizáveis, preservando obrigações e avaliando a candidata contra a versão original. Não usar para resumir texto comum, treinar pesos de modelos, otimizar apenas descrições ou julgar uma entrega sem alterar uma skill.",
+      "path": "ultra-skill-distillation-skill",
+      "trustTier": "experimental",
+      "owner": "LabsClaw",
+      "category": "skill-engineering",
+      "risk": "medium",
+      "platforms": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "capabilities": {
+        "network": false,
+        "shell": true,
+        "filesystemWrite": true,
+        "configMutation": false
+      },
+      "verifiedAt": "2026-11-14",
+      "workshopStatus": "unmanaged",
+      "syncStatus": "repository-only",
+      "routingEval": {
+        "status": "not-run",
+        "model": "not-run",
+        "executedAt": "2026-11-15T02:43:15.236Z",
+        "passed": 0,
+        "total": 0,
+        "report": "docs/skill-distillation-acceptance-20261114.md"
+      },
+      "contentDigest": "sha256:d11c17d85b2591f684f9c3502da8b28fdec3d65775d72f5704084017e571cacf"
     }
   ]
 }
