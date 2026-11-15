@@ -155,6 +155,37 @@
         "report": "docs/skill-routing-boundaries-20261110.md"
       },
       "notes": "Routing description revised. See the 112-case independent description-only review; it is not the provider-based routing benchmark. Runtime description patching does not certify whole-payload synchronization."
+    },
+    {
+      "name": "ultra-skill-distillation-skill",
+      "path": "ultra-skill-distillation-skill",
+      "trustTier": "experimental",
+      "owner": "LabsClaw",
+      "category": "skill-engineering",
+      "risk": "medium",
+      "platforms": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "capabilities": {
+        "network": false,
+        "shell": true,
+        "filesystemWrite": true,
+        "configMutation": false
+      },
+      "verifiedAt": "2026-11-14",
+      "workshopStatus": "unmanaged",
+      "syncStatus": "repository-only",
+      "routingEval": {
+        "status": "not-run",
+        "model": "not-run",
+        "executedAt": "2026-11-15T02:43:15.236Z",
+        "passed": 0,
+        "total": 0,
+        "report": "docs/skill-distillation-acceptance-20261114.md"
+      },
+      "notes": "Original Apache-2.0 procedure; evaluators are separate roles and no model/provider is mandatory. Read-only inspector never approves semantics. Independent usage/review recorded separately; no provider routing benchmark or runtime installation."
     }
   ]
 }
