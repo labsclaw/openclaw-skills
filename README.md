@@ -77,6 +77,8 @@ by the licensing hygiene work.
 
 ## Skills Included
 
+- **[ultra-modern-web-guidance-skill](ultra-modern-web-guidance-skill/SKILL.md)**: Guias atuais de HTML/CSS/JS sob demanda, com compatibilidade, fallbacks e modernização orientada pelo projeto GoogleChrome.
+
 - **[ultra-skill-distillation-skill](ultra-skill-distillation-skill/SKILL.md)**: Destilação de skills com rastreabilidade de obrigações, avaliação independente e prova de uso. MiniMax/DeepSeek são avaliadores opcionais, não dependências. [Aceitação e limites](docs/skill-distillation-acceptance-20261114.md).
 
 - **[ultra-browser-v2-skill](ultra-browser-v2-skill/SKILL.md)**: Navegação visível com snapshots DOM, recipes revisadas e evidência rastreável. v2.3.0; exemplos Windows dependentes do harness externo.

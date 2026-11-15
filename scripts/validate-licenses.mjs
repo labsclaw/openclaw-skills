@@ -16,6 +16,7 @@ const separateScopes = new Map([
   ["ultra-x-stealth-skill", "MIT"],
 ]);
 const expectedLicenseDigests = new Map([
+  ["ultra-modern-web-guidance-skill/LICENSE", "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"],
   ["ultra-browser-v2-skill/LICENSE", "149639bb0b8c99922c7ad47231164300c5d2ecc9123af779af577e846e7f8279"],
   ["LICENSE", "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"],
   ["c-level-advisor/LICENSE", "a20126646f93d32a8989c3cf4772d59194f405034f7babe7daebeac22b8ab151"],
@@ -72,6 +73,7 @@ function digestLicense(text) {
 }
 
 for (const file of ["LICENSE", "NOTICE", "THIRD_PARTY_NOTICES.md"]) await requireFile(file);
+await requireFile("ultra-modern-web-guidance-skill/LICENSE");
 await requireFile("ultra-browser-skill/THIRD_PARTY_LICENSES/DOM_ENGINE_LICENSE");
 await requireFile("ultra-x-stealth-skill/THIRD_PARTY_LICENSES/DOM_ENGINE_LICENSE");
 for (const [relativePath, expectedDigest] of expectedLicenseDigests) {
@@ -106,6 +108,9 @@ for (const file of skillFiles) {
 }
 
 const notices = await fs.readFile(path.join(root, "THIRD_PARTY_NOTICES.md"), "utf8");
+for (const requiredNotice of ["`ultra-modern-web-guidance-skill/`", "`ultra-modern-web-guidance-skill/LICENSE`"]) {
+  if (!notices.includes(requiredNotice)) errors.push(`THIRD_PARTY_NOTICES.md: missing ${requiredNotice}`);
+}
 for (const [scope] of separateScopes) {
   await requireFile(path.join(scope, "LICENSE"));
   if (!notices.includes(`\`${scope}/\``)) errors.push(`THIRD_PARTY_NOTICES.md: missing scope ${scope}/`);

@@ -131,6 +131,38 @@
       "contentDigest": "sha256:b354bc60f72092a4214a95bafa6accc93a1269ae5885362591e98f6f71a71df9"
     },
     {
+      "name": "ultra-modern-web-guidance-skill",
+      "description": "Consultar e aplicar guias atuais da plataforma web ao implementar ou corrigir HTML, CSS e JavaScript de navegador, inclusive em frameworks, ou ao modernizar padrões legados. Não usar para backend, infraestrutura, configuração de ferramentas, mudanças só de texto ou automação de navegador sem desenvolvimento web.",
+      "path": "ultra-modern-web-guidance-skill",
+      "trustTier": "experimental",
+      "owner": "LabsClaw",
+      "category": "web-development",
+      "risk": "medium",
+      "platforms": [
+        "windows",
+        "linux",
+        "macos"
+      ],
+      "capabilities": {
+        "network": true,
+        "shell": true,
+        "filesystemWrite": true,
+        "configMutation": false
+      },
+      "verifiedAt": "2026-11-15",
+      "workshopStatus": "unmanaged",
+      "syncStatus": "repository-only",
+      "routingEval": {
+        "status": "not-run",
+        "model": "not-run",
+        "executedAt": "2026-11-15",
+        "passed": 0,
+        "total": 0,
+        "report": "docs/modern-web-guidance-acceptance-20261115.md"
+      },
+      "contentDigest": "sha256:aa791ddd4f88b1482b0368616ba3a0d7da90e598447c66502ce3c2cfe51a0fed"
+    },
+    {
       "name": "ultra-plan-gate-skill",
       "description": "Establish an evidence-backed plan before nontrivial multi-file edits, uncertain migrations or consequential external changes. Not for a typo fix, a bounded routine command, a read-only status lookup or a conceptual question.",
       "path": "ultra-plan-gate-skill",
