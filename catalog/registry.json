@@ -83,18 +83,18 @@
         "filesystemWrite": true,
         "configMutation": true
       },
-      "verifiedAt": "2026-11-10",
+      "verifiedAt": "2026-11-16",
       "workshopStatus": "applied",
       "syncStatus": "repository-pending-runtime",
       "routingEval": {
         "status": "not-run",
-        "model": "not-run; independent description-only native-agent review recorded separately",
-        "executedAt": "2026-11-10",
+        "model": "not-run",
+        "executedAt": "2026-11-16",
         "passed": 0,
         "total": 0,
-        "report": "docs/skill-routing-boundaries-20261110.md"
+        "report": "docs/model-selection-evidence-20261116.md"
       },
-      "notes": "Routing description revised. See the 112-case independent description-only review; it is not the provider-based routing benchmark. Runtime description patching does not certify whole-payload synchronization."
+      "notes": "Evidence-based selection with current web research and three real-task/latency/operational axes. Local main runtime patch verified; full-payload synchronization and model-routing evaluation not certified. OpenCode CLI boundary preserved."
     },
     {
       "name": "ultra-code-context-skill",

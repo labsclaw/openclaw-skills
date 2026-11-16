@@ -30,6 +30,9 @@ if (Test-Path $sharedPath) { . $sharedPath } else {
     exit 1
 }
 
+Write-ModelScoreWarning
+Write-Warning 'Plano RASCUNHO: a ordem heuristica e prioridade estatica de provider nao comprovam melhor modelo/rota; nao aplicar sem evidencias atuais.'
+
 # -- Load or build model map ----------------------------------
 if (-not $MapFile) {
     $MapFile = Join-Path (Get-OpenClawHome) "logs\model-capability-map.json"
@@ -138,7 +141,7 @@ foreach ($role in $profile.roles) {
     }
 
     # Sort by fit descending, then quality
-    $candidates = $candidates | Sort-Object { $_.fit } -Descending | Sort-Object { $_.quality } -Descending
+    $candidates = $candidates | Sort-Object -Property @{Expression='fit';Descending=$true}, @{Expression='quality';Descending=$true}
 
     # Apply criticality filter
     if ($Criticality -eq "high" -or $Criticality -eq "critical") {
@@ -271,6 +274,8 @@ if ($Criticality -eq "high" -or $Criticality -eq "critical") {
 Write-Section "5. Resultado"
 
 $routingPlan = @{
+    score_evidence = Get-ModelScoreEvidence
+    plan_status = 'heuristic_draft_not_applied'
     generated_at     = (Get-Date -Format "o")
     mission          = $Mission
     mission_desc     = $profile.description

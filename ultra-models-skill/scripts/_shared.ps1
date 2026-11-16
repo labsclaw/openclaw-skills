@@ -7,6 +7,25 @@
 # ============================================================
 . (Join-Path $PSScriptRoot '_opencode.ps1')
 
+# Additive provenance: preserve legacy numeric fields for existing consumers.
+function Get-ModelScoreEvidence {
+    return @{
+        kind = 'legacy_heuristic'
+        quality_basis = 'name_size_family_rules_not_benchmarks'
+        tps_basis = 'static_relative_score_not_measured_tokens_per_second'
+        other_estimates = @('tier', 'capabilities', 'role_fits', 'provider_health', 'provider_priority')
+        benchmark_verified = $false
+        web_researched = $false
+        inference_verified = $false
+        recommendation_status = 'provisional_requires_current_evidence'
+        procedure = 'references/model-selection-evidence.md'
+    }
+}
+
+function Write-ModelScoreWarning {
+    Write-Warning 'Q, TPS, tier e aptidao sao HEURISTICAS, nao benchmarks nem velocidade medida. Pesquisar fontes atuais e avaliar tarefas reais antes de recomendar. Ver references/model-selection-evidence.md.'
+}
+
 # ── OpenClaw Home Detection ──────────────────────────────────
 function Get-OpenClawHome {
     if ($env:OPENCLAW_CONFIG_PATH) { return Split-Path $env:OPENCLAW_CONFIG_PATH -Parent }

@@ -1,6 +1,6 @@
 ---
 name: ultra-models-skill
-description: "Audit configured model catalogs, current free-model availability, dead IDs, provider health or fallback routing with dated evidence. Not for a general explanation of LLMs, an unrelated meaning of model, or an abstract model comparison without a catalog/operational decision."
+description: "Audit model catalogs, free availability and routing; recommend models for an operational task using current web evidence and measured results. Not for a general explanation of LLMs or an abstract comparison without a catalog/operational decision."
 license: Apache-2.0
 ---
 
@@ -15,18 +15,21 @@ Compare configured model catalogs with current provider evidence. Keep credentia
 | Find dead or new models | Audit catalog | Every provider is healthy, unavailable, or unauthenticated, and every difference has evidence. |
 | Repair a catalog | Audit, inspect references, patch confirmed differences | Catalog, aliases, and fallback chains agree after validation. |
 | Diagnose routing | Inspect provider and local bridge health | The failing boundary and a supported recovery are identified. |
-| Recommend allocation | Build a current capability map | The recommendation names its evidence date and provider limits. |
+| Recommend or rank models for a task | Live inventory plus current web research and relevant local measurements | Sources, exact versions, task fit, provider limits and uncertainty accompany the recommendation. |
 
 ## Procedure
 
 1. Define the provider and catalog in scope. Finish when unrelated providers and paid-model decisions are excluded.
 2. Read `references/model-catalog-operations.md` only for the relevant command and evidence format. Finish when the smallest applicable operation is selected.
+   For a recommendation, ranking, allocation or routing decision, also read `references/model-selection-evidence.md`. Search the web for current evidence even when the running model recognizes the names. Training knowledge and script scores do not establish today's best model.
+   Base the comparison on: (1) real-task quality, including tools, instructions, Portuguese and correct completion; (2) latency with representative context, not just a greeting; (3) stability, free quota and harness compatibility. Web evidence complements these criteria, never replaces local task evidence.
 3. Run the operation read-only first. Finish when provider failures are separated from missing model IDs.
    For OpenCode, use `scripts/list-opencode-models.ps1 -Json`. The collector invokes the native CLI with `models opencode --verbose --refresh --pure`, not Zen HTTP/API-key authentication. Catalog listing does not prove login, account eligibility or inference health. Read the OpenCode section in the reference before interpreting missing IDs.
 4. Classify a model as dead only when an authenticated live catalog excludes it. Preserve entries for unavailable or unauthenticated providers.
 5. Before a repair, inspect aliases, fallback chains, and policies for each affected ID. Finish when every downstream reference is accounted for.
 6. Apply the smallest reversible change only when the user authorized mutation. Re-run the audit and finish when catalogs match with no orphan aliases or broken fallbacks.
 7. Report counts, dated evidence, unresolved providers, and any rollback artifact. Never include credential values.
+   Save the full sanitized audit output or JSON before summarizing. Put provider failures, confirmed dead IDs and unverified IDs before long candidate lists so truncation cannot hide them. The new-model list is not a ranking of the full catalog.
 
 ## Guardrails
 
@@ -34,4 +37,4 @@ Compare configured model catalogs with current provider evidence. Keep credentia
 - Do not remove paid or out-of-scope entries during a free-model audit.
 - Do not execute `scripts/_shared.ps1` directly.
 - Do not copy secrets into scripts, reports, chat, or command arguments.
-- Treat capability scores as heuristics, not provider guarantees.
+- Treat quality, TPS, tier, capability, role-fit and provider-priority scores as legacy heuristics, not benchmarks, measured throughput or provider guarantees. Do not elect a winner or apply a routing change from them alone. Keep existing fields for compatibility; the evidence procedure supersedes their ordering for recommendations.

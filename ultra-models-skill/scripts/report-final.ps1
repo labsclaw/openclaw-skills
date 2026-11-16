@@ -24,6 +24,8 @@ if (Test-Path $sharedPath) { . $sharedPath } else {
     exit 1
 }
 
+Write-ModelScoreWarning
+
 # -- Load .env keys -------------------------------------------
 $envVars = Get-AllEnvKeys
 
@@ -123,11 +125,11 @@ Write-Status "$($inventory.Count) entradas no inventario" "OK"
 # 3. RANKINGS
 # ============================================================
 
-Write-Section "3. Rankings"
+Write-Section "3. Ordenacoes heuristicas, nao benchmarks"
 
 # 3a. By quality
 Write-Host ""
-Write-Status "TOP 15 por qualidade:" "STEP"
+Write-Status "15 candidatos por heuristica de nome/tamanho (nao qualidade comprovada):" "STEP"
 Write-Host ("  {0,-4} {1,-40} {2,-8} {3,-5} {4,-15}" -f "#", "MODELO", "QUALITY", "TPS", "PROVIDER") -ForegroundColor Cyan
 Write-Host ("  {0,-4} {1,-40} {2,-8} {3,-5} {4,-15}" -f ("-"*4), ("-"*40), ("-"*8), ("-"*5), ("-"*15)) -ForegroundColor DarkGray
 
@@ -140,7 +142,7 @@ foreach ($m in $rankedByQuality) {
 
 # 3b. By TPS
 Write-Host ""
-Write-Status "TOP 10 por throughput:" "STEP"
+Write-Status "10 candidatos por TPS heuristico (nao throughput medido):" "STEP"
 Write-Host ("  {0,-4} {1,-40} {2,-5} {3,-8} {4,-15}" -f "#", "MODELO", "TPS", "QUALITY", "PROVIDER") -ForegroundColor Cyan
 $rankedByTPS = $inventory | Sort-Object tps -Descending | Select-Object -First 10
 $i = 1
@@ -240,6 +242,7 @@ if ($singleProvider.Count -gt 0) {
 
 if ($Json) {
     $output = @{
+        score_evidence = Get-ModelScoreEvidence
         generated_at = (Get-Date -Format "o")
         providers    = @{}
         inventory    = @()

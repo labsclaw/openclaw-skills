@@ -102,7 +102,7 @@
     },
     {
       "name": "ultra-models-skill",
-      "description": "Audit configured model catalogs, current free-model availability, dead IDs, provider health or fallback routing with dated evidence. Not for a general explanation of LLMs, an unrelated meaning of model, or an abstract model comparison without a catalog/operational decision.",
+      "description": "Audit model catalogs, free availability and routing; recommend models for an operational task using current web evidence and measured results. Not for a general explanation of LLMs or an abstract comparison without a catalog/operational decision.",
       "path": "ultra-models-skill",
       "trustTier": "experimental",
       "owner": "LabsClaw",
@@ -117,18 +117,18 @@
         "filesystemWrite": true,
         "configMutation": true
       },
-      "verifiedAt": "2026-11-10",
+      "verifiedAt": "2026-11-16",
       "workshopStatus": "applied",
       "syncStatus": "repository-pending-runtime",
       "routingEval": {
         "status": "not-run",
-        "model": "not-run; independent description-only native-agent review recorded separately",
-        "executedAt": "2026-11-10",
+        "model": "not-run",
+        "executedAt": "2026-11-16",
         "passed": 0,
         "total": 0,
-        "report": "docs/skill-routing-boundaries-20261110.md"
+        "report": "docs/model-selection-evidence-20261116.md"
       },
-      "contentDigest": "sha256:b354bc60f72092a4214a95bafa6accc93a1269ae5885362591e98f6f71a71df9"
+      "contentDigest": "sha256:6f509ec8ea3022effceec7378c684647ce8a790fe087699c93bcddb3fb99a1a4"
     },
     {
       "name": "ultra-modern-web-guidance-skill",

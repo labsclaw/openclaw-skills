@@ -25,6 +25,8 @@ if (Test-Path $sharedPath) { . $sharedPath } else {
     exit 1
 }
 
+Write-ModelScoreWarning
+
 # -- Load .env keys -------------------------------------------
 $envVars = Get-AllEnvKeys
 $requiredKeys = @("OPENROUTER_API_KEY", "KILOCODE_API_KEY", "NVIDIA_API_KEY")
@@ -374,7 +376,7 @@ if ($deadModels.Count -gt 0) {
 }
 
 if ($newUnique.Count -gt 0) {
-    Write-Status "Candidatos a adicionar (top 10 por qualidade):" "STEP"
+    Write-Status "Novos candidatos (10 por heuristica de nome/tamanho; nao ranking geral):" "STEP"
     $ranked = @()
     foreach ($nm in $newUnique) {
         $q = Get-ModelQualityScore $nm.base_id
@@ -391,6 +393,8 @@ if ($newUnique.Count -gt 0) {
 
 if ($Json) {
     $output = @{
+        score_evidence = Get-ModelScoreEvidence
+        candidate_scope = 'new_models_only_not_full_catalog_ranking'
         generated_at = (Get-Date -Format "o")
         live_models  = @{
             openrouter = $orModels.Count

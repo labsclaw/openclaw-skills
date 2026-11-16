@@ -701,11 +701,11 @@
       "name": "ultra-models-skill",
       "decision": "corrected",
       "before": "Audit model catalogs, dead entries, provider health, fallbacks, and routing with dated evidence.",
-      "description": "Audit configured model catalogs, current free-model availability, dead IDs, provider health or fallback routing with dated evidence. Not for a general explanation of LLMs, an unrelated meaning of model, or an abstract model comparison without a catalog/operational decision.",
-      "positive": "Audite os modelos gratuitos configurados e os fallbacks com IDs mortos.",
-      "negative": "Explique o mecanismo de atenção de um transformer.",
-      "descriptionDigest": "sha256:1fe418e0b0078e53c82f4647a2100af434dd9121b8faa729c0bd4e94e0b41185",
-      "rationale": "Replace broad keyword/automatic workflow triggers with task intent and the concrete near-miss exclusion exercised below."
+      "description": "Audit model catalogs, free availability and routing; recommend models for an operational task using current web evidence and measured results. Not for a general explanation of LLMs or an abstract comparison without a catalog/operational decision.",
+      "positive": "Pesquise fontes atuais e compare os modelos gratuitos do nosso Hermes por ferramentas, português, conclusão, latência real, estabilidade, cota e compatibilidade.",
+      "negative": "Explique conceitualmente como o tamanho em parâmetros afeta um modelo, sem recomendar rotas nem consultar nosso catálogo.",
+      "descriptionDigest": "sha256:d195d4a62619bab5750dea9ca1a56ae346a48a62bc625ee3f20cb3a6adb7edba",
+      "rationale": "Operational model selection now requires current web evidence and representative real-task measurements; retain exclusion of generic or abstract model questions."
     },
     {
       "path": "ultra-perplexity-pro-bridge-skill/SKILL.md",
