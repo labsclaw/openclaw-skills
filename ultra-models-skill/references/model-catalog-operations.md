@@ -11,8 +11,8 @@ Consult only the section needed for the current request.
 | Inspect OpenCode only | `scripts/list-opencode-models.ps1 -Json` | Refreshed CLI catalog, zero-price IDs, explicit catalog-only evidence |
 | Inspect Antigravity | `scripts/list-antigravity-models.ps1` | IDs returned by the local proxy |
 | Inspect KiloCode metadata | `scripts/kilo-free-detail.ps1` | Free-model metadata from KiloCode |
-| Build capability map | `scripts/build-model-map.ps1` | Dated JSON map with provider availability and heuristic scores |
-| Produce routing plan | `scripts/plan-routing.ps1` | Mission-specific routing and fallback plan |
+| Build capability map | `scripts/build-model-map.ps1` | Dated catalog map with legacy heuristic scores, not benchmark evidence |
+| Produce routing draft | `scripts/plan-routing.ps1` | Heuristic mission-specific draft; validate with the evidence procedure before recommending or applying |
 | Produce consolidated report | `scripts/report-final.ps1` | Human-readable health and recommendation report |
 | Legacy cross-check | `scripts/compare-config.ps1` | Config versus provider comparison |
 
@@ -49,7 +49,7 @@ Verify inference separately only when requested: one bounded exact free-model wr
 
 ## Routing and capability maps
 
-The capability and role-fit values produced by the scripts are heuristics. Use them to compare candidates, then disclose the evidence date and any unavailable provider. Do not present a heuristic score as a benchmark result.
+The quality, TPS, tier, capability, role-fit and static provider priorities produced by the scripts are legacy heuristics. TPS is not a measured tokens/second value. `score_evidence` in JSON describes this boundary; existing fields remain for compatibility. For recommendations, follow [model-selection-evidence.md](model-selection-evidence.md): current web evidence and relevant measurements take precedence over heuristic ordering. A map generation date is not a benchmark date. `sync-config.ps1` lists new candidates, not the best models of the full catalog.
 
 ## Credential handling
 

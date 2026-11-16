@@ -29,6 +29,9 @@ jobs:
         run: node scripts/validate-library.mjs
       - name: Verify generated catalog index
         run: node scripts/build-catalog.mjs --check
+      - name: Test model catalog consumers and heuristic routing contract offline
+        shell: pwsh
+        run: ./ultra-models-skill/scripts/test-opencode-consumers.ps1
       - name: Test portable catalog checks
         run: node --test scripts/build-catalog.test.mjs
       - name: Validate SPDX metadata and third-party notices

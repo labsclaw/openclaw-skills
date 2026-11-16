@@ -38,5 +38,7 @@
   {"id": "mwg-negative-1", "skill": "ultra-modern-web-guidance-skill", "type": "negative", "query": "Corrija a consulta SQL do backend.", "expect": []},
   {"id": "mwg-negative-2", "skill": "ultra-modern-web-guidance-skill", "type": "negative", "query": "Atualize somente o texto do título desta página.", "expect": []},
   {"id": "mwg-negative-3", "skill": "ultra-modern-web-guidance-skill", "type": "negative", "query": "Use o navegador para consultar o status de um pedido.", "expect": []},
-  {"id": "mwg-negative-4", "skill": "ultra-modern-web-guidance-skill", "type": "negative", "query": "Ajuste o tsconfig sem mudar código do navegador.", "expect": []}
+  {"id": "mwg-negative-4", "skill": "ultra-modern-web-guidance-skill", "type": "negative", "query": "Ajuste o tsconfig sem mudar código do navegador.", "expect": []},
+  {"id": "models-positive-evidence", "skill": "ultra-models-skill", "type": "positive", "query": "Pesquise fontes atuais e compare os modelos gratuitos para o Hermes por qualidade real, ferramentas, português, latência com contexto, estabilidade, cota e harness.", "expect": ["ultra-models-skill"]},
+  {"id": "models-negative-theory", "skill": "ultra-models-skill", "type": "negative", "query": "Explique conceitualmente a relação entre parâmetros e qualidade de um LLM, sem escolher modelos nem consultar o catálogo.", "expect": []}
 ]

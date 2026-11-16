@@ -30,6 +30,18 @@ try {
             $consumerErrors = @($records | Where-Object { $_ -is [System.Management.Automation.ErrorRecord] })
             if ($consumerErrors.Count) { throw "$consumer errors: $($consumerErrors -join ', ')" }
             $output = $records | Out-String
+            if ($consumer -in @('sync-config.ps1','build-model-map.ps1','report-final.ps1')) {
+                if (-not @($records | Where-Object { $_ -is [System.Management.Automation.WarningRecord] }).Count) { throw "Missing heuristic warning: $consumer" }
+                $pattern = switch ($consumer) {
+                    'sync-config.ps1' { 'sync-config-*.json' }
+                    'build-model-map.ps1' { 'model-capability-map.json' }
+                    'report-final.ps1' { 'model-report-*.json' }
+                }
+                $scoreFile = Get-ChildItem (Join-Path $fixtureRoot 'logs') -Filter $pattern | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+                $scoreDoc = Get-Content $scoreFile.FullName -Raw | ConvertFrom-Json
+                if ($scoreDoc.score_evidence.kind -ne 'legacy_heuristic' -or $scoreDoc.score_evidence.benchmark_verified -ne $false -or $scoreDoc.score_evidence.web_researched -ne $false) { throw "Misleading evidence: $consumer" }
+                if ($consumer -eq 'sync-config.ps1' -and $scoreDoc.candidate_scope -ne 'new_models_only_not_full_catalog_ranking') { throw 'Missing candidate scope' }
+            }
             if ($output -match 'Unexpected hosted OpenCode request') { throw "Hosted request: $consumer" }
             if ($output -match '(?m)^\s+[X!-] opencode/missing-free') { throw "False removal: $consumer" }
             if ($consumer -eq 'sync-config.ps1') {
@@ -41,7 +53,26 @@ try {
             $count++
         }
     }
-    Write-Output "PASS: $count consumer cases, CLI success/failure; no OpenCode key, no hosted requests, no false removals."
+    # Normal routing entrypoint: a better role fit must beat a larger Q score.
+    $mapPath = Join-Path $fixtureRoot 'logs/model-capability-map.json'
+    $testMap = Get-Content $mapPath -Raw | ConvertFrom-Json
+    $preferred = $testMap.models[0]
+    $preferred.canonical_id = 'preferred-fit'
+    $preferred.quality_score = 60
+    foreach ($prop in $preferred.role_fits.PSObject.Properties) { $preferred.role_fits.($prop.Name) = 0.99 }
+    $other = $preferred | ConvertTo-Json -Depth 30 | ConvertFrom-Json
+    $other.canonical_id = 'higher-heuristic-only'
+    $other.quality_score = 95
+    foreach ($prop in $other.role_fits.PSObject.Properties) { $other.role_fits.($prop.Name) = 0.1 }
+    $testMap.models = @($other, $preferred)
+    $testMap | ConvertTo-Json -Depth 30 | Set-Content $mapPath
+    $routeRecords = @(& { & (Join-Path $PSScriptRoot 'plan-routing.ps1') -MapFile $mapPath -Json } *>&1)
+    if (@($routeRecords | Where-Object { $_ -is [System.Management.Automation.ErrorRecord] }).Count) { throw "Routing errors: $($routeRecords -join ', ')" }
+    $routeFile = Get-ChildItem (Join-Path $fixtureRoot 'logs') -Filter 'routing-plan-*.json' | Select-Object -First 1
+    $route = Get-Content $routeFile.FullName -Raw | ConvertFrom-Json
+    if ($route.plan_status -ne 'heuristic_draft_not_applied' -or $route.score_evidence.kind -ne 'legacy_heuristic') { throw 'Unlabeled routing draft' }
+    if ($route.team[0].canonical_model -ne 'preferred-fit') { throw 'Quality overrode role-fit order' }
+    Write-Output "PASS: $count consumer cases plus routing; provenance, warnings, candidate scope, fit priority; no OpenCode key, no hosted requests, no false removals."
 } finally {
     $env:OPENCLAW_CONFIG_PATH = $previousConfig
     # Retain fixture outputs for inspection; no broad filesystem cleanup.

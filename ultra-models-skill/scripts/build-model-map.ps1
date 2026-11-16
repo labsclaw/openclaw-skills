@@ -24,6 +24,8 @@ if (Test-Path $sharedPath) { . $sharedPath } else {
     exit 1
 }
 
+Write-ModelScoreWarning
+
 # -- Load .env keys -------------------------------------------
 $envVars = Get-AllEnvKeys
 
@@ -223,6 +225,7 @@ Write-Status "$($modelsOutput.Count) modelos processados" "OK"
 Write-Section "4. Montando mapa"
 
 $output = @{
+    score_evidence = Get-ModelScoreEvidence
     generated_at   = (Get-Date -Format "o")
     schema_version = "1.0"
     stats          = @{
@@ -298,7 +301,7 @@ Write-Status "Modelos standard:$($output.stats.standard_count)" "OK"
 Write-Status "Modelos light:   $($output.stats.light_count)" "OK"
 Write-Status "Familias:        $($output.stats.families)" "OK"
 Write-Host ""
-Write-Status "Top 5 por qualidade:" "STEP"
+Write-Status "5 candidatos por heuristica legada (nao qualidade comprovada):" "STEP"
 $modelsOutput | Select-Object -First 5 | ForEach-Object {
     $providers = ($_.availability | ForEach-Object { $_.provider }) -join ", "
     Write-Host "  $($_.canonical_id) Q=$($_.quality_score) TPS=$($_.tps_score) [$providers]" -ForegroundColor Green

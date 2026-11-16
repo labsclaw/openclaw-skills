@@ -670,5 +670,17 @@
     "skill": "ultra-x-stealth-skill",
     "query": "Rascunhe um tweet, sem publicar.",
     "expected": false
+  },
+  {
+    "id": "ultra-models-skill-evidence-positive",
+    "skill": "ultra-models-skill",
+    "query": "Compare nossos modelos gratuitos usando fontes atuais e tarefas representativas do Hermes.",
+    "expected": true
+  },
+  {
+    "id": "ultra-models-skill-theory-negative",
+    "skill": "ultra-models-skill",
+    "query": "Explique parâmetros de LLMs sem recomendar modelo ou rota.",
+    "expected": false
   }
 ]
