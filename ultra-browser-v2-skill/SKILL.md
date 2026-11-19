@@ -12,6 +12,8 @@ license: MIT
 
 ## Estado publicado e precedência
 
+A029/A030/A044, atualização de 19/11: para ambiente contratual, use o [runner local e recibos de perfil/viewport](references/environment-contract.md). Ele pede e mede viewport CSS 1280x900, cria perfil exclusivo por runId e falha fechado. A bateria integra esse transporte no worker. Chamadas diretas legadas e runtime Hermes permanecem fora do contrato verificado; maximize isolado não é evidência de dimensões.
+
 A005, atualização de 19/11: use [persisted_json e contrato completo](references/persisted-verification.md) para persistência. O verifier ativo compara campos, vínculo e anexo público após reload confirmado; `persisted:<titulo>` falha fechado. [Aceite e limites A005](evidence/v26/fixes/A005-20261119/ACCEPTANCE.md). Não confundir este adaptador T1 com compatibilidade universal, transporte Hermes verificado ou bateria completa aprovada.
 
 A001, atualização de 19/11: o resolvedor ativo aceita identidade exata cumulativa com escopo/role e bloqueia ambiguidades; recipe preserva label junto de id. Para usar esse contrato, leia [alvos semânticos e pós-condições](references/semantic-targets.md). [Aceite A001 e limites](evidence/v26/fixes/A001-20261119/ACCEPTANCE.md): parcial no conjunto, pois ações legadas sem predicado continuam com efeito explicitamente não verificado. Esta atualização prevalece sobre descrições históricas de primeiro match/label descartado abaixo; não altera os recibos antigos nem fecha os demais itens.
@@ -56,7 +58,7 @@ A evidência da recipe cobre a mesma classe de fixture. Não generalize para out
 Comando real do executor (a docstring interna de `recipe.py` tem a fonte canônica):
 
 ```bash
-python scripts/recipe.py <recipe.json> \
+python scripts/environment_runner.py --run-id piloto-001 --output C:/recibos recipe -- <recipe.json> \
   --url http://127.0.0.1:8791/xt-web-form-01 \
   --verify "persisted_json:@C:/caminho/contrato.json" \
   --marker X-Testing

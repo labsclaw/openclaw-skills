@@ -98,12 +98,12 @@ def git(*args):
 
 def fingerprints():
     return {str(p.relative_to(ROOT)): sha256(p) for p in
-            (HERE / "recipe.py", HERE / "agent_loop.py", HERE / "snapshot.js", HERE / "persisted_verifier.py", Path(__file__), RECIPE)}
+            (HERE / "recipe.py", HERE / "agent_loop.py", HERE / "snapshot.js", HERE / "persisted_verifier.py", HERE / "environment_runner.py", Path(__file__), RECIPE)}
 
 
 def provenance():
     executor = [str((HERE / name).relative_to(ROOT)).replace("\\", "/")
-                for name in ("recipe.py", "agent_loop.py", "snapshot.js", "persisted_verifier.py")]
+                for name in ("recipe.py", "agent_loop.py", "snapshot.js", "persisted_verifier.py", "environment_runner.py")]
     if git("diff", "HEAD", "--", *executor):
         raise RuntimeError("Executor difere de HEAD; requer outra bateria identificada")
     return dict(commit=git("rev-parse", "HEAD"),
@@ -134,11 +134,10 @@ def freeze_recipe(directory):
 
 def load_executor():
     sys.path.insert(0, str(HERE))
-    spec = importlib.util.spec_from_file_location("battery_recipe", HERE / "recipe.py")
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
+    # Um módulo canônico: carregar outro alias escapava do bind contratual.
+    import recipe
     import agent_loop
-    return module, agent_loop
+    return recipe, agent_loop
 
 
 def generated_snippets(recipe_path, url):
@@ -243,7 +242,23 @@ console.log(JSON.stringify({compiled:snippets.length}));"""
                 javascriptCompiled=len(snippets["javascript"]), generated=snippets)
 
 
-def executor_worker(recipe_path, url, audit_path, marker="", verify_spec=""):
+def executor_worker(recipe_path, url, audit_path, marker="", verify_spec="", run_id="", headless=False):
+    from environment_runner import Environment
+    if not run_id:
+        raise ValueError('Worker exige runId para perfil novo')
+    task_code = 0
+    with Environment(run_id, Path(audit_path).parent / 'environment', headless=headless) as env, env.bind():
+        try:
+            _executor_worker(recipe_path, url, audit_path, marker, verify_spec)
+        except SystemExit as exc:
+            task_code = exc.code if type(exc.code) is int else 1
+    if not env.receipt['passed']:
+        raise RuntimeError('Ambiente contratual reprovado')
+    if task_code:
+        raise SystemExit(task_code)
+
+
+def _executor_worker(recipe_path, url, audit_path, marker="", verify_spec=""):
     """Observa chamadas originais; barreira externa no primeiro goto falho.
 
     O validator interrompe o worker antes do primeiro passo nesse caso, sem
@@ -399,7 +414,8 @@ def run_pilot(batch_dir, run_id, source, recipe_path):
             receipt["fixture"] = wait_ready(fixture, directory / "fixture.stdout.txt", run_id, port)
             execution_process = command([sys.executable, Path(__file__), "--executor-worker",
                                          str(recipe_path), url, directory / "harness.jsonl",
-                                         "--marker", MARKER, "--verify", receipt["verifierSpec"]])
+                                         "--marker", MARKER, "--verify", receipt["verifierSpec"],
+                                         "--run-id", run_id])
             write_new(directory / "recipe.json", execution_process.pop("stdout"), raw=True)
             write_new(directory / "recipe.stderr.txt", execution_process.pop("stderr"), raw=True)
             receipt["executionProcess"] = execution_process
@@ -421,6 +437,12 @@ def run_pilot(batch_dir, run_id, source, recipe_path):
             receipt["gate"] = gate(run_id, execution, judge,
                                    strict_json(recipe_path.read_text(encoding="utf-8")), audit,
                                    execution_process["rc"], judge_process["rc"])
+            environment_path = directory / 'environment' / run_id / 'environment.json'
+            receipt['environment'] = strict_json(environment_path.read_text(encoding='utf-8'))
+            from environment_runner import environment_passed
+            if not environment_passed(receipt['environment'], run_id):
+                receipt['gate']['passed'] = False
+                receipt['gate']['failures'].append('Ambiente contratual ausente ou reprovado')
             receipt["initialNavigation"] = audit[0] if audit else None
             receipt["judge"] = judge
     except Exception as exc:
@@ -461,9 +483,12 @@ def main():
     parser.add_argument("--marker", default="",
                         help="marcador de identidade da pagina exigido antes de agir")
     parser.add_argument("--verify", default="", help=argparse.SUPPRESS)
+    parser.add_argument("--run-id", default="", help=argparse.SUPPRESS)
+    parser.add_argument("--headless", action="store_true", help=argparse.SUPPRESS)
     args = parser.parse_args()
     if args.executor_worker:
-        executor_worker(*args.executor_worker, marker=args.marker, verify_spec=args.verify)
+        executor_worker(*args.executor_worker, marker=args.marker, verify_spec=args.verify,
+                        run_id=args.run_id, headless=args.headless)
         return 0
     args.logs.mkdir(parents=True, exist_ok=True)
     batch_id = "battery-" + datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S") + "-" + uuid.uuid4().hex[:8]

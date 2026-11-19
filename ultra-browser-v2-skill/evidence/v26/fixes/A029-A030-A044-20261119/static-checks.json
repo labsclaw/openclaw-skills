@@ -1,0 +1,16 @@
+{
+  "gate_ast_unchanged": true,
+  "recipe_unchanged": true,
+  "historical_a005_manifest_at_declared_git": {
+    "matched": 32,
+    "total": 32
+  },
+  "historical_receipts_unchanged": true,
+  "syntax": [
+    "agent_loop.py",
+    "battery_pilot.py",
+    "environment_runner.py",
+    "test_environment.py"
+  ],
+  "agents_lint": "observed OK: 18 files,136 references,0 findings"
+}

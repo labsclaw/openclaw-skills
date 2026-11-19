@@ -23,3 +23,8 @@ Nenhum item da fila foi implementado. Nenhuma nova bateria, inferência ou avali
 Instalação, somente quando solicitada: `npx skills add labsclaw/openclaw-skills --skill ultra-browser-v2-skill`.
 Exemplos dependem do Windows, browser-harness do Hermes, navegador visível e fixture/judge externos; não são um SDK portátil. O loop usa `BROWSER_HARNESS` e `OPENCODE_BIN`; outros caminhos locais continuam nos exemplos. O gravador exige FFmpeg. Essas dependências não são instaladas pelo pacote.
 Não executar bateria ou inferência para conferir apenas a publicação. Configurar credenciais pelo fluxo dedicado mascarado. O agente navegador não deve usar judges ou arquivos de recibos privados como entrada de planejamento/autovalidação.
+
+## Item 4, ambiente contratual
+
+Novo registro: [plano e entrada normal](v26/fixes/A029-A030-A044-20261119/PLAN.md).
+Os recibos dessa pasta não substituem auditorias ou baterias históricas.

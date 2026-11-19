@@ -1455,7 +1455,7 @@ Rules:
     return log
 
 
-if __name__ == "__main__":
+def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--url", required=True)
     ap.add_argument("--goal", required=True)
@@ -1560,3 +1560,7 @@ if __name__ == "__main__":
         result["value_model"] = log_extra
     print(json.dumps(result, ensure_ascii=False, indent=1))
     sys.exit(0 if "DONE" in str(result.get("result")) else 1)
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,520 @@
+{
+  "item": "A002",
+  "browser": "148.0.7778.96",
+  "transport": "Playwright page.evaluate, not Hermes",
+  "sources": {
+    "agent_loop.py": "6a554a12b66907bfe16c7ffa589d077124c2ddcb898655c04f7be35205f98976",
+    "recipe.py": "c670d5bd406d00467d50dff286862557755843ba14987e1cfe32b259b0ad0dc8",
+    "test_resolve_wait.py": "94cb314ce0cd24dda9dbe1c44724c0c7ad7b2cb2d84b5d1a791c50240e6beaa6"
+  },
+  "passed": 20,
+  "total": 20,
+  "cases": [
+    {
+      "mode": "single",
+      "scenario": "immediate",
+      "elapsed_ms": 31.0,
+      "observed": {
+        "clicks": 1,
+        "ticks": 2,
+        "callbackRan": false
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "target",
+            "text": "Alvo",
+            "dispatched": true,
+            "effect": {
+              "verified": false,
+              "reason": "no postcondition declared"
+            },
+            "_rc": 0
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "mode": "single",
+      "scenario": "enabled_by_timer",
+      "elapsed_ms": 266.0,
+      "observed": {
+        "clicks": 1,
+        "ticks": 11,
+        "callbackRan": true
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "target",
+            "text": "Alvo",
+            "dispatched": true,
+            "effect": {
+              "verified": false,
+              "reason": "no postcondition declared"
+            },
+            "_rc": 0
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "mode": "single",
+      "scenario": "replaced_by_timer",
+      "elapsed_ms": 266.0,
+      "observed": {
+        "clicks": 1,
+        "ticks": 11,
+        "callbackRan": true
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "target",
+            "text": "Novo",
+            "dispatched": true,
+            "effect": {
+              "verified": false,
+              "reason": "no postcondition declared"
+            },
+            "_rc": 0
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "mode": "single",
+      "scenario": "absent",
+      "elapsed_ms": 3031.0,
+      "observed": {
+        "clicks": 0,
+        "ticks": 121,
+        "callbackRan": false
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)",
+            "_rc": 0
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "mode": "single",
+      "scenario": "disabled",
+      "elapsed_ms": 3031.0,
+      "observed": {
+        "clicks": 0,
+        "ticks": 110,
+        "callbackRan": false
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)",
+            "_rc": 0
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "mode": "single",
+      "scenario": "invisible",
+      "elapsed_ms": 3047.0,
+      "observed": {
+        "clicks": 0,
+        "ticks": 120,
+        "callbackRan": false
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)",
+            "_rc": 0
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "mode": "batch",
+      "scenario": "immediate",
+      "elapsed_ms": 16.0,
+      "observed": {
+        "clicks": 1,
+        "ticks": 1,
+        "callbackRan": false
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "target",
+            "text": "Alvo",
+            "dispatched": true,
+            "effect": {
+              "verified": false,
+              "reason": "no postcondition declared"
+            }
+          }
+        ],
+        "stopped_at": null,
+        "_rc": 0
+      },
+      "passed": true
+    },
+    {
+      "mode": "batch",
+      "scenario": "enabled_by_timer",
+      "elapsed_ms": 281.0,
+      "observed": {
+        "clicks": 1,
+        "ticks": 12,
+        "callbackRan": true
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "target",
+            "text": "Alvo",
+            "dispatched": true,
+            "effect": {
+              "verified": false,
+              "reason": "no postcondition declared"
+            }
+          }
+        ],
+        "stopped_at": null,
+        "_rc": 0
+      },
+      "passed": true
+    },
+    {
+      "mode": "batch",
+      "scenario": "replaced_by_timer",
+      "elapsed_ms": 281.0,
+      "observed": {
+        "clicks": 1,
+        "ticks": 11,
+        "callbackRan": true
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "target",
+            "text": "Novo",
+            "dispatched": true,
+            "effect": {
+              "verified": false,
+              "reason": "no postcondition declared"
+            }
+          }
+        ],
+        "stopped_at": null,
+        "_rc": 0
+      },
+      "passed": true
+    },
+    {
+      "mode": "batch",
+      "scenario": "absent",
+      "elapsed_ms": 3031.0,
+      "observed": {
+        "clicks": 0,
+        "ticks": 121,
+        "callbackRan": false
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "element not found",
+        "_rc": 0
+      },
+      "passed": true
+    },
+    {
+      "mode": "batch",
+      "scenario": "disabled",
+      "elapsed_ms": 3031.0,
+      "observed": {
+        "clicks": 0,
+        "ticks": 119,
+        "callbackRan": false
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "element not found",
+        "_rc": 0
+      },
+      "passed": true
+    },
+    {
+      "mode": "batch",
+      "scenario": "invisible",
+      "elapsed_ms": 3016.0,
+      "observed": {
+        "clicks": 0,
+        "ticks": 119,
+        "callbackRan": false
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "element not found",
+        "_rc": 0
+      },
+      "passed": true
+    },
+    {
+      "mode": "batch",
+      "scenario": "expected_failure_800ms_continues",
+      "elapsed_ms": 844.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "expect_blocked",
+            "note": "next failure is expected"
+          },
+          {
+            "i": 1,
+            "error": "element not found (waited)",
+            "expected": true
+          },
+          {
+            "i": 2,
+            "action": "assert_text",
+            "ok": true,
+            "value": "Sem alvo"
+          }
+        ],
+        "stopped_at": null,
+        "_rc": 0
+      },
+      "passed": true
+    },
+    {
+      "mode": "recipe",
+      "scenario": "immediate",
+      "elapsed_ms": 15.0,
+      "observed": {
+        "clicks": 1,
+        "ticks": 1,
+        "callbackRan": false
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "target",
+            "text": "Alvo",
+            "dispatched": true,
+            "effect": {
+              "verified": false,
+              "reason": "no postcondition declared"
+            }
+          }
+        ],
+        "stopped_at": null,
+        "_rc": 0
+      },
+      "passed": true
+    },
+    {
+      "mode": "recipe",
+      "scenario": "enabled_by_timer",
+      "elapsed_ms": 266.0,
+      "observed": {
+        "clicks": 1,
+        "ticks": 11,
+        "callbackRan": true
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "target",
+            "text": "Alvo",
+            "dispatched": true,
+            "effect": {
+              "verified": false,
+              "reason": "no postcondition declared"
+            }
+          }
+        ],
+        "stopped_at": null,
+        "_rc": 0
+      },
+      "passed": true
+    },
+    {
+      "mode": "recipe",
+      "scenario": "replaced_by_timer",
+      "elapsed_ms": 266.0,
+      "observed": {
+        "clicks": 1,
+        "ticks": 11,
+        "callbackRan": true
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "target",
+            "text": "Novo",
+            "dispatched": true,
+            "effect": {
+              "verified": false,
+              "reason": "no postcondition declared"
+            }
+          }
+        ],
+        "stopped_at": null,
+        "_rc": 0
+      },
+      "passed": true
+    },
+    {
+      "mode": "recipe",
+      "scenario": "absent",
+      "elapsed_ms": 3015.0,
+      "observed": {
+        "clicks": 0,
+        "ticks": 118,
+        "callbackRan": false
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "element not found",
+        "_rc": 0
+      },
+      "passed": true
+    },
+    {
+      "mode": "recipe",
+      "scenario": "disabled",
+      "elapsed_ms": 3016.0,
+      "observed": {
+        "clicks": 0,
+        "ticks": 121,
+        "callbackRan": false
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "element not found",
+        "_rc": 0
+      },
+      "passed": true
+    },
+    {
+      "mode": "recipe",
+      "scenario": "invisible",
+      "elapsed_ms": 3015.0,
+      "observed": {
+        "clicks": 0,
+        "ticks": 121,
+        "callbackRan": false
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "element not found",
+        "_rc": 0
+      },
+      "passed": true
+    },
+    {
+      "mode": "recipe",
+      "scenario": "expected_failure_800ms_continues",
+      "elapsed_ms": 844.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "expect_blocked",
+            "note": "next failure is expected"
+          },
+          {
+            "i": 1,
+            "error": "element not found (waited)",
+            "expected": true
+          },
+          {
+            "i": 2,
+            "action": "assert_text",
+            "ok": true,
+            "value": "Sem alvo"
+          }
+        ],
+        "stopped_at": null,
+        "_rc": 0
+      },
+      "passed": true
+    }
+  ]
+}

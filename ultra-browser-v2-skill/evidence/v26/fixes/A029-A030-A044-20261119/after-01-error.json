@@ -1,0 +1,9 @@
+{
+  "command": "python -B scripts/test_environment.py --receipt evidence/v26/fixes/A029-A030-A044-20261119/after-01.json",
+  "rc": 1,
+  "requestedReceiptCreated": false,
+  "observedError": "CDPSession.send: Protocol error (Browser.getBrowserCommandLine): Command line not returned because --enable-automation not set.",
+  "secondaryError": "TemporaryDirectory cleanup PermissionError WinError 32: profile/Default/chrome_debug.log still in use",
+  "verdict": "not_green",
+  "correction": "Request --enable-automation explicitly; retain test profiles in a new temporary directory instead of deleting Chromium files during flush. No earlier receipt overwritten."
+}
