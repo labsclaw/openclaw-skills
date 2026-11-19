@@ -1,0 +1,151 @@
+{
+  "url": "http://127.0.0.1:53056/",
+  "goal": "record deterministic public actions",
+  "model": "no-provider-called",
+  "mode": "batch",
+  "cycles": [
+    {
+      "cycle": 0,
+      "n_elements": 4,
+      "latency_s": 0.1,
+      "reply": "[{\"action\": \"type\", \"id\": \"name\", \"value\": \"A008\"}, {\"action\": \"select\", \"id\": \"kind\", \"value\": \"B\"}, {\"action\": \"click\", \"id\": \"save\", \"label\": \"Save: draft\", \"scope\": {\"id\": \"scope\"}, \"role\": \"button\"}, {\"action\": \"wait\", \"value\": \"0\"}, {\"action\": \"click\", \"id\": \"NEVER\"}]",
+      "plan": [
+        {
+          "action": "type",
+          "id": "name",
+          "value": "A008"
+        },
+        {
+          "action": "select",
+          "id": "kind",
+          "value": "B"
+        },
+        {
+          "action": "click",
+          "id": "save",
+          "label": "Save: draft",
+          "scope": {
+            "id": "scope"
+          },
+          "role": "button"
+        },
+        {
+          "action": "wait",
+          "value": "0"
+        },
+        {
+          "action": "click",
+          "id": "NEVER"
+        }
+      ],
+      "exec": {
+        "results": [
+          {
+            "i": 0,
+            "action": "type",
+            "ok": true,
+            "id": "name",
+            "value": "A008",
+            "dispatched": true,
+            "effect": {
+              "verified": false,
+              "reason": "no postcondition declared"
+            }
+          },
+          {
+            "i": 1,
+            "action": "select",
+            "ok": true,
+            "id": "kind",
+            "value": "B",
+            "dispatched": true,
+            "effect": {
+              "verified": false,
+              "reason": "no postcondition declared"
+            }
+          },
+          {
+            "i": 2,
+            "action": "click",
+            "ok": true,
+            "id": "save",
+            "text": "Save: draft",
+            "dispatched": true,
+            "effect": {
+              "verified": false,
+              "reason": "no postcondition declared"
+            }
+          },
+          {
+            "i": 3,
+            "action": "wait",
+            "value": "0"
+          }
+        ],
+        "stopped_at": 3,
+        "reason": "wait",
+        "terminal": "wait",
+        "_rc": 0
+      },
+      "host": {
+        "action": "wait",
+        "completed": true
+      }
+    },
+    {
+      "cycle": 1,
+      "n_elements": 4,
+      "latency_s": 0.1,
+      "reply": "[{\"action\": \"navigate\", \"value\": \"http://127.0.0.1:53056/next\"}, {\"action\": \"click\", \"id\": \"NEVER\"}]",
+      "plan": [
+        {
+          "action": "navigate",
+          "value": "http://127.0.0.1:53056/next"
+        },
+        {
+          "action": "click",
+          "id": "NEVER"
+        }
+      ],
+      "exec": {
+        "results": [
+          {
+            "i": 0,
+            "action": "navigate",
+            "value": "http://127.0.0.1:53056/next"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "navigate",
+        "terminal": "navigate",
+        "url": "http://127.0.0.1:53056/next",
+        "_rc": 0
+      },
+      "host": {
+        "action": "navigate",
+        "completed": true,
+        "rc": 0,
+        "url": "http://127.0.0.1:53056/next"
+      }
+    },
+    {
+      "cycle": 2,
+      "n_elements": 4,
+      "latency_s": 0.1,
+      "reply": "[{\"action\": \"done\"}]",
+      "plan": [
+        {
+          "action": "done"
+        }
+      ]
+    },
+    {
+      "verifier": "text_contains:READY",
+      "verdict": "PASS"
+    }
+  ],
+  "result": "DONE-VERIFIED-BATCH",
+  "verification_details": [
+    {}
+  ]
+}

@@ -41,58 +41,9 @@ def harness(code, timeout=90):
 # ---------------- 1. EXTRACT: trace -> recipe ----------------
 
 def extract_recipe(trace_path: str, goal: str = ""):
-    """Compila um trace de agente (agent_loop log JSON) em recipe estruturada."""
-    with open(trace_path, encoding="utf-8") as f:
-        txt = f.read()
-    d = json.loads(txt[txt.find("{"):])
-    steps = d.get("steps", []) or d.get("cycles", [])
-    recipe = {
-        "version": "2.5",
-        "intent": goal or d.get("goal", ""),
-        "source_trace": trace_path,
-        "native_ops": [],
-        "notes": [],
-    }
-    for s in steps:
-        p = s.get("parsed") or {}
-        act = p.get("action")
-        if not act or act in ("done", "blocked"):
-            continue
-        ex = s.get("exec")
-        exj = {}
-        try:
-            exj = json.loads(ex) if isinstance(ex, str) else (ex or {})
-        except Exception:
-            exj = {}
-        # so passos que EXECUTARAM ok (o trace de sucesso e o roteiro)
-        if isinstance(exj, dict) and exj.get("results"):
-            r0 = (exj["results"] or [{}])[0]
-            if not (r0.get("ok") or r0.get("action") == "upload"):
-                continue
-        # v2.5.1: label LIMPO — o trace grava "tag id: text"; pro resolve por texto
-        # interessa so o TEXTO visivel do elemento (ex.: "Criar plano DEMO-024")
-        raw_label = (p.get("label") or "")
-        clean = raw_label.split(":", 1)[1].strip() if ":" in raw_label else raw_label
-        op = {
-            "op": act,
-            "id": p.get("id") or exj.get("id") or "",
-            "label": clean[:80],
-            "value": p.get("value", ""),
-        }
-        # upload: o terminal traz o arquivo; reload/navigate: op nativa
-        if act == "upload":
-            op["value"] = exj.get("file") or op["value"] or "fixture-evidence.txt"
-        recipe["native_ops"].append(op)
-        # corte de ruido pos-save (padrao Skill Recorder: o procedimento termina
-        # na acao-chave; o "vagueio" do agente apos o save NAO e procedimento).
-        if (act == "click" and (exj.get("id") == "save" or
-                                "salvar" in str((exj.get("text") or "")).lower())
-                and isinstance(exj, dict)):
-            recipe["notes"].append(f"cut after save at op {len(recipe['native_ops'])} "
-                                   f"(post-save wandering removed: "
-                                   f"{len(steps)} trace steps -> recipe ends here)")
-            break
-    return recipe
+    """Entrada compatível; normalização única single/batch, sem replay de verifier."""
+    from trace_recipe import extract
+    return extract(trace_path, goal)
 
 
 # ---------------- 2. RUN: recipe -> execucao adaptativa ----------------
@@ -590,6 +541,13 @@ def _run_recipe(recipe_path: str, url: str, verify_spec: str = "", fallback_jev:
             import time as _t
             _t.sleep(min(5, float(res.get("value") or 1)))
             i += 1
+            continue
+        if (op.get('_expect_fail') is True and r0.get('expected') is True and
+                (r0.get('blocked') is True or r0.get('error') == 'element not found (waited)')):
+            log['postconditions'].append(dict(step=i, kind='expected_blocked', observed=True,
+                                             detail=r0))
+            i += 1
+            replans = 0
             continue
         if r0.get("ok"):
             step_i = i

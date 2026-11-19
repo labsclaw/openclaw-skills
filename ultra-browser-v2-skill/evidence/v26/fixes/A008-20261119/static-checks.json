@@ -1,0 +1,18 @@
+{
+  "battery_unchanged": true,
+  "verifier_unchanged": true,
+  "historical_a006_manifest_at_declared_git": {
+    "matched": 56,
+    "total": 56
+  },
+  "historical_receipts_unchanged": true,
+  "after03_sources_match_checkout": true,
+  "syntax": [
+    "trace_recipe.py",
+    "recipe.py",
+    "agent_loop.py",
+    "test_trace_recipe.py"
+  ],
+  "agents_lint": "observed OK:18 files,136 references,0 findings",
+  "skill_validation": "observed Skill is valid"
+}

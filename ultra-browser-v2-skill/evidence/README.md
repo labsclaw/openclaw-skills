@@ -1,5 +1,7 @@
 # Publicação v2.6, proveniência e limites
 
+A008, atualização de 19/11: [plano e recibos novos](v26/fixes/A008-20261119/PLAN.md), sem substituir históricos. [Procedimento de extração](../references/trace-extraction.md).
+
 A006, atualização de 19/11: [plano e recibos novos](v26/fixes/A006-20261119/PLAN.md). Captura integrada no runner local; recibos históricos preservados. [Procedimento atual](../references/capture-evidence.md).
 
 A005, atualização de 19/11: [aceite executado e novos recibos](v26/fixes/A005-20261119/ACCEPTANCE.md). [Correção explícita do manifesto intermediário A001](v26/corrections/A001-manifest-20261119/CORRECTION.json), sem substituir seus bytes. Manifestos históricos validam sua revisão Git declarada, não o HEAD atual.

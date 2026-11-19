@@ -1,0 +1,93 @@
+{
+  "url": "http://127.0.0.1:53056/",
+  "goal": "record deterministic public actions",
+  "model": "no-provider-called",
+  "steps": [
+    {
+      "step": 0,
+      "parsed": {
+        "action": "type",
+        "id": "name",
+        "value": "A008"
+      },
+      "latency_s": 0.1,
+      "reply": "{\"action\": \"type\", \"id\": \"name\", \"value\": \"A008\"}",
+      "exec": "{\"i\": 0, \"action\": \"type\", \"ok\": true, \"id\": \"name\", \"value\": \"A008\", \"dispatched\": true, \"effect\": {\"verified\": false, \"reason\": \"no postcondition declared\"}, \"_rc\": 0}"
+    },
+    {
+      "step": 1,
+      "parsed": {
+        "action": "select",
+        "id": "kind",
+        "value": "B"
+      },
+      "latency_s": 0.1,
+      "reply": "{\"action\": \"select\", \"id\": \"kind\", \"value\": \"B\"}",
+      "exec": "{\"i\": 0, \"action\": \"select\", \"ok\": true, \"id\": \"kind\", \"value\": \"B\", \"dispatched\": true, \"effect\": {\"verified\": false, \"reason\": \"no postcondition declared\"}, \"_rc\": 0}"
+    },
+    {
+      "step": 2,
+      "parsed": {
+        "action": "click",
+        "id": "save",
+        "label": "Save: draft",
+        "scope": {
+          "id": "scope"
+        },
+        "role": "button"
+      },
+      "latency_s": 0.1,
+      "reply": "{\"action\": \"click\", \"id\": \"save\", \"label\": \"Save: draft\", \"scope\": {\"id\": \"scope\"}, \"role\": \"button\"}",
+      "exec": "{\"i\": 0, \"action\": \"click\", \"ok\": true, \"id\": \"save\", \"text\": \"Save: draft\", \"dispatched\": true, \"effect\": {\"verified\": false, \"reason\": \"no postcondition declared\"}, \"_rc\": 0}"
+    },
+    {
+      "step": 3,
+      "parsed": {
+        "action": "wait",
+        "value": "0",
+        "id": "name"
+      },
+      "latency_s": 0.1,
+      "reply": "{\"action\": \"wait\", \"value\": \"0\"}",
+      "exec": "{\"results\": [{\"i\": 0, \"action\": \"wait\", \"value\": \"0\"}], \"stopped_at\": 0, \"reason\": \"wait\", \"terminal\": \"wait\", \"_rc\": 0}",
+      "host": {
+        "action": "wait",
+        "completed": true
+      }
+    },
+    {
+      "step": 4,
+      "parsed": {
+        "action": "navigate",
+        "value": "http://127.0.0.1:53056/next",
+        "id": "name"
+      },
+      "latency_s": 0.1,
+      "reply": "{\"action\": \"navigate\", \"value\": \"http://127.0.0.1:53056/next\"}",
+      "exec": "{\"results\": [{\"i\": 0, \"action\": \"navigate\", \"value\": \"http://127.0.0.1:53056/next\"}], \"stopped_at\": 0, \"reason\": \"navigate\", \"terminal\": \"navigate\", \"url\": \"http://127.0.0.1:53056/next\", \"_rc\": 0}",
+      "nav": "http://127.0.0.1:53056/next",
+      "host": {
+        "action": "navigate",
+        "completed": true,
+        "rc": 0,
+        "url": "http://127.0.0.1:53056/next"
+      }
+    },
+    {
+      "step": 5,
+      "parsed": {
+        "action": "done"
+      },
+      "latency_s": 0.1,
+      "reply": "{\"action\": \"done\"}"
+    },
+    {
+      "verifier": "text_contains:READY",
+      "verdict": "PASS"
+    }
+  ],
+  "result": "DONE-VERIFIED",
+  "verification_details": [
+    {}
+  ]
+}

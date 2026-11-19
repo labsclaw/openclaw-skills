@@ -1,0 +1,7 @@
+{
+  "requestedReceipt": "a006-regression.json",
+  "state": "not_verified",
+  "observation": "Runtime turn interrupted; on resume receipt absent, partial a006-regression-files-cli present; write_stdin reported Unknown process id 44670.",
+  "acceptance": false,
+  "next": "New attempt a006-final.json with independent artifact directory. Partial files preserved, not overwritten."
+}

@@ -12,6 +12,8 @@ license: MIT
 
 ## Estado publicado e precedência
 
+A008, atualização de 19/11: [extração normalizada single/batch](references/trace-extraction.md) usa linhas executadas, identifica fonte por SHA-256 e separa verifier/asserts das operações. `recipe.py extract` produz candidato, não certificação. Sem corte implícito após save; terminais sem confirmação ficam excluídos com motivo. Esta atualização prevalece sobre descrições históricas do extrator abaixo.
+
 A006, atualização de 19/11: o [runner local captura frames reais na recipe/bateria](references/capture-evidence.md), associa PNGs e hashes ao runId e reprova aceite quando a captura requerida falha. Não é vídeo contínuo. Chamadas diretas legadas registram captura indisponível, nunca capture PASS. Esta atualização prevalece sobre a tabela histórica de captura ausente abaixo.
 
 A029/A030/A044, atualização de 19/11: para ambiente contratual, use o [runner local e recibos de perfil/viewport](references/environment-contract.md). Ele pede e mede viewport CSS 1280x900, cria perfil exclusivo por runId e falha fechado. A bateria integra esse transporte no worker. Chamadas diretas legadas e runtime Hermes permanecem fora do contrato verificado; maximize isolado não é evidência de dimensões.

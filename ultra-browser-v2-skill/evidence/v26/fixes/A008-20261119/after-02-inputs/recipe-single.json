@@ -1,0 +1,108 @@
+{
+  "version": "2.6-extraction-1",
+  "intent": "record deterministic public actions",
+  "source_trace": "evidence\\v26\\fixes\\A008-20261119\\after-02-inputs\\observed-single.json",
+  "native_ops": [
+    {
+      "op": "type",
+      "id": "name",
+      "value": "A008"
+    },
+    {
+      "op": "select",
+      "id": "kind",
+      "value": "B"
+    },
+    {
+      "op": "click",
+      "id": "save",
+      "label": "Save: draft",
+      "role": "button",
+      "scope": {
+        "id": "scope"
+      }
+    },
+    {
+      "op": "wait",
+      "value": "0"
+    },
+    {
+      "op": "navigate",
+      "value": "http://127.0.0.1:55012/next"
+    }
+  ],
+  "notes": [],
+  "provenance": {
+    "source": {
+      "path": "C:\\Users\\ClawLabs\\.openclaw\\workspace\\projects\\ultra-browser-v2-publication\\ultra-browser-v2-skill\\evidence\\v26\\fixes\\A008-20261119\\after-02-inputs\\observed-single.json",
+      "sha256": "5279302df7b664c1b300b93d07976a2bf3dc2ae47ad363f35c60c32dc66b9999",
+      "format": "single",
+      "model": "no-provider-called",
+      "url": "http://127.0.0.1:55012/",
+      "mode": "single"
+    },
+    "operations": [
+      {
+        "opIndex": 0,
+        "action_source": "/steps/0/parsed",
+        "execution_source": "/steps/0/exec",
+        "expected_blocked": false,
+        "effect": {
+          "verified": false,
+          "reason": "no postcondition declared"
+        },
+        "transport_rc": 0
+      },
+      {
+        "opIndex": 1,
+        "action_source": "/steps/1/parsed",
+        "execution_source": "/steps/1/exec",
+        "expected_blocked": false,
+        "effect": {
+          "verified": false,
+          "reason": "no postcondition declared"
+        },
+        "transport_rc": 0
+      },
+      {
+        "opIndex": 2,
+        "action_source": "/steps/2/parsed",
+        "execution_source": "/steps/2/exec",
+        "expected_blocked": false,
+        "effect": {
+          "verified": false,
+          "reason": "no postcondition declared"
+        },
+        "transport_rc": 0
+      },
+      {
+        "opIndex": 3,
+        "action_source": "/steps/3/parsed",
+        "execution_source": "/steps/3/exec/results/0",
+        "expected_blocked": false,
+        "effect": null,
+        "transport_rc": 0
+      },
+      {
+        "opIndex": 4,
+        "action_source": "/steps/4/parsed",
+        "execution_source": "/steps/4/exec/results/0",
+        "expected_blocked": false,
+        "effect": null,
+        "transport_rc": 0
+      }
+    ],
+    "excluded": []
+  },
+  "verification": {
+    "source_result": "DONE-VERIFIED",
+    "observations": [
+      {
+        "source": "/steps/6",
+        "verifier": "text_contains:READY",
+        "verdict": "PASS"
+      }
+    ],
+    "state": "recorded-not-revalidated"
+  }
+}

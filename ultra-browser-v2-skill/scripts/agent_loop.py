@@ -67,12 +67,11 @@ def ask_model(model: str, prompt: str, timeout=150):
 
 
 def parse_action(reply: str):
-    m = re.search(r"\{[^{}]*\"action\"[^{}]*\}", reply, re.S) or re.search(r"\{[\s\S]*?\}", reply)
-    if not m:
-        return None
     try:
-        return json.loads(m.group(0))
-    except Exception:
+        start = reply.index('{')
+        value, _ = json.JSONDecoder().raw_decode(reply[start:])
+        return value if isinstance(value, dict) else None
+    except (ValueError, TypeError):
         return None
 
 
@@ -678,11 +677,9 @@ def execute_batch(acts: list):
 
 def parse_plan(reply: str):
     """Extrai lista de acoes (JSON array) da resposta do modelo free."""
-    m = re.search(r"\[[\s\S]*?\]", reply)
-    if not m:
-        return None
     try:
-        plan = json.loads(m.group(0))
+        start = reply.index('[')
+        plan, _ = json.JSONDecoder().raw_decode(reply[start:])
         return plan if isinstance(plan, list) and plan else None
     except Exception:
         return None
@@ -1158,12 +1155,14 @@ Rules:
                     time.sleep(min(5, float(batch_result.get("value") or 1)))
                 except Exception:
                     time.sleep(1)
+                log["cycles"][-1]["host"] = dict(action="wait", completed=True)
                 continue  # re-planejar pos espera
             if term in ("navigate", "reload"):
                 dest = batch_result.get("url") or url
                 nav_result = run_host(log, "navigation", lambda: harness(f'goto_url("{dest}")\nimport time as _t\n_t.sleep(1.5)', timeout=90))
                 if nav_result is None:
                     break
+                log["cycles"][-1]["host"] = dict(action=term, completed=True, rc=nav_result["rc"], url=dest)
                 continue  # novo snapshot apos navegacao
             if term == "upload":
                 # upload real via harness (CDP): file input + arquivo do goal
@@ -1185,6 +1184,7 @@ Rules:
                     break
                 up_out = up["out"] if isinstance(up, dict) else str(up)
                 log["cycles"][-1]["upload"] = str(up_out)[:200]
+                log["cycles"][-1]["host"] = dict(action="upload", completed=True, rc=up["rc"])
                 continue  # re-planejar apos upload
             # se o batch parou num assert falho -> re-planejar no proximo ciclo
             if batch_result.get("stopped_at") is not None and "assert" in str(
@@ -1428,6 +1428,7 @@ Rules:
                     break
                 up_out = up["out"] if isinstance(up, dict) else str(up)
                 log["steps"][-1]["upload"] = str(up_out)[:200]
+                log["steps"][-1]["host"] = dict(action="upload", completed=True, rc=up["rc"])
                 act_history.append(f"upload '{file_label}' -> {str(up_out)[:40]}")
                 human_pause()
                 continue
@@ -1437,6 +1438,7 @@ Rules:
                 if nav_result is None:
                     break
                 log["steps"][-1]["nav"] = dest
+                log["steps"][-1]["host"] = dict(action=exj["terminal"], completed=True, rc=nav_result["rc"], url=dest)
                 human_pause()
                 continue
             if isinstance(exj, dict) and exj.get("terminal") == "wait":
@@ -1444,6 +1446,7 @@ Rules:
                     time.sleep(min(5, float(exj.get("value") or 1)))
                 except Exception:
                     time.sleep(1)
+                log["steps"][-1]["host"] = dict(action="wait", completed=True)
                 human_pause()
                 continue
         except Exception:
