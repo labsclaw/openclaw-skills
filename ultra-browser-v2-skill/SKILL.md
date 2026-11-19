@@ -12,6 +12,8 @@ license: MIT
 
 ## Estado publicado e precedência
 
+A001, atualização de 19/11: o resolvedor ativo aceita identidade exata cumulativa com escopo/role e bloqueia ambiguidades; recipe preserva label junto de id. Para usar esse contrato, leia [alvos semânticos e pós-condições](references/semantic-targets.md). [Aceite A001 e limites](evidence/v26/fixes/A001-20261119/ACCEPTANCE.md): parcial no conjunto, pois ações legadas sem predicado continuam com efeito explicitamente não verificado. Esta atualização prevalece sobre descrições históricas de primeiro match/label descartado abaixo; não altera os recibos antigos nem fecha os demais itens.
+
 Em 19/11, o patch A002 substituiu o busy-wait do resolvedor compartilhado por espera assíncrona com deadline. Para esse item, consulte o [aceite novo e seus limites](evidence/v26/fixes/A002-20261119/REPORT.md); ele não reclassifica os recibos de 10/11 nem fecha os demais alvos. As descrições históricas de busy-wait abaixo não representam mais `scripts/agent_loop.py` nesta branch. Runtime e browser-eval não foram sincronizados.
 
 Este pacote passa da distribuição v2.3.0 ao estado de código v2.6d. Não é conclusão de todos os alvos v2.6.

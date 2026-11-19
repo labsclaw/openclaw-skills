@@ -98,10 +98,14 @@ def extract_recipe(trace_path: str, goal: str = ""):
 # ---------------- 2. RUN: recipe -> execucao adaptativa ----------------
 
 BATCH_JS = open(os.path.join(HERE, "agent_loop.py"), encoding="utf-8").read()
-# reusar o BATCH_JS_TEMPLATE do agent_loop sem importar o modulo inteiro (CLI arg parsing)
+# Reusar o literal avaliado, nao o texto Python com escapes duplicados.
+# AST nao executa o modulo nem carrega provider/CLI do agente.
 import re as _re
-_m = _re.search(r'BATCH_JS_TEMPLATE = """(.*?)"""\n\n\ndef execute_batch', open(os.path.join(HERE, "agent_loop.py"), encoding="utf-8").read(), _re.S)
-BATCH_JS_TEMPLATE = _m.group(1) if _m else ""
+import ast as _ast
+BATCH_JS_TEMPLATE = next((_ast.literal_eval(n.value) for n in _ast.parse(BATCH_JS).body
+                          if isinstance(n, _ast.Assign) and any(
+                              isinstance(t, _ast.Name) and t.id == "BATCH_JS_TEMPLATE"
+                              for t in n.targets)), "")
 if not BATCH_JS_TEMPLATE:
     raise RuntimeError("BATCH_JS_TEMPLATE nao encontrado no agent_loop.py")
 
@@ -453,11 +457,7 @@ def run_recipe(recipe_path: str, url: str, verify_spec: str = "", fallback_jev: 
         op = dict(ops[i])
         # recipe usa "op"; o executor espera "action"
         op["action"] = op.pop("op", None) or op.get("action")
-        # v2.5.6: com id deterministico, label SOBRA e pode casar elemento errado
-        # (label-first tem precedencia e ja clicou select errado no passado);
-        # manter label apenas como pista quando NAO ha id
-        if op.get("id"):
-            op.pop("label", None)
+        # A001: id, label e escopo sao restricoes cumulativas; nao apagar pistas.
         try:
             state = snapshot()
         except Exception as exc:
@@ -494,6 +494,11 @@ def run_recipe(recipe_path: str, url: str, verify_spec: str = "", fallback_jev: 
         log["steps"].append({"i": i, "op": op, "exec": res})
         r0 = (res.get("results") or [{}])[0]
         terminal = res.get("terminal")
+        # Identidade invalida e efeito falho sao fatais: nunca repetir escrita
+        # nem chamar reparador removendo escopo ou verifier apagando a falha.
+        if res.get("reason") in ("identity invalid", "postcondition failed"):
+            log["result"] = f"RECIPE-FAIL {res['reason']} at step {i}: {r0.get('error') or r0.get('effect')}"
+            break
         if res.get("_rc", 0) != 0 or res.get("_error"):
             log["result"] = f"RECIPE-FAIL harness at step {i}: rc={res.get('_rc')}"
             break

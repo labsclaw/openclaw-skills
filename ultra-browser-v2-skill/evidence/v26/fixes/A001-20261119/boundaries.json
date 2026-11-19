@@ -1,0 +1,330 @@
+{
+  "browser": "148.0.7778.96",
+  "passed": 8,
+  "total": 8,
+  "cases": [
+    {
+      "scenario": "both_scopes",
+      "passed": true,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "save-left",
+            "text": "Salvar",
+            "dispatched": true,
+            "effect": {
+              "verified": true,
+              "before": {
+                "found": true,
+                "value": "idle"
+              },
+              "after": {
+                "found": true,
+                "value": "left"
+              }
+            }
+          },
+          {
+            "i": 1,
+            "action": "click",
+            "ok": true,
+            "id": "save-right",
+            "text": "Salvar",
+            "dispatched": true,
+            "effect": {
+              "verified": true,
+              "before": {
+                "found": true,
+                "value": "left"
+              },
+              "after": {
+                "found": true,
+                "value": "right"
+              }
+            }
+          }
+        ],
+        "stopped_at": null
+      },
+      "hits": [
+        "left",
+        "right"
+      ]
+    },
+    {
+      "scenario": "duplicate_id_scoped",
+      "passed": true,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "same",
+            "text": "Salvar",
+            "dispatched": true,
+            "effect": {
+              "verified": true,
+              "before": {
+                "found": true,
+                "value": "idle"
+              },
+              "after": {
+                "found": true,
+                "value": "right"
+              }
+            }
+          },
+          {
+            "i": 1,
+            "action": "assert_text",
+            "ok": true,
+            "value": "Salvar"
+          }
+        ],
+        "stopped_at": null
+      },
+      "hits": [
+        "right"
+      ]
+    },
+    {
+      "scenario": "labelledby",
+      "passed": true,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "save-right",
+            "text": "Salvar",
+            "dispatched": true,
+            "effect": {
+              "verified": true,
+              "before": {
+                "found": true,
+                "value": "idle"
+              },
+              "after": {
+                "found": true,
+                "value": "right"
+              }
+            }
+          },
+          {
+            "i": 1,
+            "action": "assert_text",
+            "ok": true,
+            "value": "Salvar"
+          }
+        ],
+        "stopped_at": null
+      },
+      "hits": [
+        "right"
+      ]
+    },
+    {
+      "scenario": "shadow_scope",
+      "passed": true,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "",
+            "text": "Salvar",
+            "dispatched": true,
+            "effect": {
+              "verified": true,
+              "before": {
+                "found": true,
+                "value": "idle"
+              },
+              "after": {
+                "found": true,
+                "value": "right"
+              }
+            }
+          },
+          {
+            "i": 1,
+            "action": "assert_text",
+            "ok": true,
+            "value": "Salvar"
+          }
+        ],
+        "stopped_at": null
+      },
+      "hits": [
+        "shadow"
+      ]
+    },
+    {
+      "scenario": "ambiguity_during_wait",
+      "passed": true,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "ambiguous target: 2"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "identity invalid"
+      },
+      "hits": []
+    },
+    {
+      "scenario": "stale_during_wait",
+      "passed": true,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": false,
+            "id": "save-right",
+            "text": "Salvar",
+            "dispatched": true,
+            "effect": {
+              "verified": false,
+              "before": {
+                "found": true,
+                "value": "right"
+              },
+              "after": {
+                "found": true,
+                "value": "right"
+              },
+              "reason": "postcondition timeout or stale"
+            }
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "postcondition failed"
+      },
+      "hits": [
+        "right"
+      ]
+    },
+    {
+      "scenario": "ambiguity_after_click",
+      "passed": true,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": false,
+            "id": "save-right",
+            "text": "Salvar",
+            "dispatched": true,
+            "error": "ambiguous target: 2",
+            "effect": {
+              "verified": false,
+              "before": {
+                "found": true,
+                "value": "idle"
+              },
+              "after": {
+                "found": true,
+                "value": "idle"
+              },
+              "reason": "ambiguous target: 2"
+            }
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "postcondition failed"
+      },
+      "hits": [
+        "right"
+      ]
+    },
+    {
+      "scenario": "recipe_no_replay_no_repair_no_verifier",
+      "passed": true,
+      "result": {
+        "url": "about:blank",
+        "recipe": "recipe.json",
+        "steps": [
+          {
+            "i": 0,
+            "op": {
+              "action": "click",
+              "role": "button",
+              "name": "Salvar",
+              "scope": {
+                "id": "right"
+              },
+              "postcondition": {
+                "target": {
+                  "id": "status"
+                },
+                "property": "text",
+                "equals": "right",
+                "timeout_ms": 300
+              }
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "click",
+                  "ok": false,
+                  "id": "save-right",
+                  "text": "Salvar",
+                  "dispatched": true,
+                  "effect": {
+                    "verified": false,
+                    "before": {
+                      "found": true,
+                      "value": "idle"
+                    },
+                    "after": {
+                      "found": true,
+                      "value": "idle"
+                    },
+                    "reason": "postcondition timeout or stale"
+                  }
+                }
+              ],
+              "stopped_at": 0,
+              "reason": "postcondition failed",
+              "_rc": 0
+            }
+          }
+        ],
+        "result": "RECIPE-FAIL postcondition failed at step 0: {'verified': False, 'before': {'found': True, 'value': 'idle'}, 'after': {'found': True, 'value': 'idle'}, 'reason': 'postcondition timeout or stale'}",
+        "postconditions": [],
+        "repairs": [],
+        "navigation": {
+          "rc": 0,
+          "url": "about:blank",
+          "marker": null
+        },
+        "identity": {
+          "url": "about:blank",
+          "title": "",
+          "markerOk": null
+        },
+        "verifier": "SKIPPED (falha anterior — PASS nao poderia apagar)"
+      },
+      "hits": [
+        "right"
+      ]
+    }
+  ],
+  "sources": {
+    "agent_loop.py": "a440233ae0b84a9a930651d2c14583d461f1f91685c23f640f55fc7f8edd6fd9",
+    "recipe.py": "e33a967364965723191ba4576cb068a57bd91a09e2b51da63d29359488159f46",
+    "test_semantic_target.py": "165d5f198c83b1494088a40aade9aa6d7c90536826af1b29b0582e0c2c558720",
+    "test_semantic_boundaries.py": "eb47ba832755c853b61cf1ceb66e34a5ed037ee6f210c95ebeb198064f49b358"
+  }
+}

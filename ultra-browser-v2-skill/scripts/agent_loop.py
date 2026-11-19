@@ -369,7 +369,7 @@ def execute(act: dict):
 # ---------------- v2.3: BATCH com RE-RESOLVE, novas ops e negative asserts ----------------
 # Fixes da T1-Xtesting (results/phase8b-xt-testing.md):
 # 1. re-resolve: cada acao re-resolve o elemento NO MOMENTO da execucao por
-#    {element (idx tentativa), id, label contains, tag} — nao indice congelado do snapshot
+#    identidade exata cumulativa + scope/role; indice so sem identidade semantica
 # 2. ops novas: upload(element|label, value=filepath via CDP SetFileInput), navigate(url),
 #    wait(value=ms|selector), press(value=key), reload
 # 3. negative asserts: assert_text_absent, expect_blocked (acao que DEVE falhar/422)
@@ -399,42 +399,90 @@ BATCH_JS_TEMPLATE = """(async () => {
     return els;
   };
   const actionable = (el) => el && !el.disabled && (el.offsetParent !== null || el.getClientRects().length > 0);
-  // resolve por bid (atributo) > id > label > posicao; com AUTO-WAIT (padrao Playwright:
-  // re-resolve + espera actionable ate budget — mata stalls de re-render async)
-  const resolve = (a, els) => {
-    // v2.5.1: label com precedencia quando o op nao tem id/bid — clicks por texto
-    // ("Criar plano DEMO-024") sao o que sobrevive a re-indexacao entre paginas
-    if (!a.id && !a.bid && a.label) {
-      const cands0 = collect();
-      const want0 = norm(a.label);
-      const m0 = cands0.find(e =>
-        norm(e.innerText).includes(want0) ||
-        norm(e.getAttribute && (e.getAttribute('aria-label') || '')).includes(want0));
-      if (m0) return m0;
+  // A001: identidade cumulativa e unica; nunca cair em indice apos conflito.
+  const allNodes = () => {
+    const nodes = [];
+    const walk = root => {
+      for (const el of root.querySelectorAll('*')) {
+        nodes.push(el);
+        if (el.shadowRoot) walk(el.shadowRoot);
+      }
+    };
+    walk(document);
+    return nodes;
+  };
+  const roleOf = el => {
+    const explicit = norm(el.getAttribute('role'));
+    if (explicit) return explicit;
+    const tag = el.tagName.toLowerCase();
+    if (tag === 'button' || (tag === 'input' && ['submit','button','reset'].includes(el.type))) return 'button';
+    if (tag === 'a' && el.hasAttribute('href')) return 'link';
+    if (tag === 'select') return 'combobox';
+    if (tag === 'textarea') return 'textbox';
+    if (tag === 'input') return ['checkbox','radio'].includes(el.type) ? el.type : 'textbox';
+    return '';
+  };
+  const nameOf = el => {
+    const refs = (el.getAttribute('aria-labelledby') || '').trim().split(/\\s+/).filter(Boolean);
+    if (refs.length) return refs.map(id => el.getRootNode().getElementById(id)?.textContent || '').join(' ');
+    if (el.hasAttribute('aria-label')) return el.getAttribute('aria-label');
+    if (el.labels && el.labels.length) return Array.from(el.labels).map(l => l.textContent).join(' ');
+    return el.innerText || el.getAttribute('placeholder') || '';
+  };
+  const matches = (el, d) =>
+    (!d.id || el.id === d.id) && (!d.role || roleOf(el) === norm(d.role)) &&
+    (!d.tag || norm(el.tagName) === norm(d.tag)) &&
+    (!d.name || norm(nameOf(el)) === norm(d.name)) &&
+    (!d.label || norm(nameOf(el)) === norm(d.label));
+  const invalid = message => { throw new Error(message); };
+  const validateDescriptor = (d, scope = false) => {
+    const keys = scope ? ['id','role','name','tag'] : ['id','role','name','tag','label','scope'];
+    if (!d || typeof d !== 'object' || Array.isArray(d) ||
+        Object.keys(d).some(k => !keys.includes(k)) ||
+        !['id','role','name','tag','label'].some(k => typeof d[k] === 'string' && d[k].trim()) ||
+        Object.entries(d).some(([k,v]) => k !== 'scope' && (typeof v !== 'string' || !v.trim())))
+      invalid('invalid identity descriptor');
+  };
+  const inScope = (el, scope) => {
+    for (let n = el; n; n = n.parentElement || n.getRootNode()?.host) if (n === scope) return true;
+    return false;
+  };
+  const resolve = (a, els, nodes = allNodes()) => {
+    let scope = null;
+    if (a.scope !== undefined) {
+      validateDescriptor(a.scope, true);
+      const roots = nodes.filter(el => matches(el, a.scope));
+      if (roots.length > 1) invalid('ambiguous scope: ' + roots.length);
+      if (!roots.length) return null;
+      scope = roots[0];
     }
-    if (a.id) { const byId = document.getElementById(a.id); if (byId) return byId; }
-    if (a.bid || a.element) {
-      const sel = '[data-ub2-idx="' + (a.bid || a.element) + '"]';
-      const byAttr = document.querySelector(sel) ||
-        (() => { for (const h of document.querySelectorAll('*')) {
-          if (h.shadowRoot) { try { const r = h.shadowRoot.querySelector(sel); if (r) return r; } catch(e){} } } return null; })();
-      if (byAttr) return byAttr;
-    }
-    if (a.label) {
-      const want = norm(a.label);
-      const cands = collect();
-      const m = cands.find(e =>
-        norm(e.innerText).includes(want) ||
-        norm(e.getAttribute && (e.getAttribute('aria-label') || '')).includes(want) ||
-        norm(e.value).includes(want) ||
-        norm(e.placeholder).includes(want) ||
-        (e.tagName === 'A' && norm(e.href).includes(want)));
-      if (m) return m;
-      const idm = /\\b([A-Za-z][\\w-]*)\\b\\s*:\\s/.exec(a.label || '');
-      if (idm) { const b = cands.find(e => e.id === idm[1]); if (b) return b; }
-    }
-    // v2.5.4: fallback por POSICAO so com a.element explicito — sem ele, nao achou = null
-    return (a.element !== undefined && a.element !== null && els[a.element - 1]) || null;
+    let cands = nodes.filter(el => !scope || inScope(el, scope));
+    if (['id','name','label','role','tag'].some(k => a[k])) {
+      const descriptor = Object.fromEntries(['id','name','label','role','tag'].filter(k => a[k]).map(k => [k,a[k]]));
+      validateDescriptor(descriptor);
+      cands = cands.filter(el => matches(el, descriptor));
+    } else if (a.bid || a.element) {
+      cands = cands.filter(el => el.getAttribute('data-ub2-idx') === String(a.bid || a.element));
+    } else return null;
+    if (cands.length > 1) invalid('ambiguous target: ' + cands.length);
+    return cands[0] || null;
+  };
+  const validateCondition = pc => {
+    if (!pc || typeof pc !== 'object' || Array.isArray(pc) ||
+        Object.keys(pc).some(k => !['target','property','equals','timeout_ms'].includes(k)) ||
+        !['text','value','checked','visible','exists'].includes(pc.property) ||
+        !Object.hasOwn(pc, 'equals') || !['string','boolean','number'].includes(typeof pc.equals) ||
+        (pc.timeout_ms !== undefined && (!Number.isInteger(pc.timeout_ms) || pc.timeout_ms < 0 || pc.timeout_ms > 3000)))
+      invalid('invalid postcondition');
+    validateDescriptor(pc.target);
+  };
+  const readCondition = pc => {
+    const el = resolve(pc.target, collect());
+    let value = null;
+    if (pc.property === 'exists') value = !!el;
+    else if (pc.property === 'visible') value = !!el && !!(el.getClientRects().length);
+    else if (el) value = pc.property === 'text' ? (el.textContent || '').trim() : el[pc.property];
+    return {found: !!el, value: value === undefined ? null : value};
   };
   const resolveWait = async (a, els, budgetMs) => {
     const deadline = performance.now() + (budgetMs ?? 3000);
@@ -466,7 +514,11 @@ BATCH_JS_TEMPLATE = """(async () => {
       continue;
     }
     if (a.action === 'assert_field') {
-      const el = resolve(a, els);
+      let el;
+      try { el = resolve(a, els); } catch(e) {
+        results.push({i, error: e.message});
+        return JSON.stringify({results, stopped_at: i, reason: 'identity invalid'});
+      }
       const v = el && el.value !== undefined ? el.value : (el ? el.innerText : '');
       const ok = !!(v && v.includes(a.value || ''));
       results.push({i, action: 'assert_field', ok, value: a.value, got: String(v).slice(0,60)});
@@ -490,9 +542,52 @@ BATCH_JS_TEMPLATE = """(async () => {
       results.push({i, action: a.action});
       return JSON.stringify({results, stopped_at: null, terminal: a.action});
     }
-    const el = await resolveWait(a, els, a._expect_fail ? 800 : 3000);
+    let el, effectBefore = null;
+    try {
+      if (a.postcondition !== undefined) {
+        validateCondition(a.postcondition);
+        if (!['click','type','select','press'].includes(a.action)) invalid('postcondition requires host for terminal action');
+        effectBefore = readCondition(a.postcondition);
+      }
+      el = await resolveWait(a, els, a._expect_fail ? 800 : 3000);
+      // Releitura imediatamente antes do despacho, nao antes de esperar o alvo.
+      if (el && a.postcondition !== undefined) effectBefore = readCondition(a.postcondition);
+    } catch(e) {
+      results.push({i, error: e.message});
+      return JSON.stringify({results, stopped_at: i, reason: 'identity invalid'});
+    }
+    const finish = async () => {
+      const row = results[results.length - 1];
+      row.dispatched = true;
+      if (a.postcondition === undefined) {
+        row.effect = {verified: false, reason: 'no postcondition declared'};
+        return true;
+      }
+      const pc = a.postcondition;
+      const deadline = performance.now() + (pc.timeout_ms ?? 3000);
+      let after = null;
+      try {
+        while (true) {
+          after = readCondition(pc);
+          const fresh = after.value !== effectBefore.value || after.found !== effectBefore.found;
+          if (fresh && after.value === pc.equals) {
+            row.effect = {verified: true, before: effectBefore, after};
+            return true;
+          }
+          const remaining = deadline - performance.now();
+          if (remaining <= 0) break;
+          await new Promise(r => setTimeout(r, Math.min(50, remaining)));
+        }
+      } catch(e) { row.error = e.message; }
+      row.ok = false;
+      row.effect = {verified: false, before: effectBefore, after, reason: row.error || 'postcondition timeout or stale'};
+      return false;
+    };
     if (!el) {
       results.push({i, error: 'element not found (waited)', element: a.element, label: a.label, bid: a.bid});
+      // O reparador legado nao carrega scope/role/name: nao autorizar downgrade.
+      if (a.scope !== undefined || a.role || a.name || (a.id && a.label) || a.postcondition !== undefined)
+        return JSON.stringify({results, stopped_at: i, reason: 'identity invalid'});
       if (a._expect_fail) { results[results.length-1].expected = true; continue; }
       return JSON.stringify({results, stopped_at: i, reason: 'element not found'});
     }
@@ -514,6 +609,7 @@ BATCH_JS_TEMPLATE = """(async () => {
           }
           el.dispatchEvent(new Event('change', {bubbles:true}));
           results.push({i, action: 'type', ok: true, id: el.id, value: a.value});
+      if (!await finish()) return JSON.stringify({results, stopped_at: i, reason: 'postcondition failed'});
           continue;
         }
     if (a.action === 'press') {
@@ -523,6 +619,7 @@ BATCH_JS_TEMPLATE = """(async () => {
       el.dispatchEvent(new KeyboardEvent('keyup', {key: k, bubbles: true}));
       el.dispatchEvent(new KeyboardEvent('keypress', {key: k, bubbles: true}));
       results.push({i, action: 'press', ok: true, id: el.id, key: k});
+      if (!await finish()) return JSON.stringify({results, stopped_at: i, reason: 'postcondition failed'});
       continue;
     }
     if (a.action === 'select') {
@@ -538,6 +635,7 @@ BATCH_JS_TEMPLATE = """(async () => {
       el.dispatchEvent(new Event('change', {bubbles:true}));
       el.dispatchEvent(new Event('input', {bubbles:true}));
       results.push({i, action: 'select', ok: true, id: el.id, value: opt.text});
+      if (!await finish()) return JSON.stringify({results, stopped_at: i, reason: 'postcondition failed'});
       continue;
     }
     if (a.action === 'upload') {
@@ -548,6 +646,7 @@ BATCH_JS_TEMPLATE = """(async () => {
     if (a.action === 'click') {
       el.click();
       results.push({i, action: 'click', ok: true, id: el.id, text: (el.innerText||'').slice(0,40)});
+      if (!await finish()) return JSON.stringify({results, stopped_at: i, reason: 'postcondition failed'});
       continue;
     }
     results.push({i, error: 'unknown action ' + a.action});
@@ -1165,10 +1264,13 @@ Rules:
         # v2.3: enriquecer a acao com id/label do elemento do snapshot (re-resolve)
         try:
             el_ref = els[int(act.get("element") or 1) - 1]
-            if el_ref.get("id"):
-                act["id"] = el_ref["id"]
-            act["label"] = (f"{el_ref.get('tag','')} {el_ref.get('id','')}: "
-                            f"{el_ref.get('text','')}").strip()[:80]
+            # Nao sobrescrever identidade explicita nem transformar texto de
+            # estado (value=...) em nome acessivel contraditorio com o id.
+            if not any(act.get(k) for k in ("id", "name", "label", "scope", "role")):
+                if el_ref.get("id"):
+                    act["id"] = el_ref["id"]
+                elif el_ref.get("tag") in ("button", "a"):
+                    act["label"] = el_ref.get("text", "")
         except Exception:
             pass
 

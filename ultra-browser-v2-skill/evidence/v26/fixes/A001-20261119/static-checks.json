@@ -1,0 +1,59 @@
+{
+  "checks": [
+    {
+      "command": [
+        "git",
+        "diff",
+        "--exit-code",
+        "HEAD",
+        "--",
+        "ultra-browser-v2-skill/evidence/v26/results",
+        "ultra-browser-v2-skill/evidence/v26/ultra-browser-v2",
+        "ultra-browser-v2-skill/evidence/v26/fixes/A002-20261119",
+        "ultra-browser-v2-skill/evidence/manifest.json",
+        "ultra-browser-v2-skill/evidence/manifest-v230.json"
+      ],
+      "rc": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "rc": 0,
+      "stdout": "",
+      "stderr": "warning: in the working copy of 'ultra-browser-v2-skill/SKILL.md', LF will be replaced by CRLF the next time Git touches it\n"
+    },
+    {
+      "command": [
+        "node",
+        "scripts/agents-lint.cjs"
+      ],
+      "rc": 0,
+      "stdout": "Agents lint: OK | 18 arquivos | 136 referências | 0 achados\n22 referências/arquivos classificados fora da existência obrigatória. Limites no JSON e na documentação.\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python",
+        "C:/Users/ClawLabs/.openclaw/agents/main/agent/codex-home/skills/.system/skill-creator/scripts/quick_validate.py",
+        "C:\\Users\\ClawLabs\\.openclaw\\workspace\\projects\\ultra-browser-v2-publication\\ultra-browser-v2-skill"
+      ],
+      "rc": 0,
+      "stdout": "Skill is valid!\n",
+      "stderr": ""
+    }
+  ],
+  "a002_manifest_verified": "8/8",
+  "final_receipts_match_sources": true,
+  "sources": {
+    "agent_loop.py": "a440233ae0b84a9a930651d2c14583d461f1f91685c23f640f55fc7f8edd6fd9",
+    "recipe.py": "b7cf7705ca39521bb8a512a331b2001393c9d346389a5cf20728a343899129a3",
+    "test_semantic_target.py": "165d5f198c83b1494088a40aade9aa6d7c90536826af1b29b0582e0c2c558720",
+    "test_semantic_boundaries.py": "eb47ba832755c853b61cf1ceb66e34a5ed037ee6f210c95ebeb198064f49b358",
+    "test_semantic_template.py": "bcfc2b57419d50a636571ca37bc8b31aa8e831e837e6b79e758eee25e5d6c267"
+  }
+}
