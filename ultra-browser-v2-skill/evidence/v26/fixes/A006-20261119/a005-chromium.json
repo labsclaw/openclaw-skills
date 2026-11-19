@@ -1,0 +1,3099 @@
+{
+  "item": "A005",
+  "baseline": false,
+  "passed": 43,
+  "total": 43,
+  "browser": "148.0.7778.96",
+  "sources": {
+    "agent_loop": "6a554a12b66907bfe16c7ffa589d077124c2ddcb898655c04f7be35205f98976",
+    "recipe": "877f5c74641c367744df45b249dcacc7699ef2b941b2d22bfcedf18d1b46bf08",
+    "test": "ab4a7570fd1e4c5b797158617adc8f5d94d07b86e6de69b449b1010f60e98f93",
+    "persisted_verifier": "4e5bf5b60b04cdd1c752d9aaf8f26c2ab6e8c5895311c3c37b55f2e411d41c71"
+  },
+  "cases": [
+    {
+      "scenario": "good",
+      "passed": true,
+      "verdict": "PASS",
+      "details": {
+        "passed": true,
+        "kind": "persisted_json",
+        "reloadConfirmed": true,
+        "before": {
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124107736.4
+        },
+        "observation": {
+          "ready": true,
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124107918.2,
+          "navigationType": "reload",
+          "recordCount": 1,
+          "linkCount": 1,
+          "pairs": [
+            [
+              "id",
+              "PLAN-001"
+            ],
+            [
+              "runId",
+              "a005-test"
+            ],
+            [
+              "title",
+              "Plano completo revisado"
+            ],
+            [
+              "email",
+              "qa@example.test"
+            ],
+            [
+              "type",
+              "Integração"
+            ],
+            [
+              "priority",
+              "Alta"
+            ],
+            [
+              "responsible",
+              "Equipe Alfa"
+            ],
+            [
+              "requiresEnvironment",
+              "true"
+            ],
+            [
+              "environment",
+              "Homologação sintética"
+            ],
+            [
+              "demand",
+              "DEMO-024"
+            ],
+            [
+              "attachment",
+              "{\"filename\": \"evidence.txt\", \"bytes\": 23, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\"}"
+            ]
+          ],
+          "structureValid": true,
+          "link": {
+            "href": "/api/attachment",
+            "download": "evidence.txt"
+          },
+          "download": {
+            "bytes": 23,
+            "sha256": "b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19"
+          }
+        },
+        "mismatches": []
+      },
+      "reloads": 1,
+      "downloads": 1
+    },
+    {
+      "scenario": "field:id",
+      "passed": true,
+      "verdict": "FAIL: ['record.id']",
+      "details": {
+        "passed": false,
+        "kind": "persisted_json",
+        "reloadConfirmed": true,
+        "before": {
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124107981.1
+        },
+        "observation": {
+          "ready": true,
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124108031,
+          "navigationType": "reload",
+          "recordCount": 1,
+          "linkCount": 1,
+          "pairs": [
+            [
+              "id",
+              "PLAN-001-wrong"
+            ],
+            [
+              "runId",
+              "a005-test"
+            ],
+            [
+              "title",
+              "Plano completo revisado"
+            ],
+            [
+              "email",
+              "qa@example.test"
+            ],
+            [
+              "type",
+              "Integração"
+            ],
+            [
+              "priority",
+              "Alta"
+            ],
+            [
+              "responsible",
+              "Equipe Alfa"
+            ],
+            [
+              "requiresEnvironment",
+              "true"
+            ],
+            [
+              "environment",
+              "Homologação sintética"
+            ],
+            [
+              "demand",
+              "DEMO-024"
+            ],
+            [
+              "attachment",
+              "{\"filename\": \"evidence.txt\", \"bytes\": 23, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\"}"
+            ]
+          ],
+          "structureValid": true,
+          "link": {
+            "href": "/api/attachment",
+            "download": "evidence.txt"
+          },
+          "download": {
+            "bytes": 23,
+            "sha256": "b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19"
+          }
+        },
+        "mismatches": [
+          "record.id"
+        ]
+      },
+      "reloads": 1,
+      "downloads": 1
+    },
+    {
+      "scenario": "field:runId",
+      "passed": true,
+      "verdict": "FAIL: ['record.runId']",
+      "details": {
+        "passed": false,
+        "kind": "persisted_json",
+        "reloadConfirmed": true,
+        "before": {
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124108227.2
+        },
+        "observation": {
+          "ready": true,
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124108282.8,
+          "navigationType": "reload",
+          "recordCount": 1,
+          "linkCount": 1,
+          "pairs": [
+            [
+              "id",
+              "PLAN-001"
+            ],
+            [
+              "runId",
+              "a005-test-wrong"
+            ],
+            [
+              "title",
+              "Plano completo revisado"
+            ],
+            [
+              "email",
+              "qa@example.test"
+            ],
+            [
+              "type",
+              "Integração"
+            ],
+            [
+              "priority",
+              "Alta"
+            ],
+            [
+              "responsible",
+              "Equipe Alfa"
+            ],
+            [
+              "requiresEnvironment",
+              "true"
+            ],
+            [
+              "environment",
+              "Homologação sintética"
+            ],
+            [
+              "demand",
+              "DEMO-024"
+            ],
+            [
+              "attachment",
+              "{\"filename\": \"evidence.txt\", \"bytes\": 23, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\"}"
+            ]
+          ],
+          "structureValid": true,
+          "link": {
+            "href": "/api/attachment",
+            "download": "evidence.txt"
+          },
+          "download": {
+            "bytes": 23,
+            "sha256": "b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19"
+          }
+        },
+        "mismatches": [
+          "record.runId"
+        ]
+      },
+      "reloads": 1,
+      "downloads": 1
+    },
+    {
+      "scenario": "field:title",
+      "passed": true,
+      "verdict": "FAIL: ['record.title']",
+      "details": {
+        "passed": false,
+        "kind": "persisted_json",
+        "reloadConfirmed": true,
+        "before": {
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124108334.3
+        },
+        "observation": {
+          "ready": true,
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124108373,
+          "navigationType": "reload",
+          "recordCount": 1,
+          "linkCount": 1,
+          "pairs": [
+            [
+              "id",
+              "PLAN-001"
+            ],
+            [
+              "runId",
+              "a005-test"
+            ],
+            [
+              "title",
+              "Plano completo revisado-wrong"
+            ],
+            [
+              "email",
+              "qa@example.test"
+            ],
+            [
+              "type",
+              "Integração"
+            ],
+            [
+              "priority",
+              "Alta"
+            ],
+            [
+              "responsible",
+              "Equipe Alfa"
+            ],
+            [
+              "requiresEnvironment",
+              "true"
+            ],
+            [
+              "environment",
+              "Homologação sintética"
+            ],
+            [
+              "demand",
+              "DEMO-024"
+            ],
+            [
+              "attachment",
+              "{\"filename\": \"evidence.txt\", \"bytes\": 23, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\"}"
+            ]
+          ],
+          "structureValid": true,
+          "link": {
+            "href": "/api/attachment",
+            "download": "evidence.txt"
+          },
+          "download": {
+            "bytes": 23,
+            "sha256": "b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19"
+          }
+        },
+        "mismatches": [
+          "record.title"
+        ]
+      },
+      "reloads": 1,
+      "downloads": 1
+    },
+    {
+      "scenario": "field:email",
+      "passed": true,
+      "verdict": "FAIL: ['record.email']",
+      "details": {
+        "passed": false,
+        "kind": "persisted_json",
+        "reloadConfirmed": true,
+        "before": {
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124108422.1
+        },
+        "observation": {
+          "ready": true,
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124108449.6,
+          "navigationType": "reload",
+          "recordCount": 1,
+          "linkCount": 1,
+          "pairs": [
+            [
+              "id",
+              "PLAN-001"
+            ],
+            [
+              "runId",
+              "a005-test"
+            ],
+            [
+              "title",
+              "Plano completo revisado"
+            ],
+            [
+              "email",
+              "qa@example.test-wrong"
+            ],
+            [
+              "type",
+              "Integração"
+            ],
+            [
+              "priority",
+              "Alta"
+            ],
+            [
+              "responsible",
+              "Equipe Alfa"
+            ],
+            [
+              "requiresEnvironment",
+              "true"
+            ],
+            [
+              "environment",
+              "Homologação sintética"
+            ],
+            [
+              "demand",
+              "DEMO-024"
+            ],
+            [
+              "attachment",
+              "{\"filename\": \"evidence.txt\", \"bytes\": 23, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\"}"
+            ]
+          ],
+          "structureValid": true,
+          "link": {
+            "href": "/api/attachment",
+            "download": "evidence.txt"
+          },
+          "download": {
+            "bytes": 23,
+            "sha256": "b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19"
+          }
+        },
+        "mismatches": [
+          "record.email"
+        ]
+      },
+      "reloads": 1,
+      "downloads": 1
+    },
+    {
+      "scenario": "field:type",
+      "passed": true,
+      "verdict": "FAIL: ['record.type']",
+      "details": {
+        "passed": false,
+        "kind": "persisted_json",
+        "reloadConfirmed": true,
+        "before": {
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124108483.6
+        },
+        "observation": {
+          "ready": true,
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124108510.4,
+          "navigationType": "reload",
+          "recordCount": 1,
+          "linkCount": 1,
+          "pairs": [
+            [
+              "id",
+              "PLAN-001"
+            ],
+            [
+              "runId",
+              "a005-test"
+            ],
+            [
+              "title",
+              "Plano completo revisado"
+            ],
+            [
+              "email",
+              "qa@example.test"
+            ],
+            [
+              "type",
+              "Integração-wrong"
+            ],
+            [
+              "priority",
+              "Alta"
+            ],
+            [
+              "responsible",
+              "Equipe Alfa"
+            ],
+            [
+              "requiresEnvironment",
+              "true"
+            ],
+            [
+              "environment",
+              "Homologação sintética"
+            ],
+            [
+              "demand",
+              "DEMO-024"
+            ],
+            [
+              "attachment",
+              "{\"filename\": \"evidence.txt\", \"bytes\": 23, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\"}"
+            ]
+          ],
+          "structureValid": true,
+          "link": {
+            "href": "/api/attachment",
+            "download": "evidence.txt"
+          },
+          "download": {
+            "bytes": 23,
+            "sha256": "b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19"
+          }
+        },
+        "mismatches": [
+          "record.type"
+        ]
+      },
+      "reloads": 1,
+      "downloads": 1
+    },
+    {
+      "scenario": "field:priority",
+      "passed": true,
+      "verdict": "FAIL: ['record.priority']",
+      "details": {
+        "passed": false,
+        "kind": "persisted_json",
+        "reloadConfirmed": true,
+        "before": {
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124108552.9
+        },
+        "observation": {
+          "ready": true,
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124108580.8,
+          "navigationType": "reload",
+          "recordCount": 1,
+          "linkCount": 1,
+          "pairs": [
+            [
+              "id",
+              "PLAN-001"
+            ],
+            [
+              "runId",
+              "a005-test"
+            ],
+            [
+              "title",
+              "Plano completo revisado"
+            ],
+            [
+              "email",
+              "qa@example.test"
+            ],
+            [
+              "type",
+              "Integração"
+            ],
+            [
+              "priority",
+              "Alta-wrong"
+            ],
+            [
+              "responsible",
+              "Equipe Alfa"
+            ],
+            [
+              "requiresEnvironment",
+              "true"
+            ],
+            [
+              "environment",
+              "Homologação sintética"
+            ],
+            [
+              "demand",
+              "DEMO-024"
+            ],
+            [
+              "attachment",
+              "{\"filename\": \"evidence.txt\", \"bytes\": 23, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\"}"
+            ]
+          ],
+          "structureValid": true,
+          "link": {
+            "href": "/api/attachment",
+            "download": "evidence.txt"
+          },
+          "download": {
+            "bytes": 23,
+            "sha256": "b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19"
+          }
+        },
+        "mismatches": [
+          "record.priority"
+        ]
+      },
+      "reloads": 1,
+      "downloads": 1
+    },
+    {
+      "scenario": "field:responsible",
+      "passed": true,
+      "verdict": "FAIL: ['record.responsible']",
+      "details": {
+        "passed": false,
+        "kind": "persisted_json",
+        "reloadConfirmed": true,
+        "before": {
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124108612.7
+        },
+        "observation": {
+          "ready": true,
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124108637.6,
+          "navigationType": "reload",
+          "recordCount": 1,
+          "linkCount": 1,
+          "pairs": [
+            [
+              "id",
+              "PLAN-001"
+            ],
+            [
+              "runId",
+              "a005-test"
+            ],
+            [
+              "title",
+              "Plano completo revisado"
+            ],
+            [
+              "email",
+              "qa@example.test"
+            ],
+            [
+              "type",
+              "Integração"
+            ],
+            [
+              "priority",
+              "Alta"
+            ],
+            [
+              "responsible",
+              "Equipe Alfa-wrong"
+            ],
+            [
+              "requiresEnvironment",
+              "true"
+            ],
+            [
+              "environment",
+              "Homologação sintética"
+            ],
+            [
+              "demand",
+              "DEMO-024"
+            ],
+            [
+              "attachment",
+              "{\"filename\": \"evidence.txt\", \"bytes\": 23, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\"}"
+            ]
+          ],
+          "structureValid": true,
+          "link": {
+            "href": "/api/attachment",
+            "download": "evidence.txt"
+          },
+          "download": {
+            "bytes": 23,
+            "sha256": "b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19"
+          }
+        },
+        "mismatches": [
+          "record.responsible"
+        ]
+      },
+      "reloads": 1,
+      "downloads": 1
+    },
+    {
+      "scenario": "field:requiresEnvironment",
+      "passed": true,
+      "verdict": "FAIL: ['record.requiresEnvironment']",
+      "details": {
+        "passed": false,
+        "kind": "persisted_json",
+        "reloadConfirmed": true,
+        "before": {
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124108671.8
+        },
+        "observation": {
+          "ready": true,
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124108701.5,
+          "navigationType": "reload",
+          "recordCount": 1,
+          "linkCount": 1,
+          "pairs": [
+            [
+              "id",
+              "PLAN-001"
+            ],
+            [
+              "runId",
+              "a005-test"
+            ],
+            [
+              "title",
+              "Plano completo revisado"
+            ],
+            [
+              "email",
+              "qa@example.test"
+            ],
+            [
+              "type",
+              "Integração"
+            ],
+            [
+              "priority",
+              "Alta"
+            ],
+            [
+              "responsible",
+              "Equipe Alfa"
+            ],
+            [
+              "requiresEnvironment",
+              "true-wrong"
+            ],
+            [
+              "environment",
+              "Homologação sintética"
+            ],
+            [
+              "demand",
+              "DEMO-024"
+            ],
+            [
+              "attachment",
+              "{\"filename\": \"evidence.txt\", \"bytes\": 23, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\"}"
+            ]
+          ],
+          "structureValid": true,
+          "link": {
+            "href": "/api/attachment",
+            "download": "evidence.txt"
+          },
+          "download": {
+            "bytes": 23,
+            "sha256": "b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19"
+          }
+        },
+        "mismatches": [
+          "record.requiresEnvironment"
+        ]
+      },
+      "reloads": 1,
+      "downloads": 1
+    },
+    {
+      "scenario": "field:environment",
+      "passed": true,
+      "verdict": "FAIL: ['record.environment']",
+      "details": {
+        "passed": false,
+        "kind": "persisted_json",
+        "reloadConfirmed": true,
+        "before": {
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124108735.3
+        },
+        "observation": {
+          "ready": true,
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124108771.1,
+          "navigationType": "reload",
+          "recordCount": 1,
+          "linkCount": 1,
+          "pairs": [
+            [
+              "id",
+              "PLAN-001"
+            ],
+            [
+              "runId",
+              "a005-test"
+            ],
+            [
+              "title",
+              "Plano completo revisado"
+            ],
+            [
+              "email",
+              "qa@example.test"
+            ],
+            [
+              "type",
+              "Integração"
+            ],
+            [
+              "priority",
+              "Alta"
+            ],
+            [
+              "responsible",
+              "Equipe Alfa"
+            ],
+            [
+              "requiresEnvironment",
+              "true"
+            ],
+            [
+              "environment",
+              "Homologação sintética-wrong"
+            ],
+            [
+              "demand",
+              "DEMO-024"
+            ],
+            [
+              "attachment",
+              "{\"filename\": \"evidence.txt\", \"bytes\": 23, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\"}"
+            ]
+          ],
+          "structureValid": true,
+          "link": {
+            "href": "/api/attachment",
+            "download": "evidence.txt"
+          },
+          "download": {
+            "bytes": 23,
+            "sha256": "b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19"
+          }
+        },
+        "mismatches": [
+          "record.environment"
+        ]
+      },
+      "reloads": 1,
+      "downloads": 1
+    },
+    {
+      "scenario": "binding",
+      "passed": true,
+      "verdict": "FAIL: ['record.demand']",
+      "details": {
+        "passed": false,
+        "kind": "persisted_json",
+        "reloadConfirmed": true,
+        "before": {
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124108818.6
+        },
+        "observation": {
+          "ready": true,
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124108858.7,
+          "navigationType": "reload",
+          "recordCount": 1,
+          "linkCount": 1,
+          "pairs": [
+            [
+              "id",
+              "PLAN-001"
+            ],
+            [
+              "runId",
+              "a005-test"
+            ],
+            [
+              "title",
+              "Plano completo revisado"
+            ],
+            [
+              "email",
+              "qa@example.test"
+            ],
+            [
+              "type",
+              "Integração"
+            ],
+            [
+              "priority",
+              "Alta"
+            ],
+            [
+              "responsible",
+              "Equipe Alfa"
+            ],
+            [
+              "requiresEnvironment",
+              "true"
+            ],
+            [
+              "environment",
+              "Homologação sintética"
+            ],
+            [
+              "demand",
+              "DEMO-025"
+            ],
+            [
+              "attachment",
+              "{\"filename\": \"evidence.txt\", \"bytes\": 23, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\"}"
+            ]
+          ],
+          "structureValid": true,
+          "link": {
+            "href": "/api/attachment",
+            "download": "evidence.txt"
+          },
+          "download": {
+            "bytes": 23,
+            "sha256": "b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19"
+          }
+        },
+        "mismatches": [
+          "record.demand"
+        ]
+      },
+      "reloads": 1,
+      "downloads": 1
+    },
+    {
+      "scenario": "attachment:filename",
+      "passed": true,
+      "verdict": "FAIL: ['attachment.filename']",
+      "details": {
+        "passed": false,
+        "kind": "persisted_json",
+        "reloadConfirmed": true,
+        "before": {
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124108905
+        },
+        "observation": {
+          "ready": true,
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124108934.1,
+          "navigationType": "reload",
+          "recordCount": 1,
+          "linkCount": 1,
+          "pairs": [
+            [
+              "id",
+              "PLAN-001"
+            ],
+            [
+              "runId",
+              "a005-test"
+            ],
+            [
+              "title",
+              "Plano completo revisado"
+            ],
+            [
+              "email",
+              "qa@example.test"
+            ],
+            [
+              "type",
+              "Integração"
+            ],
+            [
+              "priority",
+              "Alta"
+            ],
+            [
+              "responsible",
+              "Equipe Alfa"
+            ],
+            [
+              "requiresEnvironment",
+              "true"
+            ],
+            [
+              "environment",
+              "Homologação sintética"
+            ],
+            [
+              "demand",
+              "DEMO-024"
+            ],
+            [
+              "attachment",
+              "{\"filename\": \"evidence.txtbad\", \"bytes\": 23, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\"}"
+            ]
+          ],
+          "structureValid": true,
+          "link": {
+            "href": "/api/attachment",
+            "download": "evidence.txt"
+          },
+          "download": {
+            "bytes": 23,
+            "sha256": "b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19"
+          }
+        },
+        "mismatches": [
+          "attachment.filename"
+        ]
+      },
+      "reloads": 1,
+      "downloads": 1
+    },
+    {
+      "scenario": "attachment:bytes",
+      "passed": true,
+      "verdict": "FAIL: ['attachment.bytes']",
+      "details": {
+        "passed": false,
+        "kind": "persisted_json",
+        "reloadConfirmed": true,
+        "before": {
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124108967.4
+        },
+        "observation": {
+          "ready": true,
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124108994.5,
+          "navigationType": "reload",
+          "recordCount": 1,
+          "linkCount": 1,
+          "pairs": [
+            [
+              "id",
+              "PLAN-001"
+            ],
+            [
+              "runId",
+              "a005-test"
+            ],
+            [
+              "title",
+              "Plano completo revisado"
+            ],
+            [
+              "email",
+              "qa@example.test"
+            ],
+            [
+              "type",
+              "Integração"
+            ],
+            [
+              "priority",
+              "Alta"
+            ],
+            [
+              "responsible",
+              "Equipe Alfa"
+            ],
+            [
+              "requiresEnvironment",
+              "true"
+            ],
+            [
+              "environment",
+              "Homologação sintética"
+            ],
+            [
+              "demand",
+              "DEMO-024"
+            ],
+            [
+              "attachment",
+              "{\"filename\": \"evidence.txt\", \"bytes\": 24, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\"}"
+            ]
+          ],
+          "structureValid": true,
+          "link": {
+            "href": "/api/attachment",
+            "download": "evidence.txt"
+          },
+          "download": {
+            "bytes": 23,
+            "sha256": "b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19"
+          }
+        },
+        "mismatches": [
+          "attachment.bytes"
+        ]
+      },
+      "reloads": 1,
+      "downloads": 1
+    },
+    {
+      "scenario": "attachment:sha256",
+      "passed": true,
+      "verdict": "FAIL: ['attachment.sha256']",
+      "details": {
+        "passed": false,
+        "kind": "persisted_json",
+        "reloadConfirmed": true,
+        "before": {
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124109025.1
+        },
+        "observation": {
+          "ready": true,
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124109059.3,
+          "navigationType": "reload",
+          "recordCount": 1,
+          "linkCount": 1,
+          "pairs": [
+            [
+              "id",
+              "PLAN-001"
+            ],
+            [
+              "runId",
+              "a005-test"
+            ],
+            [
+              "title",
+              "Plano completo revisado"
+            ],
+            [
+              "email",
+              "qa@example.test"
+            ],
+            [
+              "type",
+              "Integração"
+            ],
+            [
+              "priority",
+              "Alta"
+            ],
+            [
+              "responsible",
+              "Equipe Alfa"
+            ],
+            [
+              "requiresEnvironment",
+              "true"
+            ],
+            [
+              "environment",
+              "Homologação sintética"
+            ],
+            [
+              "demand",
+              "DEMO-024"
+            ],
+            [
+              "attachment",
+              "{\"filename\": \"evidence.txt\", \"bytes\": 23, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19bad\"}"
+            ]
+          ],
+          "structureValid": true,
+          "link": {
+            "href": "/api/attachment",
+            "download": "evidence.txt"
+          },
+          "download": {
+            "bytes": 23,
+            "sha256": "b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19"
+          }
+        },
+        "mismatches": [
+          "attachment.sha256"
+        ]
+      },
+      "reloads": 1,
+      "downloads": 1
+    },
+    {
+      "scenario": "link_href",
+      "passed": true,
+      "verdict": "FAIL: ValueError: attachment link mismatch",
+      "details": {
+        "passed": false,
+        "kind": "persisted_json",
+        "reloadConfirmed": false,
+        "before": {
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124109173.7
+        },
+        "observation": {
+          "ready": true,
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124109219.2,
+          "navigationType": "reload",
+          "recordCount": 1,
+          "linkCount": 1,
+          "pairs": [
+            [
+              "id",
+              "PLAN-001"
+            ],
+            [
+              "runId",
+              "a005-test"
+            ],
+            [
+              "title",
+              "Plano completo revisado"
+            ],
+            [
+              "email",
+              "qa@example.test"
+            ],
+            [
+              "type",
+              "Integração"
+            ],
+            [
+              "priority",
+              "Alta"
+            ],
+            [
+              "responsible",
+              "Equipe Alfa"
+            ],
+            [
+              "requiresEnvironment",
+              "true"
+            ],
+            [
+              "environment",
+              "Homologação sintética"
+            ],
+            [
+              "demand",
+              "DEMO-024"
+            ],
+            [
+              "attachment",
+              "{\"filename\": \"evidence.txt\", \"bytes\": 23, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\"}"
+            ]
+          ],
+          "structureValid": true,
+          "link": {
+            "href": "/wrong",
+            "download": "evidence.txt"
+          },
+          "error": "attachment link mismatch"
+        },
+        "error": "ValueError: attachment link mismatch"
+      },
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "link_download",
+      "passed": true,
+      "verdict": "FAIL: ValueError: attachment link mismatch",
+      "details": {
+        "passed": false,
+        "kind": "persisted_json",
+        "reloadConfirmed": false,
+        "before": {
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124109260.7
+        },
+        "observation": {
+          "ready": true,
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124109298.2,
+          "navigationType": "reload",
+          "recordCount": 1,
+          "linkCount": 1,
+          "pairs": [
+            [
+              "id",
+              "PLAN-001"
+            ],
+            [
+              "runId",
+              "a005-test"
+            ],
+            [
+              "title",
+              "Plano completo revisado"
+            ],
+            [
+              "email",
+              "qa@example.test"
+            ],
+            [
+              "type",
+              "Integração"
+            ],
+            [
+              "priority",
+              "Alta"
+            ],
+            [
+              "responsible",
+              "Equipe Alfa"
+            ],
+            [
+              "requiresEnvironment",
+              "true"
+            ],
+            [
+              "environment",
+              "Homologação sintética"
+            ],
+            [
+              "demand",
+              "DEMO-024"
+            ],
+            [
+              "attachment",
+              "{\"filename\": \"evidence.txt\", \"bytes\": 23, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\"}"
+            ]
+          ],
+          "structureValid": true,
+          "link": {
+            "href": "/api/attachment",
+            "download": "wrong.txt"
+          },
+          "error": "attachment link mismatch"
+        },
+        "error": "ValueError: attachment link mismatch"
+      },
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "download_content",
+      "passed": true,
+      "verdict": "FAIL: ['download.bytes', 'download.sha256']",
+      "details": {
+        "passed": false,
+        "kind": "persisted_json",
+        "reloadConfirmed": true,
+        "before": {
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124109338.4
+        },
+        "observation": {
+          "ready": true,
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124109374.2,
+          "navigationType": "reload",
+          "recordCount": 1,
+          "linkCount": 1,
+          "pairs": [
+            [
+              "id",
+              "PLAN-001"
+            ],
+            [
+              "runId",
+              "a005-test"
+            ],
+            [
+              "title",
+              "Plano completo revisado"
+            ],
+            [
+              "email",
+              "qa@example.test"
+            ],
+            [
+              "type",
+              "Integração"
+            ],
+            [
+              "priority",
+              "Alta"
+            ],
+            [
+              "responsible",
+              "Equipe Alfa"
+            ],
+            [
+              "requiresEnvironment",
+              "true"
+            ],
+            [
+              "environment",
+              "Homologação sintética"
+            ],
+            [
+              "demand",
+              "DEMO-024"
+            ],
+            [
+              "attachment",
+              "{\"filename\": \"evidence.txt\", \"bytes\": 23, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\"}"
+            ]
+          ],
+          "structureValid": true,
+          "link": {
+            "href": "/api/attachment",
+            "download": "evidence.txt"
+          },
+          "download": {
+            "bytes": 30,
+            "sha256": "1eeaf12c052ec840d28c4250d58c1a0affee7633dbd205cedf02cc1a5cbcbf52"
+          }
+        },
+        "mismatches": [
+          "download.bytes",
+          "download.sha256"
+        ]
+      },
+      "reloads": 1,
+      "downloads": 1
+    },
+    {
+      "scenario": "download_http_error",
+      "passed": true,
+      "verdict": "FAIL: ValueError: attachment HTTP 503",
+      "details": {
+        "passed": false,
+        "kind": "persisted_json",
+        "reloadConfirmed": false,
+        "before": {
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124109424
+        },
+        "observation": {
+          "ready": true,
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124109455.8,
+          "navigationType": "reload",
+          "recordCount": 1,
+          "linkCount": 1,
+          "pairs": [
+            [
+              "id",
+              "PLAN-001"
+            ],
+            [
+              "runId",
+              "a005-test"
+            ],
+            [
+              "title",
+              "Plano completo revisado"
+            ],
+            [
+              "email",
+              "qa@example.test"
+            ],
+            [
+              "type",
+              "Integração"
+            ],
+            [
+              "priority",
+              "Alta"
+            ],
+            [
+              "responsible",
+              "Equipe Alfa"
+            ],
+            [
+              "requiresEnvironment",
+              "true"
+            ],
+            [
+              "environment",
+              "Homologação sintética"
+            ],
+            [
+              "demand",
+              "DEMO-024"
+            ],
+            [
+              "attachment",
+              "{\"filename\": \"evidence.txt\", \"bytes\": 23, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\"}"
+            ]
+          ],
+          "structureValid": true,
+          "link": {
+            "href": "/api/attachment",
+            "download": "evidence.txt"
+          },
+          "error": "attachment HTTP 503"
+        },
+        "error": "ValueError: attachment HTTP 503"
+      },
+      "reloads": 1,
+      "downloads": 1
+    },
+    {
+      "scenario": "missing_field",
+      "passed": true,
+      "verdict": "FAIL: ['record.keys', 'record.email']",
+      "details": {
+        "passed": false,
+        "kind": "persisted_json",
+        "reloadConfirmed": true,
+        "before": {
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124109488.9
+        },
+        "observation": {
+          "ready": true,
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124109521.7,
+          "navigationType": "reload",
+          "recordCount": 1,
+          "linkCount": 1,
+          "pairs": [
+            [
+              "id",
+              "PLAN-001"
+            ],
+            [
+              "runId",
+              "a005-test"
+            ],
+            [
+              "title",
+              "Plano completo revisado"
+            ],
+            [
+              "type",
+              "Integração"
+            ],
+            [
+              "priority",
+              "Alta"
+            ],
+            [
+              "responsible",
+              "Equipe Alfa"
+            ],
+            [
+              "requiresEnvironment",
+              "true"
+            ],
+            [
+              "environment",
+              "Homologação sintética"
+            ],
+            [
+              "demand",
+              "DEMO-024"
+            ],
+            [
+              "attachment",
+              "{\"filename\": \"evidence.txt\", \"bytes\": 23, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\"}"
+            ]
+          ],
+          "structureValid": true,
+          "link": {
+            "href": "/api/attachment",
+            "download": "evidence.txt"
+          },
+          "download": {
+            "bytes": 23,
+            "sha256": "b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19"
+          }
+        },
+        "mismatches": [
+          "record.keys",
+          "record.email"
+        ]
+      },
+      "reloads": 1,
+      "downloads": 1
+    },
+    {
+      "scenario": "extra_field",
+      "passed": true,
+      "verdict": "FAIL: ['record.keys']",
+      "details": {
+        "passed": false,
+        "kind": "persisted_json",
+        "reloadConfirmed": true,
+        "before": {
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124109556
+        },
+        "observation": {
+          "ready": true,
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124109583.4,
+          "navigationType": "reload",
+          "recordCount": 1,
+          "linkCount": 1,
+          "pairs": [
+            [
+              "id",
+              "PLAN-001"
+            ],
+            [
+              "runId",
+              "a005-test"
+            ],
+            [
+              "title",
+              "Plano completo revisado"
+            ],
+            [
+              "email",
+              "qa@example.test"
+            ],
+            [
+              "type",
+              "Integração"
+            ],
+            [
+              "priority",
+              "Alta"
+            ],
+            [
+              "responsible",
+              "Equipe Alfa"
+            ],
+            [
+              "requiresEnvironment",
+              "true"
+            ],
+            [
+              "environment",
+              "Homologação sintética"
+            ],
+            [
+              "demand",
+              "DEMO-024"
+            ],
+            [
+              "attachment",
+              "{\"filename\": \"evidence.txt\", \"bytes\": 23, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\"}"
+            ],
+            [
+              "unexpected",
+              "extra"
+            ]
+          ],
+          "structureValid": true,
+          "link": {
+            "href": "/api/attachment",
+            "download": "evidence.txt"
+          },
+          "download": {
+            "bytes": 23,
+            "sha256": "b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19"
+          }
+        },
+        "mismatches": [
+          "record.keys"
+        ]
+      },
+      "reloads": 1,
+      "downloads": 1
+    },
+    {
+      "scenario": "duplicate_field",
+      "passed": true,
+      "verdict": "FAIL: ['record duplicate key: email']",
+      "details": {
+        "passed": false,
+        "kind": "persisted_json",
+        "reloadConfirmed": true,
+        "before": {
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124109614.1
+        },
+        "observation": {
+          "ready": true,
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124109639.3,
+          "navigationType": "reload",
+          "recordCount": 1,
+          "linkCount": 1,
+          "pairs": [
+            [
+              "id",
+              "PLAN-001"
+            ],
+            [
+              "runId",
+              "a005-test"
+            ],
+            [
+              "title",
+              "Plano completo revisado"
+            ],
+            [
+              "email",
+              "qa@example.test"
+            ],
+            [
+              "type",
+              "Integração"
+            ],
+            [
+              "priority",
+              "Alta"
+            ],
+            [
+              "responsible",
+              "Equipe Alfa"
+            ],
+            [
+              "requiresEnvironment",
+              "true"
+            ],
+            [
+              "environment",
+              "Homologação sintética"
+            ],
+            [
+              "demand",
+              "DEMO-024"
+            ],
+            [
+              "attachment",
+              "{\"filename\": \"evidence.txt\", \"bytes\": 23, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\"}"
+            ],
+            [
+              "email",
+              "qa@example.test"
+            ]
+          ],
+          "structureValid": true,
+          "link": {
+            "href": "/api/attachment",
+            "download": "evidence.txt"
+          },
+          "download": {
+            "bytes": 23,
+            "sha256": "b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19"
+          }
+        },
+        "mismatches": [
+          "record duplicate key: email"
+        ]
+      },
+      "reloads": 1,
+      "downloads": 1
+    },
+    {
+      "scenario": "duplicate_record",
+      "passed": true,
+      "verdict": "FAIL: ValueError: ambiguous persisted record/link",
+      "details": {
+        "passed": false,
+        "kind": "persisted_json",
+        "reloadConfirmed": false,
+        "before": {
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124109674.7
+        },
+        "observation": {
+          "ready": true,
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124109702.3,
+          "navigationType": "reload",
+          "recordCount": 2,
+          "linkCount": 1
+        },
+        "error": "ValueError: ambiguous persisted record/link"
+      },
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "missing_record",
+      "passed": true,
+      "verdict": "FAIL: ValueError: reload/record readiness timeout",
+      "details": {
+        "passed": false,
+        "kind": "persisted_json",
+        "reloadConfirmed": false,
+        "before": {
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124109730.3
+        },
+        "observation": {
+          "ready": true,
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124109780.2,
+          "navigationType": "reload",
+          "recordCount": 0,
+          "linkCount": 1
+        },
+        "error": "ValueError: reload/record readiness timeout"
+      },
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "duplicate_link",
+      "passed": true,
+      "verdict": "FAIL: ValueError: ambiguous persisted record/link",
+      "details": {
+        "passed": false,
+        "kind": "persisted_json",
+        "reloadConfirmed": false,
+        "before": {
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124110123.9
+        },
+        "observation": {
+          "ready": true,
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124110202.3,
+          "navigationType": "reload",
+          "recordCount": 1,
+          "linkCount": 2
+        },
+        "error": "ValueError: ambiguous persisted record/link"
+      },
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "missing_link",
+      "passed": true,
+      "verdict": "FAIL: ValueError: reload/record readiness timeout",
+      "details": {
+        "passed": false,
+        "kind": "persisted_json",
+        "reloadConfirmed": false,
+        "before": {
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124110425.4
+        },
+        "observation": {
+          "ready": true,
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124110510.2,
+          "navigationType": "reload",
+          "recordCount": 1,
+          "linkCount": 0
+        },
+        "error": "ValueError: reload/record readiness timeout"
+      },
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "external_link",
+      "passed": true,
+      "verdict": "FAIL: ValueError: attachment link mismatch",
+      "details": {
+        "passed": false,
+        "kind": "persisted_json",
+        "reloadConfirmed": false,
+        "before": {
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124110897
+        },
+        "observation": {
+          "ready": true,
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124110935.3,
+          "navigationType": "reload",
+          "recordCount": 1,
+          "linkCount": 1,
+          "pairs": [
+            [
+              "id",
+              "PLAN-001"
+            ],
+            [
+              "runId",
+              "a005-test"
+            ],
+            [
+              "title",
+              "Plano completo revisado"
+            ],
+            [
+              "email",
+              "qa@example.test"
+            ],
+            [
+              "type",
+              "Integração"
+            ],
+            [
+              "priority",
+              "Alta"
+            ],
+            [
+              "responsible",
+              "Equipe Alfa"
+            ],
+            [
+              "requiresEnvironment",
+              "true"
+            ],
+            [
+              "environment",
+              "Homologação sintética"
+            ],
+            [
+              "demand",
+              "DEMO-024"
+            ],
+            [
+              "attachment",
+              "{\"filename\": \"evidence.txt\", \"bytes\": 23, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\"}"
+            ]
+          ],
+          "structureValid": true,
+          "link": {
+            "href": "https://invalid.example/attachment",
+            "download": "evidence.txt"
+          },
+          "error": "attachment link mismatch"
+        },
+        "error": "ValueError: attachment link mismatch"
+      },
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "reload_not_done",
+      "passed": true,
+      "verdict": "FAIL: ValueError: reload/record readiness timeout",
+      "details": {
+        "passed": false,
+        "kind": "persisted_json",
+        "reloadConfirmed": false,
+        "before": {
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124110962.8
+        },
+        "observation": {
+          "ready": false,
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124110962.8,
+          "navigationType": "navigate",
+          "recordCount": 1,
+          "linkCount": 1
+        },
+        "error": "ValueError: reload/record readiness timeout"
+      },
+      "reloads": 0,
+      "downloads": 0
+    },
+    {
+      "scenario": "rc_nonzero",
+      "passed": true,
+      "verdict": "FAIL: ValueError: harness rc != 0",
+      "details": {
+        "passed": false,
+        "kind": "persisted_json",
+        "reloadConfirmed": false,
+        "error": "ValueError: harness rc != 0"
+      },
+      "reloads": 0,
+      "downloads": 0
+    },
+    {
+      "scenario": "malformed",
+      "passed": true,
+      "verdict": "FAIL: JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)",
+      "details": {
+        "passed": false,
+        "kind": "persisted_json",
+        "reloadConfirmed": false,
+        "error": "JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
+      },
+      "reloads": 0,
+      "downloads": 0
+    },
+    {
+      "scenario": "duplicate_payload",
+      "passed": true,
+      "verdict": "FAIL: ValueError: one structured verifier payload required",
+      "details": {
+        "passed": false,
+        "kind": "persisted_json",
+        "reloadConfirmed": false,
+        "error": "ValueError: one structured verifier payload required"
+      },
+      "reloads": 0,
+      "downloads": 0
+    },
+    {
+      "scenario": "download_same_size",
+      "passed": true,
+      "verdict": "FAIL: ['download.sha256']",
+      "details": {
+        "passed": false,
+        "kind": "persisted_json",
+        "reloadConfirmed": true,
+        "before": {
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124111442.7
+        },
+        "observation": {
+          "ready": true,
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124111472.9,
+          "navigationType": "reload",
+          "recordCount": 1,
+          "linkCount": 1,
+          "pairs": [
+            [
+              "id",
+              "PLAN-001"
+            ],
+            [
+              "runId",
+              "a005-test"
+            ],
+            [
+              "title",
+              "Plano completo revisado"
+            ],
+            [
+              "email",
+              "qa@example.test"
+            ],
+            [
+              "type",
+              "Integração"
+            ],
+            [
+              "priority",
+              "Alta"
+            ],
+            [
+              "responsible",
+              "Equipe Alfa"
+            ],
+            [
+              "requiresEnvironment",
+              "true"
+            ],
+            [
+              "environment",
+              "Homologação sintética"
+            ],
+            [
+              "demand",
+              "DEMO-024"
+            ],
+            [
+              "attachment",
+              "{\"filename\": \"evidence.txt\", \"bytes\": 23, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\"}"
+            ]
+          ],
+          "structureValid": true,
+          "link": {
+            "href": "/api/attachment",
+            "download": "evidence.txt"
+          },
+          "download": {
+            "bytes": 23,
+            "sha256": "84711429e91f3b3e15c12692df5281abcec8cd4786c9dfa75bc9fb28e145ea8e"
+          }
+        },
+        "mismatches": [
+          "download.sha256"
+        ]
+      },
+      "reloads": 1,
+      "downloads": 1
+    },
+    {
+      "scenario": "attachment_extra",
+      "passed": true,
+      "verdict": "FAIL: ['attachment.keys']",
+      "details": {
+        "passed": false,
+        "kind": "persisted_json",
+        "reloadConfirmed": true,
+        "before": {
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124111507.4
+        },
+        "observation": {
+          "ready": true,
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124111550.3,
+          "navigationType": "reload",
+          "recordCount": 1,
+          "linkCount": 1,
+          "pairs": [
+            [
+              "id",
+              "PLAN-001"
+            ],
+            [
+              "runId",
+              "a005-test"
+            ],
+            [
+              "title",
+              "Plano completo revisado"
+            ],
+            [
+              "email",
+              "qa@example.test"
+            ],
+            [
+              "type",
+              "Integração"
+            ],
+            [
+              "priority",
+              "Alta"
+            ],
+            [
+              "responsible",
+              "Equipe Alfa"
+            ],
+            [
+              "requiresEnvironment",
+              "true"
+            ],
+            [
+              "environment",
+              "Homologação sintética"
+            ],
+            [
+              "demand",
+              "DEMO-024"
+            ],
+            [
+              "attachment",
+              "{\"filename\": \"evidence.txt\", \"bytes\": 23, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\", \"unexpected\": \"extra\"}"
+            ]
+          ],
+          "structureValid": true,
+          "link": {
+            "href": "/api/attachment",
+            "download": "evidence.txt"
+          },
+          "download": {
+            "bytes": 23,
+            "sha256": "b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19"
+          }
+        },
+        "mismatches": [
+          "attachment.keys"
+        ]
+      },
+      "reloads": 1,
+      "downloads": 1
+    },
+    {
+      "scenario": "attachment_bytes_type",
+      "passed": true,
+      "verdict": "FAIL: ['attachment.bytes']",
+      "details": {
+        "passed": false,
+        "kind": "persisted_json",
+        "reloadConfirmed": true,
+        "before": {
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124111587
+        },
+        "observation": {
+          "ready": true,
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124111613.6,
+          "navigationType": "reload",
+          "recordCount": 1,
+          "linkCount": 1,
+          "pairs": [
+            [
+              "id",
+              "PLAN-001"
+            ],
+            [
+              "runId",
+              "a005-test"
+            ],
+            [
+              "title",
+              "Plano completo revisado"
+            ],
+            [
+              "email",
+              "qa@example.test"
+            ],
+            [
+              "type",
+              "Integração"
+            ],
+            [
+              "priority",
+              "Alta"
+            ],
+            [
+              "responsible",
+              "Equipe Alfa"
+            ],
+            [
+              "requiresEnvironment",
+              "true"
+            ],
+            [
+              "environment",
+              "Homologação sintética"
+            ],
+            [
+              "demand",
+              "DEMO-024"
+            ],
+            [
+              "attachment",
+              "{\"filename\": \"evidence.txt\", \"bytes\": \"23\", \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\"}"
+            ]
+          ],
+          "structureValid": true,
+          "link": {
+            "href": "/api/attachment",
+            "download": "evidence.txt"
+          },
+          "download": {
+            "bytes": 23,
+            "sha256": "b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19"
+          }
+        },
+        "mismatches": [
+          "attachment.bytes"
+        ]
+      },
+      "reloads": 1,
+      "downloads": 1
+    },
+    {
+      "scenario": "attachment_missing_sha",
+      "passed": true,
+      "verdict": "FAIL: ['attachment.keys']",
+      "details": {
+        "passed": false,
+        "kind": "persisted_json",
+        "reloadConfirmed": true,
+        "before": {
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124111651.4
+        },
+        "observation": {
+          "ready": true,
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124111688.6,
+          "navigationType": "reload",
+          "recordCount": 1,
+          "linkCount": 1,
+          "pairs": [
+            [
+              "id",
+              "PLAN-001"
+            ],
+            [
+              "runId",
+              "a005-test"
+            ],
+            [
+              "title",
+              "Plano completo revisado"
+            ],
+            [
+              "email",
+              "qa@example.test"
+            ],
+            [
+              "type",
+              "Integração"
+            ],
+            [
+              "priority",
+              "Alta"
+            ],
+            [
+              "responsible",
+              "Equipe Alfa"
+            ],
+            [
+              "requiresEnvironment",
+              "true"
+            ],
+            [
+              "environment",
+              "Homologação sintética"
+            ],
+            [
+              "demand",
+              "DEMO-024"
+            ],
+            [
+              "attachment",
+              "{\"filename\": \"evidence.txt\", \"bytes\": 23}"
+            ]
+          ],
+          "structureValid": true,
+          "link": {
+            "href": "/api/attachment",
+            "download": "evidence.txt"
+          },
+          "download": {
+            "bytes": 23,
+            "sha256": "b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19"
+          }
+        },
+        "mismatches": [
+          "attachment.keys"
+        ]
+      },
+      "reloads": 1,
+      "downloads": 1
+    },
+    {
+      "scenario": "orphan_dd",
+      "passed": true,
+      "verdict": "FAIL: ['record.structure invalid']",
+      "details": {
+        "passed": false,
+        "kind": "persisted_json",
+        "reloadConfirmed": true,
+        "before": {
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124111735.7
+        },
+        "observation": {
+          "ready": true,
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124111784.8,
+          "navigationType": "reload",
+          "recordCount": 1,
+          "linkCount": 1,
+          "pairs": [
+            [
+              "id",
+              "PLAN-001"
+            ],
+            [
+              "runId",
+              "a005-test"
+            ],
+            [
+              "title",
+              "Plano completo revisado"
+            ],
+            [
+              "email",
+              "qa@example.test"
+            ],
+            [
+              "type",
+              "Integração"
+            ],
+            [
+              "priority",
+              "Alta"
+            ],
+            [
+              "responsible",
+              "Equipe Alfa"
+            ],
+            [
+              "requiresEnvironment",
+              "true"
+            ],
+            [
+              "environment",
+              "Homologação sintética"
+            ],
+            [
+              "demand",
+              "DEMO-024"
+            ],
+            [
+              "attachment",
+              "{\"filename\": \"evidence.txt\", \"bytes\": 23, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\"}"
+            ]
+          ],
+          "structureValid": false,
+          "link": {
+            "href": "/api/attachment",
+            "download": "evidence.txt"
+          },
+          "download": {
+            "bytes": 23,
+            "sha256": "b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19"
+          }
+        },
+        "mismatches": [
+          "record.structure invalid"
+        ]
+      },
+      "reloads": 1,
+      "downloads": 1
+    },
+    {
+      "scenario": "good_no_environment",
+      "passed": true,
+      "verdict": "PASS",
+      "details": {
+        "passed": true,
+        "kind": "persisted_json",
+        "reloadConfirmed": true,
+        "before": {
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124111856.5
+        },
+        "observation": {
+          "ready": true,
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124111926.6,
+          "navigationType": "reload",
+          "recordCount": 1,
+          "linkCount": 1,
+          "pairs": [
+            [
+              "id",
+              "PLAN-001"
+            ],
+            [
+              "runId",
+              "a005-test"
+            ],
+            [
+              "title",
+              "Plano completo revisado"
+            ],
+            [
+              "email",
+              "qa@example.test"
+            ],
+            [
+              "type",
+              "Integração"
+            ],
+            [
+              "priority",
+              "Alta"
+            ],
+            [
+              "responsible",
+              "Equipe Alfa"
+            ],
+            [
+              "requiresEnvironment",
+              "false"
+            ],
+            [
+              "environment",
+              ""
+            ],
+            [
+              "demand",
+              "DEMO-024"
+            ],
+            [
+              "attachment",
+              "{\"filename\": \"evidence.txt\", \"bytes\": 23, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\"}"
+            ]
+          ],
+          "structureValid": true,
+          "link": {
+            "href": "/api/attachment",
+            "download": "evidence.txt"
+          },
+          "download": {
+            "bytes": 23,
+            "sha256": "b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19"
+          }
+        },
+        "mismatches": []
+      },
+      "reloads": 1,
+      "downloads": 1
+    },
+    {
+      "scenario": "wrong_url",
+      "passed": true,
+      "verdict": "FAIL: ValueError: initial page identity invalid",
+      "details": {
+        "passed": false,
+        "kind": "persisted_json",
+        "reloadConfirmed": false,
+        "before": {
+          "url": "http://127.0.0.1:51544/",
+          "timeOrigin": 1795124112622.1
+        },
+        "error": "ValueError: initial page identity invalid"
+      },
+      "reloads": 0,
+      "downloads": 0
+    },
+    {
+      "scenario": "normal_entry_recipe-cli_good",
+      "passed": true,
+      "log": {
+        "url": "http://127.0.0.1:51544/",
+        "recipe": "empty.json",
+        "steps": [],
+        "result": "RECIPE-DONE-VERIFIED",
+        "postconditions": [],
+        "repairs": [],
+        "navigation": {
+          "rc": 0,
+          "url": "http://127.0.0.1:51544/",
+          "marker": null
+        },
+        "identity": {
+          "url": "http://127.0.0.1:51544",
+          "title": "",
+          "markerOk": null
+        },
+        "verification_detail": {
+          "passed": true,
+          "kind": "persisted_json",
+          "reloadConfirmed": true,
+          "before": {
+            "url": "http://127.0.0.1:51544/",
+            "timeOrigin": 1795124112685.7
+          },
+          "observation": {
+            "ready": true,
+            "url": "http://127.0.0.1:51544/",
+            "timeOrigin": 1795124114247.6,
+            "navigationType": "reload",
+            "recordCount": 1,
+            "linkCount": 1,
+            "pairs": [
+              [
+                "id",
+                "PLAN-001"
+              ],
+              [
+                "runId",
+                "a005-test"
+              ],
+              [
+                "title",
+                "Plano completo revisado"
+              ],
+              [
+                "email",
+                "qa@example.test"
+              ],
+              [
+                "type",
+                "Integração"
+              ],
+              [
+                "priority",
+                "Alta"
+              ],
+              [
+                "responsible",
+                "Equipe Alfa"
+              ],
+              [
+                "requiresEnvironment",
+                "true"
+              ],
+              [
+                "environment",
+                "Homologação sintética"
+              ],
+              [
+                "demand",
+                "DEMO-024"
+              ],
+              [
+                "attachment",
+                "{\"filename\": \"evidence.txt\", \"bytes\": 23, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\"}"
+              ]
+            ],
+            "structureValid": true,
+            "link": {
+              "href": "/api/attachment",
+              "download": "evidence.txt"
+            },
+            "download": {
+              "bytes": 23,
+              "sha256": "b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19"
+            }
+          },
+          "mismatches": []
+        },
+        "verifier": "PASS",
+        "capture": {
+          "passed": false,
+          "state": "unavailable",
+          "reason": "legacy transport without integrated capture"
+        }
+      }
+    },
+    {
+      "scenario": "normal_entry_recipe-cli_mismatch",
+      "passed": true,
+      "log": {
+        "url": "http://127.0.0.1:51544/",
+        "recipe": "empty.json",
+        "steps": [],
+        "result": "RECIPE-FAIL verifier: FAIL: ['record.email']",
+        "postconditions": [],
+        "repairs": [],
+        "navigation": {
+          "rc": 0,
+          "url": "http://127.0.0.1:51544/",
+          "marker": null
+        },
+        "identity": {
+          "url": "http://127.0.0.1:51544",
+          "title": "",
+          "markerOk": null
+        },
+        "verification_detail": {
+          "passed": false,
+          "kind": "persisted_json",
+          "reloadConfirmed": true,
+          "before": {
+            "url": "http://127.0.0.1:51544/",
+            "timeOrigin": 1795124114296.1
+          },
+          "observation": {
+            "ready": true,
+            "url": "http://127.0.0.1:51544/",
+            "timeOrigin": 1795124115838.6,
+            "navigationType": "reload",
+            "recordCount": 1,
+            "linkCount": 1,
+            "pairs": [
+              [
+                "id",
+                "PLAN-001"
+              ],
+              [
+                "runId",
+                "a005-test"
+              ],
+              [
+                "title",
+                "Plano completo revisado"
+              ],
+              [
+                "email",
+                "qa@example.test-wrong"
+              ],
+              [
+                "type",
+                "Integração"
+              ],
+              [
+                "priority",
+                "Alta"
+              ],
+              [
+                "responsible",
+                "Equipe Alfa"
+              ],
+              [
+                "requiresEnvironment",
+                "true"
+              ],
+              [
+                "environment",
+                "Homologação sintética"
+              ],
+              [
+                "demand",
+                "DEMO-024"
+              ],
+              [
+                "attachment",
+                "{\"filename\": \"evidence.txt\", \"bytes\": 23, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\"}"
+              ]
+            ],
+            "structureValid": true,
+            "link": {
+              "href": "/api/attachment",
+              "download": "evidence.txt"
+            },
+            "download": {
+              "bytes": 23,
+              "sha256": "b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19"
+            }
+          },
+          "mismatches": [
+            "record.email"
+          ]
+        },
+        "verifier": "FAIL: ['record.email']",
+        "capture": {
+          "passed": false,
+          "state": "unavailable",
+          "reason": "legacy transport without integrated capture"
+        }
+      }
+    },
+    {
+      "scenario": "normal_entry_single_good",
+      "passed": true,
+      "log": {
+        "url": "http://127.0.0.1:51544/",
+        "goal": "Verify existing public fixture record",
+        "model": "unused",
+        "steps": [
+          {
+            "step": 0,
+            "parsed": {
+              "action": "done"
+            },
+            "latency_s": 0.0,
+            "reply": "{\"action\": \"done\"}"
+          },
+          {
+            "verifier": "persisted_json:{\"version\": 1, \"url\": \"http://127.0.0.1:51544/\", \"timeout_ms\": 300, \"fields\": {\"id\": \"PLAN-001\", \"runId\": \"a005-test\", \"title\": \"Plano completo revisado\", \"email\": \"qa@example.test\", \"type\": \"Integração\", \"priority\": \"Alta\", \"responsible\": \"Equipe Alfa\", \"requiresEnvironment\": \"true\", \"environment\": \"Homologação sintética\"}, \"binding\": {\"demand\": \"DEMO-024\"}, \"attachment\": {\"filename\": \"evidence.txt\", \"bytes\": 23, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\", \"href\": \"/api/attachment\", \"download\": \"evidence.txt\"}}",
+            "verdict": "PASS"
+          }
+        ],
+        "result": "DONE-VERIFIED",
+        "verification_details": [
+          {
+            "passed": true,
+            "kind": "persisted_json",
+            "reloadConfirmed": true,
+            "before": {
+              "url": "http://127.0.0.1:51544/",
+              "timeOrigin": 1795124115923.2
+            },
+            "observation": {
+              "ready": true,
+              "url": "http://127.0.0.1:51544/",
+              "timeOrigin": 1795124117484,
+              "navigationType": "reload",
+              "recordCount": 1,
+              "linkCount": 1,
+              "pairs": [
+                [
+                  "id",
+                  "PLAN-001"
+                ],
+                [
+                  "runId",
+                  "a005-test"
+                ],
+                [
+                  "title",
+                  "Plano completo revisado"
+                ],
+                [
+                  "email",
+                  "qa@example.test"
+                ],
+                [
+                  "type",
+                  "Integração"
+                ],
+                [
+                  "priority",
+                  "Alta"
+                ],
+                [
+                  "responsible",
+                  "Equipe Alfa"
+                ],
+                [
+                  "requiresEnvironment",
+                  "true"
+                ],
+                [
+                  "environment",
+                  "Homologação sintética"
+                ],
+                [
+                  "demand",
+                  "DEMO-024"
+                ],
+                [
+                  "attachment",
+                  "{\"filename\": \"evidence.txt\", \"bytes\": 23, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\"}"
+                ]
+              ],
+              "structureValid": true,
+              "link": {
+                "href": "/api/attachment",
+                "download": "evidence.txt"
+              },
+              "download": {
+                "bytes": 23,
+                "sha256": "b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19"
+              }
+            },
+            "mismatches": []
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "normal_entry_single_mismatch",
+      "passed": true,
+      "log": {
+        "url": "http://127.0.0.1:51544/",
+        "goal": "Verify existing public fixture record",
+        "model": "unused",
+        "steps": [
+          {
+            "step": 0,
+            "parsed": {
+              "action": "done"
+            },
+            "latency_s": 0.0,
+            "reply": "{\"action\": \"done\"}"
+          },
+          {
+            "verifier": "persisted_json:{\"version\": 1, \"url\": \"http://127.0.0.1:51544/\", \"timeout_ms\": 300, \"fields\": {\"id\": \"PLAN-001\", \"runId\": \"a005-test\", \"title\": \"Plano completo revisado\", \"email\": \"qa@example.test\", \"type\": \"Integração\", \"priority\": \"Alta\", \"responsible\": \"Equipe Alfa\", \"requiresEnvironment\": \"true\", \"environment\": \"Homologação sintética\"}, \"binding\": {\"demand\": \"DEMO-024\"}, \"attachment\": {\"filename\": \"evidence.txt\", \"bytes\": 23, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\", \"href\": \"/api/attachment\", \"download\": \"evidence.txt\"}}",
+            "verdict": "FAIL: ['record.email']"
+          }
+        ],
+        "result": "VERIFICATION-FAIL",
+        "verification_details": [
+          {
+            "passed": false,
+            "kind": "persisted_json",
+            "reloadConfirmed": true,
+            "before": {
+              "url": "http://127.0.0.1:51544/",
+              "timeOrigin": 1795124117673.1
+            },
+            "observation": {
+              "ready": true,
+              "url": "http://127.0.0.1:51544/",
+              "timeOrigin": 1795124119296.2,
+              "navigationType": "reload",
+              "recordCount": 1,
+              "linkCount": 1,
+              "pairs": [
+                [
+                  "id",
+                  "PLAN-001"
+                ],
+                [
+                  "runId",
+                  "a005-test"
+                ],
+                [
+                  "title",
+                  "Plano completo revisado"
+                ],
+                [
+                  "email",
+                  "qa@example.test-wrong"
+                ],
+                [
+                  "type",
+                  "Integração"
+                ],
+                [
+                  "priority",
+                  "Alta"
+                ],
+                [
+                  "responsible",
+                  "Equipe Alfa"
+                ],
+                [
+                  "requiresEnvironment",
+                  "true"
+                ],
+                [
+                  "environment",
+                  "Homologação sintética"
+                ],
+                [
+                  "demand",
+                  "DEMO-024"
+                ],
+                [
+                  "attachment",
+                  "{\"filename\": \"evidence.txt\", \"bytes\": 23, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\"}"
+                ]
+              ],
+              "structureValid": true,
+              "link": {
+                "href": "/api/attachment",
+                "download": "evidence.txt"
+              },
+              "download": {
+                "bytes": 23,
+                "sha256": "b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19"
+              }
+            },
+            "mismatches": [
+              "record.email"
+            ]
+          }
+        ],
+        "failures": [
+          {
+            "phase": "verifier",
+            "verdict": "FAIL: ['record.email']"
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "normal_entry_batch_good",
+      "passed": true,
+      "log": {
+        "url": "http://127.0.0.1:51544/",
+        "goal": "Verify existing public fixture record",
+        "model": "unused",
+        "mode": "batch",
+        "cycles": [
+          {
+            "cycle": 0,
+            "n_elements": 1,
+            "latency_s": 0.0,
+            "reply": "[{\"action\": \"done\"}]",
+            "plan": [
+              {
+                "action": "done"
+              }
+            ]
+          },
+          {
+            "verifier": "persisted_json:{\"version\": 1, \"url\": \"http://127.0.0.1:51544/\", \"timeout_ms\": 300, \"fields\": {\"id\": \"PLAN-001\", \"runId\": \"a005-test\", \"title\": \"Plano completo revisado\", \"email\": \"qa@example.test\", \"type\": \"Integração\", \"priority\": \"Alta\", \"responsible\": \"Equipe Alfa\", \"requiresEnvironment\": \"true\", \"environment\": \"Homologação sintética\"}, \"binding\": {\"demand\": \"DEMO-024\"}, \"attachment\": {\"filename\": \"evidence.txt\", \"bytes\": 23, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\", \"href\": \"/api/attachment\", \"download\": \"evidence.txt\"}}",
+            "verdict": "PASS"
+          }
+        ],
+        "result": "DONE-VERIFIED-BATCH",
+        "verification_details": [
+          {
+            "passed": true,
+            "kind": "persisted_json",
+            "reloadConfirmed": true,
+            "before": {
+              "url": "http://127.0.0.1:51544/",
+              "timeOrigin": 1795124119338.9
+            },
+            "observation": {
+              "ready": true,
+              "url": "http://127.0.0.1:51544/",
+              "timeOrigin": 1795124120906.1,
+              "navigationType": "reload",
+              "recordCount": 1,
+              "linkCount": 1,
+              "pairs": [
+                [
+                  "id",
+                  "PLAN-001"
+                ],
+                [
+                  "runId",
+                  "a005-test"
+                ],
+                [
+                  "title",
+                  "Plano completo revisado"
+                ],
+                [
+                  "email",
+                  "qa@example.test"
+                ],
+                [
+                  "type",
+                  "Integração"
+                ],
+                [
+                  "priority",
+                  "Alta"
+                ],
+                [
+                  "responsible",
+                  "Equipe Alfa"
+                ],
+                [
+                  "requiresEnvironment",
+                  "true"
+                ],
+                [
+                  "environment",
+                  "Homologação sintética"
+                ],
+                [
+                  "demand",
+                  "DEMO-024"
+                ],
+                [
+                  "attachment",
+                  "{\"filename\": \"evidence.txt\", \"bytes\": 23, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\"}"
+                ]
+              ],
+              "structureValid": true,
+              "link": {
+                "href": "/api/attachment",
+                "download": "evidence.txt"
+              },
+              "download": {
+                "bytes": 23,
+                "sha256": "b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19"
+              }
+            },
+            "mismatches": []
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "normal_entry_batch_mismatch",
+      "passed": true,
+      "log": {
+        "url": "http://127.0.0.1:51544/",
+        "goal": "Verify existing public fixture record",
+        "model": "unused",
+        "mode": "batch",
+        "cycles": [
+          {
+            "cycle": 0,
+            "n_elements": 1,
+            "latency_s": 0.0,
+            "reply": "[{\"action\": \"done\"}]",
+            "plan": [
+              {
+                "action": "done"
+              }
+            ]
+          },
+          {
+            "verifier": "persisted_json:{\"version\": 1, \"url\": \"http://127.0.0.1:51544/\", \"timeout_ms\": 300, \"fields\": {\"id\": \"PLAN-001\", \"runId\": \"a005-test\", \"title\": \"Plano completo revisado\", \"email\": \"qa@example.test\", \"type\": \"Integração\", \"priority\": \"Alta\", \"responsible\": \"Equipe Alfa\", \"requiresEnvironment\": \"true\", \"environment\": \"Homologação sintética\"}, \"binding\": {\"demand\": \"DEMO-024\"}, \"attachment\": {\"filename\": \"evidence.txt\", \"bytes\": 23, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\", \"href\": \"/api/attachment\", \"download\": \"evidence.txt\"}}",
+            "verdict": "FAIL: ['record.email']"
+          }
+        ],
+        "result": "VERIFICATION-FAIL-BATCH",
+        "verification_details": [
+          {
+            "passed": false,
+            "kind": "persisted_json",
+            "reloadConfirmed": true,
+            "before": {
+              "url": "http://127.0.0.1:51544/",
+              "timeOrigin": 1795124121020.4
+            },
+            "observation": {
+              "ready": true,
+              "url": "http://127.0.0.1:51544/",
+              "timeOrigin": 1795124122581.9,
+              "navigationType": "reload",
+              "recordCount": 1,
+              "linkCount": 1,
+              "pairs": [
+                [
+                  "id",
+                  "PLAN-001"
+                ],
+                [
+                  "runId",
+                  "a005-test"
+                ],
+                [
+                  "title",
+                  "Plano completo revisado"
+                ],
+                [
+                  "email",
+                  "qa@example.test-wrong"
+                ],
+                [
+                  "type",
+                  "Integração"
+                ],
+                [
+                  "priority",
+                  "Alta"
+                ],
+                [
+                  "responsible",
+                  "Equipe Alfa"
+                ],
+                [
+                  "requiresEnvironment",
+                  "true"
+                ],
+                [
+                  "environment",
+                  "Homologação sintética"
+                ],
+                [
+                  "demand",
+                  "DEMO-024"
+                ],
+                [
+                  "attachment",
+                  "{\"filename\": \"evidence.txt\", \"bytes\": 23, \"sha256\": \"b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19\"}"
+                ]
+              ],
+              "structureValid": true,
+              "link": {
+                "href": "/api/attachment",
+                "download": "evidence.txt"
+              },
+              "download": {
+                "bytes": 23,
+                "sha256": "b565be3ebb6ba772e1ce2cdadb34894c294ea105859c11e2800a4010bc7b5d19"
+              }
+            },
+            "mismatches": [
+              "record.email"
+            ]
+          }
+        ],
+        "failures": [
+          {
+            "phase": "verifier",
+            "verdict": "FAIL: ['record.email']"
+          }
+        ]
+      }
+    }
+  ],
+  "transport": "Production verifier adapter over page.evaluate; reload request mapped to real page.reload. Not Hermes transport."
+}

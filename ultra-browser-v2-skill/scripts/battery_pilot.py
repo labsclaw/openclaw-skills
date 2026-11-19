@@ -98,12 +98,12 @@ def git(*args):
 
 def fingerprints():
     return {str(p.relative_to(ROOT)): sha256(p) for p in
-            (HERE / "recipe.py", HERE / "agent_loop.py", HERE / "snapshot.js", HERE / "persisted_verifier.py", HERE / "environment_runner.py", Path(__file__), RECIPE)}
+            (HERE / "recipe.py", HERE / "agent_loop.py", HERE / "snapshot.js", HERE / "persisted_verifier.py", HERE / "environment_runner.py", HERE / "capture_evidence.py", Path(__file__), RECIPE)}
 
 
 def provenance():
     executor = [str((HERE / name).relative_to(ROOT)).replace("\\", "/")
-                for name in ("recipe.py", "agent_loop.py", "snapshot.js", "persisted_verifier.py", "environment_runner.py")]
+                for name in ("recipe.py", "agent_loop.py", "snapshot.js", "persisted_verifier.py", "environment_runner.py", "capture_evidence.py")]
     if git("diff", "HEAD", "--", *executor):
         raise RuntimeError("Executor difere de HEAD; requer outra bateria identificada")
     return dict(commit=git("rev-parse", "HEAD"),
@@ -443,6 +443,16 @@ def run_pilot(batch_dir, run_id, source, recipe_path):
             if not environment_passed(receipt['environment'], run_id):
                 receipt['gate']['passed'] = False
                 receipt['gate']['failures'].append('Ambiente contratual ausente ou reprovado')
+            from capture_evidence import verify_files
+            capture_dir = environment_path.parent / 'capture'
+            capture_report = strict_json((capture_dir / 'capture.json').read_text(encoding='utf-8'))
+            receipt['capture'] = capture_report
+            capture_errors = verify_files(capture_report, capture_dir, run_id)
+            if execution.get('capture') != capture_report:
+                capture_errors.append('recipe/capture receipt mismatch')
+            if capture_errors:
+                receipt['gate']['passed'] = False
+                receipt['gate']['failures'].extend(capture_errors)
             receipt["initialNavigation"] = audit[0] if audit else None
             receipt["judge"] = judge
     except Exception as exc:

@@ -61,6 +61,7 @@ class Environment:
             requested=dict(viewport=dict(VIEWPORT), freshProfile=True),
             headless=headless, observations=[], errors=[], passed=False)
         self.pw = self.context = self.page = None
+        self.capture = None
 
     def __enter__(self):
         self.output.mkdir(parents=True, exist_ok=True)
@@ -91,6 +92,9 @@ class Environment:
             if self.receipt['browserCommandLine'].count(expected) != 1:
                 raise RuntimeError('Identidade de perfil não confirmada pelo Chromium')
             self.check('before-task')
+            from capture_evidence import Capture
+            self.capture = Capture(self.run_id, self.directory / 'capture',
+                lambda: self.page.screenshot(type='png', full_page=False, timeout=10000))
             write_new(self.directory / 'environment-start.json', self.receipt)
             return self
         except BaseException as exc:
@@ -128,8 +132,16 @@ class Environment:
                     upload_file=lambda selector, filename: self.page.locator(selector).set_input_files(filename),
                     maximize=lambda: None))
             self.check('after-call')
+            phase = ('after-reload' if 'UB2_RELOAD_REQUEST' in code else
+                     'after-navigation' if 'goto_url(' in code else
+                     'after-upload' if 'upload_file(' in code else
+                     'after-native' if 'const acts = ' in code else 'after-host-call')
+            if not self.capture.frame(phase):
+                raise RuntimeError('capture evidence failed')
             return dict(out=output.getvalue(), err='', rc=0)
         except Exception as exc:
+            if self.capture is not None and not self.capture.finished:
+                self.capture.frame('host-failure')
             self.receipt['errors'].append(type(exc).__name__ + ': ' + str(exc))
             return dict(out=output.getvalue(), err=traceback.format_exc(), rc=1)
 
@@ -137,8 +149,13 @@ class Environment:
     def bind(self):
         import recipe
         import agent_loop
-        with patch.object(recipe, 'harness', self.harness), patch.object(agent_loop, 'harness', self.harness):
-            yield
+        from capture_evidence import CURRENT
+        token = CURRENT.set(self.capture)
+        try:
+            with patch.object(recipe, 'harness', self.harness), patch.object(agent_loop, 'harness', self.harness):
+                yield
+        finally:
+            CURRENT.reset(token)
 
     def __exit__(self, kind, error, tb):
         try:
@@ -150,6 +167,12 @@ class Environment:
                 except Exception as exc:
                     self.receipt['errors'].append(type(exc).__name__ + ': ' + str(exc))
         finally:
+            if self.capture is not None:
+                if not self.capture.finished:
+                    self.capture.frame('environment-final')
+                self.receipt['capture'] = self.capture.finish()
+                if not self.receipt['capture']['passed']:
+                    self.receipt['errors'].append('capture evidence failed')
             try:
                 if self.context is not None:
                     self.context.close()

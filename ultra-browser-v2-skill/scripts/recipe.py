@@ -413,7 +413,30 @@ def recover_checkpoint(log, ops, i, prev, trigger, reason, attempted, budget,
     return False
 
 
-def run_recipe(recipe_path: str, url: str, verify_spec: str = "", fallback_jev: bool = False,
+def run_recipe(*args, **kwargs):
+    """Entrada pública: finalize evidência antes de emitir resultado da tarefa."""
+    from capture_evidence import CURRENT
+    capture = CURRENT.get()
+    try:
+        log = _run_recipe(*args, **kwargs)
+    except BaseException:
+        if capture is not None and not capture.finished:
+            capture.frame('recipe-exception')
+            capture.finish()
+        raise
+    if capture is None:
+        log['capture'] = dict(passed=False, state='unavailable',
+                              reason='legacy transport without integrated capture')
+    else:
+        capture.frame('recipe-final')
+        log['capture'] = capture.finish()
+        if not log['capture']['passed']:
+            log['taskResultBeforeEvidence'] = log.get('result')
+            log['result'] = 'RECIPE-EVIDENCE-FAIL'
+    return log
+
+
+def _run_recipe(recipe_path: str, url: str, verify_spec: str = "", fallback_jev: bool = False,
                max_replan: int = 3, marker: str = "", repair_model="MiMo-V2.6-Flash",
                repair_dispatcher=None):
     """Executa a recipe; em falha de passo, replanejamento local; no fim, verify."""

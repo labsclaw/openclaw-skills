@@ -1,0 +1,28 @@
+{
+  "gate_ast_unchanged": true,
+  "historical_item4_manifest_at_declared_git": {
+    "matched": 23,
+    "total": 23
+  },
+  "historical_receipts_unchanged": true,
+  "after02_sources_match_checkout": true,
+  "png_revalidation": {
+    "cli": {
+      "files": 8,
+      "errors": []
+    },
+    "worker": {
+      "files": 8,
+      "errors": []
+    }
+  },
+  "syntax": [
+    "capture_evidence.py",
+    "environment_runner.py",
+    "recipe.py",
+    "battery_pilot.py",
+    "test_capture.py"
+  ],
+  "agents_lint": "OK:18 files,136 references,0 findings",
+  "skill_validation": "Skill is valid"
+}
