@@ -1,0 +1,81 @@
+[
+  {
+    "item": 1,
+    "asserts": [
+      "A002"
+    ],
+    "verdict": "fulfilled",
+    "commit": "d7c12039b5e2188719bc2ffcd99b1c30cc6793f4",
+    "branch": "fix/browser-v26-a002-20261119",
+    "report": "evidence/v26/fixes/A002-20261119/REPORT.md",
+    "manifest": "evidence/v26/fixes/A002-20261119/SHA256SUMS.txt"
+  },
+  {
+    "item": 2,
+    "asserts": [
+      "A001"
+    ],
+    "verdict": "parcial",
+    "commit": "fb5e6cbe928ad481a6e56bee3ac9f100bf461b63",
+    "branch": "fix/browser-v26-a001-20261119",
+    "report": "evidence/v26/fixes/A001-20261119/ACCEPTANCE.md",
+    "manifest": "evidence/v26/fixes/A001-20261119/SHA256SUMS-final.txt"
+  },
+  {
+    "item": 3,
+    "asserts": [
+      "A005"
+    ],
+    "verdict": "fulfilled",
+    "commit": "a58c426f8d67d5bdeac317d5da475db91de2cc4a",
+    "branch": "fix/browser-v26-a005-20261119",
+    "report": "evidence/v26/fixes/A005-20261119/ACCEPTANCE.md",
+    "manifest": "evidence/v26/fixes/A005-20261119/SHA256SUMS.txt"
+  },
+  {
+    "item": 4,
+    "asserts": [
+      "A029",
+      "A030",
+      "A044"
+    ],
+    "verdict": "fulfilled",
+    "commit": "c7cc9bfc2c2492fec2719ecba5a2c23ce431ff89",
+    "branch": "fix/browser-v26-environment-20261119",
+    "report": "evidence/v26/fixes/A029-A030-A044-20261119/ACCEPTANCE.md",
+    "manifest": "evidence/v26/fixes/A029-A030-A044-20261119/SHA256SUMS.txt"
+  },
+  {
+    "item": 5,
+    "asserts": [
+      "A006"
+    ],
+    "verdict": "fulfilled",
+    "commit": "4667a88eff38b6a66c3f3f5359b544bfe22cc802",
+    "branch": "fix/browser-v26-a006-20261119",
+    "report": "evidence/v26/fixes/A006-20261119/ACCEPTANCE.md",
+    "manifest": "evidence/v26/fixes/A006-20261119/SHA256SUMS.txt"
+  },
+  {
+    "item": 6,
+    "asserts": [
+      "A008"
+    ],
+    "verdict": "fulfilled",
+    "commit": "4adcef6be8d1a6d22bdad556475b440a2aaf5c0f",
+    "branch": "fix/browser-v26-a008-20261119",
+    "report": "evidence/v26/fixes/A008-20261119/ACCEPTANCE.md",
+    "manifest": "evidence/v26/fixes/A008-20261119/SHA256SUMS.txt"
+  },
+  {
+    "item": 7,
+    "asserts": [
+      "A025"
+    ],
+    "verdict": "não verificado",
+    "commit": "48a15c1a29b2a29c69e33122aa3e1985f31778a0",
+    "branch": "fix/browser-v26-a025-closure-20261119",
+    "report": "evidence/v26/fixes/A025-20261119/REPORT.md",
+    "manifest": "evidence/v26/fixes/A025-20261119/SHA256SUMS.txt"
+  }
+]

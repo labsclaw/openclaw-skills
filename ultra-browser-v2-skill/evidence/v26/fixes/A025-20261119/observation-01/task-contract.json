@@ -1,0 +1,32 @@
+{
+  "id": "XT-WEB-FORM-01",
+  "version": "T1-v1",
+  "seed": 20261019,
+  "prompt": "No laboratório X-Testing, filtre a tabela de demandas por WEB e Em análise, localize na segunda página DEMO-024 e cadastre um plano de teste do tipo Integração, prioridade Alta, responsável Equipe Alfa. No formulário em etapas, tente continuar com e-mail de fixture inválido para verificar a validação, depois corrija para qa@example.test. Ative Requer ambiente e selecione Homologação sintética no campo condicional. Anexe fixture-evidence.txt, abra o modal de revisão, volte e corrija o título para Plano WEB DEMO-024 revisado; confirme a revisão e salve uma única vez. Recarregue e demonstre que valores, anexo e vínculo com DEMO-024 persistiram. Não contate serviços externos.",
+  "promptSha256": "5f101ff2134ba0f8056dffcef3e6b1fd91fc1ea17deb1acbfb4a58b6c1b721d4",
+  "locale": "pt-BR",
+  "timezone": "America/Sao_Paulo",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "fixtureAppStatus": "NOT_IMPLEMENTED",
+  "upload": {
+    "path": "C:\\Users\\ClawLabs\\.openclaw\\workspace\\pocs\\browser-benchmark-20261016\\fixtures\\fixture-evidence.txt",
+    "filename": "fixture-evidence.txt",
+    "bytes": 32,
+    "sha256": "22591ebec4f89fd83947ba44fa6e64d6a1e358ed2935a7493ed5b21cb81a3ed1"
+  },
+  "expected": {
+    "demand": "DEMO-024",
+    "type": "Integração",
+    "priority": "Alta",
+    "responsible": "Equipe Alfa",
+    "email": "qa@example.test",
+    "environment": "Homologação sintética",
+    "title": "Plano WEB DEMO-024 revisado",
+    "records": 1
+  },
+  "reset": "fresh profile, fixture DB and uploads by runId; admin endpoint inaccessible to executor",
+  "judge": "independent server-side; same task all conditions"
+}

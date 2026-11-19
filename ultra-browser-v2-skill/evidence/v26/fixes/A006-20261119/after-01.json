@@ -1,0 +1,942 @@
+{
+  "passed": 26,
+  "total": 26,
+  "cases": [
+    {
+      "name": "normal_cli",
+      "passed": true,
+      "rc": 0,
+      "execution": {
+        "url": "http://127.0.0.1:52288/",
+        "recipe": "recipe.json",
+        "steps": [
+          {
+            "i": 0,
+            "op": {
+              "id": "name",
+              "value": "A006",
+              "action": "type"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "type",
+                  "ok": true,
+                  "id": "name",
+                  "value": "A006",
+                  "dispatched": true,
+                  "effect": {
+                    "verified": false,
+                    "reason": "no postcondition declared"
+                  }
+                }
+              ],
+              "stopped_at": null,
+              "_rc": 0
+            }
+          },
+          {
+            "i": 1,
+            "op": {
+              "id": "save",
+              "action": "click"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "click",
+                  "ok": true,
+                  "id": "save",
+                  "text": "Save",
+                  "dispatched": true,
+                  "effect": {
+                    "verified": false,
+                    "reason": "no postcondition declared"
+                  }
+                }
+              ],
+              "stopped_at": null,
+              "_rc": 0
+            }
+          }
+        ],
+        "result": "RECIPE-DONE-VERIFIED",
+        "postconditions": [],
+        "repairs": [],
+        "navigation": {
+          "rc": 0,
+          "url": "http://127.0.0.1:52288/",
+          "marker": "READY"
+        },
+        "identity": {
+          "url": "http://127.0.0.1:52288",
+          "title": "",
+          "markerOk": true
+        },
+        "verification_detail": {},
+        "verifier": "PASS",
+        "capture": {
+          "schema": "browser-capture-v1",
+          "runId": "a006-cli",
+          "method": "state-frames-png",
+          "frames": [
+            {
+              "runId": "a006-cli",
+              "index": 1,
+              "phase": "after-navigation",
+              "observedAt": "2026-11-19T21:34:21.680871+00:00",
+              "file": "00001.png",
+              "bytes": 9518,
+              "sha256": "09f7c7f83dd6c14118ce3a89a2bd27f2ee28aa89288ccd46ad5784d21ea621a2"
+            },
+            {
+              "runId": "a006-cli",
+              "index": 2,
+              "phase": "after-host-call",
+              "observedAt": "2026-11-19T21:34:21.835423+00:00",
+              "file": "00002.png",
+              "bytes": 9518,
+              "sha256": "09f7c7f83dd6c14118ce3a89a2bd27f2ee28aa89288ccd46ad5784d21ea621a2"
+            },
+            {
+              "runId": "a006-cli",
+              "index": 3,
+              "phase": "after-host-call",
+              "observedAt": "2026-11-19T21:34:22.031023+00:00",
+              "file": "00003.png",
+              "bytes": 9518,
+              "sha256": "09f7c7f83dd6c14118ce3a89a2bd27f2ee28aa89288ccd46ad5784d21ea621a2"
+            },
+            {
+              "runId": "a006-cli",
+              "index": 4,
+              "phase": "after-native",
+              "observedAt": "2026-11-19T21:34:22.616296+00:00",
+              "file": "00004.png",
+              "bytes": 10328,
+              "sha256": "2bc7cd0fba494870ac8e9e02500b20cc652307bc4f22de0d71c17b3427e872fe"
+            },
+            {
+              "runId": "a006-cli",
+              "index": 5,
+              "phase": "after-host-call",
+              "observedAt": "2026-11-19T21:34:23.703406+00:00",
+              "file": "00005.png",
+              "bytes": 10331,
+              "sha256": "2aeacd4f09867fa65e16b442b1b7d6973a0d49c84bef2e8ed558fc9b27c90b79"
+            },
+            {
+              "runId": "a006-cli",
+              "index": 6,
+              "phase": "after-native",
+              "observedAt": "2026-11-19T21:34:23.805766+00:00",
+              "file": "00006.png",
+              "bytes": 10766,
+              "sha256": "c1adc897d304ea36a93a204bad09d97c7dd0268f29a2fa7b19ff715329bfb83c"
+            },
+            {
+              "runId": "a006-cli",
+              "index": 7,
+              "phase": "after-host-call",
+              "observedAt": "2026-11-19T21:34:24.959493+00:00",
+              "file": "00007.png",
+              "bytes": 10766,
+              "sha256": "c1adc897d304ea36a93a204bad09d97c7dd0268f29a2fa7b19ff715329bfb83c"
+            },
+            {
+              "runId": "a006-cli",
+              "index": 8,
+              "phase": "recipe-final",
+              "observedAt": "2026-11-19T21:34:25.074146+00:00",
+              "file": "00008.png",
+              "bytes": 10766,
+              "sha256": "c1adc897d304ea36a93a204bad09d97c7dd0268f29a2fa7b19ff715329bfb83c"
+            }
+          ],
+          "errors": [],
+          "passed": true
+        }
+      },
+      "report": {
+        "schema": "browser-capture-v1",
+        "runId": "a006-cli",
+        "method": "state-frames-png",
+        "frames": [
+          {
+            "runId": "a006-cli",
+            "index": 1,
+            "phase": "after-navigation",
+            "observedAt": "2026-11-19T21:34:21.680871+00:00",
+            "file": "00001.png",
+            "bytes": 9518,
+            "sha256": "09f7c7f83dd6c14118ce3a89a2bd27f2ee28aa89288ccd46ad5784d21ea621a2"
+          },
+          {
+            "runId": "a006-cli",
+            "index": 2,
+            "phase": "after-host-call",
+            "observedAt": "2026-11-19T21:34:21.835423+00:00",
+            "file": "00002.png",
+            "bytes": 9518,
+            "sha256": "09f7c7f83dd6c14118ce3a89a2bd27f2ee28aa89288ccd46ad5784d21ea621a2"
+          },
+          {
+            "runId": "a006-cli",
+            "index": 3,
+            "phase": "after-host-call",
+            "observedAt": "2026-11-19T21:34:22.031023+00:00",
+            "file": "00003.png",
+            "bytes": 9518,
+            "sha256": "09f7c7f83dd6c14118ce3a89a2bd27f2ee28aa89288ccd46ad5784d21ea621a2"
+          },
+          {
+            "runId": "a006-cli",
+            "index": 4,
+            "phase": "after-native",
+            "observedAt": "2026-11-19T21:34:22.616296+00:00",
+            "file": "00004.png",
+            "bytes": 10328,
+            "sha256": "2bc7cd0fba494870ac8e9e02500b20cc652307bc4f22de0d71c17b3427e872fe"
+          },
+          {
+            "runId": "a006-cli",
+            "index": 5,
+            "phase": "after-host-call",
+            "observedAt": "2026-11-19T21:34:23.703406+00:00",
+            "file": "00005.png",
+            "bytes": 10331,
+            "sha256": "2aeacd4f09867fa65e16b442b1b7d6973a0d49c84bef2e8ed558fc9b27c90b79"
+          },
+          {
+            "runId": "a006-cli",
+            "index": 6,
+            "phase": "after-native",
+            "observedAt": "2026-11-19T21:34:23.805766+00:00",
+            "file": "00006.png",
+            "bytes": 10766,
+            "sha256": "c1adc897d304ea36a93a204bad09d97c7dd0268f29a2fa7b19ff715329bfb83c"
+          },
+          {
+            "runId": "a006-cli",
+            "index": 7,
+            "phase": "after-host-call",
+            "observedAt": "2026-11-19T21:34:24.959493+00:00",
+            "file": "00007.png",
+            "bytes": 10766,
+            "sha256": "c1adc897d304ea36a93a204bad09d97c7dd0268f29a2fa7b19ff715329bfb83c"
+          },
+          {
+            "runId": "a006-cli",
+            "index": 8,
+            "phase": "recipe-final",
+            "observedAt": "2026-11-19T21:34:25.074146+00:00",
+            "file": "00008.png",
+            "bytes": 10766,
+            "sha256": "c1adc897d304ea36a93a204bad09d97c7dd0268f29a2fa7b19ff715329bfb83c"
+          }
+        ],
+        "errors": [],
+        "passed": true
+      },
+      "stderr": ""
+    },
+    {
+      "name": "frames_cover_cli",
+      "passed": true
+    },
+    {
+      "name": "committed_file_support_cli",
+      "passed": true,
+      "path": "evidence\\v26\\fixes\\A006-20261119\\files-cli"
+    },
+    {
+      "name": "normal_worker",
+      "passed": true,
+      "rc": 0,
+      "execution": {
+        "url": "http://127.0.0.1:52288/",
+        "recipe": "recipe.json",
+        "steps": [
+          {
+            "i": 0,
+            "op": {
+              "id": "name",
+              "value": "A006",
+              "action": "type"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "type",
+                  "ok": true,
+                  "id": "name",
+                  "value": "A006",
+                  "dispatched": true,
+                  "effect": {
+                    "verified": false,
+                    "reason": "no postcondition declared"
+                  }
+                }
+              ],
+              "stopped_at": null,
+              "_rc": 0
+            }
+          },
+          {
+            "i": 1,
+            "op": {
+              "id": "save",
+              "action": "click"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "click",
+                  "ok": true,
+                  "id": "save",
+                  "text": "Save",
+                  "dispatched": true,
+                  "effect": {
+                    "verified": false,
+                    "reason": "no postcondition declared"
+                  }
+                }
+              ],
+              "stopped_at": null,
+              "_rc": 0
+            }
+          }
+        ],
+        "result": "RECIPE-DONE-VERIFIED",
+        "postconditions": [],
+        "repairs": [],
+        "navigation": {
+          "rc": 0,
+          "url": "http://127.0.0.1:52288/",
+          "marker": "READY"
+        },
+        "identity": {
+          "url": "http://127.0.0.1:52288",
+          "title": "",
+          "markerOk": true
+        },
+        "verification_detail": {},
+        "verifier": "PASS",
+        "capture": {
+          "schema": "browser-capture-v1",
+          "runId": "a006-worker",
+          "method": "state-frames-png",
+          "frames": [
+            {
+              "runId": "a006-worker",
+              "index": 1,
+              "phase": "after-navigation",
+              "observedAt": "2026-11-19T21:34:29.555765+00:00",
+              "file": "00001.png",
+              "bytes": 9518,
+              "sha256": "09f7c7f83dd6c14118ce3a89a2bd27f2ee28aa89288ccd46ad5784d21ea621a2"
+            },
+            {
+              "runId": "a006-worker",
+              "index": 2,
+              "phase": "after-host-call",
+              "observedAt": "2026-11-19T21:34:29.646265+00:00",
+              "file": "00002.png",
+              "bytes": 9518,
+              "sha256": "09f7c7f83dd6c14118ce3a89a2bd27f2ee28aa89288ccd46ad5784d21ea621a2"
+            },
+            {
+              "runId": "a006-worker",
+              "index": 3,
+              "phase": "after-host-call",
+              "observedAt": "2026-11-19T21:34:29.776829+00:00",
+              "file": "00003.png",
+              "bytes": 9518,
+              "sha256": "09f7c7f83dd6c14118ce3a89a2bd27f2ee28aa89288ccd46ad5784d21ea621a2"
+            },
+            {
+              "runId": "a006-worker",
+              "index": 4,
+              "phase": "after-native",
+              "observedAt": "2026-11-19T21:34:30.328168+00:00",
+              "file": "00004.png",
+              "bytes": 10328,
+              "sha256": "2bc7cd0fba494870ac8e9e02500b20cc652307bc4f22de0d71c17b3427e872fe"
+            },
+            {
+              "runId": "a006-worker",
+              "index": 5,
+              "phase": "after-host-call",
+              "observedAt": "2026-11-19T21:34:31.448654+00:00",
+              "file": "00005.png",
+              "bytes": 10331,
+              "sha256": "2aeacd4f09867fa65e16b442b1b7d6973a0d49c84bef2e8ed558fc9b27c90b79"
+            },
+            {
+              "runId": "a006-worker",
+              "index": 6,
+              "phase": "after-native",
+              "observedAt": "2026-11-19T21:34:31.538895+00:00",
+              "file": "00006.png",
+              "bytes": 10766,
+              "sha256": "c1adc897d304ea36a93a204bad09d97c7dd0268f29a2fa7b19ff715329bfb83c"
+            },
+            {
+              "runId": "a006-worker",
+              "index": 7,
+              "phase": "after-host-call",
+              "observedAt": "2026-11-19T21:34:32.631267+00:00",
+              "file": "00007.png",
+              "bytes": 10766,
+              "sha256": "c1adc897d304ea36a93a204bad09d97c7dd0268f29a2fa7b19ff715329bfb83c"
+            },
+            {
+              "runId": "a006-worker",
+              "index": 8,
+              "phase": "recipe-final",
+              "observedAt": "2026-11-19T21:34:32.703140+00:00",
+              "file": "00008.png",
+              "bytes": 10766,
+              "sha256": "c1adc897d304ea36a93a204bad09d97c7dd0268f29a2fa7b19ff715329bfb83c"
+            }
+          ],
+          "errors": [],
+          "passed": true
+        }
+      },
+      "report": {
+        "schema": "browser-capture-v1",
+        "runId": "a006-worker",
+        "method": "state-frames-png",
+        "frames": [
+          {
+            "runId": "a006-worker",
+            "index": 1,
+            "phase": "after-navigation",
+            "observedAt": "2026-11-19T21:34:29.555765+00:00",
+            "file": "00001.png",
+            "bytes": 9518,
+            "sha256": "09f7c7f83dd6c14118ce3a89a2bd27f2ee28aa89288ccd46ad5784d21ea621a2"
+          },
+          {
+            "runId": "a006-worker",
+            "index": 2,
+            "phase": "after-host-call",
+            "observedAt": "2026-11-19T21:34:29.646265+00:00",
+            "file": "00002.png",
+            "bytes": 9518,
+            "sha256": "09f7c7f83dd6c14118ce3a89a2bd27f2ee28aa89288ccd46ad5784d21ea621a2"
+          },
+          {
+            "runId": "a006-worker",
+            "index": 3,
+            "phase": "after-host-call",
+            "observedAt": "2026-11-19T21:34:29.776829+00:00",
+            "file": "00003.png",
+            "bytes": 9518,
+            "sha256": "09f7c7f83dd6c14118ce3a89a2bd27f2ee28aa89288ccd46ad5784d21ea621a2"
+          },
+          {
+            "runId": "a006-worker",
+            "index": 4,
+            "phase": "after-native",
+            "observedAt": "2026-11-19T21:34:30.328168+00:00",
+            "file": "00004.png",
+            "bytes": 10328,
+            "sha256": "2bc7cd0fba494870ac8e9e02500b20cc652307bc4f22de0d71c17b3427e872fe"
+          },
+          {
+            "runId": "a006-worker",
+            "index": 5,
+            "phase": "after-host-call",
+            "observedAt": "2026-11-19T21:34:31.448654+00:00",
+            "file": "00005.png",
+            "bytes": 10331,
+            "sha256": "2aeacd4f09867fa65e16b442b1b7d6973a0d49c84bef2e8ed558fc9b27c90b79"
+          },
+          {
+            "runId": "a006-worker",
+            "index": 6,
+            "phase": "after-native",
+            "observedAt": "2026-11-19T21:34:31.538895+00:00",
+            "file": "00006.png",
+            "bytes": 10766,
+            "sha256": "c1adc897d304ea36a93a204bad09d97c7dd0268f29a2fa7b19ff715329bfb83c"
+          },
+          {
+            "runId": "a006-worker",
+            "index": 7,
+            "phase": "after-host-call",
+            "observedAt": "2026-11-19T21:34:32.631267+00:00",
+            "file": "00007.png",
+            "bytes": 10766,
+            "sha256": "c1adc897d304ea36a93a204bad09d97c7dd0268f29a2fa7b19ff715329bfb83c"
+          },
+          {
+            "runId": "a006-worker",
+            "index": 8,
+            "phase": "recipe-final",
+            "observedAt": "2026-11-19T21:34:32.703140+00:00",
+            "file": "00008.png",
+            "bytes": 10766,
+            "sha256": "c1adc897d304ea36a93a204bad09d97c7dd0268f29a2fa7b19ff715329bfb83c"
+          }
+        ],
+        "errors": [],
+        "passed": true
+      },
+      "stderr": ""
+    },
+    {
+      "name": "frames_cover_worker",
+      "passed": true
+    },
+    {
+      "name": "committed_file_support_worker",
+      "passed": true,
+      "path": "evidence\\v26\\fixes\\A006-20261119\\files-worker"
+    },
+    {
+      "name": "reload_real",
+      "passed": true
+    },
+    {
+      "name": "reload_frame",
+      "passed": true
+    },
+    {
+      "name": "screenshot_exception",
+      "passed": true,
+      "execution": {
+        "url": "http://127.0.0.1:52288/",
+        "recipe": "recipe.json",
+        "steps": [],
+        "result": "RECIPE-EVIDENCE-FAIL",
+        "postconditions": [],
+        "repairs": [],
+        "navigation": {
+          "rc": 1,
+          "url": "http://127.0.0.1:52288/",
+          "marker": "READY",
+          "out": "",
+          "err": "Traceback (most recent call last):\n  File \"C:\\Users\\ClawLabs\\.openclaw\\workspace\\projects\\ultra-browser-v2-publication\\ultra-browser-v2-skill\\scripts\\environment_runner.py\", line 140, in harness\n    raise RuntimeError('capture evidence failed')\nRuntimeError: capture evidence failed\n"
+        },
+        "capture": {
+          "schema": "browser-capture-v1",
+          "runId": "screenshot_exception",
+          "method": "state-frames-png",
+          "frames": [],
+          "errors": [
+            {
+              "runId": "screenshot_exception",
+              "index": 1,
+              "phase": "after-navigation",
+              "observedAt": "2026-11-19T21:34:39.984032+00:00",
+              "error": "OSError: capture denied"
+            },
+            {
+              "runId": "screenshot_exception",
+              "index": 1,
+              "phase": "host-failure",
+              "observedAt": "2026-11-19T21:34:39.984032+00:00",
+              "error": "OSError: capture denied"
+            },
+            {
+              "runId": "screenshot_exception",
+              "index": 1,
+              "phase": "recipe-final",
+              "observedAt": "2026-11-19T21:34:39.986038+00:00",
+              "error": "OSError: capture denied"
+            },
+            "capture receipt not passed or wrong run"
+          ],
+          "passed": false
+        },
+        "taskResultBeforeEvidence": "RECIPE-FAIL initial navigation rc=1"
+      }
+    },
+    {
+      "name": "screenshot_exception_not_green",
+      "passed": true
+    },
+    {
+      "name": "empty_png",
+      "passed": true,
+      "execution": {
+        "url": "http://127.0.0.1:52288/",
+        "recipe": "recipe.json",
+        "steps": [],
+        "result": "RECIPE-EVIDENCE-FAIL",
+        "postconditions": [],
+        "repairs": [],
+        "navigation": {
+          "rc": 1,
+          "url": "http://127.0.0.1:52288/",
+          "marker": "READY",
+          "out": "",
+          "err": "Traceback (most recent call last):\n  File \"C:\\Users\\ClawLabs\\.openclaw\\workspace\\projects\\ultra-browser-v2-publication\\ultra-browser-v2-skill\\scripts\\environment_runner.py\", line 140, in harness\n    raise RuntimeError('capture evidence failed')\nRuntimeError: capture evidence failed\n"
+        },
+        "capture": {
+          "schema": "browser-capture-v1",
+          "runId": "empty_png",
+          "method": "state-frames-png",
+          "frames": [],
+          "errors": [
+            {
+              "runId": "empty_png",
+              "index": 1,
+              "phase": "after-navigation",
+              "observedAt": "2026-11-19T21:34:43.397964+00:00",
+              "error": "ValueError: capture returned invalid/empty PNG"
+            },
+            {
+              "runId": "empty_png",
+              "index": 1,
+              "phase": "host-failure",
+              "observedAt": "2026-11-19T21:34:43.397964+00:00",
+              "error": "ValueError: capture returned invalid/empty PNG"
+            },
+            {
+              "runId": "empty_png",
+              "index": 1,
+              "phase": "recipe-final",
+              "observedAt": "2026-11-19T21:34:43.398965+00:00",
+              "error": "ValueError: capture returned invalid/empty PNG"
+            },
+            "capture receipt not passed or wrong run"
+          ],
+          "passed": false
+        },
+        "taskResultBeforeEvidence": "RECIPE-FAIL initial navigation rc=1"
+      }
+    },
+    {
+      "name": "empty_png_not_green",
+      "passed": true
+    },
+    {
+      "name": "invalid_png",
+      "passed": true,
+      "execution": {
+        "url": "http://127.0.0.1:52288/",
+        "recipe": "recipe.json",
+        "steps": [],
+        "result": "RECIPE-EVIDENCE-FAIL",
+        "postconditions": [],
+        "repairs": [],
+        "navigation": {
+          "rc": 1,
+          "url": "http://127.0.0.1:52288/",
+          "marker": "READY",
+          "out": "",
+          "err": "Traceback (most recent call last):\n  File \"C:\\Users\\ClawLabs\\.openclaw\\workspace\\projects\\ultra-browser-v2-publication\\ultra-browser-v2-skill\\scripts\\environment_runner.py\", line 140, in harness\n    raise RuntimeError('capture evidence failed')\nRuntimeError: capture evidence failed\n"
+        },
+        "capture": {
+          "schema": "browser-capture-v1",
+          "runId": "invalid_png",
+          "method": "state-frames-png",
+          "frames": [],
+          "errors": [
+            {
+              "runId": "invalid_png",
+              "index": 1,
+              "phase": "after-navigation",
+              "observedAt": "2026-11-19T21:34:46.745206+00:00",
+              "error": "ValueError: capture returned invalid/empty PNG"
+            },
+            {
+              "runId": "invalid_png",
+              "index": 1,
+              "phase": "host-failure",
+              "observedAt": "2026-11-19T21:34:46.747223+00:00",
+              "error": "ValueError: capture returned invalid/empty PNG"
+            },
+            {
+              "runId": "invalid_png",
+              "index": 1,
+              "phase": "recipe-final",
+              "observedAt": "2026-11-19T21:34:46.748227+00:00",
+              "error": "ValueError: capture returned invalid/empty PNG"
+            },
+            "capture receipt not passed or wrong run"
+          ],
+          "passed": false
+        },
+        "taskResultBeforeEvidence": "RECIPE-FAIL initial navigation rc=1"
+      }
+    },
+    {
+      "name": "invalid_png_not_green",
+      "passed": true
+    },
+    {
+      "name": "write_collision",
+      "passed": true,
+      "execution": {
+        "url": "http://127.0.0.1:52288/",
+        "recipe": "recipe.json",
+        "steps": [],
+        "result": "RECIPE-EVIDENCE-FAIL",
+        "postconditions": [],
+        "repairs": [],
+        "navigation": {
+          "rc": 1,
+          "url": "http://127.0.0.1:52288/",
+          "marker": "READY",
+          "out": "",
+          "err": "Traceback (most recent call last):\n  File \"C:\\Users\\ClawLabs\\.openclaw\\workspace\\projects\\ultra-browser-v2-publication\\ultra-browser-v2-skill\\scripts\\environment_runner.py\", line 140, in harness\n    raise RuntimeError('capture evidence failed')\nRuntimeError: capture evidence failed\n"
+        },
+        "capture": {
+          "schema": "browser-capture-v1",
+          "runId": "write_collision",
+          "method": "state-frames-png",
+          "frames": [],
+          "errors": [
+            {
+              "runId": "write_collision",
+              "index": 1,
+              "phase": "after-navigation",
+              "observedAt": "2026-11-19T21:34:49.943246+00:00",
+              "error": "FileExistsError: [Errno 17] File exists: 'C:\\\\Users\\\\ClawLabs\\\\AppData\\\\Local\\\\Temp\\\\a006-_njqg5b6\\\\write_collision\\\\capture\\\\00001.png'"
+            },
+            {
+              "runId": "write_collision",
+              "index": 1,
+              "phase": "host-failure",
+              "observedAt": "2026-11-19T21:34:50.100982+00:00",
+              "error": "FileExistsError: [Errno 17] File exists: 'C:\\\\Users\\\\ClawLabs\\\\AppData\\\\Local\\\\Temp\\\\a006-_njqg5b6\\\\write_collision\\\\capture\\\\00001.png'"
+            },
+            {
+              "runId": "write_collision",
+              "index": 1,
+              "phase": "recipe-final",
+              "observedAt": "2026-11-19T21:34:50.198904+00:00",
+              "error": "FileExistsError: [Errno 17] File exists: 'C:\\\\Users\\\\ClawLabs\\\\AppData\\\\Local\\\\Temp\\\\a006-_njqg5b6\\\\write_collision\\\\capture\\\\00001.png'"
+            },
+            "capture receipt not passed or wrong run"
+          ],
+          "passed": false
+        },
+        "taskResultBeforeEvidence": "RECIPE-FAIL initial navigation rc=1"
+      }
+    },
+    {
+      "name": "write_collision_not_green",
+      "passed": true
+    },
+    {
+      "name": "final_failure",
+      "passed": true,
+      "execution": {
+        "url": "http://127.0.0.1:52288/",
+        "recipe": "recipe.json",
+        "steps": [
+          {
+            "i": 0,
+            "op": {
+              "id": "name",
+              "value": "A006",
+              "action": "type"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "type",
+                  "ok": true,
+                  "id": "name",
+                  "value": "A006",
+                  "dispatched": true,
+                  "effect": {
+                    "verified": false,
+                    "reason": "no postcondition declared"
+                  }
+                }
+              ],
+              "stopped_at": null,
+              "_rc": 0
+            }
+          },
+          {
+            "i": 1,
+            "op": {
+              "id": "save",
+              "action": "click"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "click",
+                  "ok": true,
+                  "id": "save",
+                  "text": "Save",
+                  "dispatched": true,
+                  "effect": {
+                    "verified": false,
+                    "reason": "no postcondition declared"
+                  }
+                }
+              ],
+              "stopped_at": null,
+              "_rc": 0
+            }
+          }
+        ],
+        "result": "RECIPE-EVIDENCE-FAIL",
+        "postconditions": [],
+        "repairs": [],
+        "navigation": {
+          "rc": 0,
+          "url": "http://127.0.0.1:52288/",
+          "marker": "READY"
+        },
+        "identity": {
+          "url": "http://127.0.0.1:52288",
+          "title": "",
+          "markerOk": true
+        },
+        "verification_detail": {},
+        "verifier": "PASS",
+        "capture": {
+          "schema": "browser-capture-v1",
+          "runId": "final_failure",
+          "method": "state-frames-png",
+          "frames": [
+            {
+              "runId": "final_failure",
+              "index": 1,
+              "phase": "after-navigation",
+              "observedAt": "2026-11-19T21:34:54.174007+00:00",
+              "file": "00001.png",
+              "bytes": 9518,
+              "sha256": "09f7c7f83dd6c14118ce3a89a2bd27f2ee28aa89288ccd46ad5784d21ea621a2"
+            },
+            {
+              "runId": "final_failure",
+              "index": 2,
+              "phase": "after-host-call",
+              "observedAt": "2026-11-19T21:34:54.309989+00:00",
+              "file": "00002.png",
+              "bytes": 9518,
+              "sha256": "09f7c7f83dd6c14118ce3a89a2bd27f2ee28aa89288ccd46ad5784d21ea621a2"
+            },
+            {
+              "runId": "final_failure",
+              "index": 3,
+              "phase": "after-host-call",
+              "observedAt": "2026-11-19T21:34:54.442503+00:00",
+              "file": "00003.png",
+              "bytes": 9518,
+              "sha256": "09f7c7f83dd6c14118ce3a89a2bd27f2ee28aa89288ccd46ad5784d21ea621a2"
+            },
+            {
+              "runId": "final_failure",
+              "index": 4,
+              "phase": "after-native",
+              "observedAt": "2026-11-19T21:34:55.087563+00:00",
+              "file": "00004.png",
+              "bytes": 10328,
+              "sha256": "2bc7cd0fba494870ac8e9e02500b20cc652307bc4f22de0d71c17b3427e872fe"
+            },
+            {
+              "runId": "final_failure",
+              "index": 5,
+              "phase": "after-host-call",
+              "observedAt": "2026-11-19T21:34:56.355382+00:00",
+              "file": "00005.png",
+              "bytes": 10331,
+              "sha256": "2aeacd4f09867fa65e16b442b1b7d6973a0d49c84bef2e8ed558fc9b27c90b79"
+            },
+            {
+              "runId": "final_failure",
+              "index": 6,
+              "phase": "after-native",
+              "observedAt": "2026-11-19T21:34:56.514018+00:00",
+              "file": "00006.png",
+              "bytes": 10766,
+              "sha256": "c1adc897d304ea36a93a204bad09d97c7dd0268f29a2fa7b19ff715329bfb83c"
+            },
+            {
+              "runId": "final_failure",
+              "index": 7,
+              "phase": "after-host-call",
+              "observedAt": "2026-11-19T21:34:57.768437+00:00",
+              "file": "00007.png",
+              "bytes": 10766,
+              "sha256": "c1adc897d304ea36a93a204bad09d97c7dd0268f29a2fa7b19ff715329bfb83c"
+            }
+          ],
+          "errors": [
+            {
+              "runId": "final_failure",
+              "index": 8,
+              "phase": "recipe-final",
+              "observedAt": "2026-11-19T21:34:57.990033+00:00",
+              "error": "OSError: final capture failed"
+            },
+            "capture receipt not passed or wrong run"
+          ],
+          "passed": false
+        },
+        "taskResultBeforeEvidence": "RECIPE-DONE-VERIFIED"
+      }
+    },
+    {
+      "name": "final_failure_not_green",
+      "passed": true
+    },
+    {
+      "name": "gate_missing_file",
+      "passed": true
+    },
+    {
+      "name": "gate_tampered",
+      "passed": true
+    },
+    {
+      "name": "gate_empty_frames",
+      "passed": true
+    },
+    {
+      "name": "gate_wrong_run",
+      "passed": true
+    },
+    {
+      "name": "gate_forged_pass",
+      "passed": true
+    },
+    {
+      "name": "gate_path_escape",
+      "passed": true
+    },
+    {
+      "name": "legacy_explicit_unavailable",
+      "passed": true
+    },
+    {
+      "name": "sources_unchanged",
+      "passed": true
+    }
+  ],
+  "sources_before": {
+    "capture_evidence.py": "59c19c02ffa9730f8352f351beb5ce45060c2bf5fe3cf23e8d503dec21c89d55",
+    "environment_runner.py": "0150e3325f64000acb058855eac1a9f998637a0f49f293b4566dc1d5829c5815",
+    "recipe.py": "877f5c74641c367744df45b249dcacc7699ef2b941b2d22bfcedf18d1b46bf08",
+    "battery_pilot.py": "13b053168555d3514878e236fbb18747e29ffad6c22759545f5210e4aa17c5d7",
+    "test_capture.py": "56df1936723d36f4cfb3a0586ddd7a1119c65e81a5fbda9d425c443cafb58639"
+  },
+  "sources": {
+    "capture_evidence.py": "59c19c02ffa9730f8352f351beb5ce45060c2bf5fe3cf23e8d503dec21c89d55",
+    "environment_runner.py": "0150e3325f64000acb058855eac1a9f998637a0f49f293b4566dc1d5829c5815",
+    "recipe.py": "877f5c74641c367744df45b249dcacc7699ef2b941b2d22bfcedf18d1b46bf08",
+    "battery_pilot.py": "13b053168555d3514878e236fbb18747e29ffad6c22759545f5210e4aa17c5d7",
+    "test_capture.py": "56df1936723d36f4cfb3a0586ddd7a1119c65e81a5fbda9d425c443cafb58639"
+  },
+  "sources_unchanged": true,
+  "scope": "Chromium local headless, sem LLM/judge/Hermes; arquivos PNG são frames, não vídeo"
+}

@@ -1,0 +1,64 @@
+{
+  "version": "2.6-extraction-1",
+  "intent": "",
+  "source_trace": "C:\\Users\\ClawLabs\\AppData\\Local\\Temp\\a008-45rok46a\\negative.json",
+  "native_ops": [
+    {
+      "op": "click",
+      "id": "disabled",
+      "_expect_fail": true
+    }
+  ],
+  "notes": [],
+  "provenance": {
+    "source": {
+      "path": "C:\\Users\\ClawLabs\\AppData\\Local\\Temp\\a008-45rok46a\\negative.json",
+      "sha256": "8270a42b9eb938a880998a778327d7a5b48f394aa870a23afb5e468f8c60680c",
+      "format": "batch",
+      "model": null,
+      "url": null,
+      "mode": "batch"
+    },
+    "operations": [
+      {
+        "opIndex": 0,
+        "action_source": "/cycles/0/plan/1",
+        "execution_source": "/cycles/0/exec/results/1",
+        "expected_blocked": true,
+        "effect": null,
+        "transport_rc": 0
+      }
+    ],
+    "excluded": []
+  },
+  "verification": {
+    "source_result": null,
+    "observations": [
+      {
+        "source": "/cycles/0/plan/0",
+        "execution_source": "/cycles/0/exec/results/0",
+        "assertion": {
+          "action": "expect_blocked"
+        },
+        "observation": {
+          "i": 0,
+          "action": "expect_blocked"
+        }
+      },
+      {
+        "source": "/cycles/0/plan/2",
+        "execution_source": "/cycles/0/exec/results/2",
+        "assertion": {
+          "action": "assert_text",
+          "value": "error"
+        },
+        "observation": {
+          "i": 2,
+          "action": "assert_text",
+          "ok": true
+        }
+      }
+    ],
+    "state": "recorded-not-revalidated"
+  }
+}

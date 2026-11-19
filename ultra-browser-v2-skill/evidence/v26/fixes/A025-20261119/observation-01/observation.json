@@ -1,0 +1,111 @@
+{
+  "schema": "a025-observation-v1",
+  "startedAt": "2026-11-19T22:08:59.682623+00:00",
+  "verdict": "not_verified",
+  "sourcesBefore": {
+    "C:\\Users\\ClawLabs\\.openclaw\\workspace\\projects\\ultra-browser-v2-publication\\ultra-browser-v2-skill\\scripts\\observe_network_a025.py": "18aa6e7d2825a63548e3adaa6b4684b61718df20289e152c777576f205bc629f",
+    "C:\\Users\\ClawLabs\\.openclaw\\workspace\\projects\\ultra-browser-v2-publication\\ultra-browser-v2-skill\\scripts\\recipe.py": "f5c97a8d53423bc05e868c58b75202d6206a2466dece97eb44ff484bf9c61f55",
+    "C:\\Users\\ClawLabs\\.openclaw\\workspace\\projects\\ultra-browser-v2-publication\\ultra-browser-v2-skill\\scripts\\environment_runner.py": "0150e3325f64000acb058855eac1a9f998637a0f49f293b4566dc1d5829c5815",
+    "C:\\Users\\ClawLabs\\.openclaw\\workspace\\projects\\ultra-browser-v2-publication\\ultra-browser-v2-skill\\scripts\\battery_pilot.py": "13b053168555d3514878e236fbb18747e29ffad6c22759545f5210e4aa17c5d7",
+    "C:\\Users\\ClawLabs\\.openclaw\\workspace\\pocs\\browser-benchmark-20261016\\fixture\\server.py": "73a54e9a8c8a2f69bff79581231ebb59625266c39d6c65b10f5f4a625eeaf6a9",
+    "C:\\Users\\ClawLabs\\.openclaw\\workspace\\projects\\ultra-browser-v2-publication\\ultra-browser-v2-skill\\evidence\\v26\\results\\recipes\\xt24ds7-recipe.json": "5defc9c2bf86ec8357cc16c063d03bb18ce6554bfd7848ca18e1f409d971fd71",
+    "C:\\Users\\ClawLabs\\.openclaw\\workspace\\pocs\\browser-benchmark-20261016\\TASK-CONTRACT-20261019.json": "0ff589c560efaa10fe412c8c065fac0ce7cc2ffc0c19bdb3743c600140390d09"
+  },
+  "controls": [
+    {
+      "name": "allowlisted_loopback_seen",
+      "passed": true
+    },
+    {
+      "name": "distinct_loopback_origin_seen",
+      "passed": true
+    }
+  ],
+  "task": {
+    "runId": "a025-c3281a759974",
+    "url": "http://127.0.0.1:61325/xt-web-form-01",
+    "ready": {
+      "ready": true,
+      "origin": "http://127.0.0.1:61325",
+      "runId": "a025-c3281a759974",
+      "pid": 17112
+    },
+    "result": "RECIPE-FAIL identity invalid at step 0: element not found (waited)",
+    "executedSteps": 1,
+    "inputOps": 22,
+    "observation": {
+      "startedAt": "2026-11-19T22:09:03.587204+00:00",
+      "finishedAt": "2026-11-19T22:09:09.367306+00:00",
+      "events": 10,
+      "requests": 10,
+      "nonAllowedObserved": [],
+      "errors": [],
+      "coverage": "target CDP + context HTTP request events after launch; not OS/DNS/browser-background/all-host"
+    },
+    "environmentPassed": true
+  },
+  "limits": [
+    "sensor attached after Chromium launch; startup not observed",
+    "does not observe all browser background/DNS/UDP/host processes",
+    "no inference/provider transport exercised",
+    "historical runs cannot be reconstructed from this observation"
+  ],
+  "calibration": {
+    "startedAt": "2026-11-19T22:09:01.136189+00:00",
+    "finishedAt": "2026-11-19T22:09:01.608659+00:00",
+    "events": 4,
+    "requests": 4,
+    "nonAllowedObserved": [
+      {
+        "observedAt": "2026-11-19T22:09:01.256810+00:00",
+        "source": "CDP-target",
+        "kind": "request",
+        "url": "http://127.0.0.1:64882/calibration",
+        "allowedOrigin": false,
+        "method": "GET",
+        "requestId": "6376.2"
+      },
+      {
+        "observedAt": "2026-11-19T22:09:01.257321+00:00",
+        "source": "Playwright-context",
+        "kind": "request",
+        "url": "http://127.0.0.1:64882/calibration",
+        "allowedOrigin": false,
+        "method": "GET"
+      }
+    ],
+    "errors": [],
+    "coverage": "target CDP + context HTTP request events after launch; not OS/DNS/browser-background/all-host"
+  },
+  "sufficiency": {
+    "sufficient": false,
+    "reasons": [
+      "sensor attached after Chromium launch; startup not observed",
+      "does not observe all browser background/DNS/UDP/host processes",
+      "no inference/provider transport exercised",
+      "historical runs cannot be reconstructed from this observation",
+      "normal public recipe did not complete full contracted workflow"
+    ]
+  },
+  "fixtureExitCode": 1,
+  "sourcesAfter": {
+    "C:\\Users\\ClawLabs\\.openclaw\\workspace\\projects\\ultra-browser-v2-publication\\ultra-browser-v2-skill\\scripts\\observe_network_a025.py": "18aa6e7d2825a63548e3adaa6b4684b61718df20289e152c777576f205bc629f",
+    "C:\\Users\\ClawLabs\\.openclaw\\workspace\\projects\\ultra-browser-v2-publication\\ultra-browser-v2-skill\\scripts\\recipe.py": "f5c97a8d53423bc05e868c58b75202d6206a2466dece97eb44ff484bf9c61f55",
+    "C:\\Users\\ClawLabs\\.openclaw\\workspace\\projects\\ultra-browser-v2-publication\\ultra-browser-v2-skill\\scripts\\environment_runner.py": "0150e3325f64000acb058855eac1a9f998637a0f49f293b4566dc1d5829c5815",
+    "C:\\Users\\ClawLabs\\.openclaw\\workspace\\projects\\ultra-browser-v2-publication\\ultra-browser-v2-skill\\scripts\\battery_pilot.py": "13b053168555d3514878e236fbb18747e29ffad6c22759545f5210e4aa17c5d7",
+    "C:\\Users\\ClawLabs\\.openclaw\\workspace\\pocs\\browser-benchmark-20261016\\fixture\\server.py": "73a54e9a8c8a2f69bff79581231ebb59625266c39d6c65b10f5f4a625eeaf6a9",
+    "C:\\Users\\ClawLabs\\.openclaw\\workspace\\projects\\ultra-browser-v2-publication\\ultra-browser-v2-skill\\evidence\\v26\\results\\recipes\\xt24ds7-recipe.json": "5defc9c2bf86ec8357cc16c063d03bb18ce6554bfd7848ca18e1f409d971fd71",
+    "C:\\Users\\ClawLabs\\.openclaw\\workspace\\pocs\\browser-benchmark-20261016\\TASK-CONTRACT-20261019.json": "0ff589c560efaa10fe412c8c065fac0ce7cc2ffc0c19bdb3743c600140390d09"
+  },
+  "sourcesUnchanged": true,
+  "finishedAt": "2026-11-19T22:09:10.365938+00:00",
+  "files": {
+    "control-network.jsonl": "3c2e9ce156d0d48a976b1be465d0a7c587bd9376090de22ef84c34b8088a15b1",
+    "fixture.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "fixture.stdout.txt": "a628a4521806625b785a990589eec4b9a14271c1bd9d7d70f01d949a047576d5",
+    "recipe-input.json": "5defc9c2bf86ec8357cc16c063d03bb18ce6554bfd7848ca18e1f409d971fd71",
+    "task-contract.json": "0ff589c560efaa10fe412c8c065fac0ce7cc2ffc0c19bdb3743c600140390d09",
+    "task-execution.json": "a31a8dd6839bdc59a780811f966ce3778e8d3ed4eb50dcc5abf87556d1caf5f4",
+    "task-network.jsonl": "fafd83845d5c501b0bb3d9120e557d41bc23fcf3b66954f8b505ed46af3a16ec"
+  }
+}

@@ -1,5 +1,11 @@
 # Recipe: formato, proveniência e aceitação
 
+## Atualização A008
+
+Para o extrator ativo, consultar [normalização, proveniência e verificação separada](trace-extraction.md).
+As descrições abaixo que dependem de ed963ec ou de corte no primeiro save são
+históricas e não substituem o contrato incremental.
+
 Status: proposta documental para revisão do Hermes antes da integração ao SKILL.md v2.3. Não implementa um novo parser nem promove funcionalidades planejadas a disponíveis.
 
 ## 1. Base de evidência

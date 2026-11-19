@@ -41,67 +41,22 @@ def harness(code, timeout=90):
 # ---------------- 1. EXTRACT: trace -> recipe ----------------
 
 def extract_recipe(trace_path: str, goal: str = ""):
-    """Compila um trace de agente (agent_loop log JSON) em recipe estruturada."""
-    with open(trace_path, encoding="utf-8") as f:
-        txt = f.read()
-    d = json.loads(txt[txt.find("{"):])
-    steps = d.get("steps", []) or d.get("cycles", [])
-    recipe = {
-        "version": "2.5",
-        "intent": goal or d.get("goal", ""),
-        "source_trace": trace_path,
-        "native_ops": [],
-        "notes": [],
-    }
-    for s in steps:
-        p = s.get("parsed") or {}
-        act = p.get("action")
-        if not act or act in ("done", "blocked"):
-            continue
-        ex = s.get("exec")
-        exj = {}
-        try:
-            exj = json.loads(ex) if isinstance(ex, str) else (ex or {})
-        except Exception:
-            exj = {}
-        # so passos que EXECUTARAM ok (o trace de sucesso e o roteiro)
-        if isinstance(exj, dict) and exj.get("results"):
-            r0 = (exj["results"] or [{}])[0]
-            if not (r0.get("ok") or r0.get("action") == "upload"):
-                continue
-        # v2.5.1: label LIMPO — o trace grava "tag id: text"; pro resolve por texto
-        # interessa so o TEXTO visivel do elemento (ex.: "Criar plano DEMO-024")
-        raw_label = (p.get("label") or "")
-        clean = raw_label.split(":", 1)[1].strip() if ":" in raw_label else raw_label
-        op = {
-            "op": act,
-            "id": p.get("id") or exj.get("id") or "",
-            "label": clean[:80],
-            "value": p.get("value", ""),
-        }
-        # upload: o terminal traz o arquivo; reload/navigate: op nativa
-        if act == "upload":
-            op["value"] = exj.get("file") or op["value"] or "fixture-evidence.txt"
-        recipe["native_ops"].append(op)
-        # corte de ruido pos-save (padrao Skill Recorder: o procedimento termina
-        # na acao-chave; o "vagueio" do agente apos o save NAO e procedimento).
-        if (act == "click" and (exj.get("id") == "save" or
-                                "salvar" in str((exj.get("text") or "")).lower())
-                and isinstance(exj, dict)):
-            recipe["notes"].append(f"cut after save at op {len(recipe['native_ops'])} "
-                                   f"(post-save wandering removed: "
-                                   f"{len(steps)} trace steps -> recipe ends here)")
-            break
-    return recipe
+    """Entrada compatível; normalização única single/batch, sem replay de verifier."""
+    from trace_recipe import extract
+    return extract(trace_path, goal)
 
 
 # ---------------- 2. RUN: recipe -> execucao adaptativa ----------------
 
 BATCH_JS = open(os.path.join(HERE, "agent_loop.py"), encoding="utf-8").read()
-# reusar o BATCH_JS_TEMPLATE do agent_loop sem importar o modulo inteiro (CLI arg parsing)
+# Reusar o literal avaliado, nao o texto Python com escapes duplicados.
+# AST nao executa o modulo nem carrega provider/CLI do agente.
 import re as _re
-_m = _re.search(r'BATCH_JS_TEMPLATE = """(.*?)"""\n\n\ndef execute_batch', open(os.path.join(HERE, "agent_loop.py"), encoding="utf-8").read(), _re.S)
-BATCH_JS_TEMPLATE = _m.group(1) if _m else ""
+import ast as _ast
+BATCH_JS_TEMPLATE = next((_ast.literal_eval(n.value) for n in _ast.parse(BATCH_JS).body
+                          if isinstance(n, _ast.Assign) and any(
+                              isinstance(t, _ast.Name) and t.id == "BATCH_JS_TEMPLATE"
+                              for t in n.targets)), "")
 if not BATCH_JS_TEMPLATE:
     raise RuntimeError("BATCH_JS_TEMPLATE nao encontrado no agent_loop.py")
 
@@ -409,7 +364,30 @@ def recover_checkpoint(log, ops, i, prev, trigger, reason, attempted, budget,
     return False
 
 
-def run_recipe(recipe_path: str, url: str, verify_spec: str = "", fallback_jev: bool = False,
+def run_recipe(*args, **kwargs):
+    """Entrada pública: finalize evidência antes de emitir resultado da tarefa."""
+    from capture_evidence import CURRENT
+    capture = CURRENT.get()
+    try:
+        log = _run_recipe(*args, **kwargs)
+    except BaseException:
+        if capture is not None and not capture.finished:
+            capture.frame('recipe-exception')
+            capture.finish()
+        raise
+    if capture is None:
+        log['capture'] = dict(passed=False, state='unavailable',
+                              reason='legacy transport without integrated capture')
+    else:
+        capture.frame('recipe-final')
+        log['capture'] = capture.finish()
+        if not log['capture']['passed']:
+            log['taskResultBeforeEvidence'] = log.get('result')
+            log['result'] = 'RECIPE-EVIDENCE-FAIL'
+    return log
+
+
+def _run_recipe(recipe_path: str, url: str, verify_spec: str = "", fallback_jev: bool = False,
                max_replan: int = 3, marker: str = "", repair_model="MiMo-V2.6-Flash",
                repair_dispatcher=None):
     """Executa a recipe; em falha de passo, replanejamento local; no fim, verify."""
@@ -453,11 +431,7 @@ def run_recipe(recipe_path: str, url: str, verify_spec: str = "", fallback_jev: 
         op = dict(ops[i])
         # recipe usa "op"; o executor espera "action"
         op["action"] = op.pop("op", None) or op.get("action")
-        # v2.5.6: com id deterministico, label SOBRA e pode casar elemento errado
-        # (label-first tem precedencia e ja clicou select errado no passado);
-        # manter label apenas como pista quando NAO ha id
-        if op.get("id"):
-            op.pop("label", None)
+        # A001: id, label e escopo sao restricoes cumulativas; nao apagar pistas.
         try:
             state = snapshot()
         except Exception as exc:
@@ -494,6 +468,11 @@ def run_recipe(recipe_path: str, url: str, verify_spec: str = "", fallback_jev: 
         log["steps"].append({"i": i, "op": op, "exec": res})
         r0 = (res.get("results") or [{}])[0]
         terminal = res.get("terminal")
+        # Identidade invalida e efeito falho sao fatais: nunca repetir escrita
+        # nem chamar reparador removendo escopo ou verifier apagando a falha.
+        if res.get("reason") in ("identity invalid", "postcondition failed"):
+            log["result"] = f"RECIPE-FAIL {res['reason']} at step {i}: {r0.get('error') or r0.get('effect')}"
+            break
         if res.get("_rc", 0) != 0 or res.get("_error"):
             log["result"] = f"RECIPE-FAIL harness at step {i}: rc={res.get('_rc')}"
             break
@@ -563,6 +542,13 @@ def run_recipe(recipe_path: str, url: str, verify_spec: str = "", fallback_jev: 
             _t.sleep(min(5, float(res.get("value") or 1)))
             i += 1
             continue
+        if (op.get('_expect_fail') is True and r0.get('expected') is True and
+                (r0.get('blocked') is True or r0.get('error') == 'element not found (waited)')):
+            log['postconditions'].append(dict(step=i, kind='expected_blocked', observed=True,
+                                             detail=r0))
+            i += 1
+            replans = 0
+            continue
         if r0.get("ok"):
             step_i = i
             # ok:true NAO prova efeito (clicks fora da etapa ativa retornam ok sem
@@ -631,11 +617,15 @@ def run_recipe(recipe_path: str, url: str, verify_spec: str = "", fallback_jev: 
     if verify_spec and log["result"] == "RECIPE-DONE":
         sys.path.insert(0, HERE)
         import agent_loop as AL
-        ok = AL.verify(verify_spec)
+        detail = {}
+        ok = AL.verify(verify_spec, details=detail)
+        log["verification_detail"] = detail
         log["verifier"] = ok
         if ok == "PASS":
             log["result"] = ("RECIPE-DONE-VERIFIED-ASSISTED" if log["repairs"]
                              else "RECIPE-DONE-VERIFIED")
+        else:
+            log["result"] = "RECIPE-FAIL verifier: " + str(ok)
     elif verify_spec:
         log["verifier"] = "SKIPPED (falha anterior — PASS nao poderia apagar)"
     return log

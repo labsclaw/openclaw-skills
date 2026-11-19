@@ -1,0 +1,6 @@
+{
+  "stage": "draft generation",
+  "result": "assert len(rows)==48 failed with0; title regex was greedy across lines",
+  "noLedgerWritten": true,
+  "correction": "restrict title match to non-newline characters; preserve manifest/commit audit already generated"
+}

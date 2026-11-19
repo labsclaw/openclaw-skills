@@ -1,0 +1,81 @@
+{
+  "schema": "browser-capture-v1",
+  "runId": "a006-cli",
+  "method": "state-frames-png",
+  "frames": [
+    {
+      "runId": "a006-cli",
+      "index": 1,
+      "phase": "after-navigation",
+      "observedAt": "2026-11-19T21:36:42.441114+00:00",
+      "file": "00001.png",
+      "bytes": 9518,
+      "sha256": "09f7c7f83dd6c14118ce3a89a2bd27f2ee28aa89288ccd46ad5784d21ea621a2"
+    },
+    {
+      "runId": "a006-cli",
+      "index": 2,
+      "phase": "after-host-call",
+      "observedAt": "2026-11-19T21:36:42.615413+00:00",
+      "file": "00002.png",
+      "bytes": 9518,
+      "sha256": "09f7c7f83dd6c14118ce3a89a2bd27f2ee28aa89288ccd46ad5784d21ea621a2"
+    },
+    {
+      "runId": "a006-cli",
+      "index": 3,
+      "phase": "after-host-call",
+      "observedAt": "2026-11-19T21:36:42.965759+00:00",
+      "file": "00003.png",
+      "bytes": 9518,
+      "sha256": "09f7c7f83dd6c14118ce3a89a2bd27f2ee28aa89288ccd46ad5784d21ea621a2"
+    },
+    {
+      "runId": "a006-cli",
+      "index": 4,
+      "phase": "after-native",
+      "observedAt": "2026-11-19T21:36:43.644382+00:00",
+      "file": "00004.png",
+      "bytes": 10328,
+      "sha256": "2bc7cd0fba494870ac8e9e02500b20cc652307bc4f22de0d71c17b3427e872fe"
+    },
+    {
+      "runId": "a006-cli",
+      "index": 5,
+      "phase": "after-host-call",
+      "observedAt": "2026-11-19T21:36:44.934270+00:00",
+      "file": "00005.png",
+      "bytes": 10331,
+      "sha256": "2aeacd4f09867fa65e16b442b1b7d6973a0d49c84bef2e8ed558fc9b27c90b79"
+    },
+    {
+      "runId": "a006-cli",
+      "index": 6,
+      "phase": "after-native",
+      "observedAt": "2026-11-19T21:36:45.215739+00:00",
+      "file": "00006.png",
+      "bytes": 10766,
+      "sha256": "c1adc897d304ea36a93a204bad09d97c7dd0268f29a2fa7b19ff715329bfb83c"
+    },
+    {
+      "runId": "a006-cli",
+      "index": 7,
+      "phase": "after-host-call",
+      "observedAt": "2026-11-19T21:36:46.856359+00:00",
+      "file": "00007.png",
+      "bytes": 10766,
+      "sha256": "c1adc897d304ea36a93a204bad09d97c7dd0268f29a2fa7b19ff715329bfb83c"
+    },
+    {
+      "runId": "a006-cli",
+      "index": 8,
+      "phase": "recipe-final",
+      "observedAt": "2026-11-19T21:36:46.970958+00:00",
+      "file": "00008.png",
+      "bytes": 10766,
+      "sha256": "c1adc897d304ea36a93a204bad09d97c7dd0268f29a2fa7b19ff715329bfb83c"
+    }
+  ],
+  "errors": [],
+  "passed": true
+}

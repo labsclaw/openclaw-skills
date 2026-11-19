@@ -1,0 +1,254 @@
+{
+  "item": "A005",
+  "baseline": true,
+  "passed": 1,
+  "total": 30,
+  "browser": "148.0.7778.96",
+  "sources": {
+    "agent_loop": "8dc6288960159e8dcda3fab175c36081b2232a20852c20d3b859aca14e58ff4f",
+    "test": "ea19e4df5cd248dc2614fc23b6f6d3dcef8fb157ebd632221846062bf9518ec2"
+  },
+  "cases": [
+    {
+      "scenario": "good",
+      "passed": true,
+      "verdict": "PASS",
+      "details": {},
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "field:id",
+      "passed": false,
+      "verdict": "PASS",
+      "details": {},
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "field:runId",
+      "passed": false,
+      "verdict": "PASS",
+      "details": {},
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "field:title",
+      "passed": false,
+      "verdict": "PASS",
+      "details": {},
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "field:email",
+      "passed": false,
+      "verdict": "PASS",
+      "details": {},
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "field:type",
+      "passed": false,
+      "verdict": "PASS",
+      "details": {},
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "field:priority",
+      "passed": false,
+      "verdict": "PASS",
+      "details": {},
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "field:responsible",
+      "passed": false,
+      "verdict": "PASS",
+      "details": {},
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "field:requiresEnvironment",
+      "passed": false,
+      "verdict": "PASS",
+      "details": {},
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "field:environment",
+      "passed": false,
+      "verdict": "PASS",
+      "details": {},
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "binding",
+      "passed": false,
+      "verdict": "PASS",
+      "details": {},
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "attachment:filename",
+      "passed": false,
+      "verdict": "PASS",
+      "details": {},
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "attachment:bytes",
+      "passed": false,
+      "verdict": "PASS",
+      "details": {},
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "attachment:sha256",
+      "passed": false,
+      "verdict": "PASS",
+      "details": {},
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "link_href",
+      "passed": false,
+      "verdict": "PASS",
+      "details": {},
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "link_download",
+      "passed": false,
+      "verdict": "PASS",
+      "details": {},
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "download_content",
+      "passed": false,
+      "verdict": "PASS",
+      "details": {},
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "download_http_error",
+      "passed": false,
+      "verdict": "PASS",
+      "details": {},
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "missing_field",
+      "passed": false,
+      "verdict": "PASS",
+      "details": {},
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "extra_field",
+      "passed": false,
+      "verdict": "PASS",
+      "details": {},
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "duplicate_field",
+      "passed": false,
+      "verdict": "PASS",
+      "details": {},
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "duplicate_record",
+      "passed": false,
+      "verdict": "PASS",
+      "details": {},
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "missing_record",
+      "passed": false,
+      "verdict": "PASS",
+      "details": {},
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "duplicate_link",
+      "passed": false,
+      "verdict": "PASS",
+      "details": {},
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "missing_link",
+      "passed": false,
+      "verdict": "PASS",
+      "details": {},
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "external_link",
+      "passed": false,
+      "verdict": "PASS",
+      "details": {},
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "reload_not_done",
+      "passed": false,
+      "verdict": "PASS",
+      "details": {},
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "rc_nonzero",
+      "passed": false,
+      "verdict": "PASS",
+      "details": {},
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "malformed",
+      "passed": false,
+      "verdict": "PASS",
+      "details": {},
+      "reloads": 1,
+      "downloads": 0
+    },
+    {
+      "scenario": "duplicate_payload",
+      "passed": false,
+      "verdict": "PASS",
+      "details": {},
+      "reloads": 1,
+      "downloads": 0
+    }
+  ],
+  "transport": "Production verifier adapter over page.evaluate; reload request mapped to real page.reload. Not Hermes transport."
+}

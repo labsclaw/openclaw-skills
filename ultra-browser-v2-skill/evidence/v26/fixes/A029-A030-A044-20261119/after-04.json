@@ -1,0 +1,1427 @@
+{
+  "passed": 34,
+  "total": 35,
+  "cases": [
+    {
+      "name": "baseline_no_contract",
+      "passed": true,
+      "observation": {
+        "width": 1100,
+        "height": 700,
+        "visualWidth": 1100,
+        "visualHeight": 700,
+        "scale": 1,
+        "dpr": 1,
+        "url": "about:blank"
+      },
+      "note": "controle local, não observação de dimensões do Hermes"
+    },
+    {
+      "name": "profile_A_markers_observed",
+      "passed": true
+    },
+    {
+      "name": "requested_and_measured",
+      "passed": true,
+      "measurement": {
+        "width": 1280,
+        "height": 900,
+        "visualWidth": 1280,
+        "visualHeight": 900,
+        "scale": 1,
+        "dpr": 1,
+        "url": "http://127.0.0.1:59562/"
+      }
+    },
+    {
+      "name": "maximize_not_source_of_proof",
+      "passed": true
+    },
+    {
+      "name": "native_action",
+      "passed": true,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "type",
+            "ok": true,
+            "id": "name",
+            "value": "contract",
+            "dispatched": true,
+            "effect": {
+              "verified": false,
+              "reason": "no postcondition declared"
+            }
+          }
+        ],
+        "stopped_at": null,
+        "_rc": 0
+      }
+    },
+    {
+      "name": "snapshot",
+      "passed": true
+    },
+    {
+      "name": "upload_transport",
+      "passed": true
+    },
+    {
+      "name": "real_reload",
+      "passed": true
+    },
+    {
+      "name": "receipt_A_valid",
+      "passed": true,
+      "receipt": {
+        "schema": "browser-environment-v1",
+        "runId": "run-A",
+        "startedAt": "2026-11-19T21:15:23.484521+00:00",
+        "requested": {
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "freshProfile": true
+        },
+        "headless": true,
+        "observations": [
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "about:blank",
+            "phase": "before-task",
+            "observedAt": "2026-11-19T21:15:25.560961+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "before-call",
+            "observedAt": "2026-11-19T21:15:25.700724+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "after-call",
+            "observedAt": "2026-11-19T21:15:25.706739+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "post-maximize",
+            "observedAt": "2026-11-19T21:15:25.714260+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "before-call",
+            "observedAt": "2026-11-19T21:15:25.724778+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "after-call",
+            "observedAt": "2026-11-19T21:15:26.824719+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "before-call",
+            "observedAt": "2026-11-19T21:15:26.860648+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "after-call",
+            "observedAt": "2026-11-19T21:15:26.868766+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "before-call",
+            "observedAt": "2026-11-19T21:15:26.872813+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "after-call",
+            "observedAt": "2026-11-19T21:15:26.896162+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "before-call",
+            "observedAt": "2026-11-19T21:15:26.934941+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "after-call",
+            "observedAt": "2026-11-19T21:15:26.957979+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "after-task",
+            "observedAt": "2026-11-19T21:15:26.964497+00:00"
+          }
+        ],
+        "errors": [],
+        "passed": true,
+        "profile": {
+          "path": "C:\\Users\\ClawLabs\\AppData\\Local\\Temp\\a029-environment-y5ha8pp6\\run-A\\profile",
+          "runId": "run-A",
+          "createdExclusive": true,
+          "entriesBeforeLaunch": []
+        },
+        "browserCommandLine": [
+          "C:\\Users\\ClawLabs\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1223\\chrome-headless-shell-win64\\chrome-headless-shell.exe",
+          "--disable-field-trial-config",
+          "--disable-background-networking",
+          "--disable-background-timer-throttling",
+          "--disable-backgrounding-occluded-windows",
+          "--disable-back-forward-cache",
+          "--disable-breakpad",
+          "--disable-client-side-phishing-detection",
+          "--disable-component-extensions-with-background-pages",
+          "--disable-component-update",
+          "--no-default-browser-check",
+          "--disable-default-apps",
+          "--disable-dev-shm-usage",
+          "--disable-edgeupdater",
+          "--disable-extensions",
+          "--disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate,RenderDocument,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion",
+          "--enable-features=CDPScreenshotNewSurface",
+          "--allow-pre-commit-input",
+          "--disable-hang-monitor",
+          "--disable-ipc-flooding-protection",
+          "--disable-popup-blocking",
+          "--disable-prompt-on-repost",
+          "--disable-renderer-backgrounding",
+          "--force-color-profile=srgb",
+          "--metrics-recording-only",
+          "--no-first-run",
+          "--password-store=basic",
+          "--use-mock-keychain",
+          "--no-service-autorun",
+          "--export-tagged-pdf",
+          "--disable-search-engine-choice-screen",
+          "--unsafely-disable-devtools-self-xss-warnings",
+          "--edge-skip-compat-layer-relaunch",
+          "--disable-infobars",
+          "--disable-search-engine-choice-screen",
+          "--disable-sync",
+          "--enable-unsafe-swiftshader",
+          "--headless",
+          "--hide-scrollbars",
+          "--mute-audio",
+          "--blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4",
+          "--no-sandbox",
+          "--enable-automation",
+          "--user-data-dir=C:\\Users\\ClawLabs\\AppData\\Local\\Temp\\a029-environment-y5ha8pp6\\run-A\\profile",
+          "--remote-debugging-pipe",
+          "--use-gl=angle",
+          "--use-angle=swiftshader-webgl",
+          "--allow-pre-commit-input",
+          "--disable-gpu-process-for-dx12-info-collection",
+          "--disable-cookie-encryption",
+          "about:blank"
+        ],
+        "browserVersion": {
+          "protocolVersion": "1.3",
+          "product": "HeadlessChrome/148.0.7778.96",
+          "revision": "@8625e066febc721e015ea99842da12901eb7ed73",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/148.0.7778.96 Safari/537.36",
+          "jsVersion": "14.8.178.14"
+        },
+        "initialCookies": [],
+        "finishedAt": "2026-11-19T21:15:27.397708+00:00"
+      }
+    },
+    {
+      "name": "new_profile_B_clean_same_origin",
+      "passed": true,
+      "observed": {
+        "local": null,
+        "cookie": ""
+      }
+    },
+    {
+      "name": "receipt_B_distinct",
+      "passed": true,
+      "receipt": {
+        "schema": "browser-environment-v1",
+        "runId": "run-B",
+        "startedAt": "2026-11-19T21:15:27.461958+00:00",
+        "requested": {
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "freshProfile": true
+        },
+        "headless": true,
+        "observations": [
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "about:blank",
+            "phase": "before-task",
+            "observedAt": "2026-11-19T21:15:29.387668+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "after-task",
+            "observedAt": "2026-11-19T21:15:29.584830+00:00"
+          }
+        ],
+        "errors": [],
+        "passed": true,
+        "profile": {
+          "path": "C:\\Users\\ClawLabs\\AppData\\Local\\Temp\\a029-environment-y5ha8pp6\\run-B\\profile",
+          "runId": "run-B",
+          "createdExclusive": true,
+          "entriesBeforeLaunch": []
+        },
+        "browserCommandLine": [
+          "C:\\Users\\ClawLabs\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1223\\chrome-headless-shell-win64\\chrome-headless-shell.exe",
+          "--disable-field-trial-config",
+          "--disable-background-networking",
+          "--disable-background-timer-throttling",
+          "--disable-backgrounding-occluded-windows",
+          "--disable-back-forward-cache",
+          "--disable-breakpad",
+          "--disable-client-side-phishing-detection",
+          "--disable-component-extensions-with-background-pages",
+          "--disable-component-update",
+          "--no-default-browser-check",
+          "--disable-default-apps",
+          "--disable-dev-shm-usage",
+          "--disable-edgeupdater",
+          "--disable-extensions",
+          "--disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate,RenderDocument,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion",
+          "--enable-features=CDPScreenshotNewSurface",
+          "--allow-pre-commit-input",
+          "--disable-hang-monitor",
+          "--disable-ipc-flooding-protection",
+          "--disable-popup-blocking",
+          "--disable-prompt-on-repost",
+          "--disable-renderer-backgrounding",
+          "--force-color-profile=srgb",
+          "--metrics-recording-only",
+          "--no-first-run",
+          "--password-store=basic",
+          "--use-mock-keychain",
+          "--no-service-autorun",
+          "--export-tagged-pdf",
+          "--disable-search-engine-choice-screen",
+          "--unsafely-disable-devtools-self-xss-warnings",
+          "--edge-skip-compat-layer-relaunch",
+          "--disable-infobars",
+          "--disable-search-engine-choice-screen",
+          "--disable-sync",
+          "--enable-unsafe-swiftshader",
+          "--headless",
+          "--hide-scrollbars",
+          "--mute-audio",
+          "--blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4",
+          "--no-sandbox",
+          "--enable-automation",
+          "--user-data-dir=C:\\Users\\ClawLabs\\AppData\\Local\\Temp\\a029-environment-y5ha8pp6\\run-B\\profile",
+          "--remote-debugging-pipe",
+          "--use-gl=angle",
+          "--use-angle=swiftshader-webgl",
+          "--allow-pre-commit-input",
+          "--disable-gpu-process-for-dx12-info-collection",
+          "--disable-cookie-encryption",
+          "about:blank"
+        ],
+        "browserVersion": {
+          "protocolVersion": "1.3",
+          "product": "HeadlessChrome/148.0.7778.96",
+          "revision": "@8625e066febc721e015ea99842da12901eb7ed73",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/148.0.7778.96 Safari/537.36",
+          "jsVersion": "14.8.178.14"
+        },
+        "initialCookies": [],
+        "finishedAt": "2026-11-19T21:15:30.023784+00:00"
+      }
+    },
+    {
+      "name": "same_run_rejected_no_overwrite",
+      "passed": true
+    },
+    {
+      "name": "gate_rejects_wrong_run",
+      "passed": true
+    },
+    {
+      "name": "gate_rejects_wrong_width",
+      "passed": true
+    },
+    {
+      "name": "gate_rejects_wrong_height",
+      "passed": true
+    },
+    {
+      "name": "gate_rejects_visual_mismatch",
+      "passed": true
+    },
+    {
+      "name": "gate_rejects_old_profile",
+      "passed": true
+    },
+    {
+      "name": "gate_rejects_nonempty_profile",
+      "passed": true
+    },
+    {
+      "name": "gate_rejects_command_wrong_profile",
+      "passed": true
+    },
+    {
+      "name": "gate_rejects_cookies_present",
+      "passed": true
+    },
+    {
+      "name": "gate_rejects_maximize_only",
+      "passed": true
+    },
+    {
+      "name": "gate_rejects_earlier_error",
+      "passed": true
+    },
+    {
+      "name": "gate_rejects_missing_requested",
+      "passed": true
+    },
+    {
+      "name": "live_mismatch_blocks_before_task",
+      "passed": true,
+      "result": {
+        "out": "",
+        "err": "Traceback (most recent call last):\n  File \"C:\\Users\\ClawLabs\\.openclaw\\workspace\\projects\\ultra-browser-v2-publication\\ultra-browser-v2-skill\\scripts\\environment_runner.py\", line 119, in harness\n    self.check('before-call')\n  File \"C:\\Users\\ClawLabs\\.openclaw\\workspace\\projects\\ultra-browser-v2-publication\\ultra-browser-v2-skill\\scripts\\environment_runner.py\", line 106, in check\n    raise RuntimeError('Viewport contratual divergente: ' + json.dumps(measurement))\nRuntimeError: Viewport contratual divergente: {\"width\": 1000, \"height\": 700, \"visualWidth\": 1000, \"visualHeight\": 700, \"scale\": 1, \"dpr\": 1, \"url\": \"about:blank\", \"phase\": \"before-call\", \"observedAt\": \"2026-11-19T21:15:32.920221+00:00\"}\n",
+        "rc": 1
+      }
+    },
+    {
+      "name": "mismatch_not_erased_by_restore",
+      "passed": true,
+      "receipt": {
+        "schema": "browser-environment-v1",
+        "runId": "wrong-live-size",
+        "startedAt": "2026-11-19T21:15:30.045814+00:00",
+        "requested": {
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "freshProfile": true
+        },
+        "headless": true,
+        "observations": [
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "about:blank",
+            "phase": "before-task",
+            "observedAt": "2026-11-19T21:15:32.898675+00:00"
+          },
+          {
+            "width": 1000,
+            "height": 700,
+            "visualWidth": 1000,
+            "visualHeight": 700,
+            "scale": 1,
+            "dpr": 1,
+            "url": "about:blank",
+            "phase": "before-call",
+            "observedAt": "2026-11-19T21:15:32.920221+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "about:blank",
+            "phase": "after-task",
+            "observedAt": "2026-11-19T21:15:32.939374+00:00"
+          }
+        ],
+        "errors": [
+          "RuntimeError: Viewport contratual divergente: {\"width\": 1000, \"height\": 700, \"visualWidth\": 1000, \"visualHeight\": 700, \"scale\": 1, \"dpr\": 1, \"url\": \"about:blank\", \"phase\": \"before-call\", \"observedAt\": \"2026-11-19T21:15:32.920221+00:00\"}"
+        ],
+        "passed": false,
+        "profile": {
+          "path": "C:\\Users\\ClawLabs\\AppData\\Local\\Temp\\a029-environment-y5ha8pp6\\wrong-live-size\\profile",
+          "runId": "wrong-live-size",
+          "createdExclusive": true,
+          "entriesBeforeLaunch": []
+        },
+        "browserCommandLine": [
+          "C:\\Users\\ClawLabs\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1223\\chrome-headless-shell-win64\\chrome-headless-shell.exe",
+          "--disable-field-trial-config",
+          "--disable-background-networking",
+          "--disable-background-timer-throttling",
+          "--disable-backgrounding-occluded-windows",
+          "--disable-back-forward-cache",
+          "--disable-breakpad",
+          "--disable-client-side-phishing-detection",
+          "--disable-component-extensions-with-background-pages",
+          "--disable-component-update",
+          "--no-default-browser-check",
+          "--disable-default-apps",
+          "--disable-dev-shm-usage",
+          "--disable-edgeupdater",
+          "--disable-extensions",
+          "--disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate,RenderDocument,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion",
+          "--enable-features=CDPScreenshotNewSurface",
+          "--allow-pre-commit-input",
+          "--disable-hang-monitor",
+          "--disable-ipc-flooding-protection",
+          "--disable-popup-blocking",
+          "--disable-prompt-on-repost",
+          "--disable-renderer-backgrounding",
+          "--force-color-profile=srgb",
+          "--metrics-recording-only",
+          "--no-first-run",
+          "--password-store=basic",
+          "--use-mock-keychain",
+          "--no-service-autorun",
+          "--export-tagged-pdf",
+          "--disable-search-engine-choice-screen",
+          "--unsafely-disable-devtools-self-xss-warnings",
+          "--edge-skip-compat-layer-relaunch",
+          "--disable-infobars",
+          "--disable-search-engine-choice-screen",
+          "--disable-sync",
+          "--enable-unsafe-swiftshader",
+          "--headless",
+          "--hide-scrollbars",
+          "--mute-audio",
+          "--blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4",
+          "--no-sandbox",
+          "--enable-automation",
+          "--user-data-dir=C:\\Users\\ClawLabs\\AppData\\Local\\Temp\\a029-environment-y5ha8pp6\\wrong-live-size\\profile",
+          "--remote-debugging-pipe",
+          "--use-gl=angle",
+          "--use-angle=swiftshader-webgl",
+          "--allow-pre-commit-input",
+          "--disable-gpu-process-for-dx12-info-collection",
+          "--disable-cookie-encryption",
+          "about:blank"
+        ],
+        "browserVersion": {
+          "protocolVersion": "1.3",
+          "product": "HeadlessChrome/148.0.7778.96",
+          "revision": "@8625e066febc721e015ea99842da12901eb7ed73",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/148.0.7778.96 Safari/537.36",
+          "jsVersion": "14.8.178.14"
+        },
+        "initialCookies": [],
+        "finishedAt": "2026-11-19T21:15:33.882516+00:00"
+      }
+    },
+    {
+      "name": "launch_failure_receipt",
+      "passed": true
+    },
+    {
+      "name": "invalid_run_'../escape'",
+      "passed": true
+    },
+    {
+      "name": "invalid_run_'a/b'",
+      "passed": true
+    },
+    {
+      "name": "invalid_run_''",
+      "passed": true
+    },
+    {
+      "name": "invalid_run_'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'",
+      "passed": true
+    },
+    {
+      "name": "normal_CLI_recipe",
+      "passed": true,
+      "rc": 0,
+      "stdout": {
+        "result": "ENVIRONMENT-PASS",
+        "runId": "cli-recipe",
+        "taskStdout": "{\n \"url\": \"http://127.0.0.1:59562/\",\n \"recipe\": \"recipe.json\",\n \"steps\": [\n  {\n   \"i\": 0,\n   \"op\": {\n    \"id\": \"name\",\n    \"value\": \"CLI\",\n    \"action\": \"type\"\n   },\n   \"exec\": {\n    \"results\": [\n     {\n      \"i\": 0,\n      \"action\": \"type\",\n      \"ok\": true,\n      \"id\": \"name\",\n      \"value\": \"CLI\",\n      \"dispatched\": true,\n      \"effect\": {\n       \"verified\": false,\n       \"reason\": \"no postcondition declared\"\n      }\n     }\n    ],\n    \"stopped_at\": null,\n    \"_rc\": 0\n   }\n  }\n ],\n \"result\": \"RECIPE-DONE-VERIFIED\",\n \"postconditions\": [],\n \"repairs\": [],\n \"navigation\": {\n  \"rc\": 0,\n  \"url\": \"http://127.0.0.1:59562/\",\n  \"marker\": \"READY\"\n },\n \"identity\": {\n  \"url\": \"http://127.0.0.1:59562\",\n  \"title\": \"\",\n  \"markerOk\": true\n },\n \"verification_detail\": {},\n \"verifier\": \"PASS\"\n}\n",
+        "environment": "C:\\Users\\ClawLabs\\AppData\\Local\\Temp\\a029-environment-y5ha8pp6\\cli-recipe\\environment.json",
+        "taskExitCode": 0
+      },
+      "environment": {
+        "schema": "browser-environment-v1",
+        "runId": "cli-recipe",
+        "startedAt": "2026-11-19T21:15:37.093224+00:00",
+        "requested": {
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "freshProfile": true
+        },
+        "headless": true,
+        "observations": [
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "about:blank",
+            "phase": "before-task",
+            "observedAt": "2026-11-19T21:15:39.611051+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "about:blank",
+            "phase": "before-call",
+            "observedAt": "2026-11-19T21:15:39.801408+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "after-call",
+            "observedAt": "2026-11-19T21:15:41.464799+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "before-call",
+            "observedAt": "2026-11-19T21:15:41.473338+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "after-call",
+            "observedAt": "2026-11-19T21:15:41.489911+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "before-call",
+            "observedAt": "2026-11-19T21:15:41.495907+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "after-call",
+            "observedAt": "2026-11-19T21:15:41.511969+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "before-call",
+            "observedAt": "2026-11-19T21:15:41.562027+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "after-call",
+            "observedAt": "2026-11-19T21:15:42.113112+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "before-call",
+            "observedAt": "2026-11-19T21:15:43.123735+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "after-call",
+            "observedAt": "2026-11-19T21:15:43.144839+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "after-task",
+            "observedAt": "2026-11-19T21:15:43.154458+00:00"
+          }
+        ],
+        "errors": [],
+        "passed": true,
+        "profile": {
+          "path": "C:\\Users\\ClawLabs\\AppData\\Local\\Temp\\a029-environment-y5ha8pp6\\cli-recipe\\profile",
+          "runId": "cli-recipe",
+          "createdExclusive": true,
+          "entriesBeforeLaunch": []
+        },
+        "browserCommandLine": [
+          "C:\\Users\\ClawLabs\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1223\\chrome-headless-shell-win64\\chrome-headless-shell.exe",
+          "--disable-field-trial-config",
+          "--disable-background-networking",
+          "--disable-background-timer-throttling",
+          "--disable-backgrounding-occluded-windows",
+          "--disable-back-forward-cache",
+          "--disable-breakpad",
+          "--disable-client-side-phishing-detection",
+          "--disable-component-extensions-with-background-pages",
+          "--disable-component-update",
+          "--no-default-browser-check",
+          "--disable-default-apps",
+          "--disable-dev-shm-usage",
+          "--disable-edgeupdater",
+          "--disable-extensions",
+          "--disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate,RenderDocument,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion",
+          "--enable-features=CDPScreenshotNewSurface",
+          "--allow-pre-commit-input",
+          "--disable-hang-monitor",
+          "--disable-ipc-flooding-protection",
+          "--disable-popup-blocking",
+          "--disable-prompt-on-repost",
+          "--disable-renderer-backgrounding",
+          "--force-color-profile=srgb",
+          "--metrics-recording-only",
+          "--no-first-run",
+          "--password-store=basic",
+          "--use-mock-keychain",
+          "--no-service-autorun",
+          "--export-tagged-pdf",
+          "--disable-search-engine-choice-screen",
+          "--unsafely-disable-devtools-self-xss-warnings",
+          "--edge-skip-compat-layer-relaunch",
+          "--disable-infobars",
+          "--disable-search-engine-choice-screen",
+          "--disable-sync",
+          "--enable-unsafe-swiftshader",
+          "--headless",
+          "--hide-scrollbars",
+          "--mute-audio",
+          "--blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4",
+          "--no-sandbox",
+          "--enable-automation",
+          "--user-data-dir=C:\\Users\\ClawLabs\\AppData\\Local\\Temp\\a029-environment-y5ha8pp6\\cli-recipe\\profile",
+          "--remote-debugging-pipe",
+          "--use-gl=angle",
+          "--use-angle=swiftshader-webgl",
+          "--allow-pre-commit-input",
+          "--disable-gpu-process-for-dx12-info-collection",
+          "--disable-cookie-encryption",
+          "about:blank"
+        ],
+        "browserVersion": {
+          "protocolVersion": "1.3",
+          "product": "HeadlessChrome/148.0.7778.96",
+          "revision": "@8625e066febc721e015ea99842da12901eb7ed73",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/148.0.7778.96 Safari/537.36",
+          "jsVersion": "14.8.178.14"
+        },
+        "initialCookies": [],
+        "finishedAt": "2026-11-19T21:15:43.860407+00:00"
+      },
+      "stderr": "",
+      "note": "single/batch zero ciclos, sem inferência; ambiente e navegação exercitados"
+    },
+    {
+      "name": "normal_CLI_single",
+      "passed": true,
+      "rc": 1,
+      "stdout": {
+        "result": "ENVIRONMENT-PASS",
+        "runId": "cli-single",
+        "taskStdout": "{\n \"url\": \"http://127.0.0.1:59562/\",\n \"goal\": \"observe only\",\n \"model\": \"opencode/mimo-v2.6-flash-free\",\n \"steps\": [],\n \"result\": null\n}\n",
+        "environment": "C:\\Users\\ClawLabs\\AppData\\Local\\Temp\\a029-environment-y5ha8pp6\\cli-single\\environment.json",
+        "taskExitCode": 1
+      },
+      "environment": {
+        "schema": "browser-environment-v1",
+        "runId": "cli-single",
+        "startedAt": "2026-11-19T21:15:44.842093+00:00",
+        "requested": {
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "freshProfile": true
+        },
+        "headless": true,
+        "observations": [
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "about:blank",
+            "phase": "before-task",
+            "observedAt": "2026-11-19T21:15:47.093167+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "about:blank",
+            "phase": "before-call",
+            "observedAt": "2026-11-19T21:15:47.320480+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "after-call",
+            "observedAt": "2026-11-19T21:15:49.110663+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "after-task",
+            "observedAt": "2026-11-19T21:15:49.115816+00:00"
+          }
+        ],
+        "errors": [],
+        "passed": true,
+        "profile": {
+          "path": "C:\\Users\\ClawLabs\\AppData\\Local\\Temp\\a029-environment-y5ha8pp6\\cli-single\\profile",
+          "runId": "cli-single",
+          "createdExclusive": true,
+          "entriesBeforeLaunch": []
+        },
+        "browserCommandLine": [
+          "C:\\Users\\ClawLabs\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1223\\chrome-headless-shell-win64\\chrome-headless-shell.exe",
+          "--disable-field-trial-config",
+          "--disable-background-networking",
+          "--disable-background-timer-throttling",
+          "--disable-backgrounding-occluded-windows",
+          "--disable-back-forward-cache",
+          "--disable-breakpad",
+          "--disable-client-side-phishing-detection",
+          "--disable-component-extensions-with-background-pages",
+          "--disable-component-update",
+          "--no-default-browser-check",
+          "--disable-default-apps",
+          "--disable-dev-shm-usage",
+          "--disable-edgeupdater",
+          "--disable-extensions",
+          "--disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate,RenderDocument,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion",
+          "--enable-features=CDPScreenshotNewSurface",
+          "--allow-pre-commit-input",
+          "--disable-hang-monitor",
+          "--disable-ipc-flooding-protection",
+          "--disable-popup-blocking",
+          "--disable-prompt-on-repost",
+          "--disable-renderer-backgrounding",
+          "--force-color-profile=srgb",
+          "--metrics-recording-only",
+          "--no-first-run",
+          "--password-store=basic",
+          "--use-mock-keychain",
+          "--no-service-autorun",
+          "--export-tagged-pdf",
+          "--disable-search-engine-choice-screen",
+          "--unsafely-disable-devtools-self-xss-warnings",
+          "--edge-skip-compat-layer-relaunch",
+          "--disable-infobars",
+          "--disable-search-engine-choice-screen",
+          "--disable-sync",
+          "--enable-unsafe-swiftshader",
+          "--headless",
+          "--hide-scrollbars",
+          "--mute-audio",
+          "--blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4",
+          "--no-sandbox",
+          "--enable-automation",
+          "--user-data-dir=C:\\Users\\ClawLabs\\AppData\\Local\\Temp\\a029-environment-y5ha8pp6\\cli-single\\profile",
+          "--remote-debugging-pipe",
+          "--use-gl=angle",
+          "--use-angle=swiftshader-webgl",
+          "--allow-pre-commit-input",
+          "--disable-gpu-process-for-dx12-info-collection",
+          "--disable-cookie-encryption",
+          "about:blank"
+        ],
+        "browserVersion": {
+          "protocolVersion": "1.3",
+          "product": "HeadlessChrome/148.0.7778.96",
+          "revision": "@8625e066febc721e015ea99842da12901eb7ed73",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/148.0.7778.96 Safari/537.36",
+          "jsVersion": "14.8.178.14"
+        },
+        "initialCookies": [],
+        "finishedAt": "2026-11-19T21:15:49.544018+00:00"
+      },
+      "stderr": "",
+      "note": "single/batch zero ciclos, sem inferência; ambiente e navegação exercitados"
+    },
+    {
+      "name": "normal_CLI_batch",
+      "passed": true,
+      "rc": 1,
+      "stdout": {
+        "result": "ENVIRONMENT-PASS",
+        "runId": "cli-batch",
+        "taskStdout": "{\n \"url\": \"http://127.0.0.1:59562/\",\n \"goal\": \"observe only\",\n \"model\": \"opencode/mimo-v2.6-flash-free\",\n \"mode\": \"batch\",\n \"cycles\": [],\n \"result\": null\n}\n",
+        "environment": "C:\\Users\\ClawLabs\\AppData\\Local\\Temp\\a029-environment-y5ha8pp6\\cli-batch\\environment.json",
+        "taskExitCode": 1
+      },
+      "environment": {
+        "schema": "browser-environment-v1",
+        "runId": "cli-batch",
+        "startedAt": "2026-11-19T21:15:50.165350+00:00",
+        "requested": {
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "freshProfile": true
+        },
+        "headless": true,
+        "observations": [
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "about:blank",
+            "phase": "before-task",
+            "observedAt": "2026-11-19T21:15:52.330873+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "about:blank",
+            "phase": "before-call",
+            "observedAt": "2026-11-19T21:15:52.594753+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "after-call",
+            "observedAt": "2026-11-19T21:15:54.345847+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "after-task",
+            "observedAt": "2026-11-19T21:15:54.352421+00:00"
+          }
+        ],
+        "errors": [],
+        "passed": true,
+        "profile": {
+          "path": "C:\\Users\\ClawLabs\\AppData\\Local\\Temp\\a029-environment-y5ha8pp6\\cli-batch\\profile",
+          "runId": "cli-batch",
+          "createdExclusive": true,
+          "entriesBeforeLaunch": []
+        },
+        "browserCommandLine": [
+          "C:\\Users\\ClawLabs\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1223\\chrome-headless-shell-win64\\chrome-headless-shell.exe",
+          "--disable-field-trial-config",
+          "--disable-background-networking",
+          "--disable-background-timer-throttling",
+          "--disable-backgrounding-occluded-windows",
+          "--disable-back-forward-cache",
+          "--disable-breakpad",
+          "--disable-client-side-phishing-detection",
+          "--disable-component-extensions-with-background-pages",
+          "--disable-component-update",
+          "--no-default-browser-check",
+          "--disable-default-apps",
+          "--disable-dev-shm-usage",
+          "--disable-edgeupdater",
+          "--disable-extensions",
+          "--disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate,RenderDocument,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion",
+          "--enable-features=CDPScreenshotNewSurface",
+          "--allow-pre-commit-input",
+          "--disable-hang-monitor",
+          "--disable-ipc-flooding-protection",
+          "--disable-popup-blocking",
+          "--disable-prompt-on-repost",
+          "--disable-renderer-backgrounding",
+          "--force-color-profile=srgb",
+          "--metrics-recording-only",
+          "--no-first-run",
+          "--password-store=basic",
+          "--use-mock-keychain",
+          "--no-service-autorun",
+          "--export-tagged-pdf",
+          "--disable-search-engine-choice-screen",
+          "--unsafely-disable-devtools-self-xss-warnings",
+          "--edge-skip-compat-layer-relaunch",
+          "--disable-infobars",
+          "--disable-search-engine-choice-screen",
+          "--disable-sync",
+          "--enable-unsafe-swiftshader",
+          "--headless",
+          "--hide-scrollbars",
+          "--mute-audio",
+          "--blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4",
+          "--no-sandbox",
+          "--enable-automation",
+          "--user-data-dir=C:\\Users\\ClawLabs\\AppData\\Local\\Temp\\a029-environment-y5ha8pp6\\cli-batch\\profile",
+          "--remote-debugging-pipe",
+          "--use-gl=angle",
+          "--use-angle=swiftshader-webgl",
+          "--allow-pre-commit-input",
+          "--disable-gpu-process-for-dx12-info-collection",
+          "--disable-cookie-encryption",
+          "about:blank"
+        ],
+        "browserVersion": {
+          "protocolVersion": "1.3",
+          "product": "HeadlessChrome/148.0.7778.96",
+          "revision": "@8625e066febc721e015ea99842da12901eb7ed73",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/148.0.7778.96 Safari/537.36",
+          "jsVersion": "14.8.178.14"
+        },
+        "initialCookies": [],
+        "finishedAt": "2026-11-19T21:15:55.114608+00:00"
+      },
+      "stderr": "",
+      "note": "single/batch zero ciclos, sem inferência; ambiente e navegação exercitados"
+    },
+    {
+      "name": "normal_battery_worker",
+      "passed": false,
+      "execution": {
+        "url": "http://127.0.0.1:59562/",
+        "recipe": "recipe.json",
+        "steps": [
+          {
+            "i": 0,
+            "op": {
+              "id": "name",
+              "value": "CLI",
+              "action": "type"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "type",
+                  "ok": true,
+                  "id": "name",
+                  "value": "CLI",
+                  "dispatched": true,
+                  "effect": {
+                    "verified": false,
+                    "reason": "no postcondition declared"
+                  }
+                }
+              ],
+              "stopped_at": null,
+              "_rc": 0
+            }
+          }
+        ],
+        "result": "RECIPE-DONE-VERIFIED",
+        "postconditions": [],
+        "repairs": [],
+        "navigation": {
+          "rc": 0,
+          "url": "http://127.0.0.1:59562/",
+          "marker": "READY"
+        },
+        "identity": {
+          "url": "http://127.0.0.1:59562",
+          "title": "",
+          "markerOk": true
+        },
+        "verification_detail": {},
+        "verifier": "PASS"
+      },
+      "environment": {
+        "schema": "browser-environment-v1",
+        "runId": "worker-run",
+        "startedAt": "2026-11-19T21:15:56.087641+00:00",
+        "requested": {
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "freshProfile": true
+        },
+        "headless": true,
+        "observations": [
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "about:blank",
+            "phase": "before-task",
+            "observedAt": "2026-11-19T21:15:58.886381+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "about:blank",
+            "phase": "before-call",
+            "observedAt": "2026-11-19T21:15:59.038548+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "after-call",
+            "observedAt": "2026-11-19T21:16:00.855747+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "before-call",
+            "observedAt": "2026-11-19T21:16:00.863309+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "after-call",
+            "observedAt": "2026-11-19T21:16:00.883339+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "before-call",
+            "observedAt": "2026-11-19T21:16:00.889886+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "after-call",
+            "observedAt": "2026-11-19T21:16:00.908545+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "before-call",
+            "observedAt": "2026-11-19T21:16:00.915544+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "after-call",
+            "observedAt": "2026-11-19T21:16:01.314632+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "before-call",
+            "observedAt": "2026-11-19T21:16:02.324874+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "after-call",
+            "observedAt": "2026-11-19T21:16:02.340386+00:00"
+          },
+          {
+            "width": 1280,
+            "height": 900,
+            "visualWidth": 1280,
+            "visualHeight": 900,
+            "scale": 1,
+            "dpr": 1,
+            "url": "http://127.0.0.1:59562/",
+            "phase": "after-task",
+            "observedAt": "2026-11-19T21:16:02.345384+00:00"
+          }
+        ],
+        "errors": [
+          "SystemExit: 0"
+        ],
+        "passed": false,
+        "profile": {
+          "path": "C:\\Users\\ClawLabs\\AppData\\Local\\Temp\\a029-environment-y5ha8pp6\\environment\\worker-run\\profile",
+          "runId": "worker-run",
+          "createdExclusive": true,
+          "entriesBeforeLaunch": []
+        },
+        "browserCommandLine": [
+          "C:\\Users\\ClawLabs\\AppData\\Local\\ms-playwright\\chromium_headless_shell-1223\\chrome-headless-shell-win64\\chrome-headless-shell.exe",
+          "--disable-field-trial-config",
+          "--disable-background-networking",
+          "--disable-background-timer-throttling",
+          "--disable-backgrounding-occluded-windows",
+          "--disable-back-forward-cache",
+          "--disable-breakpad",
+          "--disable-client-side-phishing-detection",
+          "--disable-component-extensions-with-background-pages",
+          "--disable-component-update",
+          "--no-default-browser-check",
+          "--disable-default-apps",
+          "--disable-dev-shm-usage",
+          "--disable-edgeupdater",
+          "--disable-extensions",
+          "--disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate,RenderDocument,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion",
+          "--enable-features=CDPScreenshotNewSurface",
+          "--allow-pre-commit-input",
+          "--disable-hang-monitor",
+          "--disable-ipc-flooding-protection",
+          "--disable-popup-blocking",
+          "--disable-prompt-on-repost",
+          "--disable-renderer-backgrounding",
+          "--force-color-profile=srgb",
+          "--metrics-recording-only",
+          "--no-first-run",
+          "--password-store=basic",
+          "--use-mock-keychain",
+          "--no-service-autorun",
+          "--export-tagged-pdf",
+          "--disable-search-engine-choice-screen",
+          "--unsafely-disable-devtools-self-xss-warnings",
+          "--edge-skip-compat-layer-relaunch",
+          "--disable-infobars",
+          "--disable-search-engine-choice-screen",
+          "--disable-sync",
+          "--enable-unsafe-swiftshader",
+          "--headless",
+          "--hide-scrollbars",
+          "--mute-audio",
+          "--blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4",
+          "--no-sandbox",
+          "--enable-automation",
+          "--user-data-dir=C:\\Users\\ClawLabs\\AppData\\Local\\Temp\\a029-environment-y5ha8pp6\\environment\\worker-run\\profile",
+          "--remote-debugging-pipe",
+          "--use-gl=angle",
+          "--use-angle=swiftshader-webgl",
+          "--allow-pre-commit-input",
+          "--disable-gpu-process-for-dx12-info-collection",
+          "--disable-cookie-encryption",
+          "about:blank"
+        ],
+        "browserVersion": {
+          "protocolVersion": "1.3",
+          "product": "HeadlessChrome/148.0.7778.96",
+          "revision": "@8625e066febc721e015ea99842da12901eb7ed73",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/148.0.7778.96 Safari/537.36",
+          "jsVersion": "14.8.178.14"
+        },
+        "initialCookies": [],
+        "finishedAt": "2026-11-19T21:16:02.915189+00:00"
+      },
+      "stderr": ""
+    },
+    {
+      "name": "audit_initial_navigation_preserved",
+      "passed": true
+    }
+  ],
+  "sources": {
+    "environment_runner.py": "9978d36d234898c9366cdde0d7d2ac5895eb3ae3af71eba673fdf8ee84156c7f",
+    "agent_loop.py": "6a554a12b66907bfe16c7ffa589d077124c2ddcb898655c04f7be35205f98976",
+    "recipe.py": "c670d5bd406d00467d50dff286862557755843ba14987e1cfe32b259b0ad0dc8",
+    "battery_pilot.py": "530fab085a837b1465078d999c701de49fa0f3cbe2a300bc832d1fa027b2e3e3",
+    "test_environment.py": "d2f1a8508c392cc02aff089a9f8cf6d86479d992623c73e8adb47603c8125bd0"
+  },
+  "scope": "Chromium local real, headless, sem LLM/judge/Hermes; perfil novo é observado, não sandbox de rede"
+}

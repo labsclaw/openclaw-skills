@@ -67,12 +67,11 @@ def ask_model(model: str, prompt: str, timeout=150):
 
 
 def parse_action(reply: str):
-    m = re.search(r"\{[^{}]*\"action\"[^{}]*\}", reply, re.S) or re.search(r"\{[\s\S]*?\}", reply)
-    if not m:
-        return None
     try:
-        return json.loads(m.group(0))
-    except Exception:
+        start = reply.index('{')
+        value, _ = json.JSONDecoder().raw_decode(reply[start:])
+        return value if isinstance(value, dict) else None
+    except (ValueError, TypeError):
         return None
 
 
@@ -363,13 +362,17 @@ def execute(act: dict):
     res = execute_batch([act])
     if res.get("terminal"):
         return json.dumps(res, ensure_ascii=False)
-    return json.dumps((res.get("results") or [{}])[0], ensure_ascii=False)
+    row = dict((res.get("results") or [{}])[0])
+    for key in ("_rc", "_error", "error"):
+        if key in res:
+            row[key] = res[key]
+    return json.dumps(row, ensure_ascii=False)
 
 
 # ---------------- v2.3: BATCH com RE-RESOLVE, novas ops e negative asserts ----------------
 # Fixes da T1-Xtesting (results/phase8b-xt-testing.md):
 # 1. re-resolve: cada acao re-resolve o elemento NO MOMENTO da execucao por
-#    {element (idx tentativa), id, label contains, tag} — nao indice congelado do snapshot
+#    identidade exata cumulativa + scope/role; indice so sem identidade semantica
 # 2. ops novas: upload(element|label, value=filepath via CDP SetFileInput), navigate(url),
 #    wait(value=ms|selector), press(value=key), reload
 # 3. negative asserts: assert_text_absent, expect_blocked (acao que DEVE falhar/422)
@@ -399,54 +402,103 @@ BATCH_JS_TEMPLATE = """(async () => {
     return els;
   };
   const actionable = (el) => el && !el.disabled && (el.offsetParent !== null || el.getClientRects().length > 0);
-  // resolve por bid (atributo) > id > label > posicao; com AUTO-WAIT (padrao Playwright:
-  // re-resolve + espera actionable ate budget — mata stalls de re-render async)
-  const resolve = (a, els) => {
-    // v2.5.1: label com precedencia quando o op nao tem id/bid — clicks por texto
-    // ("Criar plano DEMO-024") sao o que sobrevive a re-indexacao entre paginas
-    if (!a.id && !a.bid && a.label) {
-      const cands0 = collect();
-      const want0 = norm(a.label);
-      const m0 = cands0.find(e =>
-        norm(e.innerText).includes(want0) ||
-        norm(e.getAttribute && (e.getAttribute('aria-label') || '')).includes(want0));
-      if (m0) return m0;
-    }
-    if (a.id) { const byId = document.getElementById(a.id); if (byId) return byId; }
-    if (a.bid || a.element) {
-      const sel = '[data-ub2-idx="' + (a.bid || a.element) + '"]';
-      const byAttr = document.querySelector(sel) ||
-        (() => { for (const h of document.querySelectorAll('*')) {
-          if (h.shadowRoot) { try { const r = h.shadowRoot.querySelector(sel); if (r) return r; } catch(e){} } } return null; })();
-      if (byAttr) return byAttr;
-    }
-    if (a.label) {
-      const want = norm(a.label);
-      const cands = collect();
-      const m = cands.find(e =>
-        norm(e.innerText).includes(want) ||
-        norm(e.getAttribute && (e.getAttribute('aria-label') || '')).includes(want) ||
-        norm(e.value).includes(want) ||
-        norm(e.placeholder).includes(want) ||
-        (e.tagName === 'A' && norm(e.href).includes(want)));
-      if (m) return m;
-      const idm = /\\b([A-Za-z][\\w-]*)\\b\\s*:\\s/.exec(a.label || '');
-      if (idm) { const b = cands.find(e => e.id === idm[1]); if (b) return b; }
-    }
-    // v2.5.4: fallback por POSICAO so com a.element explicito — sem ele, nao achou = null
-    return (a.element !== undefined && a.element !== null && els[a.element - 1]) || null;
+  // A001: identidade cumulativa e unica; nunca cair em indice apos conflito.
+  const allNodes = () => {
+    const nodes = [];
+    const walk = root => {
+      for (const el of root.querySelectorAll('*')) {
+        nodes.push(el);
+        if (el.shadowRoot) walk(el.shadowRoot);
+      }
+    };
+    walk(document);
+    return nodes;
   };
-  const resolveWait = (a, els, budgetMs) => {
-    const t0 = Date.now();
-    let el = null;
-    do {
-      el = resolve(a, els);
+  const roleOf = el => {
+    const explicit = norm(el.getAttribute('role'));
+    if (explicit) return explicit;
+    const tag = el.tagName.toLowerCase();
+    if (tag === 'button' || (tag === 'input' && ['submit','button','reset'].includes(el.type))) return 'button';
+    if (tag === 'a' && el.hasAttribute('href')) return 'link';
+    if (tag === 'select') return 'combobox';
+    if (tag === 'textarea') return 'textbox';
+    if (tag === 'input') return ['checkbox','radio'].includes(el.type) ? el.type : 'textbox';
+    return '';
+  };
+  const nameOf = el => {
+    const refs = (el.getAttribute('aria-labelledby') || '').trim().split(/\\s+/).filter(Boolean);
+    if (refs.length) return refs.map(id => el.getRootNode().getElementById(id)?.textContent || '').join(' ');
+    if (el.hasAttribute('aria-label')) return el.getAttribute('aria-label');
+    if (el.labels && el.labels.length) return Array.from(el.labels).map(l => l.textContent).join(' ');
+    return el.innerText || el.getAttribute('placeholder') || '';
+  };
+  const matches = (el, d) =>
+    (!d.id || el.id === d.id) && (!d.role || roleOf(el) === norm(d.role)) &&
+    (!d.tag || norm(el.tagName) === norm(d.tag)) &&
+    (!d.name || norm(nameOf(el)) === norm(d.name)) &&
+    (!d.label || norm(nameOf(el)) === norm(d.label));
+  const invalid = message => { throw new Error(message); };
+  const validateDescriptor = (d, scope = false) => {
+    const keys = scope ? ['id','role','name','tag'] : ['id','role','name','tag','label','scope'];
+    if (!d || typeof d !== 'object' || Array.isArray(d) ||
+        Object.keys(d).some(k => !keys.includes(k)) ||
+        !['id','role','name','tag','label'].some(k => typeof d[k] === 'string' && d[k].trim()) ||
+        Object.entries(d).some(([k,v]) => k !== 'scope' && (typeof v !== 'string' || !v.trim())))
+      invalid('invalid identity descriptor');
+  };
+  const inScope = (el, scope) => {
+    for (let n = el; n; n = n.parentElement || n.getRootNode()?.host) if (n === scope) return true;
+    return false;
+  };
+  const resolve = (a, els, nodes = allNodes()) => {
+    let scope = null;
+    if (a.scope !== undefined) {
+      validateDescriptor(a.scope, true);
+      const roots = nodes.filter(el => matches(el, a.scope));
+      if (roots.length > 1) invalid('ambiguous scope: ' + roots.length);
+      if (!roots.length) return null;
+      scope = roots[0];
+    }
+    let cands = nodes.filter(el => !scope || inScope(el, scope));
+    if (['id','name','label','role','tag'].some(k => a[k])) {
+      const descriptor = Object.fromEntries(['id','name','label','role','tag'].filter(k => a[k]).map(k => [k,a[k]]));
+      validateDescriptor(descriptor);
+      cands = cands.filter(el => matches(el, descriptor));
+    } else if (a.bid || a.element) {
+      cands = cands.filter(el => el.getAttribute('data-ub2-idx') === String(a.bid || a.element));
+    } else return null;
+    if (cands.length > 1) invalid('ambiguous target: ' + cands.length);
+    return cands[0] || null;
+  };
+  const validateCondition = pc => {
+    if (!pc || typeof pc !== 'object' || Array.isArray(pc) ||
+        Object.keys(pc).some(k => !['target','property','equals','timeout_ms'].includes(k)) ||
+        !['text','value','checked','visible','exists'].includes(pc.property) ||
+        !Object.hasOwn(pc, 'equals') || !['string','boolean','number'].includes(typeof pc.equals) ||
+        (pc.timeout_ms !== undefined && (!Number.isInteger(pc.timeout_ms) || pc.timeout_ms < 0 || pc.timeout_ms > 3000)))
+      invalid('invalid postcondition');
+    validateDescriptor(pc.target);
+  };
+  const readCondition = pc => {
+    const el = resolve(pc.target, collect());
+    let value = null;
+    if (pc.property === 'exists') value = !!el;
+    else if (pc.property === 'visible') value = !!el && !!(el.getClientRects().length);
+    else if (el) value = pc.property === 'text' ? (el.textContent || '').trim() : el[pc.property];
+    return {found: !!el, value: value === undefined ? null : value};
+  };
+  const resolveWait = async (a, els, budgetMs) => {
+    const deadline = performance.now() + (budgetMs ?? 3000);
+    while (true) {
+      const el = resolve(a, els);
       if (el && actionable(el)) return el;
-      if (Date.now() - t0 >= (budgetMs || 3000)) break;
-      const until = Date.now() + 120;
-      while (Date.now() < until) {}
-    } while (true);
-    return (el && actionable(el)) ? el : null; // v2.4.4: nao devolver nao-actionable (modal fechado etc)
+      const remaining = deadline - performance.now();
+      if (remaining <= 0) return null;
+      // Cede o event loop: callbacks podem habilitar/substituir o alvo.
+      await new Promise(r => setTimeout(r, Math.min(120, remaining)));
+      if (performance.now() >= deadline) return null;
+      els = collect(); // nunca reutilizar posicao de um DOM anterior ao timer
+    }
   };
   const results = [];
   for (let i = 0; i < acts.length; i++) {
@@ -465,7 +517,11 @@ BATCH_JS_TEMPLATE = """(async () => {
       continue;
     }
     if (a.action === 'assert_field') {
-      const el = resolve(a, els);
+      let el;
+      try { el = resolve(a, els); } catch(e) {
+        results.push({i, error: e.message});
+        return JSON.stringify({results, stopped_at: i, reason: 'identity invalid'});
+      }
       const v = el && el.value !== undefined ? el.value : (el ? el.innerText : '');
       const ok = !!(v && v.includes(a.value || ''));
       results.push({i, action: 'assert_field', ok, value: a.value, got: String(v).slice(0,60)});
@@ -489,9 +545,52 @@ BATCH_JS_TEMPLATE = """(async () => {
       results.push({i, action: a.action});
       return JSON.stringify({results, stopped_at: null, terminal: a.action});
     }
-    const el = resolveWait(a, els, a._expect_fail ? 800 : 3000);
+    let el, effectBefore = null;
+    try {
+      if (a.postcondition !== undefined) {
+        validateCondition(a.postcondition);
+        if (!['click','type','select','press'].includes(a.action)) invalid('postcondition requires host for terminal action');
+        effectBefore = readCondition(a.postcondition);
+      }
+      el = await resolveWait(a, els, a._expect_fail ? 800 : 3000);
+      // Releitura imediatamente antes do despacho, nao antes de esperar o alvo.
+      if (el && a.postcondition !== undefined) effectBefore = readCondition(a.postcondition);
+    } catch(e) {
+      results.push({i, error: e.message});
+      return JSON.stringify({results, stopped_at: i, reason: 'identity invalid'});
+    }
+    const finish = async () => {
+      const row = results[results.length - 1];
+      row.dispatched = true;
+      if (a.postcondition === undefined) {
+        row.effect = {verified: false, reason: 'no postcondition declared'};
+        return true;
+      }
+      const pc = a.postcondition;
+      const deadline = performance.now() + (pc.timeout_ms ?? 3000);
+      let after = null;
+      try {
+        while (true) {
+          after = readCondition(pc);
+          const fresh = after.value !== effectBefore.value || after.found !== effectBefore.found;
+          if (fresh && after.value === pc.equals) {
+            row.effect = {verified: true, before: effectBefore, after};
+            return true;
+          }
+          const remaining = deadline - performance.now();
+          if (remaining <= 0) break;
+          await new Promise(r => setTimeout(r, Math.min(50, remaining)));
+        }
+      } catch(e) { row.error = e.message; }
+      row.ok = false;
+      row.effect = {verified: false, before: effectBefore, after, reason: row.error || 'postcondition timeout or stale'};
+      return false;
+    };
     if (!el) {
       results.push({i, error: 'element not found (waited)', element: a.element, label: a.label, bid: a.bid});
+      // O reparador legado nao carrega scope/role/name: nao autorizar downgrade.
+      if (a.scope !== undefined || a.role || a.name || (a.id && a.label) || a.postcondition !== undefined)
+        return JSON.stringify({results, stopped_at: i, reason: 'identity invalid'});
       if (a._expect_fail) { results[results.length-1].expected = true; continue; }
       return JSON.stringify({results, stopped_at: i, reason: 'element not found'});
     }
@@ -513,6 +612,7 @@ BATCH_JS_TEMPLATE = """(async () => {
           }
           el.dispatchEvent(new Event('change', {bubbles:true}));
           results.push({i, action: 'type', ok: true, id: el.id, value: a.value});
+      if (!await finish()) return JSON.stringify({results, stopped_at: i, reason: 'postcondition failed'});
           continue;
         }
     if (a.action === 'press') {
@@ -522,6 +622,7 @@ BATCH_JS_TEMPLATE = """(async () => {
       el.dispatchEvent(new KeyboardEvent('keyup', {key: k, bubbles: true}));
       el.dispatchEvent(new KeyboardEvent('keypress', {key: k, bubbles: true}));
       results.push({i, action: 'press', ok: true, id: el.id, key: k});
+      if (!await finish()) return JSON.stringify({results, stopped_at: i, reason: 'postcondition failed'});
       continue;
     }
     if (a.action === 'select') {
@@ -537,6 +638,7 @@ BATCH_JS_TEMPLATE = """(async () => {
       el.dispatchEvent(new Event('change', {bubbles:true}));
       el.dispatchEvent(new Event('input', {bubbles:true}));
       results.push({i, action: 'select', ok: true, id: el.id, value: opt.text});
+      if (!await finish()) return JSON.stringify({results, stopped_at: i, reason: 'postcondition failed'});
       continue;
     }
     if (a.action === 'upload') {
@@ -547,6 +649,7 @@ BATCH_JS_TEMPLATE = """(async () => {
     if (a.action === 'click') {
       el.click();
       results.push({i, action: 'click', ok: true, id: el.id, text: (el.innerText||'').slice(0,40)});
+      if (!await finish()) return JSON.stringify({results, stopped_at: i, reason: 'postcondition failed'});
       continue;
     }
     results.push({i, error: 'unknown action ' + a.action});
@@ -563,18 +666,20 @@ def execute_batch(acts: list):
     out = (r["out"] or r["err"]).strip()
     try:
         line = out.splitlines()[-1]
-        return json.loads(line)
+        result = json.loads(line)
+        if not isinstance(result, dict):
+            raise ValueError("executor envelope must be object")
+        result["_rc"] = r.get("rc")
+        return result
     except Exception:
-        return {"results": [], "stopped_at": None, "error": out[:300]}
+        return {"results": [], "stopped_at": 0, "_rc": r.get("rc"), "error": out[:300]}
 
 
 def parse_plan(reply: str):
     """Extrai lista de acoes (JSON array) da resposta do modelo free."""
-    m = re.search(r"\[[\s\S]*?\]", reply)
-    if not m:
-        return None
     try:
-        plan = json.loads(m.group(0))
+        start = reply.index('[')
+        plan, _ = json.JSONDecoder().raw_decode(reply[start:])
         return plan if isinstance(plan, list) and plan else None
     except Exception:
         return None
@@ -654,7 +759,7 @@ Interactive elements (index · tag · state; (H)=hidden/not in current step yet 
     return acts, lat, usage, terminal
 
 
-def verify(spec: str):
+def verify(spec: str, details=None):
     """Verifier independente por CÓDIGO (inline JS — sem confiar no modelo).
     Formatos: text_contains:X | url_contains:X | title_contains:X | field_value:sel|expected
     Pipe dentro do arg: usar '||' como separador duplo se necessário."""
@@ -672,20 +777,77 @@ def verify(spec: str):
         expr = (f"(() => {{ const el = document.querySelector({json.dumps(sel)}); if (!el) return 'FAIL: no element'; "
                 f"const v = el.value !== undefined ? el.value : el.innerText; "
                 f"return (v === {json.dumps(expected)} || v.includes({json.dumps(expected)})) ? 'PASS: field=' + v : 'FAIL: field=' + v; }})()")
-    elif kind == "persisted":
-        # v2.4.6: recarrega a pagina e so passa se o texto aparecer APOS o reload
-        # (persistencia de verdade — caso xt25sc: verify passava pre-reload)
-        expr = (f"(() => (location.reload(), 'RELOADING'))()")
-        r0 = harness(f"print(js({json.dumps(expr)}))")
-        time.sleep(2.5)
-        r1 = harness(f"print(js({json.dumps(f'(() => (document.body ? document.body.innerText : \'\').includes({json.dumps(arg)}) ? \'PASS: persisted\' : \'FAIL: not after reload\')()')}))")
-        out = (r1["out"] or r1["err"]).strip()
-        return "PASS" if "PASS" in out else f"FAIL ({out[:80]})"
+    elif kind in ("persisted", "persisted_json"):
+        if kind == "persisted":
+            result = {"passed": False, "error": "legacy persisted title is incomplete; use persisted_json contract"}
+        else:
+            from persisted_verifier import verify_complete
+            result = verify_complete(rest, harness)
+        if details is not None:
+            details.update(result)
+        return "PASS" if result.get("passed") is True else "FAIL: " + str(result.get("error") or result.get("mismatches"))
     else:
         return "FAIL: unknown verifier"
     r = harness(f"print(js({json.dumps(expr)}))")
     out = (r["out"] or r["err"]).strip()
     return "PASS" if "PASS" in out else f"FAIL ({out[:80]})"
+
+
+def execution_failed(result):
+    """Falha inesperada e fatal; negativo explicitamente esperado e distinto."""
+    if not isinstance(result, dict):
+        return True
+    if ((result.get("error") and result.get("expected") is not True) or result.get("_error") or
+            type(result.get("_rc", 0)) is not int or result.get("_rc", 0) != 0):
+        return True
+    rows = result.get("results", [result])
+    if not isinstance(rows, list) or not rows:
+        return True
+    for row in rows:
+        if not isinstance(row, dict):
+            return True
+        if row.get("expected") is True:
+            continue
+        if row.get("error") or row.get("ok") is False:
+            return True
+        if row.get("ok") is True or row.get("action") == "expect_blocked":
+            continue
+        if result.get("terminal") and row.get("action") == result["terminal"]:
+            continue
+        return True
+    return False
+
+
+def run_host(log, phase, call):
+    """Preserva erro de navegacao/upload antes de qualquer novo verifier."""
+    try:
+        result = call()
+        if not isinstance(result, dict) or type(result.get("rc")) is not int or result["rc"] != 0:
+            raise ValueError("host rc != 0: " + str(result))
+        if phase == "upload" and ("upload-fail" in str(result.get("out")) or
+                                  "upload-ok" not in str(result.get("out"))):
+            raise ValueError("host upload not confirmed: " + str(result))
+        return result
+    except Exception as exc:
+        log.setdefault("failures", []).append({"phase": phase, "error": str(exc)})
+        log["result"] = "HOST-FAIL"
+        return None
+
+
+def verify_for_run(spec, log):
+    """Latch: um FAIL previo nunca e substituido por verifier posterior."""
+    if log.get("failures"):
+        return "FAIL: prior failure preserved"
+    detail = {}
+    try:
+        verdict = verify(spec, details=detail)
+    except Exception as exc:
+        verdict = "FAIL: verifier exception: " + str(exc)
+        detail.update(passed=False, error=str(exc))
+    log.setdefault("verification_details", []).append(detail)
+    if verdict != "PASS":
+        log.setdefault("failures", []).append({"phase": "verifier", "verdict": verdict})
+    return verdict
 
 
 def human_pause(lo=0.3, hi=1.2):
@@ -887,7 +1049,9 @@ def run_batch(url, goal, model, max_cycles, verify_spec, record, engine="typesaf
     log = {"url": url, "goal": goal, "model": model, "mode": "batch", "cycles": [], "result": None}
     rec_name = f"ub22-{int(time.time())}"
     pre = f'start_recording(name="{rec_name}", title="{goal[:40]}")\n' if record else ""
-    harness(f'{pre}goto_url("{url}")\nmaximize()\nimport time as _t\n_t.sleep(1.5)', timeout=90)
+    initial = run_host(log, "initial_navigation", lambda: harness(f'{pre}goto_url("{url}")\nmaximize()\nimport time as _t\n_t.sleep(1.5)', timeout=90))
+    if initial is None:
+        return log
 
     for cycle in range(max_cycles):
         t0 = time.time()
@@ -980,6 +1144,10 @@ Rules:
         if exec_acts:
             batch_result = execute_batch(exec_acts)
             log["cycles"][-1]["exec"] = batch_result
+            if execution_failed(batch_result) or batch_result.get("stopped_at") is not None and not batch_result.get("terminal"):
+                log.setdefault("failures", []).append({"phase": "execution", "detail": batch_result})
+                log["result"] = "EXECUTION-FAIL-BATCH"
+                break
             term = batch_result.get("terminal")
             # v2.3: terminais especiais do executor
             if term == "wait":
@@ -987,10 +1155,14 @@ Rules:
                     time.sleep(min(5, float(batch_result.get("value") or 1)))
                 except Exception:
                     time.sleep(1)
+                log["cycles"][-1]["host"] = dict(action="wait", completed=True)
                 continue  # re-planejar pos espera
             if term in ("navigate", "reload"):
                 dest = batch_result.get("url") or url
-                harness(f'goto_url("{dest}")\nimport time as _t\n_t.sleep(1.5)', timeout=90)
+                nav_result = run_host(log, "navigation", lambda: harness(f'goto_url("{dest}")\nimport time as _t\n_t.sleep(1.5)', timeout=90))
+                if nav_result is None:
+                    break
+                log["cycles"][-1]["host"] = dict(action=term, completed=True, rc=nav_result["rc"], url=dest)
                 continue  # novo snapshot apos navegacao
             if term == "upload":
                 # upload real via harness (CDP): file input + arquivo do goal
@@ -1000,16 +1172,19 @@ Rules:
                                   "browser-benchmark-20261016", "fixtures", file_label)
                 fx = os.path.normpath(fx)
                 sel = batch_result.get("selector") or "input[type=file]"
-                up = harness(
+                up = run_host(log, "upload", lambda: harness(
                     "import time as _t\n"
                     "try:\n"
                     f"    upload_file({json.dumps(sel)}, {json.dumps(fx)})\n"
                     "    _t.sleep(1)\n"
                     "    print('upload-ok')\n"
                     "except Exception as e:\n"
-                    "    print('upload-fail', e)\n", timeout=90)
+                    "    print('upload-fail', e)\n", timeout=90))
+                if up is None:
+                    break
                 up_out = up["out"] if isinstance(up, dict) else str(up)
                 log["cycles"][-1]["upload"] = str(up_out)[:200]
+                log["cycles"][-1]["host"] = dict(action="upload", completed=True, rc=up["rc"])
                 continue  # re-planejar apos upload
             # se o batch parou num assert falho -> re-planejar no proximo ciclo
             if batch_result.get("stopped_at") is not None and "assert" in str(
@@ -1026,12 +1201,13 @@ Rules:
                 r.get("ok") for r in (batch_result or {}).get("results", [])
                 if "ok" in r)):
             if verify_spec:
-                ok = verify(verify_spec)
+                ok = verify_for_run(verify_spec, log)
                 log["cycles"].append({"verifier": verify_spec, "verdict": ok})
                 if ok == "PASS":
                     log["result"] = "DONE-VERIFIED-BATCH"
                     break
-                continue
+                log["result"] = "VERIFICATION-FAIL-BATCH"
+                break
             log["result"] = "DONE-BATCH"
             break
         human_pause()
@@ -1045,7 +1221,9 @@ def run(url, goal, model, max_steps, verify_spec, record, engine="opencode", tex
     log = {"url": url, "goal": goal, "model": model, "steps": [], "result": None}
     rec_name = f"ub2-{int(time.time())}"
     pre = f'start_recording(name="{rec_name}", title="{goal[:40]}")\n' if record else ""
-    harness(f'{pre}goto_url("{url}")\nmaximize()\nimport time as _t\n_t.sleep(1.5)', timeout=90)
+    initial = run_host(log, "initial_navigation", lambda: harness(f'{pre}goto_url("{url}")\nmaximize()\nimport time as _t\n_t.sleep(1.5)', timeout=90))
+    if initial is None:
+        return log
 
     last_act = None
     same_count = 0
@@ -1138,7 +1316,7 @@ Rules:
         if same_count >= 2:
             # VERIFIER NO ABORT: o modelo pode ter completado sem perceber (caso real T4 deepseek).
             if verify_spec:
-                ok = verify(verify_spec)
+                ok = verify_for_run(verify_spec, log)
                 log["steps"].append({"loop_guard": f"same action x3: {key}",
                                      "verifier_on_abort": verify_spec, "verdict": ok})
                 log["result"] = "DONE-VERIFIED" if ok == "PASS" else "LOOP-ABORT"
@@ -1149,12 +1327,13 @@ Rules:
 
         if act["action"] == "done":
             if verify_spec:
-                ok = verify(verify_spec)
+                ok = verify_for_run(verify_spec, log)
                 log["steps"].append({"verifier": verify_spec, "verdict": ok})
                 if ok == "PASS":
                     log["result"] = "DONE-VERIFIED"
                     break
-                continue  # verifier falhou: mais ate 3 ciclos (max_steps cobre)
+                log["result"] = "VERIFICATION-FAIL"
+                break
             log["result"] = "DONE"
             break
         if act["action"] == "blocked":
@@ -1164,15 +1343,26 @@ Rules:
         # v2.3: enriquecer a acao com id/label do elemento do snapshot (re-resolve)
         try:
             el_ref = els[int(act.get("element") or 1) - 1]
-            if el_ref.get("id"):
-                act["id"] = el_ref["id"]
-            act["label"] = (f"{el_ref.get('tag','')} {el_ref.get('id','')}: "
-                            f"{el_ref.get('text','')}").strip()[:80]
+            # Nao sobrescrever identidade explicita nem transformar texto de
+            # estado (value=...) em nome acessivel contraditorio com o id.
+            if not any(act.get(k) for k in ("id", "name", "label", "scope", "role")):
+                if el_ref.get("id"):
+                    act["id"] = el_ref["id"]
+                elif el_ref.get("tag") in ("button", "a"):
+                    act["label"] = el_ref.get("text", "")
         except Exception:
             pass
 
         exec_result = execute(act)
         log["steps"][-1]["exec"] = exec_result
+        try:
+            observed_exec = json.loads(exec_result) if isinstance(exec_result, str) else exec_result
+        except (ValueError, TypeError):
+            observed_exec = {"error": "invalid executor payload"}
+        if execution_failed(observed_exec):
+            log.setdefault("failures", []).append({"phase": "execution", "detail": observed_exec})
+            log["result"] = "EXECUTION-FAIL"
+            break
         # v2.4.6: VERIFY-AFTER-EVERY-SAVE — o goal pede save UNICO; depois do 1o save
         # com sucesso, qualquer verify PASS = trabalho completo: PARAR na hora.
         # (Caso real xt25sc: agente continuou navegando pos-save e a fixture gritou
@@ -1184,11 +1374,13 @@ Rules:
                  and "salvar" in str(act.get("label", "")).lower())
                 or "saved" in str(exec_result)))
             if saved_now and verify_spec:
-                ok = verify(verify_spec)
+                ok = verify_for_run(verify_spec, log)
                 log["steps"].append({"verifier_after_save": verify_spec, "verdict": ok})
                 if ok == "PASS":
                     log["result"] = "DONE-VERIFIED"
                     break
+                log["result"] = "VERIFICATION-FAIL"
+                break
         except Exception:
             pass
         # v2.4.5: popular historico p/ o proximo planejamento (aacao + alvo curto)
@@ -1224,23 +1416,29 @@ Rules:
                     "..", "..", ".openclaw", "workspace", "pocs",
                     "browser-benchmark-20261016", "fixtures", file_label))
                 sel = exj.get("selector") or ("#" + (act.get("id") or "upload") if act.get("id") else "input[type=file]")
-                up = harness(
+                up = run_host(log, "upload", lambda: harness(
                     "import time as _t\n"
                     "try:\n"
                     f"    upload_file({json.dumps(sel)}, {json.dumps(fx)})\n"
                     "    _t.sleep(1)\n"
                     "    print('upload-ok')\n"
                     "except Exception as e:\n"
-                    "    print('upload-fail', e)\n", timeout=90)
+                    "    print('upload-fail', e)\n", timeout=90))
+                if up is None:
+                    break
                 up_out = up["out"] if isinstance(up, dict) else str(up)
                 log["steps"][-1]["upload"] = str(up_out)[:200]
+                log["steps"][-1]["host"] = dict(action="upload", completed=True, rc=up["rc"])
                 act_history.append(f"upload '{file_label}' -> {str(up_out)[:40]}")
                 human_pause()
                 continue
             if isinstance(exj, dict) and exj.get("terminal") in ("navigate", "reload"):
                 dest = exj.get("url") or url
-                harness(f'goto_url("{dest}")\nimport time as _t\n_t.sleep(1.5)', timeout=90)
+                nav_result = run_host(log, "navigation", lambda: harness(f'goto_url("{dest}")\nimport time as _t\n_t.sleep(1.5)', timeout=90))
+                if nav_result is None:
+                    break
                 log["steps"][-1]["nav"] = dest
+                log["steps"][-1]["host"] = dict(action=exj["terminal"], completed=True, rc=nav_result["rc"], url=dest)
                 human_pause()
                 continue
             if isinstance(exj, dict) and exj.get("terminal") == "wait":
@@ -1248,6 +1446,7 @@ Rules:
                     time.sleep(min(5, float(exj.get("value") or 1)))
                 except Exception:
                     time.sleep(1)
+                log["steps"][-1]["host"] = dict(action="wait", completed=True)
                 human_pause()
                 continue
         except Exception:
@@ -1259,7 +1458,7 @@ Rules:
     return log
 
 
-if __name__ == "__main__":
+def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--url", required=True)
     ap.add_argument("--goal", required=True)
@@ -1364,3 +1563,7 @@ if __name__ == "__main__":
         result["value_model"] = log_extra
     print(json.dumps(result, ensure_ascii=False, indent=1))
     sys.exit(0 if "DONE" in str(result.get("result")) else 1)
+
+
+if __name__ == "__main__":
+    main()

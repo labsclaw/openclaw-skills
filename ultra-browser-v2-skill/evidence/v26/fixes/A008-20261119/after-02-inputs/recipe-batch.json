@@ -1,0 +1,119 @@
+{
+  "version": "2.6-extraction-1",
+  "intent": "record deterministic public actions",
+  "source_trace": "evidence\\v26\\fixes\\A008-20261119\\after-02-inputs\\observed-batch.json",
+  "native_ops": [
+    {
+      "op": "type",
+      "id": "name",
+      "value": "A008"
+    },
+    {
+      "op": "select",
+      "id": "kind",
+      "value": "B"
+    },
+    {
+      "op": "click",
+      "id": "save",
+      "label": "Save: draft",
+      "role": "button",
+      "scope": {
+        "id": "scope"
+      }
+    },
+    {
+      "op": "wait",
+      "value": "0"
+    },
+    {
+      "op": "navigate",
+      "value": "http://127.0.0.1:55012/next"
+    }
+  ],
+  "notes": [
+    "Candidate incomplete: excluded entries require review; no invented actions."
+  ],
+  "provenance": {
+    "source": {
+      "path": "C:\\Users\\ClawLabs\\.openclaw\\workspace\\projects\\ultra-browser-v2-publication\\ultra-browser-v2-skill\\evidence\\v26\\fixes\\A008-20261119\\after-02-inputs\\observed-batch.json",
+      "sha256": "6b251b133674efebcd8ff565c1bcbc6f5b1fea35b87ad4c13ac2a5bd34993c4e",
+      "format": "batch",
+      "model": "no-provider-called",
+      "url": "http://127.0.0.1:55012/",
+      "mode": "batch"
+    },
+    "operations": [
+      {
+        "opIndex": 0,
+        "action_source": "/cycles/0/plan/0",
+        "execution_source": "/cycles/0/exec/results/0",
+        "expected_blocked": false,
+        "effect": {
+          "verified": false,
+          "reason": "no postcondition declared"
+        },
+        "transport_rc": 0
+      },
+      {
+        "opIndex": 1,
+        "action_source": "/cycles/0/plan/1",
+        "execution_source": "/cycles/0/exec/results/1",
+        "expected_blocked": false,
+        "effect": {
+          "verified": false,
+          "reason": "no postcondition declared"
+        },
+        "transport_rc": 0
+      },
+      {
+        "opIndex": 2,
+        "action_source": "/cycles/0/plan/2",
+        "execution_source": "/cycles/0/exec/results/2",
+        "expected_blocked": false,
+        "effect": {
+          "verified": false,
+          "reason": "no postcondition declared"
+        },
+        "transport_rc": 0
+      },
+      {
+        "opIndex": 3,
+        "action_source": "/cycles/0/plan/3",
+        "execution_source": "/cycles/0/exec/results/3",
+        "expected_blocked": false,
+        "effect": null,
+        "transport_rc": 0
+      },
+      {
+        "opIndex": 4,
+        "action_source": "/cycles/1/plan/0",
+        "execution_source": "/cycles/1/exec/results/0",
+        "expected_blocked": false,
+        "effect": null,
+        "transport_rc": 0
+      }
+    ],
+    "excluded": [
+      {
+        "source": "/cycles/0/plan/4",
+        "reason": "planned suffix not executed"
+      },
+      {
+        "source": "/cycles/1/plan/1",
+        "reason": "planned suffix not executed"
+      }
+    ]
+  },
+  "verification": {
+    "source_result": "DONE-VERIFIED-BATCH",
+    "observations": [
+      {
+        "source": "/cycles/3",
+        "verifier": "text_contains:READY",
+        "verdict": "PASS"
+      }
+    ],
+    "state": "recorded-not-revalidated"
+  }
+}

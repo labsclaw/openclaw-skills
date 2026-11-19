@@ -1,0 +1,8 @@
+{
+  "command": "python -B scripts/test_environment.py --receipt evidence/v26/fixes/A029-A030-A044-20261119/after-02.json",
+  "rc": 1,
+  "requestedReceiptCreated": false,
+  "observedError": "TypeError: execute_batch() takes 1 positional argument but 2 were given",
+  "verdict": "not_green",
+  "cause": "Test setup called production execute_batch with an extra argument. Test corrected to actual public signature. Not a resolver defect."
+}

@@ -1,0 +1,190 @@
+{
+  "template_equal": true,
+  "passed": 6,
+  "total": 6,
+  "cases": [
+    {
+      "mode": "single",
+      "scenario": "spaces",
+      "passed": true,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "save-right",
+            "text": "Salvar agora",
+            "dispatched": true,
+            "effect": {
+              "verified": true,
+              "before": {
+                "found": true,
+                "value": "idle"
+              },
+              "after": {
+                "found": true,
+                "value": "right"
+              }
+            },
+            "_rc": 0
+          }
+        ]
+      }
+    },
+    {
+      "mode": "single",
+      "scenario": "labelledby_multiple",
+      "passed": true,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "save-right",
+            "text": "Salvar",
+            "dispatched": true,
+            "effect": {
+              "verified": true,
+              "before": {
+                "found": true,
+                "value": "idle"
+              },
+              "after": {
+                "found": true,
+                "value": "right"
+              }
+            },
+            "_rc": 0
+          }
+        ]
+      }
+    },
+    {
+      "mode": "batch",
+      "scenario": "spaces",
+      "passed": true,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "save-right",
+            "text": "Salvar agora",
+            "dispatched": true,
+            "effect": {
+              "verified": true,
+              "before": {
+                "found": true,
+                "value": "idle"
+              },
+              "after": {
+                "found": true,
+                "value": "right"
+              }
+            }
+          }
+        ],
+        "stopped_at": null,
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "batch",
+      "scenario": "labelledby_multiple",
+      "passed": true,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "save-right",
+            "text": "Salvar",
+            "dispatched": true,
+            "effect": {
+              "verified": true,
+              "before": {
+                "found": true,
+                "value": "idle"
+              },
+              "after": {
+                "found": true,
+                "value": "right"
+              }
+            }
+          }
+        ],
+        "stopped_at": null,
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "recipe",
+      "scenario": "spaces",
+      "passed": true,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "save-right",
+            "text": "Salvar agora",
+            "dispatched": true,
+            "effect": {
+              "verified": true,
+              "before": {
+                "found": true,
+                "value": "idle"
+              },
+              "after": {
+                "found": true,
+                "value": "right"
+              }
+            }
+          }
+        ],
+        "stopped_at": null,
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "recipe",
+      "scenario": "labelledby_multiple",
+      "passed": true,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "save-right",
+            "text": "Salvar",
+            "dispatched": true,
+            "effect": {
+              "verified": true,
+              "before": {
+                "found": true,
+                "value": "idle"
+              },
+              "after": {
+                "found": true,
+                "value": "right"
+              }
+            }
+          }
+        ],
+        "stopped_at": null,
+        "_rc": 0
+      }
+    }
+  ],
+  "sources": {
+    "agent_loop.py": "0f368fca7cdf844fffe8edd8b182cffc76492fc2f0bf86dd2e4c7c2a1e42d5d4",
+    "recipe.py": "c670d5bd406d00467d50dff286862557755843ba14987e1cfe32b259b0ad0dc8",
+    "test_semantic_template.py": "bcfc2b57419d50a636571ca37bc8b31aa8e831e837e6b79e758eee25e5d6c267"
+  }
+}

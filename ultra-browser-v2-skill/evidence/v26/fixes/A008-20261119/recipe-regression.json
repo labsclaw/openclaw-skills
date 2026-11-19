@@ -1,0 +1,5 @@
+{
+  "rc": 0,
+  "stdout": "{\n \"result\": \"RECIPE-DONE-VERIFIED\"\n}\n{\n \"result\": \"RECIPE-DONE\"\n}\n{\n \"result\": \"RECIPE-FAIL x\"\n}\n{\n \"result\": \"RECIPE-DONE-VERIFIED-lixo\"\n}\n",
+  "stderr": "...............................\n----------------------------------------------------------------------\nRan 31 tests in 13.977s\n\nOK\n"
+}

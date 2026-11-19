@@ -1,0 +1,10 @@
+{
+  "command": "python -B scripts/test_persisted_guards.py --receipt evidence/v26/fixes/A005-20261119/guards-01.json",
+  "rc": 1,
+  "phase": "test_setup",
+  "error": "TypeError: run_batch() got an unexpected keyword argument 'max_steps'",
+  "location": "scripts/test_persisted_guards.py:54",
+  "receiptRequestedWasNotCreated": true,
+  "classification": "test caller argument defect, not verifier failure",
+  "correction": "Use actual batch max_cycles parameter, rerun with new receipt name. Preserve this error."
+}

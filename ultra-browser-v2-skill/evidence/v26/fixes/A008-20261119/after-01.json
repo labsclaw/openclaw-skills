@@ -1,0 +1,1138 @@
+{
+  "passed": 26,
+  "total": 32,
+  "cases": [
+    {
+      "name": "real_producer_single",
+      "passed": false,
+      "trace": {
+        "url": "http://127.0.0.1:60232/",
+        "goal": "record deterministic public actions",
+        "model": "no-provider-called",
+        "steps": [
+          {
+            "step": 0,
+            "parsed": {
+              "action": "type",
+              "id": "name",
+              "value": "A008"
+            },
+            "latency_s": 0.1,
+            "reply": "{\"action\": \"type\", \"id\": \"name\", \"value\": \"A008\"}",
+            "exec": "{\"i\": 0, \"action\": \"type\", \"ok\": true, \"id\": \"name\", \"value\": \"A008\", \"dispatched\": true, \"effect\": {\"verified\": false, \"reason\": \"no postcondition declared\"}, \"_rc\": 0}"
+          },
+          {
+            "step": 1,
+            "parsed": {
+              "action": "select",
+              "id": "kind",
+              "value": "B"
+            },
+            "latency_s": 0.1,
+            "reply": "{\"action\": \"select\", \"id\": \"kind\", \"value\": \"B\"}",
+            "exec": "{\"i\": 0, \"action\": \"select\", \"ok\": true, \"id\": \"kind\", \"value\": \"B\", \"dispatched\": true, \"effect\": {\"verified\": false, \"reason\": \"no postcondition declared\"}, \"_rc\": 0}"
+          },
+          {
+            "step": 2,
+            "parsed": null,
+            "latency_s": 0.1,
+            "reply": "{\"action\": \"click\", \"id\": \"save\", \"label\": \"Save: draft\", \"scope\": {\"id\": \"scope\"}, \"role\": \"button\"}"
+          },
+          {
+            "step": 3,
+            "parsed": {
+              "action": "wait",
+              "value": "0",
+              "id": "name"
+            },
+            "latency_s": 0.2,
+            "reply": "{\"action\": \"wait\", \"value\": \"0\"}",
+            "exec": "{\"results\": [{\"i\": 0, \"action\": \"wait\", \"value\": \"0\"}], \"stopped_at\": 0, \"reason\": \"wait\", \"terminal\": \"wait\", \"_rc\": 0}",
+            "host": {
+              "action": "wait",
+              "completed": true
+            }
+          },
+          {
+            "step": 4,
+            "parsed": {
+              "action": "navigate",
+              "value": "http://127.0.0.1:60232/next",
+              "id": "name"
+            },
+            "latency_s": 0.1,
+            "reply": "{\"action\": \"navigate\", \"value\": \"http://127.0.0.1:60232/next\"}",
+            "exec": "{\"results\": [{\"i\": 0, \"action\": \"navigate\", \"value\": \"http://127.0.0.1:60232/next\"}], \"stopped_at\": 0, \"reason\": \"navigate\", \"terminal\": \"navigate\", \"url\": \"http://127.0.0.1:60232/next\", \"_rc\": 0}",
+            "nav": "http://127.0.0.1:60232/next",
+            "host": {
+              "action": "navigate",
+              "completed": true,
+              "rc": 0,
+              "url": "http://127.0.0.1:60232/next"
+            }
+          },
+          {
+            "step": 5,
+            "parsed": {
+              "action": "done"
+            },
+            "latency_s": 0.1,
+            "reply": "{\"action\": \"done\"}"
+          },
+          {
+            "verifier": "text_contains:READY",
+            "verdict": "PASS"
+          }
+        ],
+        "result": "DONE-VERIFIED",
+        "verification_details": [
+          {}
+        ]
+      }
+    },
+    {
+      "name": "normal_extract_CLI_single",
+      "passed": false,
+      "candidate": {
+        "version": "2.6-extraction-1",
+        "intent": "record deterministic public actions",
+        "source_trace": "evidence\\v26\\fixes\\A008-20261119\\after-01-inputs\\observed-single.json",
+        "native_ops": [
+          {
+            "op": "type",
+            "id": "name",
+            "value": "A008"
+          },
+          {
+            "op": "select",
+            "id": "kind",
+            "value": "B"
+          },
+          {
+            "op": "wait",
+            "id": "name",
+            "value": "0"
+          },
+          {
+            "op": "navigate",
+            "id": "name",
+            "value": "http://127.0.0.1:60232/next"
+          }
+        ],
+        "notes": [],
+        "provenance": {
+          "source": {
+            "path": "C:\\Users\\ClawLabs\\.openclaw\\workspace\\projects\\ultra-browser-v2-publication\\ultra-browser-v2-skill\\evidence\\v26\\fixes\\A008-20261119\\after-01-inputs\\observed-single.json",
+            "sha256": "18b7559de347a9a9f22f176ec871e9286cb065658e1b772182be551225c381da",
+            "format": "single",
+            "model": "no-provider-called",
+            "url": "http://127.0.0.1:60232/",
+            "mode": "single"
+          },
+          "operations": [
+            {
+              "opIndex": 0,
+              "action_source": "/steps/0/parsed",
+              "execution_source": "/steps/0/exec",
+              "expected_blocked": false,
+              "effect": {
+                "verified": false,
+                "reason": "no postcondition declared"
+              },
+              "transport_rc": 0
+            },
+            {
+              "opIndex": 1,
+              "action_source": "/steps/1/parsed",
+              "execution_source": "/steps/1/exec",
+              "expected_blocked": false,
+              "effect": {
+                "verified": false,
+                "reason": "no postcondition declared"
+              },
+              "transport_rc": 0
+            },
+            {
+              "opIndex": 2,
+              "action_source": "/steps/3/parsed",
+              "execution_source": "/steps/3/exec/results/0",
+              "expected_blocked": false,
+              "effect": null,
+              "transport_rc": 0
+            },
+            {
+              "opIndex": 3,
+              "action_source": "/steps/4/parsed",
+              "execution_source": "/steps/4/exec/results/0",
+              "expected_blocked": false,
+              "effect": null,
+              "transport_rc": 0
+            }
+          ],
+          "excluded": []
+        },
+        "verification": {
+          "source_result": "DONE-VERIFIED",
+          "observations": [
+            {
+              "source": "/steps/6",
+              "verifier": "text_contains:READY",
+              "verdict": "PASS"
+            }
+          ],
+          "state": "recorded-not-revalidated"
+        }
+      },
+      "stderr": ""
+    },
+    {
+      "name": "provenance_single",
+      "passed": false
+    },
+    {
+      "name": "verification_separate_single",
+      "passed": true
+    },
+    {
+      "name": "normal_replay_single",
+      "passed": false,
+      "result": {
+        "url": "http://127.0.0.1:60232/",
+        "recipe": "recipe-single.json",
+        "steps": [
+          {
+            "i": 0,
+            "op": {
+              "id": "name",
+              "value": "A008",
+              "action": "type"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "type",
+                  "ok": true,
+                  "id": "name",
+                  "value": "A008",
+                  "dispatched": true,
+                  "effect": {
+                    "verified": false,
+                    "reason": "no postcondition declared"
+                  }
+                }
+              ],
+              "stopped_at": null,
+              "_rc": 0
+            }
+          },
+          {
+            "i": 1,
+            "op": {
+              "id": "kind",
+              "value": "B",
+              "action": "select"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "select",
+                  "ok": true,
+                  "id": "kind",
+                  "value": "B",
+                  "dispatched": true,
+                  "effect": {
+                    "verified": false,
+                    "reason": "no postcondition declared"
+                  }
+                }
+              ],
+              "stopped_at": null,
+              "_rc": 0
+            }
+          },
+          {
+            "i": 2,
+            "op": {
+              "id": "name",
+              "value": "0",
+              "action": "wait"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "wait",
+                  "value": "0"
+                }
+              ],
+              "stopped_at": 0,
+              "reason": "wait",
+              "terminal": "wait",
+              "_rc": 0
+            }
+          },
+          {
+            "i": 3,
+            "op": {
+              "id": "name",
+              "value": "http://127.0.0.1:60232/next",
+              "action": "navigate"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "navigate",
+                  "value": "http://127.0.0.1:60232/next"
+                }
+              ],
+              "stopped_at": 0,
+              "reason": "navigate",
+              "terminal": "navigate",
+              "url": "http://127.0.0.1:60232/next",
+              "_rc": 0
+            }
+          }
+        ],
+        "result": "RECIPE-DONE-VERIFIED",
+        "postconditions": [
+          {
+            "step": 3,
+            "kind": "navigation",
+            "url": "http://127.0.0.1:60232/next",
+            "rc": 0
+          }
+        ],
+        "repairs": [],
+        "navigation": {
+          "rc": 0,
+          "url": "http://127.0.0.1:60232/",
+          "marker": "READY"
+        },
+        "identity": {
+          "url": "http://127.0.0.1:60232",
+          "title": "",
+          "markerOk": true
+        },
+        "verification_detail": {},
+        "verifier": "PASS",
+        "capture": {
+          "schema": "browser-capture-v1",
+          "runId": "replay-single",
+          "method": "state-frames-png",
+          "frames": [
+            {
+              "runId": "replay-single",
+              "index": 1,
+              "phase": "after-navigation",
+              "observedAt": "2026-11-19T21:47:49.106216+00:00",
+              "file": "00001.png",
+              "bytes": 9518,
+              "sha256": "b35b4abb14e38f44a8835a3d8b083cae049c4a72e3db4ac06563552031e7099f"
+            },
+            {
+              "runId": "replay-single",
+              "index": 2,
+              "phase": "after-host-call",
+              "observedAt": "2026-11-19T21:47:49.214628+00:00",
+              "file": "00002.png",
+              "bytes": 9518,
+              "sha256": "b35b4abb14e38f44a8835a3d8b083cae049c4a72e3db4ac06563552031e7099f"
+            },
+            {
+              "runId": "replay-single",
+              "index": 3,
+              "phase": "after-host-call",
+              "observedAt": "2026-11-19T21:47:49.293844+00:00",
+              "file": "00003.png",
+              "bytes": 9518,
+              "sha256": "b35b4abb14e38f44a8835a3d8b083cae049c4a72e3db4ac06563552031e7099f"
+            },
+            {
+              "runId": "replay-single",
+              "index": 4,
+              "phase": "after-native",
+              "observedAt": "2026-11-19T21:47:49.981429+00:00",
+              "file": "00004.png",
+              "bytes": 10182,
+              "sha256": "d584dfcd05cd62d472a017171038b1adb203c5738d8e90edc433308a4edf4275"
+            },
+            {
+              "runId": "replay-single",
+              "index": 5,
+              "phase": "after-host-call",
+              "observedAt": "2026-11-19T21:47:51.086216+00:00",
+              "file": "00005.png",
+              "bytes": 10182,
+              "sha256": "d584dfcd05cd62d472a017171038b1adb203c5738d8e90edc433308a4edf4275"
+            },
+            {
+              "runId": "replay-single",
+              "index": 6,
+              "phase": "after-native",
+              "observedAt": "2026-11-19T21:47:51.167176+00:00",
+              "file": "00006.png",
+              "bytes": 10088,
+              "sha256": "ef641aaed2ed136a6f72c4cd957dc31b22eab1595a9ea0fdf816738453e7864f"
+            },
+            {
+              "runId": "replay-single",
+              "index": 7,
+              "phase": "after-host-call",
+              "observedAt": "2026-11-19T21:47:52.264811+00:00",
+              "file": "00007.png",
+              "bytes": 10088,
+              "sha256": "ef641aaed2ed136a6f72c4cd957dc31b22eab1595a9ea0fdf816738453e7864f"
+            },
+            {
+              "runId": "replay-single",
+              "index": 8,
+              "phase": "after-native",
+              "observedAt": "2026-11-19T21:47:52.336608+00:00",
+              "file": "00008.png",
+              "bytes": 10088,
+              "sha256": "ef641aaed2ed136a6f72c4cd957dc31b22eab1595a9ea0fdf816738453e7864f"
+            },
+            {
+              "runId": "replay-single",
+              "index": 9,
+              "phase": "after-host-call",
+              "observedAt": "2026-11-19T21:47:53.419855+00:00",
+              "file": "00009.png",
+              "bytes": 10088,
+              "sha256": "ef641aaed2ed136a6f72c4cd957dc31b22eab1595a9ea0fdf816738453e7864f"
+            },
+            {
+              "runId": "replay-single",
+              "index": 10,
+              "phase": "after-native",
+              "observedAt": "2026-11-19T21:47:53.518828+00:00",
+              "file": "00010.png",
+              "bytes": 10088,
+              "sha256": "ef641aaed2ed136a6f72c4cd957dc31b22eab1595a9ea0fdf816738453e7864f"
+            },
+            {
+              "runId": "replay-single",
+              "index": 11,
+              "phase": "after-navigation",
+              "observedAt": "2026-11-19T21:47:55.152235+00:00",
+              "file": "00011.png",
+              "bytes": 9518,
+              "sha256": "b35b4abb14e38f44a8835a3d8b083cae049c4a72e3db4ac06563552031e7099f"
+            },
+            {
+              "runId": "replay-single",
+              "index": 12,
+              "phase": "after-host-call",
+              "observedAt": "2026-11-19T21:47:55.242195+00:00",
+              "file": "00012.png",
+              "bytes": 9518,
+              "sha256": "b35b4abb14e38f44a8835a3d8b083cae049c4a72e3db4ac06563552031e7099f"
+            },
+            {
+              "runId": "replay-single",
+              "index": 13,
+              "phase": "recipe-final",
+              "observedAt": "2026-11-19T21:47:55.311968+00:00",
+              "file": "00013.png",
+              "bytes": 9518,
+              "sha256": "b35b4abb14e38f44a8835a3d8b083cae049c4a72e3db4ac06563552031e7099f"
+            }
+          ],
+          "errors": [],
+          "passed": true
+        }
+      }
+    },
+    {
+      "name": "real_producer_batch",
+      "passed": true,
+      "trace": {
+        "url": "http://127.0.0.1:60232/",
+        "goal": "record deterministic public actions",
+        "model": "no-provider-called",
+        "mode": "batch",
+        "cycles": [
+          {
+            "cycle": 0,
+            "n_elements": 3,
+            "latency_s": 0.1,
+            "reply": "[{\"action\": \"type\", \"id\": \"name\", \"value\": \"A008\"}, {\"action\": \"select\", \"id\": \"kind\", \"value\": \"B\"}, {\"action\": \"click\", \"id\": \"save\", \"label\": \"Save: draft\", \"scope\": {\"id\": \"scope\"}, \"role\": \"button\"}, {\"action\": \"wait\", \"value\": \"0\"}, {\"action\": \"click\", \"id\": \"NEVER\"}]",
+            "plan": [
+              {
+                "action": "type",
+                "id": "name",
+                "value": "A008"
+              },
+              {
+                "action": "select",
+                "id": "kind",
+                "value": "B"
+              },
+              {
+                "action": "click",
+                "id": "save",
+                "label": "Save: draft",
+                "scope": {
+                  "id": "scope"
+                },
+                "role": "button"
+              },
+              {
+                "action": "wait",
+                "value": "0"
+              },
+              {
+                "action": "click",
+                "id": "NEVER"
+              }
+            ],
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "type",
+                  "ok": true,
+                  "id": "name",
+                  "value": "A008",
+                  "dispatched": true,
+                  "effect": {
+                    "verified": false,
+                    "reason": "no postcondition declared"
+                  }
+                },
+                {
+                  "i": 1,
+                  "action": "select",
+                  "ok": true,
+                  "id": "kind",
+                  "value": "B",
+                  "dispatched": true,
+                  "effect": {
+                    "verified": false,
+                    "reason": "no postcondition declared"
+                  }
+                },
+                {
+                  "i": 2,
+                  "action": "click",
+                  "ok": true,
+                  "id": "save",
+                  "text": "Save: draft",
+                  "dispatched": true,
+                  "effect": {
+                    "verified": false,
+                    "reason": "no postcondition declared"
+                  }
+                },
+                {
+                  "i": 3,
+                  "action": "wait",
+                  "value": "0"
+                }
+              ],
+              "stopped_at": 3,
+              "reason": "wait",
+              "terminal": "wait",
+              "_rc": 0
+            },
+            "host": {
+              "action": "wait",
+              "completed": true
+            }
+          },
+          {
+            "cycle": 1,
+            "n_elements": 3,
+            "latency_s": 0.1,
+            "reply": "[{\"action\": \"navigate\", \"value\": \"http://127.0.0.1:60232/next\"}, {\"action\": \"click\", \"id\": \"NEVER\"}]",
+            "plan": [
+              {
+                "action": "navigate",
+                "value": "http://127.0.0.1:60232/next"
+              },
+              {
+                "action": "click",
+                "id": "NEVER"
+              }
+            ],
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "navigate",
+                  "value": "http://127.0.0.1:60232/next"
+                }
+              ],
+              "stopped_at": 0,
+              "reason": "navigate",
+              "terminal": "navigate",
+              "url": "http://127.0.0.1:60232/next",
+              "_rc": 0
+            },
+            "host": {
+              "action": "navigate",
+              "completed": true,
+              "rc": 0,
+              "url": "http://127.0.0.1:60232/next"
+            }
+          },
+          {
+            "cycle": 2,
+            "n_elements": 3,
+            "latency_s": 0.1,
+            "reply": "[{\"action\": \"done\"}]",
+            "plan": [
+              {
+                "action": "done"
+              }
+            ]
+          },
+          {
+            "verifier": "text_contains:READY",
+            "verdict": "PASS"
+          }
+        ],
+        "result": "DONE-VERIFIED-BATCH",
+        "verification_details": [
+          {}
+        ]
+      }
+    },
+    {
+      "name": "normal_extract_CLI_batch",
+      "passed": true,
+      "candidate": {
+        "version": "2.6-extraction-1",
+        "intent": "record deterministic public actions",
+        "source_trace": "evidence\\v26\\fixes\\A008-20261119\\after-01-inputs\\observed-batch.json",
+        "native_ops": [
+          {
+            "op": "type",
+            "id": "name",
+            "value": "A008"
+          },
+          {
+            "op": "select",
+            "id": "kind",
+            "value": "B"
+          },
+          {
+            "op": "click",
+            "id": "save",
+            "label": "Save: draft",
+            "role": "button",
+            "scope": {
+              "id": "scope"
+            }
+          },
+          {
+            "op": "wait",
+            "value": "0"
+          },
+          {
+            "op": "navigate",
+            "value": "http://127.0.0.1:60232/next"
+          }
+        ],
+        "notes": [
+          "Candidate incomplete: excluded entries require review; no invented actions."
+        ],
+        "provenance": {
+          "source": {
+            "path": "C:\\Users\\ClawLabs\\.openclaw\\workspace\\projects\\ultra-browser-v2-publication\\ultra-browser-v2-skill\\evidence\\v26\\fixes\\A008-20261119\\after-01-inputs\\observed-batch.json",
+            "sha256": "e2cf30af5256d6311d4b889e531ca2605dd752a430c0bd734b4864e7d7d05bc3",
+            "format": "batch",
+            "model": "no-provider-called",
+            "url": "http://127.0.0.1:60232/",
+            "mode": "batch"
+          },
+          "operations": [
+            {
+              "opIndex": 0,
+              "action_source": "/cycles/0/plan/0",
+              "execution_source": "/cycles/0/exec/results/0",
+              "expected_blocked": false,
+              "effect": {
+                "verified": false,
+                "reason": "no postcondition declared"
+              },
+              "transport_rc": 0
+            },
+            {
+              "opIndex": 1,
+              "action_source": "/cycles/0/plan/1",
+              "execution_source": "/cycles/0/exec/results/1",
+              "expected_blocked": false,
+              "effect": {
+                "verified": false,
+                "reason": "no postcondition declared"
+              },
+              "transport_rc": 0
+            },
+            {
+              "opIndex": 2,
+              "action_source": "/cycles/0/plan/2",
+              "execution_source": "/cycles/0/exec/results/2",
+              "expected_blocked": false,
+              "effect": {
+                "verified": false,
+                "reason": "no postcondition declared"
+              },
+              "transport_rc": 0
+            },
+            {
+              "opIndex": 3,
+              "action_source": "/cycles/0/plan/3",
+              "execution_source": "/cycles/0/exec/results/3",
+              "expected_blocked": false,
+              "effect": null,
+              "transport_rc": 0
+            },
+            {
+              "opIndex": 4,
+              "action_source": "/cycles/1/plan/0",
+              "execution_source": "/cycles/1/exec/results/0",
+              "expected_blocked": false,
+              "effect": null,
+              "transport_rc": 0
+            }
+          ],
+          "excluded": [
+            {
+              "source": "/cycles/0/plan/4",
+              "reason": "planned suffix not executed"
+            },
+            {
+              "source": "/cycles/1/plan/1",
+              "reason": "planned suffix not executed"
+            }
+          ]
+        },
+        "verification": {
+          "source_result": "DONE-VERIFIED-BATCH",
+          "observations": [
+            {
+              "source": "/cycles/3",
+              "verifier": "text_contains:READY",
+              "verdict": "PASS"
+            }
+          ],
+          "state": "recorded-not-revalidated"
+        }
+      },
+      "stderr": ""
+    },
+    {
+      "name": "provenance_batch",
+      "passed": true
+    },
+    {
+      "name": "verification_separate_batch",
+      "passed": true
+    },
+    {
+      "name": "normal_replay_batch",
+      "passed": true,
+      "result": {
+        "url": "http://127.0.0.1:60232/",
+        "recipe": "recipe-batch.json",
+        "steps": [
+          {
+            "i": 0,
+            "op": {
+              "id": "name",
+              "value": "A008",
+              "action": "type"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "type",
+                  "ok": true,
+                  "id": "name",
+                  "value": "A008",
+                  "dispatched": true,
+                  "effect": {
+                    "verified": false,
+                    "reason": "no postcondition declared"
+                  }
+                }
+              ],
+              "stopped_at": null,
+              "_rc": 0
+            }
+          },
+          {
+            "i": 1,
+            "op": {
+              "id": "kind",
+              "value": "B",
+              "action": "select"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "select",
+                  "ok": true,
+                  "id": "kind",
+                  "value": "B",
+                  "dispatched": true,
+                  "effect": {
+                    "verified": false,
+                    "reason": "no postcondition declared"
+                  }
+                }
+              ],
+              "stopped_at": null,
+              "_rc": 0
+            }
+          },
+          {
+            "i": 2,
+            "op": {
+              "id": "save",
+              "label": "Save: draft",
+              "role": "button",
+              "scope": {
+                "id": "scope"
+              },
+              "action": "click"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "click",
+                  "ok": true,
+                  "id": "save",
+                  "text": "Save: draft",
+                  "dispatched": true,
+                  "effect": {
+                    "verified": false,
+                    "reason": "no postcondition declared"
+                  }
+                }
+              ],
+              "stopped_at": null,
+              "_rc": 0
+            }
+          },
+          {
+            "i": 3,
+            "op": {
+              "value": "0",
+              "action": "wait"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "wait",
+                  "value": "0"
+                }
+              ],
+              "stopped_at": 0,
+              "reason": "wait",
+              "terminal": "wait",
+              "_rc": 0
+            }
+          },
+          {
+            "i": 4,
+            "op": {
+              "value": "http://127.0.0.1:60232/next",
+              "action": "navigate"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "navigate",
+                  "value": "http://127.0.0.1:60232/next"
+                }
+              ],
+              "stopped_at": 0,
+              "reason": "navigate",
+              "terminal": "navigate",
+              "url": "http://127.0.0.1:60232/next",
+              "_rc": 0
+            }
+          }
+        ],
+        "result": "RECIPE-DONE-VERIFIED",
+        "postconditions": [
+          {
+            "step": 4,
+            "kind": "navigation",
+            "url": "http://127.0.0.1:60232/next",
+            "rc": 0
+          }
+        ],
+        "repairs": [],
+        "navigation": {
+          "rc": 0,
+          "url": "http://127.0.0.1:60232/",
+          "marker": "READY"
+        },
+        "identity": {
+          "url": "http://127.0.0.1:60232",
+          "title": "",
+          "markerOk": true
+        },
+        "verification_detail": {},
+        "verifier": "PASS",
+        "capture": {
+          "schema": "browser-capture-v1",
+          "runId": "replay-batch",
+          "method": "state-frames-png",
+          "frames": [
+            {
+              "runId": "replay-batch",
+              "index": 1,
+              "phase": "after-navigation",
+              "observedAt": "2026-11-19T21:48:05.951640+00:00",
+              "file": "00001.png",
+              "bytes": 9518,
+              "sha256": "b35b4abb14e38f44a8835a3d8b083cae049c4a72e3db4ac06563552031e7099f"
+            },
+            {
+              "runId": "replay-batch",
+              "index": 2,
+              "phase": "after-host-call",
+              "observedAt": "2026-11-19T21:48:06.036730+00:00",
+              "file": "00002.png",
+              "bytes": 9518,
+              "sha256": "b35b4abb14e38f44a8835a3d8b083cae049c4a72e3db4ac06563552031e7099f"
+            },
+            {
+              "runId": "replay-batch",
+              "index": 3,
+              "phase": "after-host-call",
+              "observedAt": "2026-11-19T21:48:06.151257+00:00",
+              "file": "00003.png",
+              "bytes": 9518,
+              "sha256": "b35b4abb14e38f44a8835a3d8b083cae049c4a72e3db4ac06563552031e7099f"
+            },
+            {
+              "runId": "replay-batch",
+              "index": 4,
+              "phase": "after-native",
+              "observedAt": "2026-11-19T21:48:06.719457+00:00",
+              "file": "00004.png",
+              "bytes": 10182,
+              "sha256": "d584dfcd05cd62d472a017171038b1adb203c5738d8e90edc433308a4edf4275"
+            },
+            {
+              "runId": "replay-batch",
+              "index": 5,
+              "phase": "after-host-call",
+              "observedAt": "2026-11-19T21:48:07.815877+00:00",
+              "file": "00005.png",
+              "bytes": 10182,
+              "sha256": "d584dfcd05cd62d472a017171038b1adb203c5738d8e90edc433308a4edf4275"
+            },
+            {
+              "runId": "replay-batch",
+              "index": 6,
+              "phase": "after-native",
+              "observedAt": "2026-11-19T21:48:07.903793+00:00",
+              "file": "00006.png",
+              "bytes": 10088,
+              "sha256": "ef641aaed2ed136a6f72c4cd957dc31b22eab1595a9ea0fdf816738453e7864f"
+            },
+            {
+              "runId": "replay-batch",
+              "index": 7,
+              "phase": "after-host-call",
+              "observedAt": "2026-11-19T21:48:08.986747+00:00",
+              "file": "00007.png",
+              "bytes": 10088,
+              "sha256": "ef641aaed2ed136a6f72c4cd957dc31b22eab1595a9ea0fdf816738453e7864f"
+            },
+            {
+              "runId": "replay-batch",
+              "index": 8,
+              "phase": "after-native",
+              "observedAt": "2026-11-19T21:48:09.066834+00:00",
+              "file": "00008.png",
+              "bytes": 10088,
+              "sha256": "ef641aaed2ed136a6f72c4cd957dc31b22eab1595a9ea0fdf816738453e7864f"
+            },
+            {
+              "runId": "replay-batch",
+              "index": 9,
+              "phase": "after-host-call",
+              "observedAt": "2026-11-19T21:48:10.169619+00:00",
+              "file": "00009.png",
+              "bytes": 10088,
+              "sha256": "ef641aaed2ed136a6f72c4cd957dc31b22eab1595a9ea0fdf816738453e7864f"
+            },
+            {
+              "runId": "replay-batch",
+              "index": 10,
+              "phase": "after-native",
+              "observedAt": "2026-11-19T21:48:10.255271+00:00",
+              "file": "00010.png",
+              "bytes": 10088,
+              "sha256": "ef641aaed2ed136a6f72c4cd957dc31b22eab1595a9ea0fdf816738453e7864f"
+            },
+            {
+              "runId": "replay-batch",
+              "index": 11,
+              "phase": "after-host-call",
+              "observedAt": "2026-11-19T21:48:11.338344+00:00",
+              "file": "00011.png",
+              "bytes": 10088,
+              "sha256": "ef641aaed2ed136a6f72c4cd957dc31b22eab1595a9ea0fdf816738453e7864f"
+            },
+            {
+              "runId": "replay-batch",
+              "index": 12,
+              "phase": "after-native",
+              "observedAt": "2026-11-19T21:48:11.439587+00:00",
+              "file": "00012.png",
+              "bytes": 10088,
+              "sha256": "ef641aaed2ed136a6f72c4cd957dc31b22eab1595a9ea0fdf816738453e7864f"
+            },
+            {
+              "runId": "replay-batch",
+              "index": 13,
+              "phase": "after-navigation",
+              "observedAt": "2026-11-19T21:48:13.052052+00:00",
+              "file": "00013.png",
+              "bytes": 9518,
+              "sha256": "b35b4abb14e38f44a8835a3d8b083cae049c4a72e3db4ac06563552031e7099f"
+            },
+            {
+              "runId": "replay-batch",
+              "index": 14,
+              "phase": "after-host-call",
+              "observedAt": "2026-11-19T21:48:13.142673+00:00",
+              "file": "00014.png",
+              "bytes": 9518,
+              "sha256": "b35b4abb14e38f44a8835a3d8b083cae049c4a72e3db4ac06563552031e7099f"
+            },
+            {
+              "runId": "replay-batch",
+              "index": 15,
+              "phase": "recipe-final",
+              "observedAt": "2026-11-19T21:48:13.222833+00:00",
+              "file": "00015.png",
+              "bytes": 9518,
+              "sha256": "b35b4abb14e38f44a8835a3d8b083cae049c4a72e3db4ac06563552031e7099f"
+            }
+          ],
+          "errors": [],
+          "passed": true
+        }
+      }
+    },
+    {
+      "name": "single_batch_equivalent",
+      "passed": false
+    },
+    {
+      "name": "colon_scope_role_preserved",
+      "passed": false
+    },
+    {
+      "name": "unexecuted_suffix_excluded",
+      "passed": true
+    },
+    {
+      "name": "synthetic_rc_failed",
+      "passed": true
+    },
+    {
+      "name": "synthetic_no_exec",
+      "passed": true
+    },
+    {
+      "name": "synthetic_failed",
+      "passed": true
+    },
+    {
+      "name": "synthetic_mismatch",
+      "passed": true
+    },
+    {
+      "name": "synthetic_bad_index",
+      "passed": true
+    },
+    {
+      "name": "synthetic_missing_identity",
+      "passed": true
+    },
+    {
+      "name": "synthetic_invalid_exec_json",
+      "passed": true
+    },
+    {
+      "name": "terminal_pending_upload",
+      "passed": true
+    },
+    {
+      "name": "terminal_confirmed_upload",
+      "passed": true
+    },
+    {
+      "name": "terminal_pending_navigate",
+      "passed": true
+    },
+    {
+      "name": "terminal_confirmed_navigate",
+      "passed": true
+    },
+    {
+      "name": "terminal_pending_reload",
+      "passed": true
+    },
+    {
+      "name": "terminal_confirmed_reload",
+      "passed": true
+    },
+    {
+      "name": "terminal_pending_wait",
+      "passed": true
+    },
+    {
+      "name": "terminal_confirmed_wait",
+      "passed": true
+    },
+    {
+      "name": "expected_negative_preserved",
+      "passed": true
+    },
+    {
+      "name": "reject_mixed",
+      "passed": true
+    },
+    {
+      "name": "reject_duplicate_json",
+      "passed": true
+    },
+    {
+      "name": "sources_unchanged",
+      "passed": true
+    }
+  ],
+  "sources_before": {
+    "trace_recipe.py": "348981673b66fb8b15740f2790ba3015ad8eb93b10976039b8b8374b88c0ded0",
+    "recipe.py": "ef4ac20a5c0d8a508daa773717a4cea1fc30a26eca4054ca0ea9cbd45244cd99",
+    "agent_loop.py": "7caaa9544d8f888e677e5b85db7260c13ff4bda2fb6491c41d9fab31cb956ea7",
+    "test_trace_recipe.py": "7462f645b2142b6be7d9255f19790d6dd434adbcd07bc00cd4558e632a20b11e"
+  },
+  "sources": {
+    "trace_recipe.py": "348981673b66fb8b15740f2790ba3015ad8eb93b10976039b8b8374b88c0ded0",
+    "recipe.py": "ef4ac20a5c0d8a508daa773717a4cea1fc30a26eca4054ca0ea9cbd45244cd99",
+    "agent_loop.py": "7caaa9544d8f888e677e5b85db7260c13ff4bda2fb6491c41d9fab31cb956ea7",
+    "test_trace_recipe.py": "7462f645b2142b6be7d9255f19790d6dd434adbcd07bc00cd4558e632a20b11e"
+  },
+  "sources_unchanged": true,
+  "scope": "loops/Chromium/CLI/replay reais; decisões determinísticas substituem somente LLM; casos sintéticos rotulados; sem judge/provider"
+}

@@ -1,5 +1,17 @@
 # Publicação v2.6, proveniência e limites
 
+[Fechamento incremental19/11](v26/closure-20261119/REPORT-FINAL.md): sete itens, limites, ledger48asserts e branches/commits locais. A025 permanece não verificado. Baselines e recibos históricos não foram reescritos.
+
+A008, atualização de 19/11: [plano e recibos novos](v26/fixes/A008-20261119/PLAN.md), sem substituir históricos. [Procedimento de extração](../references/trace-extraction.md).
+
+A006, atualização de 19/11: [plano e recibos novos](v26/fixes/A006-20261119/PLAN.md). Captura integrada no runner local; recibos históricos preservados. [Procedimento atual](../references/capture-evidence.md).
+
+A005, atualização de 19/11: [aceite executado e novos recibos](v26/fixes/A005-20261119/ACCEPTANCE.md). [Correção explícita do manifesto intermediário A001](v26/corrections/A001-manifest-20261119/CORRECTION.json), sem substituir seus bytes. Manifestos históricos validam sua revisão Git declarada, não o HEAD atual.
+
+A001, atualização incremental de 19/11: [relatório, evidências novas e lacuna legada](v26/fixes/A001-20261119/ACCEPTANCE.md). Identidade com escopo/role e observação declarativa estão nos scripts ativos; não substituir os manifestos de exportação histórica por hashes desses scripts novos.
+
+Atualização incremental A002 de 19/11: [relatório e novos recibos](v26/fixes/A002-20261119/REPORT.md). Somente `scripts/agent_loop.py` recebeu correção de implementação. O manifesto e as afirmações de exportação sem alteração abaixo descrevem a publicação histórica v2.6d, não o patch novo. A fila original permanece imutável.
+
 Fonte: browser-eval, commit `40c68be498817c9787d97ce68f581081ebc078f7`, sobre v2.6d `76eef077b8c9af28be0c4c18fb274a1baee4fea2`.
 Os commits da fonte não são ancestrais desta biblioteca; comandos `git show` das evidências exigem aquele repositório.
 
@@ -17,3 +29,8 @@ Nenhum item da fila foi implementado. Nenhuma nova bateria, inferência ou avali
 Instalação, somente quando solicitada: `npx skills add labsclaw/openclaw-skills --skill ultra-browser-v2-skill`.
 Exemplos dependem do Windows, browser-harness do Hermes, navegador visível e fixture/judge externos; não são um SDK portátil. O loop usa `BROWSER_HARNESS` e `OPENCODE_BIN`; outros caminhos locais continuam nos exemplos. O gravador exige FFmpeg. Essas dependências não são instaladas pelo pacote.
 Não executar bateria ou inferência para conferir apenas a publicação. Configurar credenciais pelo fluxo dedicado mascarado. O agente navegador não deve usar judges ou arquivos de recibos privados como entrada de planejamento/autovalidação.
+
+## Item 4, ambiente contratual
+
+Novo registro: [plano e entrada normal](v26/fixes/A029-A030-A044-20261119/PLAN.md).
+Os recibos dessa pasta não substituem auditorias ou baterias históricas.

@@ -1,0 +1,49 @@
+{
+  "total48": true,
+  "counts": {
+    "drifted": 1,
+    "fulfilled": 43,
+    "N.A.": 3,
+    "não verificado": 1
+  },
+  "inherited39": true,
+  "delta9": true,
+  "branch_commits_are_ancestors": [
+    {
+      "item": 1,
+      "valid": true
+    },
+    {
+      "item": 2,
+      "valid": true
+    },
+    {
+      "item": 3,
+      "valid": true
+    },
+    {
+      "item": 4,
+      "valid": true
+    },
+    {
+      "item": 5,
+      "valid": true
+    },
+    {
+      "item": 6,
+      "valid": true
+    },
+    {
+      "item": 7,
+      "valid": true
+    }
+  ],
+  "baseline_ledger_immutable": true,
+  "queue_immutable": true,
+  "historical_manifests_matched": 231,
+  "historical_manifest_entries": 231,
+  "production_executors_unchanged_since_A008": true,
+  "missing_document_links": [],
+  "lint": "OK:18 files,136 refs,0 findings",
+  "skill_validation": "valid"
+}

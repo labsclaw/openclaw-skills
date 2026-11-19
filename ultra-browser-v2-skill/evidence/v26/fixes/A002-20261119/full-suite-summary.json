@@ -1,0 +1,15 @@
+{
+  "command": "python -B -m unittest discover -s scripts -p 'test_*.py' -v",
+  "rc": 1,
+  "tests_run": 77,
+  "errors": 19,
+  "status": "not_green",
+  "kind": "summary_of_observed_tool_output_not_full_transcript",
+  "observed_dependency_errors": [
+    "invalid object name ed963ec (git show ed963ec:results/recipes/xt24ds7-recipe.json)",
+    "missing results/recipes/xt24ds7-recipe.json in publication repository",
+    "missing fixtures/recovery_variants.py in publication repository",
+    "StopIteration: historical *-p1/receipt.json absent at test expected path"
+  ],
+  "decision": "Do not rewrite historical tests or receipts to fabricate a passing suite. Dedicated A002 Chromium checks and recipe regression are separate receipts."
+}

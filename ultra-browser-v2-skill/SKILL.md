@@ -12,11 +12,25 @@ license: MIT
 
 ## Estado publicado e precedência
 
-Este pacote passa da distribuição v2.3.0 ao estado de código v2.6d. Não é conclusão de todos os alvos v2.6.
-O [fechamento de 10/11](evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md) prevalece para o estado atual: 36 fulfilled, 7 omitted, 1 drifted, 3 N.A. e A025 não verificado.
-A [fila de fixes](evidence/v26/results/coordination/fixes/FILA-v26-20261110.md) permanece pendente e não autoriza implementação.
+Fechamento incremental de19/11: [sete itens, ledger48asserts e pendências reais](evidence/v26/closure-20261119/REPORT-FINAL.md). Cinco itens fulfilled nos escopos exercitados, A001 parcial e A025 não verificado. Ledger:43fulfilled,0omitted,1drifted(A001 parcial),3N.A.,1não verificado;39estados herdados,9asserts com delta. Não significa Hermes/runtime certificados nem fila integralmente fulfilled. Esta consolidação prevalece para a rodada, preservando o baseline10/11.
 
-O corpo documental herdado abaixo ainda contém descrições e tabela com base `ed963ec`, anteriores às entregas a/b/c/d. Não use essas passagens históricas como inventário atual. Por exemplo, fallback LLM+JEV opt-in, gate de navegação e bateria endurecida já existem no código v2.6d; isso não resolve os 7 omitted + 1 drifted + A025. Consulte o fechamento e os scripts exportados para distinguir o entregue dos alvos pendentes.
+A008, atualização de 19/11: [extração normalizada single/batch](references/trace-extraction.md) usa linhas executadas, identifica fonte por SHA-256 e separa verifier/asserts das operações. `recipe.py extract` produz candidato, não certificação. Sem corte implícito após save; terminais sem confirmação ficam excluídos com motivo. Esta atualização prevalece sobre descrições históricas do extrator abaixo.
+
+A006, atualização de 19/11: o [runner local captura frames reais na recipe/bateria](references/capture-evidence.md), associa PNGs e hashes ao runId e reprova aceite quando a captura requerida falha. Não é vídeo contínuo. Chamadas diretas legadas registram captura indisponível, nunca capture PASS. Esta atualização prevalece sobre a tabela histórica de captura ausente abaixo.
+
+A029/A030/A044, atualização de 19/11: para ambiente contratual, use o [runner local e recibos de perfil/viewport](references/environment-contract.md). Ele pede e mede viewport CSS 1280x900, cria perfil exclusivo por runId e falha fechado. A bateria integra esse transporte no worker. Chamadas diretas legadas e runtime Hermes permanecem fora do contrato verificado; maximize isolado não é evidência de dimensões.
+
+A005, atualização de 19/11: use [persisted_json e contrato completo](references/persisted-verification.md) para persistência. O verifier ativo compara campos, vínculo e anexo público após reload confirmado; `persisted:<titulo>` falha fechado. [Aceite e limites A005](evidence/v26/fixes/A005-20261119/ACCEPTANCE.md). Não confundir este adaptador T1 com compatibilidade universal, transporte Hermes verificado ou bateria completa aprovada.
+
+A001, atualização de 19/11: o resolvedor ativo aceita identidade exata cumulativa com escopo/role e bloqueia ambiguidades; recipe preserva label junto de id. Para usar esse contrato, leia [alvos semânticos e pós-condições](references/semantic-targets.md). [Aceite A001 e limites](evidence/v26/fixes/A001-20261119/ACCEPTANCE.md): parcial no conjunto, pois ações legadas sem predicado continuam com efeito explicitamente não verificado. Esta atualização prevalece sobre descrições históricas de primeiro match/label descartado abaixo; não altera os recibos antigos nem fecha os demais itens.
+
+Em 19/11, o patch A002 substituiu o busy-wait do resolvedor compartilhado por espera assíncrona com deadline. Para esse item, consulte o [aceite novo e seus limites](evidence/v26/fixes/A002-20261119/REPORT.md); ele não reclassifica os recibos de 10/11 nem fecha os demais alvos. As descrições históricas de busy-wait abaixo não representam mais `scripts/agent_loop.py` nesta branch. Runtime e browser-eval não foram sincronizados.
+
+Este pacote passa da distribuição v2.3.0 ao estado de código v2.6d. Não é conclusão de todos os alvos v2.6.
+O [fechamento de 10/11](evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md) é o baseline histórico:36fulfilled,7omitted,1drifted,3N.A. eA025não verificado. O estado incremental está no fechamento19/11acima.
+A [fila histórica de fixes](evidence/v26/results/coordination/fixes/FILA-v26-20261110.md) não é autorização por si; a rodada posterior autorizada está registrada no fechamento, sem alterar essa fila.
+
+O corpo documental herdado abaixo ainda contém descrições e tabela com base `ed963ec`, anteriores às entregas a/b/c/d. Não use essas passagens históricas como inventário atual. Por exemplo, fallback LLM+JEV opt-in, gate de navegação e bateria endurecida já existiam no código v2.6d, mas não resolviam os 7 omitted + 1 drifted + A025 do baseline de 10/11. Para o estado incremental desta rodada, consulte o fechamento de 19/11 e seus limites.
 
 Scripts e recibos são exportados sem alterações de implementação. Esta publicação não executa nova bateria, não certifica generalização e não sincroniza o runtime. [Proveniência, integridade e dependências](evidence/README.md).
 
@@ -50,9 +64,9 @@ A evidência da recipe cobre a mesma classe de fixture. Não generalize para out
 Comando real do executor (a docstring interna de `recipe.py` tem a fonte canônica):
 
 ```bash
-python scripts/recipe.py <recipe.json> \
+python scripts/environment_runner.py --run-id piloto-001 --output C:/recibos recipe -- <recipe.json> \
   --url http://127.0.0.1:8791/xt-web-form-01 \
-  --verify "persisted:Plano WEB DEMO-024" \
+  --verify "persisted_json:@C:/caminho/contrato.json" \
   --marker X-Testing
 ```
 
@@ -107,9 +121,9 @@ Save incerto exige observação do resultado, não novo submit automático. Bloq
 
 ### 7. Verificar persistência sem consultar o judge privado
 
-Depois de confirmar o save, verificar após reload. O verifier inline `verify()` em `agent_loop.py` aceita `persisted:` e consulta presença textual posterior. É uma checagem limitada: não compara automaticamente todo o registro e pode aceitar prefixos. O helper [verifier.js](scripts/verifier.js) é separado e não implementa `persisted`.
+Depois de confirmar o save, verificar com `persisted_json` e expectativa completa derivada dos inputs autorizados. O adaptador T1 de `agent_loop.verify()` compara campos, vínculo, metadados/link e conteúdo do anexo público após reload confirmado. Ausência, divergência, ambiguidade e erro de transporte falham. Leia [formato, migração e limites](references/persisted-verification.md). O helper [verifier.js](scripts/verifier.js) permanece separado e não implementa esse contrato.
 
-A política de aceite exige passos obrigatórios confirmados e resultado final verificado; o código atual ainda pode substituir uma falha por verifier `PASS`. Portanto, o rótulo DONE, o verifier isolado e o exit code não bastam.
+A política de aceite exige passos obrigatórios confirmados e resultado final verificado. Os callers ativos preservam falhas inesperadas anteriores, inclusive navegação/upload/rc e FAIL de verificação. O verifier não substitui o judge externo nem fecha as lacunas declaradas do A001.
 
 O agente navegador não lê/importa implementação, arquivos de runs ou estado privado do judge para decidir ações ou se autovalidar. O validator externo pode associar o recibo read-only ao run depois da execução. Veja [verificação e evidência](references/verification-and-evidence.md).
 
