@@ -1,5 +1,7 @@
 # Publicação v2.6, proveniência e limites
 
+[Fechamento incremental19/11](v26/closure-20261119/REPORT-FINAL.md): sete itens, limites, ledger48asserts e branches/commits locais. A025 permanece não verificado. Baselines e recibos históricos não foram reescritos.
+
 A008, atualização de 19/11: [plano e recibos novos](v26/fixes/A008-20261119/PLAN.md), sem substituir históricos. [Procedimento de extração](../references/trace-extraction.md).
 
 A006, atualização de 19/11: [plano e recibos novos](v26/fixes/A006-20261119/PLAN.md). Captura integrada no runner local; recibos históricos preservados. [Procedimento atual](../references/capture-evidence.md).

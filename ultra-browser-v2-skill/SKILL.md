@@ -12,6 +12,8 @@ license: MIT
 
 ## Estado publicado e precedência
 
+Fechamento incremental de19/11: [sete itens, ledger48asserts e pendências reais](evidence/v26/closure-20261119/REPORT-FINAL.md). Cinco itens fulfilled nos escopos exercitados, A001 parcial e A025 não verificado. Ledger:43fulfilled,0omitted,1drifted(A001 parcial),3N.A.,1não verificado;39estados herdados,9asserts com delta. Não significa Hermes/runtime certificados nem fila integralmente fulfilled. Esta consolidação prevalece para a rodada, preservando o baseline10/11.
+
 A008, atualização de 19/11: [extração normalizada single/batch](references/trace-extraction.md) usa linhas executadas, identifica fonte por SHA-256 e separa verifier/asserts das operações. `recipe.py extract` produz candidato, não certificação. Sem corte implícito após save; terminais sem confirmação ficam excluídos com motivo. Esta atualização prevalece sobre descrições históricas do extrator abaixo.
 
 A006, atualização de 19/11: o [runner local captura frames reais na recipe/bateria](references/capture-evidence.md), associa PNGs e hashes ao runId e reprova aceite quando a captura requerida falha. Não é vídeo contínuo. Chamadas diretas legadas registram captura indisponível, nunca capture PASS. Esta atualização prevalece sobre a tabela histórica de captura ausente abaixo.
@@ -25,10 +27,10 @@ A001, atualização de 19/11: o resolvedor ativo aceita identidade exata cumulat
 Em 19/11, o patch A002 substituiu o busy-wait do resolvedor compartilhado por espera assíncrona com deadline. Para esse item, consulte o [aceite novo e seus limites](evidence/v26/fixes/A002-20261119/REPORT.md); ele não reclassifica os recibos de 10/11 nem fecha os demais alvos. As descrições históricas de busy-wait abaixo não representam mais `scripts/agent_loop.py` nesta branch. Runtime e browser-eval não foram sincronizados.
 
 Este pacote passa da distribuição v2.3.0 ao estado de código v2.6d. Não é conclusão de todos os alvos v2.6.
-O [fechamento de 10/11](evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md) prevalece para o estado atual: 36 fulfilled, 7 omitted, 1 drifted, 3 N.A. e A025 não verificado.
-A [fila de fixes](evidence/v26/results/coordination/fixes/FILA-v26-20261110.md) permanece pendente e não autoriza implementação.
+O [fechamento de 10/11](evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md) é o baseline histórico:36fulfilled,7omitted,1drifted,3N.A. eA025não verificado. O estado incremental está no fechamento19/11acima.
+A [fila histórica de fixes](evidence/v26/results/coordination/fixes/FILA-v26-20261110.md) não é autorização por si; a rodada posterior autorizada está registrada no fechamento, sem alterar essa fila.
 
-O corpo documental herdado abaixo ainda contém descrições e tabela com base `ed963ec`, anteriores às entregas a/b/c/d. Não use essas passagens históricas como inventário atual. Por exemplo, fallback LLM+JEV opt-in, gate de navegação e bateria endurecida já existem no código v2.6d; isso não resolve os 7 omitted + 1 drifted + A025. Consulte o fechamento e os scripts exportados para distinguir o entregue dos alvos pendentes.
+O corpo documental herdado abaixo ainda contém descrições e tabela com base `ed963ec`, anteriores às entregas a/b/c/d. Não use essas passagens históricas como inventário atual. Por exemplo, fallback LLM+JEV opt-in, gate de navegação e bateria endurecida já existiam no código v2.6d, mas não resolviam os 7 omitted + 1 drifted + A025 do baseline de 10/11. Para o estado incremental desta rodada, consulte o fechamento de 19/11 e seus limites.
 
 Scripts e recibos são exportados sem alterações de implementação. Esta publicação não executa nova bateria, não certifica generalização e não sincroniza o runtime. [Proveniência, integridade e dependências](evidence/README.md).
 

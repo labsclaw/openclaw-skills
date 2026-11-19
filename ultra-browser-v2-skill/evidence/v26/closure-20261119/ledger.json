@@ -1,0 +1,450 @@
+{
+  "schema": "v26-incremental-ledger-v1",
+  "baselineSha256": "bdc6d5b279479a6daefb5fa32b2b6548ecffff45ba0fd421564361e7482ca2b9",
+  "baseline": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+  "total": 48,
+  "counts": {
+    "fulfilled": 43,
+    "omitted": 0,
+    "drifted": 1,
+    "NA": 3,
+    "not_verified": 1
+  },
+  "classification": "A001 parcial contabilizado drifted; não é fulfilled nem omitted.39 estados herdados e9 asserts com delta.",
+  "inherited": 39,
+  "reviewedDelta": 9,
+  "rows": [
+    {
+      "id": "A001",
+      "title": "Resolver identidade semântica com escopo e pós-condições explícitas.",
+      "previous": "omitted",
+      "status": "drifted",
+      "scope": "parcial: escopo/ambiguidade e predicado explícito observados; legado sem predicado não verificado",
+      "evidence": "evidence/v26/fixes/A001-20261119/ACCEPTANCE.md",
+      "basis": "new evidence"
+    },
+    {
+      "id": "A002",
+      "title": "Esperar sem bloquear a página e recuperar por efeito observado.",
+      "previous": "drifted",
+      "status": "fulfilled",
+      "scope": "aceite limitado ao escopo do relatório incremental",
+      "evidence": "evidence/v26/fixes/A002-20261119/REPORT.md",
+      "basis": "new evidence"
+    },
+    {
+      "id": "A003",
+      "title": "Retomar a recipe localmente com LLM+JEV.",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A004",
+      "title": "Aplicar gate inicial por retorno, identidade e prontidão.",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A005",
+      "title": "Comparar o registro completo após reload e preservar falhas anteriores.",
+      "previous": "omitted",
+      "status": "fulfilled",
+      "scope": "aceite limitado ao escopo do relatório incremental",
+      "evidence": "evidence/v26/fixes/A005-20261119/ACCEPTANCE.md",
+      "basis": "new evidence"
+    },
+    {
+      "id": "A006",
+      "title": "Integrar captura na recipe e explicitar falhas de evidência.",
+      "previous": "omitted",
+      "status": "fulfilled",
+      "scope": "aceite limitado ao escopo do relatório incremental",
+      "evidence": "evidence/v26/fixes/A006-20261119/ACCEPTANCE.md",
+      "basis": "new evidence"
+    },
+    {
+      "id": "A007",
+      "title": "Criar destinos imutáveis e condicionar aceite ao judge.",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A008",
+      "title": "Normalizar single/batch, registrar proveniência e separar verificação.",
+      "previous": "omitted",
+      "status": "fulfilled",
+      "scope": "aceite limitado ao escopo do relatório incremental",
+      "evidence": "evidence/v26/fixes/A008-20261119/ACCEPTANCE.md",
+      "basis": "new evidence"
+    },
+    {
+      "id": "A009",
+      "title": "id = \"XT-WEB-FORM-01\"",
+      "previous": "N.A.",
+      "status": "N.A.",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A010",
+      "title": "version = \"T1-v1\"",
+      "previous": "N.A.",
+      "status": "N.A.",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A011",
+      "title": "seed = 20261019",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A012",
+      "title": "Filtrar por WEB e Em análise.",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A013",
+      "title": "Localizar DEMO-024 na segunda página.",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A014",
+      "title": "Cadastrar plano do tipo Integração.",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A015",
+      "title": "Usar prioridade Alta.",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A016",
+      "title": "Usar responsável Equipe Alfa.",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A017",
+      "title": "Tentar continuar com email inválido e observar validação.",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A018",
+      "title": "Corrigir email para qa@example.test.",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A019",
+      "title": "Ativar Requer ambiente.",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A020",
+      "title": "Selecionar Homologação sintética no campo condicional.",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A021",
+      "title": "Anexar fixture-evidence.txt.",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A022",
+      "title": "Abrir revisão, voltar e corrigir título para Plano WEB DEMO-024 revisado.",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A023",
+      "title": "Confirmar revisão e salvar uma única vez.",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A024",
+      "title": "Recarregar e demonstrar persistência de valores, anexo e vínculo.",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A025",
+      "title": "Não contatar serviços externos na tarefa.",
+      "previous": "não verificado",
+      "status": "não verificado",
+      "scope": "aceite limitado ao escopo do relatório incremental",
+      "evidence": "evidence/v26/fixes/A025-20261119/REPORT.md",
+      "basis": "new evidence"
+    },
+    {
+      "id": "A026",
+      "title": "promptSha256 = \"5f101ff2134ba0f8056dffcef3e6b1fd91fc1ea17deb1acbfb4a58b6c1b721d4\"",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A027",
+      "title": "locale = \"pt-BR\"",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A028",
+      "title": "timezone = \"America/Sao_Paulo\"",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A029",
+      "title": "viewport.width = 1280",
+      "previous": "omitted",
+      "status": "fulfilled",
+      "scope": "aceite limitado ao escopo do relatório incremental",
+      "evidence": "evidence/v26/fixes/A029-A030-A044-20261119/ACCEPTANCE.md",
+      "basis": "new evidence"
+    },
+    {
+      "id": "A030",
+      "title": "viewport.height = 900",
+      "previous": "omitted",
+      "status": "fulfilled",
+      "scope": "aceite limitado ao escopo do relatório incremental",
+      "evidence": "evidence/v26/fixes/A029-A030-A044-20261119/ACCEPTANCE.md",
+      "basis": "new evidence"
+    },
+    {
+      "id": "A031",
+      "title": "fixtureAppStatus = \"NOT_IMPLEMENTED\"",
+      "previous": "N.A.",
+      "status": "N.A.",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A032",
+      "title": "upload.path = \"C:\\\\Users\\\\ClawLabs\\\\.openclaw\\\\workspace\\\\pocs\\\\browser-benchmark-20261016\\\\fixtures\\\\fixture-evidence.txt\"",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A033",
+      "title": "upload.filename = \"fixture-evidence.txt\"",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A034",
+      "title": "upload.bytes = 32",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A035",
+      "title": "upload.sha256 = \"22591ebec4f89fd83947ba44fa6e64d6a1e358ed2935a7493ed5b21cb81a3ed1\"",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A036",
+      "title": "expected.demand = \"DEMO-024\"",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A037",
+      "title": "expected.type = \"Integração\"",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A038",
+      "title": "expected.priority = \"Alta\"",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A039",
+      "title": "expected.responsible = \"Equipe Alfa\"",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A040",
+      "title": "expected.email = \"qa@example.test\"",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A041",
+      "title": "expected.environment = \"Homologação sintética\"",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A042",
+      "title": "expected.title = \"Plano WEB DEMO-024 revisado\"",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A043",
+      "title": "expected.records = 1",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A044",
+      "title": "Usar perfil de navegador novo por runId.",
+      "previous": "omitted",
+      "status": "fulfilled",
+      "scope": "aceite limitado ao escopo do relatório incremental",
+      "evidence": "evidence/v26/fixes/A029-A030-A044-20261119/ACCEPTANCE.md",
+      "basis": "new evidence"
+    },
+    {
+      "id": "A045",
+      "title": "Isolar DB e uploads por runId.",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A046",
+      "title": "Manter endpoint admin inacessível ao executor.",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A047",
+      "title": "Usar judge independente server-side.",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    },
+    {
+      "id": "A048",
+      "title": "Usar a mesma tarefa em todas as condições.",
+      "previous": "fulfilled",
+      "status": "fulfilled",
+      "scope": "herdado da auditoria10/11, não reexecutado nesta rodada",
+      "evidence": "evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md",
+      "basis": "inherited"
+    }
+  ]
+}
