@@ -1,0 +1,448 @@
+{
+  "item": "A002",
+  "browser": "148.0.7778.96",
+  "transport": "Playwright page.evaluate, not Hermes",
+  "sources": {
+    "agent_loop.py": "1906a3604c7b98b37912fce70a72372bcdeccc808046cc1e17270f0a27443f7f",
+    "recipe.py": "66300d24cf74db4b480926487b98fd916fec10e20183d6d328ff7349d52ee5ba",
+    "test_resolve_wait.py": "94cb314ce0cd24dda9dbe1c44724c0c7ad7b2cb2d84b5d1a791c50240e6beaa6"
+  },
+  "passed": 5,
+  "total": 20,
+  "cases": [
+    {
+      "mode": "single",
+      "scenario": "immediate",
+      "elapsed_ms": 32.0,
+      "observed": {
+        "clicks": 1,
+        "ticks": 1,
+        "callbackRan": false
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "target",
+            "text": "Alvo"
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "mode": "single",
+      "scenario": "enabled_by_timer",
+      "elapsed_ms": 3016.0,
+      "observed": {
+        "clicks": 0,
+        "ticks": 1,
+        "callbackRan": true
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)"
+          }
+        ]
+      },
+      "passed": false
+    },
+    {
+      "mode": "single",
+      "scenario": "replaced_by_timer",
+      "elapsed_ms": 3016.0,
+      "observed": {
+        "clicks": 0,
+        "ticks": 1,
+        "callbackRan": true
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)"
+          }
+        ]
+      },
+      "passed": false
+    },
+    {
+      "mode": "single",
+      "scenario": "absent",
+      "elapsed_ms": 3016.0,
+      "observed": {
+        "clicks": 0,
+        "ticks": 1,
+        "callbackRan": false
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)"
+          }
+        ]
+      },
+      "passed": false
+    },
+    {
+      "mode": "single",
+      "scenario": "disabled",
+      "elapsed_ms": 3000.0,
+      "observed": {
+        "clicks": 0,
+        "ticks": 1,
+        "callbackRan": false
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)"
+          }
+        ]
+      },
+      "passed": false
+    },
+    {
+      "mode": "single",
+      "scenario": "invisible",
+      "elapsed_ms": 3000.0,
+      "observed": {
+        "clicks": 0,
+        "ticks": 1,
+        "callbackRan": false
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)"
+          }
+        ]
+      },
+      "passed": false
+    },
+    {
+      "mode": "batch",
+      "scenario": "immediate",
+      "elapsed_ms": 16.0,
+      "observed": {
+        "clicks": 1,
+        "ticks": 0,
+        "callbackRan": false
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "target",
+            "text": "Alvo"
+          }
+        ],
+        "stopped_at": null
+      },
+      "passed": true
+    },
+    {
+      "mode": "batch",
+      "scenario": "enabled_by_timer",
+      "elapsed_ms": 3000.0,
+      "observed": {
+        "clicks": 0,
+        "ticks": 1,
+        "callbackRan": true
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "element not found"
+      },
+      "passed": false
+    },
+    {
+      "mode": "batch",
+      "scenario": "replaced_by_timer",
+      "elapsed_ms": 3094.0,
+      "observed": {
+        "clicks": 0,
+        "ticks": 1,
+        "callbackRan": true
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "element not found"
+      },
+      "passed": false
+    },
+    {
+      "mode": "batch",
+      "scenario": "absent",
+      "elapsed_ms": 3015.0,
+      "observed": {
+        "clicks": 0,
+        "ticks": 1,
+        "callbackRan": false
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "element not found"
+      },
+      "passed": false
+    },
+    {
+      "mode": "batch",
+      "scenario": "disabled",
+      "elapsed_ms": 3000.0,
+      "observed": {
+        "clicks": 0,
+        "ticks": 1,
+        "callbackRan": false
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "element not found"
+      },
+      "passed": false
+    },
+    {
+      "mode": "batch",
+      "scenario": "invisible",
+      "elapsed_ms": 3000.0,
+      "observed": {
+        "clicks": 0,
+        "ticks": 1,
+        "callbackRan": false
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "element not found"
+      },
+      "passed": false
+    },
+    {
+      "mode": "batch",
+      "scenario": "expected_failure_800ms_continues",
+      "elapsed_ms": 860.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "expect_blocked",
+            "note": "next failure is expected"
+          },
+          {
+            "i": 1,
+            "error": "element not found (waited)",
+            "expected": true
+          },
+          {
+            "i": 2,
+            "action": "assert_text",
+            "ok": true,
+            "value": "Sem alvo"
+          }
+        ],
+        "stopped_at": null
+      },
+      "passed": true
+    },
+    {
+      "mode": "recipe",
+      "scenario": "immediate",
+      "elapsed_ms": 15.0,
+      "observed": {
+        "clicks": 1,
+        "ticks": 0,
+        "callbackRan": false
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "target",
+            "text": "Alvo"
+          }
+        ],
+        "stopped_at": null,
+        "_rc": 0
+      },
+      "passed": true
+    },
+    {
+      "mode": "recipe",
+      "scenario": "enabled_by_timer",
+      "elapsed_ms": 3000.0,
+      "observed": {
+        "clicks": 0,
+        "ticks": 1,
+        "callbackRan": true
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "element not found",
+        "_rc": 0
+      },
+      "passed": false
+    },
+    {
+      "mode": "recipe",
+      "scenario": "replaced_by_timer",
+      "elapsed_ms": 3000.0,
+      "observed": {
+        "clicks": 0,
+        "ticks": 1,
+        "callbackRan": true
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "element not found",
+        "_rc": 0
+      },
+      "passed": false
+    },
+    {
+      "mode": "recipe",
+      "scenario": "absent",
+      "elapsed_ms": 3000.0,
+      "observed": {
+        "clicks": 0,
+        "ticks": 1,
+        "callbackRan": false
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "element not found",
+        "_rc": 0
+      },
+      "passed": false
+    },
+    {
+      "mode": "recipe",
+      "scenario": "disabled",
+      "elapsed_ms": 3015.0,
+      "observed": {
+        "clicks": 0,
+        "ticks": 1,
+        "callbackRan": false
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "element not found",
+        "_rc": 0
+      },
+      "passed": false
+    },
+    {
+      "mode": "recipe",
+      "scenario": "invisible",
+      "elapsed_ms": 3000.0,
+      "observed": {
+        "clicks": 0,
+        "ticks": 1,
+        "callbackRan": false
+      },
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "element not found",
+        "_rc": 0
+      },
+      "passed": false
+    },
+    {
+      "mode": "recipe",
+      "scenario": "expected_failure_800ms_continues",
+      "elapsed_ms": 859.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "expect_blocked",
+            "note": "next failure is expected"
+          },
+          {
+            "i": 1,
+            "error": "element not found (waited)",
+            "expected": true
+          },
+          {
+            "i": 2,
+            "action": "assert_text",
+            "ok": true,
+            "value": "Sem alvo"
+          }
+        ],
+        "stopped_at": null,
+        "_rc": 0
+      },
+      "passed": true
+    }
+  ]
+}

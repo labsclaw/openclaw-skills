@@ -1,5 +1,7 @@
 # Publicação v2.6, proveniência e limites
 
+Atualização incremental A002 de 19/11: [relatório e novos recibos](v26/fixes/A002-20261119/REPORT.md). Somente `scripts/agent_loop.py` recebeu correção de implementação. O manifesto e as afirmações de exportação sem alteração abaixo descrevem a publicação histórica v2.6d, não o patch novo. A fila original permanece imutável.
+
 Fonte: browser-eval, commit `40c68be498817c9787d97ce68f581081ebc078f7`, sobre v2.6d `76eef077b8c9af28be0c4c18fb274a1baee4fea2`.
 Os commits da fonte não são ancestrais desta biblioteca; comandos `git show` das evidências exigem aquele repositório.
 

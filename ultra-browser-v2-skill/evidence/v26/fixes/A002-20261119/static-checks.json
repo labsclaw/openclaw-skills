@@ -1,0 +1,42 @@
+{
+  "async_resolver": true,
+  "awaited_consumer": true,
+  "no_old_spin": true,
+  "checks": [
+    {
+      "command": [
+        "git",
+        "diff",
+        "--exit-code",
+        "HEAD",
+        "--",
+        "ultra-browser-v2-skill/evidence/v26/results",
+        "ultra-browser-v2-skill/evidence/v26/ultra-browser-v2",
+        "ultra-browser-v2-skill/evidence/manifest.json",
+        "ultra-browser-v2-skill/evidence/manifest-v230.json"
+      ],
+      "rc": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "rc": 0,
+      "stdout": "",
+      "stderr": "warning: in the working copy of 'ultra-browser-v2-skill/SKILL.md', LF will be replaced by CRLF the next time Git touches it\n"
+    },
+    {
+      "command": [
+        "node",
+        "scripts/agents-lint.cjs"
+      ],
+      "rc": 0,
+      "stdout": "Agents lint: OK | 18 arquivos | 136 referências | 0 achados\n22 referências/arquivos classificados fora da existência obrigatória. Limites no JSON e na documentação.\n",
+      "stderr": ""
+    }
+  ]
+}

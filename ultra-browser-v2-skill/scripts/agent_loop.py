@@ -436,17 +436,18 @@ BATCH_JS_TEMPLATE = """(async () => {
     // v2.5.4: fallback por POSICAO so com a.element explicito — sem ele, nao achou = null
     return (a.element !== undefined && a.element !== null && els[a.element - 1]) || null;
   };
-  const resolveWait = (a, els, budgetMs) => {
-    const t0 = Date.now();
-    let el = null;
-    do {
-      el = resolve(a, els);
+  const resolveWait = async (a, els, budgetMs) => {
+    const deadline = performance.now() + (budgetMs ?? 3000);
+    while (true) {
+      const el = resolve(a, els);
       if (el && actionable(el)) return el;
-      if (Date.now() - t0 >= (budgetMs || 3000)) break;
-      const until = Date.now() + 120;
-      while (Date.now() < until) {}
-    } while (true);
-    return (el && actionable(el)) ? el : null; // v2.4.4: nao devolver nao-actionable (modal fechado etc)
+      const remaining = deadline - performance.now();
+      if (remaining <= 0) return null;
+      // Cede o event loop: callbacks podem habilitar/substituir o alvo.
+      await new Promise(r => setTimeout(r, Math.min(120, remaining)));
+      if (performance.now() >= deadline) return null;
+      els = collect(); // nunca reutilizar posicao de um DOM anterior ao timer
+    }
   };
   const results = [];
   for (let i = 0; i < acts.length; i++) {
@@ -489,7 +490,7 @@ BATCH_JS_TEMPLATE = """(async () => {
       results.push({i, action: a.action});
       return JSON.stringify({results, stopped_at: null, terminal: a.action});
     }
-    const el = resolveWait(a, els, a._expect_fail ? 800 : 3000);
+    const el = await resolveWait(a, els, a._expect_fail ? 800 : 3000);
     if (!el) {
       results.push({i, error: 'element not found (waited)', element: a.element, label: a.label, bid: a.bid});
       if (a._expect_fail) { results[results.length-1].expected = true; continue; }

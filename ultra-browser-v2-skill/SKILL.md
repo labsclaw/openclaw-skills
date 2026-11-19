@@ -12,6 +12,8 @@ license: MIT
 
 ## Estado publicado e precedência
 
+Em 19/11, o patch A002 substituiu o busy-wait do resolvedor compartilhado por espera assíncrona com deadline. Para esse item, consulte o [aceite novo e seus limites](evidence/v26/fixes/A002-20261119/REPORT.md); ele não reclassifica os recibos de 10/11 nem fecha os demais alvos. As descrições históricas de busy-wait abaixo não representam mais `scripts/agent_loop.py` nesta branch. Runtime e browser-eval não foram sincronizados.
+
 Este pacote passa da distribuição v2.3.0 ao estado de código v2.6d. Não é conclusão de todos os alvos v2.6.
 O [fechamento de 10/11](evidence/v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md) prevalece para o estado atual: 36 fulfilled, 7 omitted, 1 drifted, 3 N.A. e A025 não verificado.
 A [fila de fixes](evidence/v26/results/coordination/fixes/FILA-v26-20261110.md) permanece pendente e não autoriza implementação.
