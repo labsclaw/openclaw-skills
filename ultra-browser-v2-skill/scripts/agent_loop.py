@@ -363,7 +363,11 @@ def execute(act: dict):
     res = execute_batch([act])
     if res.get("terminal"):
         return json.dumps(res, ensure_ascii=False)
-    return json.dumps((res.get("results") or [{}])[0], ensure_ascii=False)
+    row = dict((res.get("results") or [{}])[0])
+    for key in ("_rc", "_error", "error"):
+        if key in res:
+            row[key] = res[key]
+    return json.dumps(row, ensure_ascii=False)
 
 
 # ---------------- v2.3: BATCH com RE-RESOLVE, novas ops e negative asserts ----------------
@@ -663,9 +667,13 @@ def execute_batch(acts: list):
     out = (r["out"] or r["err"]).strip()
     try:
         line = out.splitlines()[-1]
-        return json.loads(line)
+        result = json.loads(line)
+        if not isinstance(result, dict):
+            raise ValueError("executor envelope must be object")
+        result["_rc"] = r.get("rc")
+        return result
     except Exception:
-        return {"results": [], "stopped_at": None, "error": out[:300]}
+        return {"results": [], "stopped_at": 0, "_rc": r.get("rc"), "error": out[:300]}
 
 
 def parse_plan(reply: str):
@@ -754,7 +762,7 @@ Interactive elements (index · tag · state; (H)=hidden/not in current step yet 
     return acts, lat, usage, terminal
 
 
-def verify(spec: str):
+def verify(spec: str, details=None):
     """Verifier independente por CÓDIGO (inline JS — sem confiar no modelo).
     Formatos: text_contains:X | url_contains:X | title_contains:X | field_value:sel|expected
     Pipe dentro do arg: usar '||' como separador duplo se necessário."""
@@ -772,20 +780,77 @@ def verify(spec: str):
         expr = (f"(() => {{ const el = document.querySelector({json.dumps(sel)}); if (!el) return 'FAIL: no element'; "
                 f"const v = el.value !== undefined ? el.value : el.innerText; "
                 f"return (v === {json.dumps(expected)} || v.includes({json.dumps(expected)})) ? 'PASS: field=' + v : 'FAIL: field=' + v; }})()")
-    elif kind == "persisted":
-        # v2.4.6: recarrega a pagina e so passa se o texto aparecer APOS o reload
-        # (persistencia de verdade — caso xt25sc: verify passava pre-reload)
-        expr = (f"(() => (location.reload(), 'RELOADING'))()")
-        r0 = harness(f"print(js({json.dumps(expr)}))")
-        time.sleep(2.5)
-        r1 = harness(f"print(js({json.dumps(f'(() => (document.body ? document.body.innerText : \'\').includes({json.dumps(arg)}) ? \'PASS: persisted\' : \'FAIL: not after reload\')()')}))")
-        out = (r1["out"] or r1["err"]).strip()
-        return "PASS" if "PASS" in out else f"FAIL ({out[:80]})"
+    elif kind in ("persisted", "persisted_json"):
+        if kind == "persisted":
+            result = {"passed": False, "error": "legacy persisted title is incomplete; use persisted_json contract"}
+        else:
+            from persisted_verifier import verify_complete
+            result = verify_complete(rest, harness)
+        if details is not None:
+            details.update(result)
+        return "PASS" if result.get("passed") is True else "FAIL: " + str(result.get("error") or result.get("mismatches"))
     else:
         return "FAIL: unknown verifier"
     r = harness(f"print(js({json.dumps(expr)}))")
     out = (r["out"] or r["err"]).strip()
     return "PASS" if "PASS" in out else f"FAIL ({out[:80]})"
+
+
+def execution_failed(result):
+    """Falha inesperada e fatal; negativo explicitamente esperado e distinto."""
+    if not isinstance(result, dict):
+        return True
+    if ((result.get("error") and result.get("expected") is not True) or result.get("_error") or
+            type(result.get("_rc", 0)) is not int or result.get("_rc", 0) != 0):
+        return True
+    rows = result.get("results", [result])
+    if not isinstance(rows, list) or not rows:
+        return True
+    for row in rows:
+        if not isinstance(row, dict):
+            return True
+        if row.get("expected") is True:
+            continue
+        if row.get("error") or row.get("ok") is False:
+            return True
+        if row.get("ok") is True or row.get("action") == "expect_blocked":
+            continue
+        if result.get("terminal") and row.get("action") == result["terminal"]:
+            continue
+        return True
+    return False
+
+
+def run_host(log, phase, call):
+    """Preserva erro de navegacao/upload antes de qualquer novo verifier."""
+    try:
+        result = call()
+        if not isinstance(result, dict) or type(result.get("rc")) is not int or result["rc"] != 0:
+            raise ValueError("host rc != 0: " + str(result))
+        if phase == "upload" and ("upload-fail" in str(result.get("out")) or
+                                  "upload-ok" not in str(result.get("out"))):
+            raise ValueError("host upload not confirmed: " + str(result))
+        return result
+    except Exception as exc:
+        log.setdefault("failures", []).append({"phase": phase, "error": str(exc)})
+        log["result"] = "HOST-FAIL"
+        return None
+
+
+def verify_for_run(spec, log):
+    """Latch: um FAIL previo nunca e substituido por verifier posterior."""
+    if log.get("failures"):
+        return "FAIL: prior failure preserved"
+    detail = {}
+    try:
+        verdict = verify(spec, details=detail)
+    except Exception as exc:
+        verdict = "FAIL: verifier exception: " + str(exc)
+        detail.update(passed=False, error=str(exc))
+    log.setdefault("verification_details", []).append(detail)
+    if verdict != "PASS":
+        log.setdefault("failures", []).append({"phase": "verifier", "verdict": verdict})
+    return verdict
 
 
 def human_pause(lo=0.3, hi=1.2):
@@ -987,7 +1052,9 @@ def run_batch(url, goal, model, max_cycles, verify_spec, record, engine="typesaf
     log = {"url": url, "goal": goal, "model": model, "mode": "batch", "cycles": [], "result": None}
     rec_name = f"ub22-{int(time.time())}"
     pre = f'start_recording(name="{rec_name}", title="{goal[:40]}")\n' if record else ""
-    harness(f'{pre}goto_url("{url}")\nmaximize()\nimport time as _t\n_t.sleep(1.5)', timeout=90)
+    initial = run_host(log, "initial_navigation", lambda: harness(f'{pre}goto_url("{url}")\nmaximize()\nimport time as _t\n_t.sleep(1.5)', timeout=90))
+    if initial is None:
+        return log
 
     for cycle in range(max_cycles):
         t0 = time.time()
@@ -1080,6 +1147,10 @@ Rules:
         if exec_acts:
             batch_result = execute_batch(exec_acts)
             log["cycles"][-1]["exec"] = batch_result
+            if execution_failed(batch_result) or batch_result.get("stopped_at") is not None and not batch_result.get("terminal"):
+                log.setdefault("failures", []).append({"phase": "execution", "detail": batch_result})
+                log["result"] = "EXECUTION-FAIL-BATCH"
+                break
             term = batch_result.get("terminal")
             # v2.3: terminais especiais do executor
             if term == "wait":
@@ -1090,7 +1161,9 @@ Rules:
                 continue  # re-planejar pos espera
             if term in ("navigate", "reload"):
                 dest = batch_result.get("url") or url
-                harness(f'goto_url("{dest}")\nimport time as _t\n_t.sleep(1.5)', timeout=90)
+                nav_result = run_host(log, "navigation", lambda: harness(f'goto_url("{dest}")\nimport time as _t\n_t.sleep(1.5)', timeout=90))
+                if nav_result is None:
+                    break
                 continue  # novo snapshot apos navegacao
             if term == "upload":
                 # upload real via harness (CDP): file input + arquivo do goal
@@ -1100,14 +1173,16 @@ Rules:
                                   "browser-benchmark-20261016", "fixtures", file_label)
                 fx = os.path.normpath(fx)
                 sel = batch_result.get("selector") or "input[type=file]"
-                up = harness(
+                up = run_host(log, "upload", lambda: harness(
                     "import time as _t\n"
                     "try:\n"
                     f"    upload_file({json.dumps(sel)}, {json.dumps(fx)})\n"
                     "    _t.sleep(1)\n"
                     "    print('upload-ok')\n"
                     "except Exception as e:\n"
-                    "    print('upload-fail', e)\n", timeout=90)
+                    "    print('upload-fail', e)\n", timeout=90))
+                if up is None:
+                    break
                 up_out = up["out"] if isinstance(up, dict) else str(up)
                 log["cycles"][-1]["upload"] = str(up_out)[:200]
                 continue  # re-planejar apos upload
@@ -1126,12 +1201,13 @@ Rules:
                 r.get("ok") for r in (batch_result or {}).get("results", [])
                 if "ok" in r)):
             if verify_spec:
-                ok = verify(verify_spec)
+                ok = verify_for_run(verify_spec, log)
                 log["cycles"].append({"verifier": verify_spec, "verdict": ok})
                 if ok == "PASS":
                     log["result"] = "DONE-VERIFIED-BATCH"
                     break
-                continue
+                log["result"] = "VERIFICATION-FAIL-BATCH"
+                break
             log["result"] = "DONE-BATCH"
             break
         human_pause()
@@ -1145,7 +1221,9 @@ def run(url, goal, model, max_steps, verify_spec, record, engine="opencode", tex
     log = {"url": url, "goal": goal, "model": model, "steps": [], "result": None}
     rec_name = f"ub2-{int(time.time())}"
     pre = f'start_recording(name="{rec_name}", title="{goal[:40]}")\n' if record else ""
-    harness(f'{pre}goto_url("{url}")\nmaximize()\nimport time as _t\n_t.sleep(1.5)', timeout=90)
+    initial = run_host(log, "initial_navigation", lambda: harness(f'{pre}goto_url("{url}")\nmaximize()\nimport time as _t\n_t.sleep(1.5)', timeout=90))
+    if initial is None:
+        return log
 
     last_act = None
     same_count = 0
@@ -1238,7 +1316,7 @@ Rules:
         if same_count >= 2:
             # VERIFIER NO ABORT: o modelo pode ter completado sem perceber (caso real T4 deepseek).
             if verify_spec:
-                ok = verify(verify_spec)
+                ok = verify_for_run(verify_spec, log)
                 log["steps"].append({"loop_guard": f"same action x3: {key}",
                                      "verifier_on_abort": verify_spec, "verdict": ok})
                 log["result"] = "DONE-VERIFIED" if ok == "PASS" else "LOOP-ABORT"
@@ -1249,12 +1327,13 @@ Rules:
 
         if act["action"] == "done":
             if verify_spec:
-                ok = verify(verify_spec)
+                ok = verify_for_run(verify_spec, log)
                 log["steps"].append({"verifier": verify_spec, "verdict": ok})
                 if ok == "PASS":
                     log["result"] = "DONE-VERIFIED"
                     break
-                continue  # verifier falhou: mais ate 3 ciclos (max_steps cobre)
+                log["result"] = "VERIFICATION-FAIL"
+                break
             log["result"] = "DONE"
             break
         if act["action"] == "blocked":
@@ -1276,6 +1355,14 @@ Rules:
 
         exec_result = execute(act)
         log["steps"][-1]["exec"] = exec_result
+        try:
+            observed_exec = json.loads(exec_result) if isinstance(exec_result, str) else exec_result
+        except (ValueError, TypeError):
+            observed_exec = {"error": "invalid executor payload"}
+        if execution_failed(observed_exec):
+            log.setdefault("failures", []).append({"phase": "execution", "detail": observed_exec})
+            log["result"] = "EXECUTION-FAIL"
+            break
         # v2.4.6: VERIFY-AFTER-EVERY-SAVE — o goal pede save UNICO; depois do 1o save
         # com sucesso, qualquer verify PASS = trabalho completo: PARAR na hora.
         # (Caso real xt25sc: agente continuou navegando pos-save e a fixture gritou
@@ -1287,11 +1374,13 @@ Rules:
                  and "salvar" in str(act.get("label", "")).lower())
                 or "saved" in str(exec_result)))
             if saved_now and verify_spec:
-                ok = verify(verify_spec)
+                ok = verify_for_run(verify_spec, log)
                 log["steps"].append({"verifier_after_save": verify_spec, "verdict": ok})
                 if ok == "PASS":
                     log["result"] = "DONE-VERIFIED"
                     break
+                log["result"] = "VERIFICATION-FAIL"
+                break
         except Exception:
             pass
         # v2.4.5: popular historico p/ o proximo planejamento (aacao + alvo curto)
@@ -1327,14 +1416,16 @@ Rules:
                     "..", "..", ".openclaw", "workspace", "pocs",
                     "browser-benchmark-20261016", "fixtures", file_label))
                 sel = exj.get("selector") or ("#" + (act.get("id") or "upload") if act.get("id") else "input[type=file]")
-                up = harness(
+                up = run_host(log, "upload", lambda: harness(
                     "import time as _t\n"
                     "try:\n"
                     f"    upload_file({json.dumps(sel)}, {json.dumps(fx)})\n"
                     "    _t.sleep(1)\n"
                     "    print('upload-ok')\n"
                     "except Exception as e:\n"
-                    "    print('upload-fail', e)\n", timeout=90)
+                    "    print('upload-fail', e)\n", timeout=90))
+                if up is None:
+                    break
                 up_out = up["out"] if isinstance(up, dict) else str(up)
                 log["steps"][-1]["upload"] = str(up_out)[:200]
                 act_history.append(f"upload '{file_label}' -> {str(up_out)[:40]}")
@@ -1342,7 +1433,9 @@ Rules:
                 continue
             if isinstance(exj, dict) and exj.get("terminal") in ("navigate", "reload"):
                 dest = exj.get("url") or url
-                harness(f'goto_url("{dest}")\nimport time as _t\n_t.sleep(1.5)', timeout=90)
+                nav_result = run_host(log, "navigation", lambda: harness(f'goto_url("{dest}")\nimport time as _t\n_t.sleep(1.5)', timeout=90))
+                if nav_result is None:
+                    break
                 log["steps"][-1]["nav"] = dest
                 human_pause()
                 continue

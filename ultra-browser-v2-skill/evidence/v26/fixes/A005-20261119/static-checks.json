@@ -1,0 +1,66 @@
+{
+  "checks": [
+    {
+      "command": [
+        "git",
+        "-c",
+        "core.whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol",
+        "diff",
+        "--cached",
+        "--check"
+      ],
+      "rc": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--exit-code",
+        "fb5e6cb",
+        "--",
+        "ultra-browser-v2-skill/evidence/v26/results",
+        "ultra-browser-v2-skill/evidence/v26/ultra-browser-v2",
+        "ultra-browser-v2-skill/evidence/v26/fixes/A001-20261119",
+        "ultra-browser-v2-skill/evidence/v26/fixes/A002-20261119",
+        "ultra-browser-v2-skill/evidence/manifest.json"
+      ],
+      "rc": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "scripts/agents-lint.cjs"
+      ],
+      "rc": 0,
+      "stdout": "Agents lint: OK | 18 arquivos | 136 referências | 0 achados\n22 referências/arquivos classificados fora da existência obrigatória. Limites no JSON e na documentação.\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python",
+        "C:/Users/ClawLabs/.openclaw/agents/main/agent/codex-home/skills/.system/skill-creator/scripts/quick_validate.py",
+        "C:\\Users\\ClawLabs\\.openclaw\\workspace\\projects\\ultra-browser-v2-publication\\ultra-browser-v2-skill"
+      ],
+      "rc": 0,
+      "stdout": "Skill is valid!\n",
+      "stderr": ""
+    }
+  ],
+  "judgeGateAstUnchanged": true,
+  "judgeProcessCallAstUnchanged": true,
+  "a001ManifestValidatedAgainstDeclaredCommit": "fb5e6cb 35/35",
+  "sources": {
+    "agent_loop.py": "0f368fca7cdf844fffe8edd8b182cffc76492fc2f0bf86dd2e4c7c2a1e42d5d4",
+    "recipe.py": "c670d5bd406d00467d50dff286862557755843ba14987e1cfe32b259b0ad0dc8",
+    "battery_pilot.py": "1d77d482b5397bf4bb4e27a00819a697516bad1b4879f6e715a4e6e75c62c58d",
+    "persisted_verifier.py": "4e5bf5b60b04cdd1c752d9aaf8f26c2ab6e8c5895311c3c37b55f2e411d41c71",
+    "test_persisted_verifier.py": "ab4a7570fd1e4c5b797158617adc8f5d94d07b86e6de69b449b1010f60e98f93",
+    "test_persisted_guards.py": "74608ba2eeb9fd00083ef6c330ededaf9213ca19918c97bfa68083ea23fdf107",
+    "test_semantic_isolated.py": "5c0665e555c98f8ee9a37f4400d2375f3b219a5b28646c3d66f777af986764dd"
+  },
+  "finalReceiptsMatchSources": true
+}

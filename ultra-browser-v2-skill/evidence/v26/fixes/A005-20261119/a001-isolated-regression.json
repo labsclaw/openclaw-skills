@@ -1,0 +1,2942 @@
+{
+  "item": "A001",
+  "browser": "148.0.7778.96",
+  "transport": "Playwright page.evaluate; navigation stub for run_recipe",
+  "sources": {
+    "agent_loop.py": "0f368fca7cdf844fffe8edd8b182cffc76492fc2f0bf86dd2e4c7c2a1e42d5d4",
+    "recipe.py": "c670d5bd406d00467d50dff286862557755843ba14987e1cfe32b259b0ad0dc8",
+    "test_semantic_target.py": "165d5f198c83b1494088a40aade9aa6d7c90536826af1b29b0582e0c2c558720"
+  },
+  "passed": 80,
+  "total": 80,
+  "cases": [
+    {
+      "mode": "single",
+      "scenario": "scope_id",
+      "passed": true,
+      "hits": [
+        "right"
+      ],
+      "elapsed_ms": 78.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "save-right",
+            "text": "Salvar",
+            "dispatched": true,
+            "effect": {
+              "verified": true,
+              "before": {
+                "found": true,
+                "value": "idle"
+              },
+              "after": {
+                "found": true,
+                "value": "right"
+              }
+            },
+            "_rc": 0
+          }
+        ]
+      }
+    },
+    {
+      "mode": "single",
+      "scenario": "scope_semantic",
+      "passed": true,
+      "hits": [
+        "right"
+      ],
+      "elapsed_ms": 94.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "save-right",
+            "text": "Salvar",
+            "dispatched": true,
+            "effect": {
+              "verified": true,
+              "before": {
+                "found": true,
+                "value": "idle"
+              },
+              "after": {
+                "found": true,
+                "value": "right"
+              }
+            },
+            "_rc": 0
+          }
+        ]
+      }
+    },
+    {
+      "mode": "single",
+      "scenario": "scope_missing",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 812.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)",
+            "_rc": 0
+          }
+        ]
+      }
+    },
+    {
+      "mode": "single",
+      "scenario": "scope_ambiguous",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 0.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "ambiguous scope: 2",
+            "_rc": 0
+          }
+        ]
+      }
+    },
+    {
+      "mode": "single",
+      "scenario": "global_ambiguous",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 15.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "ambiguous target: 2",
+            "_rc": 0
+          }
+        ]
+      }
+    },
+    {
+      "mode": "single",
+      "scenario": "local_ambiguous",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 16.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "ambiguous target: 2",
+            "_rc": 0
+          }
+        ]
+      }
+    },
+    {
+      "mode": "single",
+      "scenario": "hidden_duplicate",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 0.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "ambiguous target: 2",
+            "_rc": 0
+          }
+        ]
+      }
+    },
+    {
+      "mode": "single",
+      "scenario": "id_label_conflict",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 813.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)",
+            "label": "Excluir",
+            "_rc": 0
+          }
+        ]
+      }
+    },
+    {
+      "mode": "single",
+      "scenario": "wrong_role",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 828.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)",
+            "_rc": 0
+          }
+        ]
+      }
+    },
+    {
+      "mode": "single",
+      "scenario": "exact_not_partial",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 828.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)",
+            "_rc": 0
+          }
+        ]
+      }
+    },
+    {
+      "mode": "single",
+      "scenario": "effect_wrong",
+      "passed": true,
+      "hits": [
+        "right"
+      ],
+      "elapsed_ms": 313.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": false,
+            "id": "save-right",
+            "text": "Salvar",
+            "dispatched": true,
+            "effect": {
+              "verified": false,
+              "before": {
+                "found": true,
+                "value": "idle"
+              },
+              "after": {
+                "found": true,
+                "value": "right"
+              },
+              "reason": "postcondition timeout or stale"
+            },
+            "_rc": 0
+          }
+        ]
+      }
+    },
+    {
+      "mode": "single",
+      "scenario": "effect_stale",
+      "passed": true,
+      "hits": [
+        "right"
+      ],
+      "elapsed_ms": 312.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": false,
+            "id": "save-right",
+            "text": "Salvar",
+            "dispatched": true,
+            "effect": {
+              "verified": false,
+              "before": {
+                "found": true,
+                "value": "right"
+              },
+              "after": {
+                "found": true,
+                "value": "right"
+              },
+              "reason": "postcondition timeout or stale"
+            },
+            "_rc": 0
+          }
+        ]
+      }
+    },
+    {
+      "mode": "single",
+      "scenario": "effect_async",
+      "passed": true,
+      "hits": [
+        "right"
+      ],
+      "elapsed_ms": 78.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "save-right",
+            "text": "Salvar",
+            "dispatched": true,
+            "effect": {
+              "verified": true,
+              "before": {
+                "found": true,
+                "value": "idle"
+              },
+              "after": {
+                "found": true,
+                "value": "right"
+              }
+            },
+            "_rc": 0
+          }
+        ]
+      }
+    },
+    {
+      "mode": "single",
+      "scenario": "effect_missing",
+      "passed": true,
+      "hits": [
+        "right"
+      ],
+      "elapsed_ms": 344.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": false,
+            "id": "save-right",
+            "text": "Salvar",
+            "dispatched": true,
+            "effect": {
+              "verified": false,
+              "before": {
+                "found": true,
+                "value": "idle"
+              },
+              "after": {
+                "found": true,
+                "value": "idle"
+              },
+              "reason": "postcondition timeout or stale"
+            },
+            "_rc": 0
+          }
+        ]
+      }
+    },
+    {
+      "mode": "single",
+      "scenario": "effect_ambiguous",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 16.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "ambiguous target: 2",
+            "_rc": 0
+          }
+        ]
+      }
+    },
+    {
+      "mode": "single",
+      "scenario": "legacy_dispatch_unverified",
+      "passed": true,
+      "hits": [
+        "right"
+      ],
+      "elapsed_ms": 16.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "save-right",
+            "text": "Salvar",
+            "dispatched": true,
+            "effect": {
+              "verified": false,
+              "reason": "no postcondition declared"
+            },
+            "_rc": 0
+          }
+        ]
+      }
+    },
+    {
+      "mode": "single",
+      "scenario": "aria_name",
+      "passed": true,
+      "hits": [
+        "right"
+      ],
+      "elapsed_ms": 63.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "save-right",
+            "text": "Salvar",
+            "dispatched": true,
+            "effect": {
+              "verified": true,
+              "before": {
+                "found": true,
+                "value": "idle"
+              },
+              "after": {
+                "found": true,
+                "value": "right"
+              }
+            },
+            "_rc": 0
+          }
+        ]
+      }
+    },
+    {
+      "mode": "single",
+      "scenario": "labelled_control",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 219.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "type",
+            "ok": true,
+            "id": "field",
+            "value": "Oi",
+            "dispatched": true,
+            "effect": {
+              "verified": true,
+              "before": {
+                "found": true,
+                "value": ""
+              },
+              "after": {
+                "found": true,
+                "value": "Oi"
+              }
+            },
+            "_rc": 0
+          }
+        ]
+      }
+    },
+    {
+      "mode": "single",
+      "scenario": "bad_scope",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 0.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "invalid identity descriptor",
+            "_rc": 0
+          }
+        ]
+      }
+    },
+    {
+      "mode": "single",
+      "scenario": "bad_postcondition",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 15.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "invalid postcondition",
+            "_rc": 0
+          }
+        ]
+      }
+    },
+    {
+      "mode": "batch",
+      "scenario": "scope_id",
+      "passed": true,
+      "hits": [
+        "right"
+      ],
+      "elapsed_ms": 78.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "save-right",
+            "text": "Salvar",
+            "dispatched": true,
+            "effect": {
+              "verified": true,
+              "before": {
+                "found": true,
+                "value": "idle"
+              },
+              "after": {
+                "found": true,
+                "value": "right"
+              }
+            }
+          },
+          {
+            "i": 1,
+            "action": "assert_text",
+            "ok": true,
+            "value": "Salvar"
+          }
+        ],
+        "stopped_at": null,
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "batch",
+      "scenario": "scope_semantic",
+      "passed": true,
+      "hits": [
+        "right"
+      ],
+      "elapsed_ms": 94.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "save-right",
+            "text": "Salvar",
+            "dispatched": true,
+            "effect": {
+              "verified": true,
+              "before": {
+                "found": true,
+                "value": "idle"
+              },
+              "after": {
+                "found": true,
+                "value": "right"
+              }
+            }
+          },
+          {
+            "i": 1,
+            "action": "assert_text",
+            "ok": true,
+            "value": "Salvar"
+          }
+        ],
+        "stopped_at": null,
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "batch",
+      "scenario": "scope_missing",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 828.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "identity invalid",
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "batch",
+      "scenario": "scope_ambiguous",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 16.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "ambiguous scope: 2"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "identity invalid",
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "batch",
+      "scenario": "global_ambiguous",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 32.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "ambiguous target: 2"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "identity invalid",
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "batch",
+      "scenario": "local_ambiguous",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 16.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "ambiguous target: 2"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "identity invalid",
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "batch",
+      "scenario": "hidden_duplicate",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 0.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "ambiguous target: 2"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "identity invalid",
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "batch",
+      "scenario": "id_label_conflict",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 828.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)",
+            "label": "Excluir"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "identity invalid",
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "batch",
+      "scenario": "wrong_role",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 828.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "identity invalid",
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "batch",
+      "scenario": "exact_not_partial",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 829.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "identity invalid",
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "batch",
+      "scenario": "effect_wrong",
+      "passed": true,
+      "hits": [
+        "right"
+      ],
+      "elapsed_ms": 328.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": false,
+            "id": "save-right",
+            "text": "Salvar",
+            "dispatched": true,
+            "effect": {
+              "verified": false,
+              "before": {
+                "found": true,
+                "value": "idle"
+              },
+              "after": {
+                "found": true,
+                "value": "right"
+              },
+              "reason": "postcondition timeout or stale"
+            }
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "postcondition failed",
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "batch",
+      "scenario": "effect_stale",
+      "passed": true,
+      "hits": [
+        "right"
+      ],
+      "elapsed_ms": 313.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": false,
+            "id": "save-right",
+            "text": "Salvar",
+            "dispatched": true,
+            "effect": {
+              "verified": false,
+              "before": {
+                "found": true,
+                "value": "right"
+              },
+              "after": {
+                "found": true,
+                "value": "right"
+              },
+              "reason": "postcondition timeout or stale"
+            }
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "postcondition failed",
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "batch",
+      "scenario": "effect_async",
+      "passed": true,
+      "hits": [
+        "right"
+      ],
+      "elapsed_ms": 62.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "save-right",
+            "text": "Salvar",
+            "dispatched": true,
+            "effect": {
+              "verified": true,
+              "before": {
+                "found": true,
+                "value": "idle"
+              },
+              "after": {
+                "found": true,
+                "value": "right"
+              }
+            }
+          },
+          {
+            "i": 1,
+            "action": "assert_text",
+            "ok": true,
+            "value": "Salvar"
+          }
+        ],
+        "stopped_at": null,
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "batch",
+      "scenario": "effect_missing",
+      "passed": true,
+      "hits": [
+        "right"
+      ],
+      "elapsed_ms": 313.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": false,
+            "id": "save-right",
+            "text": "Salvar",
+            "dispatched": true,
+            "effect": {
+              "verified": false,
+              "before": {
+                "found": true,
+                "value": "idle"
+              },
+              "after": {
+                "found": true,
+                "value": "idle"
+              },
+              "reason": "postcondition timeout or stale"
+            }
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "postcondition failed",
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "batch",
+      "scenario": "effect_ambiguous",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 16.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "ambiguous target: 2"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "identity invalid",
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "batch",
+      "scenario": "legacy_dispatch_unverified",
+      "passed": true,
+      "hits": [
+        "right"
+      ],
+      "elapsed_ms": 16.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "save-right",
+            "text": "Salvar",
+            "dispatched": true,
+            "effect": {
+              "verified": false,
+              "reason": "no postcondition declared"
+            }
+          },
+          {
+            "i": 1,
+            "action": "assert_text",
+            "ok": true,
+            "value": "Salvar"
+          }
+        ],
+        "stopped_at": null,
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "batch",
+      "scenario": "aria_name",
+      "passed": true,
+      "hits": [
+        "right"
+      ],
+      "elapsed_ms": 63.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "save-right",
+            "text": "Salvar",
+            "dispatched": true,
+            "effect": {
+              "verified": true,
+              "before": {
+                "found": true,
+                "value": "idle"
+              },
+              "after": {
+                "found": true,
+                "value": "right"
+              }
+            }
+          },
+          {
+            "i": 1,
+            "action": "assert_text",
+            "ok": true,
+            "value": "Salvar"
+          }
+        ],
+        "stopped_at": null,
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "batch",
+      "scenario": "labelled_control",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 203.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "type",
+            "ok": true,
+            "id": "field",
+            "value": "Oi",
+            "dispatched": true,
+            "effect": {
+              "verified": true,
+              "before": {
+                "found": true,
+                "value": ""
+              },
+              "after": {
+                "found": true,
+                "value": "Oi"
+              }
+            }
+          },
+          {
+            "i": 1,
+            "action": "assert_text",
+            "ok": true,
+            "value": "Salvar"
+          }
+        ],
+        "stopped_at": null,
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "batch",
+      "scenario": "bad_scope",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 0.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "invalid identity descriptor"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "identity invalid",
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "batch",
+      "scenario": "bad_postcondition",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 0.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "invalid postcondition"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "identity invalid",
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "recipe-adapter",
+      "scenario": "scope_id",
+      "passed": true,
+      "hits": [
+        "right"
+      ],
+      "elapsed_ms": 78.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "save-right",
+            "text": "Salvar",
+            "dispatched": true,
+            "effect": {
+              "verified": true,
+              "before": {
+                "found": true,
+                "value": "idle"
+              },
+              "after": {
+                "found": true,
+                "value": "right"
+              }
+            }
+          },
+          {
+            "i": 1,
+            "action": "assert_text",
+            "ok": true,
+            "value": "Salvar"
+          }
+        ],
+        "stopped_at": null,
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "recipe-adapter",
+      "scenario": "scope_semantic",
+      "passed": true,
+      "hits": [
+        "right"
+      ],
+      "elapsed_ms": 63.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "save-right",
+            "text": "Salvar",
+            "dispatched": true,
+            "effect": {
+              "verified": true,
+              "before": {
+                "found": true,
+                "value": "idle"
+              },
+              "after": {
+                "found": true,
+                "value": "right"
+              }
+            }
+          },
+          {
+            "i": 1,
+            "action": "assert_text",
+            "ok": true,
+            "value": "Salvar"
+          }
+        ],
+        "stopped_at": null,
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "recipe-adapter",
+      "scenario": "scope_missing",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 813.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "identity invalid",
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "recipe-adapter",
+      "scenario": "scope_ambiguous",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 15.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "ambiguous scope: 2"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "identity invalid",
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "recipe-adapter",
+      "scenario": "global_ambiguous",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 16.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "ambiguous target: 2"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "identity invalid",
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "recipe-adapter",
+      "scenario": "local_ambiguous",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 16.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "ambiguous target: 2"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "identity invalid",
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "recipe-adapter",
+      "scenario": "hidden_duplicate",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 0.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "ambiguous target: 2"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "identity invalid",
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "recipe-adapter",
+      "scenario": "id_label_conflict",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 797.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)",
+            "label": "Excluir"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "identity invalid",
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "recipe-adapter",
+      "scenario": "wrong_role",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 828.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "identity invalid",
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "recipe-adapter",
+      "scenario": "exact_not_partial",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 828.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "identity invalid",
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "recipe-adapter",
+      "scenario": "effect_wrong",
+      "passed": true,
+      "hits": [
+        "right"
+      ],
+      "elapsed_ms": 312.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": false,
+            "id": "save-right",
+            "text": "Salvar",
+            "dispatched": true,
+            "effect": {
+              "verified": false,
+              "before": {
+                "found": true,
+                "value": "idle"
+              },
+              "after": {
+                "found": true,
+                "value": "right"
+              },
+              "reason": "postcondition timeout or stale"
+            }
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "postcondition failed",
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "recipe-adapter",
+      "scenario": "effect_stale",
+      "passed": true,
+      "hits": [
+        "right"
+      ],
+      "elapsed_ms": 313.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": false,
+            "id": "save-right",
+            "text": "Salvar",
+            "dispatched": true,
+            "effect": {
+              "verified": false,
+              "before": {
+                "found": true,
+                "value": "right"
+              },
+              "after": {
+                "found": true,
+                "value": "right"
+              },
+              "reason": "postcondition timeout or stale"
+            }
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "postcondition failed",
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "recipe-adapter",
+      "scenario": "effect_async",
+      "passed": true,
+      "hits": [
+        "right"
+      ],
+      "elapsed_ms": 78.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "save-right",
+            "text": "Salvar",
+            "dispatched": true,
+            "effect": {
+              "verified": true,
+              "before": {
+                "found": true,
+                "value": "idle"
+              },
+              "after": {
+                "found": true,
+                "value": "right"
+              }
+            }
+          },
+          {
+            "i": 1,
+            "action": "assert_text",
+            "ok": true,
+            "value": "Salvar"
+          }
+        ],
+        "stopped_at": null,
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "recipe-adapter",
+      "scenario": "effect_missing",
+      "passed": true,
+      "hits": [
+        "right"
+      ],
+      "elapsed_ms": 328.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": false,
+            "id": "save-right",
+            "text": "Salvar",
+            "dispatched": true,
+            "effect": {
+              "verified": false,
+              "before": {
+                "found": true,
+                "value": "idle"
+              },
+              "after": {
+                "found": true,
+                "value": "idle"
+              },
+              "reason": "postcondition timeout or stale"
+            }
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "postcondition failed",
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "recipe-adapter",
+      "scenario": "effect_ambiguous",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 16.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "ambiguous target: 2"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "identity invalid",
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "recipe-adapter",
+      "scenario": "legacy_dispatch_unverified",
+      "passed": true,
+      "hits": [
+        "right"
+      ],
+      "elapsed_ms": 0.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "save-right",
+            "text": "Salvar",
+            "dispatched": true,
+            "effect": {
+              "verified": false,
+              "reason": "no postcondition declared"
+            }
+          },
+          {
+            "i": 1,
+            "action": "assert_text",
+            "ok": true,
+            "value": "Salvar"
+          }
+        ],
+        "stopped_at": null,
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "recipe-adapter",
+      "scenario": "aria_name",
+      "passed": true,
+      "hits": [
+        "right"
+      ],
+      "elapsed_ms": 94.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "click",
+            "ok": true,
+            "id": "save-right",
+            "text": "Salvar",
+            "dispatched": true,
+            "effect": {
+              "verified": true,
+              "before": {
+                "found": true,
+                "value": "idle"
+              },
+              "after": {
+                "found": true,
+                "value": "right"
+              }
+            }
+          },
+          {
+            "i": 1,
+            "action": "assert_text",
+            "ok": true,
+            "value": "Salvar"
+          }
+        ],
+        "stopped_at": null,
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "recipe-adapter",
+      "scenario": "labelled_control",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 281.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "action": "type",
+            "ok": true,
+            "id": "field",
+            "value": "Oi",
+            "dispatched": true,
+            "effect": {
+              "verified": true,
+              "before": {
+                "found": true,
+                "value": ""
+              },
+              "after": {
+                "found": true,
+                "value": "Oi"
+              }
+            }
+          },
+          {
+            "i": 1,
+            "action": "assert_text",
+            "ok": true,
+            "value": "Salvar"
+          }
+        ],
+        "stopped_at": null,
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "recipe-adapter",
+      "scenario": "bad_scope",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 0.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "invalid identity descriptor"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "identity invalid",
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "recipe-adapter",
+      "scenario": "bad_postcondition",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 16.0,
+      "result": {
+        "results": [
+          {
+            "i": 0,
+            "error": "invalid postcondition"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "identity invalid",
+        "_rc": 0
+      }
+    },
+    {
+      "mode": "recipe-run",
+      "scenario": "scope_id",
+      "passed": true,
+      "hits": [
+        "right"
+      ],
+      "elapsed_ms": 2093.0,
+      "result": {
+        "url": "about:blank",
+        "recipe": "recipe.json",
+        "steps": [
+          {
+            "i": 0,
+            "op": {
+              "name": "Salvar",
+              "role": "button",
+              "scope": {
+                "id": "right"
+              },
+              "postcondition": {
+                "target": {
+                  "id": "status"
+                },
+                "property": "text",
+                "equals": "right",
+                "timeout_ms": 300
+              },
+              "_expect_fail": true,
+              "action": "click"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "click",
+                  "ok": true,
+                  "id": "save-right",
+                  "text": "Salvar",
+                  "dispatched": true,
+                  "effect": {
+                    "verified": true,
+                    "before": {
+                      "found": true,
+                      "value": "idle"
+                    },
+                    "after": {
+                      "found": true,
+                      "value": "right"
+                    }
+                  }
+                }
+              ],
+              "stopped_at": null,
+              "_rc": 0
+            }
+          },
+          {
+            "i": 1,
+            "op": {
+              "value": "Salvar",
+              "action": "assert_text"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "assert_text",
+                  "ok": true,
+                  "value": "Salvar"
+                }
+              ],
+              "stopped_at": null,
+              "_rc": 0
+            }
+          }
+        ],
+        "result": "RECIPE-DONE",
+        "postconditions": [],
+        "repairs": [],
+        "navigation": {
+          "rc": 0,
+          "url": "about:blank",
+          "marker": null
+        },
+        "identity": {
+          "url": "about:blank",
+          "title": "",
+          "markerOk": null
+        }
+      }
+    },
+    {
+      "mode": "recipe-run",
+      "scenario": "scope_semantic",
+      "passed": true,
+      "hits": [
+        "right"
+      ],
+      "elapsed_ms": 2219.0,
+      "result": {
+        "url": "about:blank",
+        "recipe": "recipe.json",
+        "steps": [
+          {
+            "i": 0,
+            "op": {
+              "name": "Salvar",
+              "role": "button",
+              "scope": {
+                "role": "region",
+                "name": "Destino"
+              },
+              "postcondition": {
+                "target": {
+                  "id": "status"
+                },
+                "property": "text",
+                "equals": "right",
+                "timeout_ms": 300
+              },
+              "_expect_fail": true,
+              "action": "click"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "click",
+                  "ok": true,
+                  "id": "save-right",
+                  "text": "Salvar",
+                  "dispatched": true,
+                  "effect": {
+                    "verified": true,
+                    "before": {
+                      "found": true,
+                      "value": "idle"
+                    },
+                    "after": {
+                      "found": true,
+                      "value": "right"
+                    }
+                  }
+                }
+              ],
+              "stopped_at": null,
+              "_rc": 0
+            }
+          },
+          {
+            "i": 1,
+            "op": {
+              "value": "Salvar",
+              "action": "assert_text"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "assert_text",
+                  "ok": true,
+                  "value": "Salvar"
+                }
+              ],
+              "stopped_at": null,
+              "_rc": 0
+            }
+          }
+        ],
+        "result": "RECIPE-DONE",
+        "postconditions": [],
+        "repairs": [],
+        "navigation": {
+          "rc": 0,
+          "url": "about:blank",
+          "marker": null
+        },
+        "identity": {
+          "url": "about:blank",
+          "title": "",
+          "markerOk": null
+        }
+      }
+    },
+    {
+      "mode": "recipe-run",
+      "scenario": "scope_missing",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 860.0,
+      "result": {
+        "url": "about:blank",
+        "recipe": "recipe.json",
+        "steps": [
+          {
+            "i": 0,
+            "op": {
+              "name": "Salvar",
+              "role": "button",
+              "scope": {
+                "id": "missing"
+              },
+              "postcondition": {
+                "target": {
+                  "id": "status"
+                },
+                "property": "text",
+                "equals": "right",
+                "timeout_ms": 300
+              },
+              "_expect_fail": true,
+              "action": "click"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "error": "element not found (waited)"
+                }
+              ],
+              "stopped_at": 0,
+              "reason": "identity invalid",
+              "_rc": 0
+            }
+          }
+        ],
+        "result": "RECIPE-FAIL identity invalid at step 0: element not found (waited)",
+        "postconditions": [],
+        "repairs": [],
+        "navigation": {
+          "rc": 0,
+          "url": "about:blank",
+          "marker": null
+        },
+        "identity": {
+          "url": "about:blank",
+          "title": "",
+          "markerOk": null
+        }
+      }
+    },
+    {
+      "mode": "recipe-run",
+      "scenario": "scope_ambiguous",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 31.0,
+      "result": {
+        "url": "about:blank",
+        "recipe": "recipe.json",
+        "steps": [
+          {
+            "i": 0,
+            "op": {
+              "name": "Salvar",
+              "role": "button",
+              "scope": {
+                "role": "region"
+              },
+              "postcondition": {
+                "target": {
+                  "id": "status"
+                },
+                "property": "text",
+                "equals": "right",
+                "timeout_ms": 300
+              },
+              "_expect_fail": true,
+              "action": "click"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "error": "ambiguous scope: 2"
+                }
+              ],
+              "stopped_at": 0,
+              "reason": "identity invalid",
+              "_rc": 0
+            }
+          }
+        ],
+        "result": "RECIPE-FAIL identity invalid at step 0: ambiguous scope: 2",
+        "postconditions": [],
+        "repairs": [],
+        "navigation": {
+          "rc": 0,
+          "url": "about:blank",
+          "marker": null
+        },
+        "identity": {
+          "url": "about:blank",
+          "title": "",
+          "markerOk": null
+        }
+      }
+    },
+    {
+      "mode": "recipe-run",
+      "scenario": "global_ambiguous",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 31.0,
+      "result": {
+        "url": "about:blank",
+        "recipe": "recipe.json",
+        "steps": [
+          {
+            "i": 0,
+            "op": {
+              "name": "Salvar",
+              "role": "button",
+              "postcondition": {
+                "target": {
+                  "id": "status"
+                },
+                "property": "text",
+                "equals": "right",
+                "timeout_ms": 300
+              },
+              "_expect_fail": true,
+              "element": 1,
+              "action": "click"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "error": "ambiguous target: 2"
+                }
+              ],
+              "stopped_at": 0,
+              "reason": "identity invalid",
+              "_rc": 0
+            }
+          }
+        ],
+        "result": "RECIPE-FAIL identity invalid at step 0: ambiguous target: 2",
+        "postconditions": [],
+        "repairs": [],
+        "navigation": {
+          "rc": 0,
+          "url": "about:blank",
+          "marker": null
+        },
+        "identity": {
+          "url": "about:blank",
+          "title": "",
+          "markerOk": null
+        }
+      }
+    },
+    {
+      "mode": "recipe-run",
+      "scenario": "local_ambiguous",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 16.0,
+      "result": {
+        "url": "about:blank",
+        "recipe": "recipe.json",
+        "steps": [
+          {
+            "i": 0,
+            "op": {
+              "name": "Salvar",
+              "role": "button",
+              "scope": {
+                "id": "right"
+              },
+              "postcondition": {
+                "target": {
+                  "id": "status"
+                },
+                "property": "text",
+                "equals": "right",
+                "timeout_ms": 300
+              },
+              "_expect_fail": true,
+              "action": "click"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "error": "ambiguous target: 2"
+                }
+              ],
+              "stopped_at": 0,
+              "reason": "identity invalid",
+              "_rc": 0
+            }
+          }
+        ],
+        "result": "RECIPE-FAIL identity invalid at step 0: ambiguous target: 2",
+        "postconditions": [],
+        "repairs": [],
+        "navigation": {
+          "rc": 0,
+          "url": "about:blank",
+          "marker": null
+        },
+        "identity": {
+          "url": "about:blank",
+          "title": "",
+          "markerOk": null
+        }
+      }
+    },
+    {
+      "mode": "recipe-run",
+      "scenario": "hidden_duplicate",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 31.0,
+      "result": {
+        "url": "about:blank",
+        "recipe": "recipe.json",
+        "steps": [
+          {
+            "i": 0,
+            "op": {
+              "name": "Salvar",
+              "role": "button",
+              "scope": {
+                "id": "right"
+              },
+              "postcondition": {
+                "target": {
+                  "id": "status"
+                },
+                "property": "text",
+                "equals": "right",
+                "timeout_ms": 300
+              },
+              "_expect_fail": true,
+              "action": "click"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "error": "ambiguous target: 2"
+                }
+              ],
+              "stopped_at": 0,
+              "reason": "identity invalid",
+              "_rc": 0
+            }
+          }
+        ],
+        "result": "RECIPE-FAIL identity invalid at step 0: ambiguous target: 2",
+        "postconditions": [],
+        "repairs": [],
+        "navigation": {
+          "rc": 0,
+          "url": "about:blank",
+          "marker": null
+        },
+        "identity": {
+          "url": "about:blank",
+          "title": "",
+          "markerOk": null
+        }
+      }
+    },
+    {
+      "mode": "recipe-run",
+      "scenario": "id_label_conflict",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 828.0,
+      "result": {
+        "url": "about:blank",
+        "recipe": "recipe.json",
+        "steps": [
+          {
+            "i": 0,
+            "op": {
+              "role": "button",
+              "scope": {
+                "id": "right"
+              },
+              "postcondition": {
+                "target": {
+                  "id": "status"
+                },
+                "property": "text",
+                "equals": "right",
+                "timeout_ms": 300
+              },
+              "_expect_fail": true,
+              "id": "save-right",
+              "label": "Excluir",
+              "action": "click"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "error": "element not found (waited)",
+                  "label": "Excluir"
+                }
+              ],
+              "stopped_at": 0,
+              "reason": "identity invalid",
+              "_rc": 0
+            }
+          }
+        ],
+        "result": "RECIPE-FAIL identity invalid at step 0: element not found (waited)",
+        "postconditions": [],
+        "repairs": [],
+        "navigation": {
+          "rc": 0,
+          "url": "about:blank",
+          "marker": null
+        },
+        "identity": {
+          "url": "about:blank",
+          "title": "",
+          "markerOk": null
+        }
+      }
+    },
+    {
+      "mode": "recipe-run",
+      "scenario": "wrong_role",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 906.0,
+      "result": {
+        "url": "about:blank",
+        "recipe": "recipe.json",
+        "steps": [
+          {
+            "i": 0,
+            "op": {
+              "name": "Salvar",
+              "role": "link",
+              "scope": {
+                "id": "right"
+              },
+              "postcondition": {
+                "target": {
+                  "id": "status"
+                },
+                "property": "text",
+                "equals": "right",
+                "timeout_ms": 300
+              },
+              "_expect_fail": true,
+              "action": "click"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "error": "element not found (waited)"
+                }
+              ],
+              "stopped_at": 0,
+              "reason": "identity invalid",
+              "_rc": 0
+            }
+          }
+        ],
+        "result": "RECIPE-FAIL identity invalid at step 0: element not found (waited)",
+        "postconditions": [],
+        "repairs": [],
+        "navigation": {
+          "rc": 0,
+          "url": "about:blank",
+          "marker": null
+        },
+        "identity": {
+          "url": "about:blank",
+          "title": "",
+          "markerOk": null
+        }
+      }
+    },
+    {
+      "mode": "recipe-run",
+      "scenario": "exact_not_partial",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 953.0,
+      "result": {
+        "url": "about:blank",
+        "recipe": "recipe.json",
+        "steps": [
+          {
+            "i": 0,
+            "op": {
+              "name": "Sal",
+              "role": "button",
+              "scope": {
+                "id": "right"
+              },
+              "postcondition": {
+                "target": {
+                  "id": "status"
+                },
+                "property": "text",
+                "equals": "right",
+                "timeout_ms": 300
+              },
+              "_expect_fail": true,
+              "action": "click"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "error": "element not found (waited)"
+                }
+              ],
+              "stopped_at": 0,
+              "reason": "identity invalid",
+              "_rc": 0
+            }
+          }
+        ],
+        "result": "RECIPE-FAIL identity invalid at step 0: element not found (waited)",
+        "postconditions": [],
+        "repairs": [],
+        "navigation": {
+          "rc": 0,
+          "url": "about:blank",
+          "marker": null
+        },
+        "identity": {
+          "url": "about:blank",
+          "title": "",
+          "markerOk": null
+        }
+      }
+    },
+    {
+      "mode": "recipe-run",
+      "scenario": "effect_wrong",
+      "passed": true,
+      "hits": [
+        "right"
+      ],
+      "elapsed_ms": 344.0,
+      "result": {
+        "url": "about:blank",
+        "recipe": "recipe.json",
+        "steps": [
+          {
+            "i": 0,
+            "op": {
+              "name": "Salvar",
+              "role": "button",
+              "scope": {
+                "id": "right"
+              },
+              "postcondition": {
+                "target": {
+                  "id": "status"
+                },
+                "property": "text",
+                "equals": "wrong",
+                "timeout_ms": 300
+              },
+              "_expect_fail": true,
+              "action": "click"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "click",
+                  "ok": false,
+                  "id": "save-right",
+                  "text": "Salvar",
+                  "dispatched": true,
+                  "effect": {
+                    "verified": false,
+                    "before": {
+                      "found": true,
+                      "value": "idle"
+                    },
+                    "after": {
+                      "found": true,
+                      "value": "right"
+                    },
+                    "reason": "postcondition timeout or stale"
+                  }
+                }
+              ],
+              "stopped_at": 0,
+              "reason": "postcondition failed",
+              "_rc": 0
+            }
+          }
+        ],
+        "result": "RECIPE-FAIL postcondition failed at step 0: {'verified': False, 'before': {'found': True, 'value': 'idle'}, 'after': {'found': True, 'value': 'right'}, 'reason': 'postcondition timeout or stale'}",
+        "postconditions": [],
+        "repairs": [],
+        "navigation": {
+          "rc": 0,
+          "url": "about:blank",
+          "marker": null
+        },
+        "identity": {
+          "url": "about:blank",
+          "title": "",
+          "markerOk": null
+        }
+      }
+    },
+    {
+      "mode": "recipe-run",
+      "scenario": "effect_stale",
+      "passed": true,
+      "hits": [
+        "right"
+      ],
+      "elapsed_ms": 329.0,
+      "result": {
+        "url": "about:blank",
+        "recipe": "recipe.json",
+        "steps": [
+          {
+            "i": 0,
+            "op": {
+              "name": "Salvar",
+              "role": "button",
+              "scope": {
+                "id": "right"
+              },
+              "postcondition": {
+                "target": {
+                  "id": "status"
+                },
+                "property": "text",
+                "equals": "right",
+                "timeout_ms": 300
+              },
+              "_expect_fail": true,
+              "action": "click"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "click",
+                  "ok": false,
+                  "id": "save-right",
+                  "text": "Salvar",
+                  "dispatched": true,
+                  "effect": {
+                    "verified": false,
+                    "before": {
+                      "found": true,
+                      "value": "right"
+                    },
+                    "after": {
+                      "found": true,
+                      "value": "right"
+                    },
+                    "reason": "postcondition timeout or stale"
+                  }
+                }
+              ],
+              "stopped_at": 0,
+              "reason": "postcondition failed",
+              "_rc": 0
+            }
+          }
+        ],
+        "result": "RECIPE-FAIL postcondition failed at step 0: {'verified': False, 'before': {'found': True, 'value': 'right'}, 'after': {'found': True, 'value': 'right'}, 'reason': 'postcondition timeout or stale'}",
+        "postconditions": [],
+        "repairs": [],
+        "navigation": {
+          "rc": 0,
+          "url": "about:blank",
+          "marker": null
+        },
+        "identity": {
+          "url": "about:blank",
+          "title": "",
+          "markerOk": null
+        }
+      }
+    },
+    {
+      "mode": "recipe-run",
+      "scenario": "effect_async",
+      "passed": true,
+      "hits": [
+        "right"
+      ],
+      "elapsed_ms": 2094.0,
+      "result": {
+        "url": "about:blank",
+        "recipe": "recipe.json",
+        "steps": [
+          {
+            "i": 0,
+            "op": {
+              "name": "Salvar",
+              "role": "button",
+              "scope": {
+                "id": "right"
+              },
+              "postcondition": {
+                "target": {
+                  "id": "status"
+                },
+                "property": "text",
+                "equals": "right",
+                "timeout_ms": 300
+              },
+              "_expect_fail": true,
+              "action": "click"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "click",
+                  "ok": true,
+                  "id": "save-right",
+                  "text": "Salvar",
+                  "dispatched": true,
+                  "effect": {
+                    "verified": true,
+                    "before": {
+                      "found": true,
+                      "value": "idle"
+                    },
+                    "after": {
+                      "found": true,
+                      "value": "right"
+                    }
+                  }
+                }
+              ],
+              "stopped_at": null,
+              "_rc": 0
+            }
+          },
+          {
+            "i": 1,
+            "op": {
+              "value": "Salvar",
+              "action": "assert_text"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "assert_text",
+                  "ok": true,
+                  "value": "Salvar"
+                }
+              ],
+              "stopped_at": null,
+              "_rc": 0
+            }
+          }
+        ],
+        "result": "RECIPE-DONE",
+        "postconditions": [],
+        "repairs": [],
+        "navigation": {
+          "rc": 0,
+          "url": "about:blank",
+          "marker": null
+        },
+        "identity": {
+          "url": "about:blank",
+          "title": "",
+          "markerOk": null
+        }
+      }
+    },
+    {
+      "mode": "recipe-run",
+      "scenario": "effect_missing",
+      "passed": true,
+      "hits": [
+        "right"
+      ],
+      "elapsed_ms": 344.0,
+      "result": {
+        "url": "about:blank",
+        "recipe": "recipe.json",
+        "steps": [
+          {
+            "i": 0,
+            "op": {
+              "name": "Salvar",
+              "role": "button",
+              "scope": {
+                "id": "right"
+              },
+              "postcondition": {
+                "target": {
+                  "id": "status"
+                },
+                "property": "text",
+                "equals": "right",
+                "timeout_ms": 300
+              },
+              "_expect_fail": true,
+              "action": "click"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "click",
+                  "ok": false,
+                  "id": "save-right",
+                  "text": "Salvar",
+                  "dispatched": true,
+                  "effect": {
+                    "verified": false,
+                    "before": {
+                      "found": true,
+                      "value": "idle"
+                    },
+                    "after": {
+                      "found": true,
+                      "value": "idle"
+                    },
+                    "reason": "postcondition timeout or stale"
+                  }
+                }
+              ],
+              "stopped_at": 0,
+              "reason": "postcondition failed",
+              "_rc": 0
+            }
+          }
+        ],
+        "result": "RECIPE-FAIL postcondition failed at step 0: {'verified': False, 'before': {'found': True, 'value': 'idle'}, 'after': {'found': True, 'value': 'idle'}, 'reason': 'postcondition timeout or stale'}",
+        "postconditions": [],
+        "repairs": [],
+        "navigation": {
+          "rc": 0,
+          "url": "about:blank",
+          "marker": null
+        },
+        "identity": {
+          "url": "about:blank",
+          "title": "",
+          "markerOk": null
+        }
+      }
+    },
+    {
+      "mode": "recipe-run",
+      "scenario": "effect_ambiguous",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 16.0,
+      "result": {
+        "url": "about:blank",
+        "recipe": "recipe.json",
+        "steps": [
+          {
+            "i": 0,
+            "op": {
+              "name": "Salvar",
+              "role": "button",
+              "scope": {
+                "id": "right"
+              },
+              "postcondition": {
+                "target": {
+                  "id": "status"
+                },
+                "property": "text",
+                "equals": "right",
+                "timeout_ms": 300
+              },
+              "_expect_fail": true,
+              "action": "click"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "error": "ambiguous target: 2"
+                }
+              ],
+              "stopped_at": 0,
+              "reason": "identity invalid",
+              "_rc": 0
+            }
+          }
+        ],
+        "result": "RECIPE-FAIL identity invalid at step 0: ambiguous target: 2",
+        "postconditions": [],
+        "repairs": [],
+        "navigation": {
+          "rc": 0,
+          "url": "about:blank",
+          "marker": null
+        },
+        "identity": {
+          "url": "about:blank",
+          "title": "",
+          "markerOk": null
+        }
+      }
+    },
+    {
+      "mode": "recipe-run",
+      "scenario": "legacy_dispatch_unverified",
+      "passed": true,
+      "hits": [
+        "right"
+      ],
+      "elapsed_ms": 2031.0,
+      "result": {
+        "url": "about:blank",
+        "recipe": "recipe.json",
+        "steps": [
+          {
+            "i": 0,
+            "op": {
+              "id": "save-right",
+              "action": "click"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "click",
+                  "ok": true,
+                  "id": "save-right",
+                  "text": "Salvar",
+                  "dispatched": true,
+                  "effect": {
+                    "verified": false,
+                    "reason": "no postcondition declared"
+                  }
+                }
+              ],
+              "stopped_at": null,
+              "_rc": 0
+            }
+          },
+          {
+            "i": 1,
+            "op": {
+              "value": "Salvar",
+              "action": "assert_text"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "assert_text",
+                  "ok": true,
+                  "value": "Salvar"
+                }
+              ],
+              "stopped_at": null,
+              "_rc": 0
+            }
+          }
+        ],
+        "result": "RECIPE-DONE",
+        "postconditions": [],
+        "repairs": [],
+        "navigation": {
+          "rc": 0,
+          "url": "about:blank",
+          "marker": null
+        },
+        "identity": {
+          "url": "about:blank",
+          "title": "",
+          "markerOk": null
+        }
+      }
+    },
+    {
+      "mode": "recipe-run",
+      "scenario": "aria_name",
+      "passed": true,
+      "hits": [
+        "right"
+      ],
+      "elapsed_ms": 2094.0,
+      "result": {
+        "url": "about:blank",
+        "recipe": "recipe.json",
+        "steps": [
+          {
+            "i": 0,
+            "op": {
+              "name": "Confirmar",
+              "role": "button",
+              "scope": {
+                "id": "right"
+              },
+              "postcondition": {
+                "target": {
+                  "id": "status"
+                },
+                "property": "text",
+                "equals": "right",
+                "timeout_ms": 300
+              },
+              "_expect_fail": true,
+              "action": "click"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "click",
+                  "ok": true,
+                  "id": "save-right",
+                  "text": "Salvar",
+                  "dispatched": true,
+                  "effect": {
+                    "verified": true,
+                    "before": {
+                      "found": true,
+                      "value": "idle"
+                    },
+                    "after": {
+                      "found": true,
+                      "value": "right"
+                    }
+                  }
+                }
+              ],
+              "stopped_at": null,
+              "_rc": 0
+            }
+          },
+          {
+            "i": 1,
+            "op": {
+              "value": "Salvar",
+              "action": "assert_text"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "assert_text",
+                  "ok": true,
+                  "value": "Salvar"
+                }
+              ],
+              "stopped_at": null,
+              "_rc": 0
+            }
+          }
+        ],
+        "result": "RECIPE-DONE",
+        "postconditions": [],
+        "repairs": [],
+        "navigation": {
+          "rc": 0,
+          "url": "about:blank",
+          "marker": null
+        },
+        "identity": {
+          "url": "about:blank",
+          "title": "",
+          "markerOk": null
+        }
+      }
+    },
+    {
+      "mode": "recipe-run",
+      "scenario": "labelled_control",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 2375.0,
+      "result": {
+        "url": "about:blank",
+        "recipe": "recipe.json",
+        "steps": [
+          {
+            "i": 0,
+            "op": {
+              "scope": {
+                "id": "right"
+              },
+              "role": "textbox",
+              "name": "Nome",
+              "value": "Oi",
+              "postcondition": {
+                "target": {
+                  "id": "field"
+                },
+                "property": "value",
+                "equals": "Oi",
+                "timeout_ms": 300
+              },
+              "action": "type"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "type",
+                  "ok": true,
+                  "id": "field",
+                  "value": "Oi",
+                  "dispatched": true,
+                  "effect": {
+                    "verified": true,
+                    "before": {
+                      "found": true,
+                      "value": ""
+                    },
+                    "after": {
+                      "found": true,
+                      "value": "Oi"
+                    }
+                  }
+                }
+              ],
+              "stopped_at": null,
+              "_rc": 0
+            }
+          },
+          {
+            "i": 1,
+            "op": {
+              "value": "Salvar",
+              "action": "assert_text"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "assert_text",
+                  "ok": true,
+                  "value": "Salvar"
+                }
+              ],
+              "stopped_at": null,
+              "_rc": 0
+            }
+          }
+        ],
+        "result": "RECIPE-DONE",
+        "postconditions": [],
+        "repairs": [],
+        "navigation": {
+          "rc": 0,
+          "url": "about:blank",
+          "marker": null
+        },
+        "identity": {
+          "url": "about:blank",
+          "title": "",
+          "markerOk": null
+        }
+      }
+    },
+    {
+      "mode": "recipe-run",
+      "scenario": "bad_scope",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 32.0,
+      "result": {
+        "url": "about:blank",
+        "recipe": "recipe.json",
+        "steps": [
+          {
+            "i": 0,
+            "op": {
+              "name": "Salvar",
+              "role": "button",
+              "scope": {},
+              "postcondition": {
+                "target": {
+                  "id": "status"
+                },
+                "property": "text",
+                "equals": "right",
+                "timeout_ms": 300
+              },
+              "_expect_fail": true,
+              "action": "click"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "error": "invalid identity descriptor"
+                }
+              ],
+              "stopped_at": 0,
+              "reason": "identity invalid",
+              "_rc": 0
+            }
+          }
+        ],
+        "result": "RECIPE-FAIL identity invalid at step 0: invalid identity descriptor",
+        "postconditions": [],
+        "repairs": [],
+        "navigation": {
+          "rc": 0,
+          "url": "about:blank",
+          "marker": null
+        },
+        "identity": {
+          "url": "about:blank",
+          "title": "",
+          "markerOk": null
+        }
+      }
+    },
+    {
+      "mode": "recipe-run",
+      "scenario": "bad_postcondition",
+      "passed": true,
+      "hits": [],
+      "elapsed_ms": 32.0,
+      "result": {
+        "url": "about:blank",
+        "recipe": "recipe.json",
+        "steps": [
+          {
+            "i": 0,
+            "op": {
+              "name": "Salvar",
+              "role": "button",
+              "scope": {
+                "id": "right"
+              },
+              "postcondition": {
+                "property": "javascript"
+              },
+              "_expect_fail": true,
+              "action": "click"
+            },
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "error": "invalid postcondition"
+                }
+              ],
+              "stopped_at": 0,
+              "reason": "identity invalid",
+              "_rc": 0
+            }
+          }
+        ],
+        "result": "RECIPE-FAIL identity invalid at step 0: invalid postcondition",
+        "postconditions": [],
+        "repairs": [],
+        "navigation": {
+          "rc": 0,
+          "url": "about:blank",
+          "marker": null
+        },
+        "identity": {
+          "url": "about:blank",
+          "title": "",
+          "markerOk": null
+        }
+      }
+    }
+  ],
+  "isolation_reproducer": {
+    "reused_window_value": "leaked",
+    "new_document_value": "idle",
+    "confirmed": true
+  },
+  "wrapper_sha256": "5c0665e555c98f8ee9a37f4400d2375f3b219a5b28646c3d66f777af986764dd",
+  "original_test_unchanged": "165d5f198c83b1494088a40aade9aa6d7c90536826af1b29b0582e0c2c558720",
+  "isolation": "new about:blank document before each set_content; original A001 test untouched"
+}

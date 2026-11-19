@@ -1,0 +1,1383 @@
+{
+  "passed": 46,
+  "total": 47,
+  "sources": {
+    "agent_loop.py": "c5a8a8f1c264b5870738e6dfbf0ddeb2ccf75ef63f0fb53ac661369d4d1759c0",
+    "recipe.py": "01193c43fb2b53ca7fb0dcec3fa16bc6901a00f3badb36f92258fd4cbcf8db77",
+    "battery_pilot.py": "1d77d482b5397bf4bb4e27a00819a697516bad1b4879f6e715a4e6e75c62c58d",
+    "persisted_verifier.py": "4e5bf5b60b04cdd1c752d9aaf8f26c2ab6e8c5895311c3c37b55f2e411d41c71",
+    "test_persisted_guards.py": "105270affd57df253477c8fab185039cab3a50f5889d31d16bd2ea0e9200dc7c"
+  },
+  "cases": [
+    {
+      "mode": "single",
+      "scenario": "good",
+      "passed": true,
+      "verifierCalls": 1,
+      "log": {
+        "url": "http://127.0.0.1:8791/xt-web-form-01",
+        "goal": "synthetic controls only",
+        "model": "unused",
+        "steps": [
+          {
+            "step": 0,
+            "parsed": {
+              "action": "click",
+              "id": "go"
+            },
+            "latency_s": 0.0,
+            "reply": "{\"action\": \"click\", \"id\": \"go\"}",
+            "exec": "{\"i\": 0, \"action\": \"click\", \"ok\": true, \"_rc\": 0}"
+          },
+          {
+            "step": 1,
+            "parsed": {
+              "action": "done"
+            },
+            "latency_s": 0.0,
+            "reply": "{\"action\": \"done\"}"
+          },
+          {
+            "verifier": "persisted_json:{}",
+            "verdict": "PASS"
+          }
+        ],
+        "result": "DONE-VERIFIED",
+        "verification_details": [
+          {}
+        ]
+      }
+    },
+    {
+      "mode": "single",
+      "scenario": "expected_negative",
+      "passed": false,
+      "verifierCalls": 0,
+      "log": {
+        "url": "http://127.0.0.1:8791/xt-web-form-01",
+        "goal": "synthetic controls only",
+        "model": "unused",
+        "steps": [
+          {
+            "step": 0,
+            "parsed": {
+              "action": "click",
+              "id": "go"
+            },
+            "latency_s": 0.0,
+            "reply": "{\"action\": \"click\", \"id\": \"go\"}",
+            "exec": "{\"i\": 0, \"action\": \"click\", \"ok\": false, \"error\": \"expected negative\", \"expected\": true, \"_rc\": 0}"
+          }
+        ],
+        "result": "EXECUTION-FAIL",
+        "failures": [
+          {
+            "phase": "execution",
+            "detail": {
+              "i": 0,
+              "action": "click",
+              "ok": false,
+              "error": "expected negative",
+              "expected": true,
+              "_rc": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "mode": "single",
+      "scenario": "execution_error",
+      "passed": true,
+      "verifierCalls": 0,
+      "log": {
+        "url": "http://127.0.0.1:8791/xt-web-form-01",
+        "goal": "synthetic controls only",
+        "model": "unused",
+        "steps": [
+          {
+            "step": 0,
+            "parsed": {
+              "action": "click",
+              "id": "go"
+            },
+            "latency_s": 0.0,
+            "reply": "{\"action\": \"click\", \"id\": \"go\"}",
+            "exec": "{\"i\": 0, \"action\": \"click\", \"ok\": false, \"error\": \"action failed\", \"_rc\": 0}"
+          }
+        ],
+        "result": "EXECUTION-FAIL",
+        "failures": [
+          {
+            "phase": "execution",
+            "detail": {
+              "i": 0,
+              "action": "click",
+              "ok": false,
+              "error": "action failed",
+              "_rc": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "mode": "single",
+      "scenario": "executor_rc",
+      "passed": true,
+      "verifierCalls": 0,
+      "log": {
+        "url": "http://127.0.0.1:8791/xt-web-form-01",
+        "goal": "synthetic controls only",
+        "model": "unused",
+        "steps": [
+          {
+            "step": 0,
+            "parsed": {
+              "action": "click",
+              "id": "go"
+            },
+            "latency_s": 0.0,
+            "reply": "{\"action\": \"click\", \"id\": \"go\"}",
+            "exec": "{\"i\": 0, \"action\": \"click\", \"ok\": true, \"_rc\": 7}"
+          }
+        ],
+        "result": "EXECUTION-FAIL",
+        "failures": [
+          {
+            "phase": "execution",
+            "detail": {
+              "i": 0,
+              "action": "click",
+              "ok": true,
+              "_rc": 7
+            }
+          }
+        ]
+      }
+    },
+    {
+      "mode": "single",
+      "scenario": "initial_navigation",
+      "passed": true,
+      "verifierCalls": 0,
+      "log": {
+        "url": "http://127.0.0.1:8791/xt-web-form-01",
+        "goal": "synthetic controls only",
+        "model": "unused",
+        "steps": [],
+        "result": "HOST-FAIL",
+        "failures": [
+          {
+            "phase": "initial_navigation",
+            "error": "host rc != 0: {'out': '', 'err': 'navigation failed', 'rc': 7}"
+          }
+        ]
+      }
+    },
+    {
+      "mode": "single",
+      "scenario": "navigation",
+      "passed": true,
+      "verifierCalls": 0,
+      "log": {
+        "url": "http://127.0.0.1:8791/xt-web-form-01",
+        "goal": "synthetic controls only",
+        "model": "unused",
+        "steps": [
+          {
+            "step": 0,
+            "parsed": {
+              "action": "navigate",
+              "value": "http://127.0.0.1:8791/xt-web-form-01",
+              "id": "go"
+            },
+            "latency_s": 0.0,
+            "reply": "{\"action\": \"navigate\", \"value\": \"http://127.0.0.1:8791/xt-web-form-01\"}",
+            "exec": "{\"results\": [{\"i\": 0, \"action\": \"navigate\"}], \"stopped_at\": 0, \"terminal\": \"navigate\", \"url\": \"http://127.0.0.1:8791/xt-web-form-01\", \"_rc\": 0}"
+          }
+        ],
+        "result": "HOST-FAIL",
+        "failures": [
+          {
+            "phase": "navigation",
+            "error": "host rc != 0: {'out': '', 'err': 'navigation failed', 'rc': 7}"
+          }
+        ]
+      }
+    },
+    {
+      "mode": "single",
+      "scenario": "upload_rc",
+      "passed": true,
+      "verifierCalls": 0,
+      "log": {
+        "url": "http://127.0.0.1:8791/xt-web-form-01",
+        "goal": "synthetic controls only",
+        "model": "unused",
+        "steps": [
+          {
+            "step": 0,
+            "parsed": {
+              "action": "upload",
+              "id": "upload",
+              "value": "evidence.txt"
+            },
+            "latency_s": 0.0,
+            "reply": "{\"action\": \"upload\", \"id\": \"upload\", \"value\": \"evidence.txt\"}",
+            "exec": "{\"results\": [{\"i\": 0, \"action\": \"upload\", \"pending\": true}], \"stopped_at\": 0, \"terminal\": \"upload\", \"url\": \"http://127.0.0.1:8791/xt-web-form-01\", \"_rc\": 0}"
+          }
+        ],
+        "result": "HOST-FAIL",
+        "failures": [
+          {
+            "phase": "upload",
+            "error": "host rc != 0: {'out': 'upload-ok', 'err': '', 'rc': 7}"
+          }
+        ]
+      }
+    },
+    {
+      "mode": "single",
+      "scenario": "upload_message",
+      "passed": true,
+      "verifierCalls": 0,
+      "log": {
+        "url": "http://127.0.0.1:8791/xt-web-form-01",
+        "goal": "synthetic controls only",
+        "model": "unused",
+        "steps": [
+          {
+            "step": 0,
+            "parsed": {
+              "action": "upload",
+              "id": "upload",
+              "value": "evidence.txt"
+            },
+            "latency_s": 0.0,
+            "reply": "{\"action\": \"upload\", \"id\": \"upload\", \"value\": \"evidence.txt\"}",
+            "exec": "{\"results\": [{\"i\": 0, \"action\": \"upload\", \"pending\": true}], \"stopped_at\": 0, \"terminal\": \"upload\", \"url\": \"http://127.0.0.1:8791/xt-web-form-01\", \"_rc\": 0}"
+          }
+        ],
+        "result": "HOST-FAIL",
+        "failures": [
+          {
+            "phase": "upload",
+            "error": "host upload not confirmed: {'out': 'upload-fail broken', 'err': '', 'rc': 0}"
+          }
+        ]
+      }
+    },
+    {
+      "mode": "single",
+      "scenario": "host_exception",
+      "passed": true,
+      "verifierCalls": 0,
+      "log": {
+        "url": "http://127.0.0.1:8791/xt-web-form-01",
+        "goal": "synthetic controls only",
+        "model": "unused",
+        "steps": [
+          {
+            "step": 0,
+            "parsed": {
+              "action": "upload",
+              "id": "upload",
+              "value": "evidence.txt"
+            },
+            "latency_s": 0.0,
+            "reply": "{\"action\": \"upload\", \"id\": \"upload\", \"value\": \"evidence.txt\"}",
+            "exec": "{\"results\": [{\"i\": 0, \"action\": \"upload\", \"pending\": true}], \"stopped_at\": 0, \"terminal\": \"upload\", \"url\": \"http://127.0.0.1:8791/xt-web-form-01\", \"_rc\": 0}"
+          }
+        ],
+        "result": "HOST-FAIL",
+        "failures": [
+          {
+            "phase": "upload",
+            "error": "host timeout"
+          }
+        ]
+      }
+    },
+    {
+      "mode": "single",
+      "scenario": "verifier_fail",
+      "passed": true,
+      "verifierCalls": 1,
+      "log": {
+        "url": "http://127.0.0.1:8791/xt-web-form-01",
+        "goal": "synthetic controls only",
+        "model": "unused",
+        "steps": [
+          {
+            "step": 0,
+            "parsed": {
+              "action": "click",
+              "id": "go"
+            },
+            "latency_s": 0.0,
+            "reply": "{\"action\": \"click\", \"id\": \"go\"}",
+            "exec": "{\"i\": 0, \"action\": \"click\", \"ok\": true, \"_rc\": 0}"
+          },
+          {
+            "step": 1,
+            "parsed": {
+              "action": "done"
+            },
+            "latency_s": 0.0,
+            "reply": "{\"action\": \"done\"}"
+          },
+          {
+            "verifier": "persisted_json:{}",
+            "verdict": "FAIL: mismatch"
+          }
+        ],
+        "result": "VERIFICATION-FAIL",
+        "verification_details": [
+          {}
+        ],
+        "failures": [
+          {
+            "phase": "verifier",
+            "verdict": "FAIL: mismatch"
+          }
+        ]
+      }
+    },
+    {
+      "mode": "single",
+      "scenario": "snapshot_error",
+      "passed": true,
+      "verifierCalls": 0,
+      "log": {
+        "url": "http://127.0.0.1:8791/xt-web-form-01",
+        "goal": "synthetic controls only",
+        "model": "unused",
+        "steps": [
+          {
+            "error": "snapshot failed"
+          }
+        ],
+        "result": null
+      }
+    },
+    {
+      "mode": "single",
+      "scenario": "after_save_fail",
+      "passed": true,
+      "verifierCalls": 1,
+      "log": {
+        "url": "http://127.0.0.1:8791/xt-web-form-01",
+        "goal": "synthetic controls only",
+        "model": "unused",
+        "steps": [
+          {
+            "step": 0,
+            "parsed": {
+              "action": "click",
+              "id": "save",
+              "label": "Salvar"
+            },
+            "latency_s": 0.0,
+            "reply": "{\"action\": \"click\", \"id\": \"save\", \"label\": \"Salvar\"}",
+            "exec": "{\"i\": 0, \"action\": \"click\", \"ok\": true, \"_rc\": 0}"
+          },
+          {
+            "verifier_after_save": "persisted_json:{}",
+            "verdict": "FAIL: mismatch"
+          }
+        ],
+        "result": "VERIFICATION-FAIL",
+        "verification_details": [
+          {}
+        ],
+        "failures": [
+          {
+            "phase": "verifier",
+            "verdict": "FAIL: mismatch"
+          }
+        ]
+      }
+    },
+    {
+      "mode": "batch",
+      "scenario": "good",
+      "passed": true,
+      "verifierCalls": 1,
+      "log": {
+        "url": "http://127.0.0.1:8791/xt-web-form-01",
+        "goal": "synthetic controls only",
+        "model": "unused",
+        "mode": "batch",
+        "cycles": [
+          {
+            "cycle": 0,
+            "n_elements": 1,
+            "latency_s": 0.0,
+            "reply": "[{\"action\": \"click\", \"id\": \"go\"}]",
+            "plan": [
+              {
+                "action": "click",
+                "id": "go"
+              }
+            ],
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "click",
+                  "ok": true
+                }
+              ],
+              "stopped_at": null,
+              "_rc": 0
+            }
+          },
+          {
+            "verifier": "persisted_json:{}",
+            "verdict": "PASS"
+          }
+        ],
+        "result": "DONE-VERIFIED-BATCH",
+        "verification_details": [
+          {}
+        ]
+      }
+    },
+    {
+      "mode": "batch",
+      "scenario": "expected_negative",
+      "passed": true,
+      "verifierCalls": 1,
+      "log": {
+        "url": "http://127.0.0.1:8791/xt-web-form-01",
+        "goal": "synthetic controls only",
+        "model": "unused",
+        "mode": "batch",
+        "cycles": [
+          {
+            "cycle": 0,
+            "n_elements": 1,
+            "latency_s": 0.0,
+            "reply": "[{\"action\": \"click\", \"id\": \"go\"}]",
+            "plan": [
+              {
+                "action": "click",
+                "id": "go"
+              }
+            ],
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "click",
+                  "ok": false,
+                  "error": "expected negative",
+                  "expected": true
+                }
+              ],
+              "stopped_at": null,
+              "_rc": 0
+            }
+          },
+          {
+            "cycle": 1,
+            "n_elements": 1,
+            "latency_s": 0.0,
+            "reply": "[{\"action\": \"done\"}]",
+            "plan": [
+              {
+                "action": "done"
+              }
+            ]
+          },
+          {
+            "verifier": "persisted_json:{}",
+            "verdict": "PASS"
+          }
+        ],
+        "result": "DONE-VERIFIED-BATCH",
+        "verification_details": [
+          {}
+        ]
+      }
+    },
+    {
+      "mode": "batch",
+      "scenario": "execution_error",
+      "passed": true,
+      "verifierCalls": 0,
+      "log": {
+        "url": "http://127.0.0.1:8791/xt-web-form-01",
+        "goal": "synthetic controls only",
+        "model": "unused",
+        "mode": "batch",
+        "cycles": [
+          {
+            "cycle": 0,
+            "n_elements": 1,
+            "latency_s": 0.0,
+            "reply": "[{\"action\": \"click\", \"id\": \"go\"}]",
+            "plan": [
+              {
+                "action": "click",
+                "id": "go"
+              }
+            ],
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "click",
+                  "ok": false,
+                  "error": "action failed"
+                }
+              ],
+              "stopped_at": 0,
+              "reason": "failure",
+              "_rc": 0
+            }
+          }
+        ],
+        "result": "EXECUTION-FAIL-BATCH",
+        "failures": [
+          {
+            "phase": "execution",
+            "detail": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "click",
+                  "ok": false,
+                  "error": "action failed"
+                }
+              ],
+              "stopped_at": 0,
+              "reason": "failure",
+              "_rc": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "mode": "batch",
+      "scenario": "executor_rc",
+      "passed": true,
+      "verifierCalls": 0,
+      "log": {
+        "url": "http://127.0.0.1:8791/xt-web-form-01",
+        "goal": "synthetic controls only",
+        "model": "unused",
+        "mode": "batch",
+        "cycles": [
+          {
+            "cycle": 0,
+            "n_elements": 1,
+            "latency_s": 0.0,
+            "reply": "[{\"action\": \"click\", \"id\": \"go\"}]",
+            "plan": [
+              {
+                "action": "click",
+                "id": "go"
+              }
+            ],
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "click",
+                  "ok": true
+                }
+              ],
+              "stopped_at": null,
+              "_rc": 7
+            }
+          }
+        ],
+        "result": "EXECUTION-FAIL-BATCH",
+        "failures": [
+          {
+            "phase": "execution",
+            "detail": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "click",
+                  "ok": true
+                }
+              ],
+              "stopped_at": null,
+              "_rc": 7
+            }
+          }
+        ]
+      }
+    },
+    {
+      "mode": "batch",
+      "scenario": "initial_navigation",
+      "passed": true,
+      "verifierCalls": 0,
+      "log": {
+        "url": "http://127.0.0.1:8791/xt-web-form-01",
+        "goal": "synthetic controls only",
+        "model": "unused",
+        "mode": "batch",
+        "cycles": [],
+        "result": "HOST-FAIL",
+        "failures": [
+          {
+            "phase": "initial_navigation",
+            "error": "host rc != 0: {'out': '', 'err': 'navigation failed', 'rc': 7}"
+          }
+        ]
+      }
+    },
+    {
+      "mode": "batch",
+      "scenario": "navigation",
+      "passed": true,
+      "verifierCalls": 0,
+      "log": {
+        "url": "http://127.0.0.1:8791/xt-web-form-01",
+        "goal": "synthetic controls only",
+        "model": "unused",
+        "mode": "batch",
+        "cycles": [
+          {
+            "cycle": 0,
+            "n_elements": 1,
+            "latency_s": 0.0,
+            "reply": "[{\"action\": \"navigate\", \"value\": \"http://127.0.0.1:8791/xt-web-form-01\"}]",
+            "plan": [
+              {
+                "action": "navigate",
+                "value": "http://127.0.0.1:8791/xt-web-form-01"
+              }
+            ],
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "navigate"
+                }
+              ],
+              "stopped_at": 0,
+              "terminal": "navigate",
+              "url": "http://127.0.0.1:8791/xt-web-form-01",
+              "_rc": 0
+            }
+          }
+        ],
+        "result": "HOST-FAIL",
+        "failures": [
+          {
+            "phase": "navigation",
+            "error": "host rc != 0: {'out': '', 'err': 'navigation failed', 'rc': 7}"
+          }
+        ]
+      }
+    },
+    {
+      "mode": "batch",
+      "scenario": "upload_rc",
+      "passed": true,
+      "verifierCalls": 0,
+      "log": {
+        "url": "http://127.0.0.1:8791/xt-web-form-01",
+        "goal": "synthetic controls only",
+        "model": "unused",
+        "mode": "batch",
+        "cycles": [
+          {
+            "cycle": 0,
+            "n_elements": 1,
+            "latency_s": 0.0,
+            "reply": "[{\"action\": \"upload\", \"id\": \"upload\", \"value\": \"evidence.txt\"}]",
+            "plan": [
+              {
+                "action": "upload",
+                "id": "upload",
+                "value": "evidence.txt"
+              }
+            ],
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "upload",
+                  "pending": true
+                }
+              ],
+              "stopped_at": 0,
+              "terminal": "upload",
+              "url": "http://127.0.0.1:8791/xt-web-form-01",
+              "_rc": 0
+            }
+          }
+        ],
+        "result": "HOST-FAIL",
+        "failures": [
+          {
+            "phase": "upload",
+            "error": "host rc != 0: {'out': 'upload-ok', 'err': '', 'rc': 7}"
+          }
+        ]
+      }
+    },
+    {
+      "mode": "batch",
+      "scenario": "upload_message",
+      "passed": true,
+      "verifierCalls": 0,
+      "log": {
+        "url": "http://127.0.0.1:8791/xt-web-form-01",
+        "goal": "synthetic controls only",
+        "model": "unused",
+        "mode": "batch",
+        "cycles": [
+          {
+            "cycle": 0,
+            "n_elements": 1,
+            "latency_s": 0.0,
+            "reply": "[{\"action\": \"upload\", \"id\": \"upload\", \"value\": \"evidence.txt\"}]",
+            "plan": [
+              {
+                "action": "upload",
+                "id": "upload",
+                "value": "evidence.txt"
+              }
+            ],
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "upload",
+                  "pending": true
+                }
+              ],
+              "stopped_at": 0,
+              "terminal": "upload",
+              "url": "http://127.0.0.1:8791/xt-web-form-01",
+              "_rc": 0
+            }
+          }
+        ],
+        "result": "HOST-FAIL",
+        "failures": [
+          {
+            "phase": "upload",
+            "error": "host upload not confirmed: {'out': 'upload-fail broken', 'err': '', 'rc': 0}"
+          }
+        ]
+      }
+    },
+    {
+      "mode": "batch",
+      "scenario": "host_exception",
+      "passed": true,
+      "verifierCalls": 0,
+      "log": {
+        "url": "http://127.0.0.1:8791/xt-web-form-01",
+        "goal": "synthetic controls only",
+        "model": "unused",
+        "mode": "batch",
+        "cycles": [
+          {
+            "cycle": 0,
+            "n_elements": 1,
+            "latency_s": 0.0,
+            "reply": "[{\"action\": \"upload\", \"id\": \"upload\", \"value\": \"evidence.txt\"}]",
+            "plan": [
+              {
+                "action": "upload",
+                "id": "upload",
+                "value": "evidence.txt"
+              }
+            ],
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "upload",
+                  "pending": true
+                }
+              ],
+              "stopped_at": 0,
+              "terminal": "upload",
+              "url": "http://127.0.0.1:8791/xt-web-form-01",
+              "_rc": 0
+            }
+          }
+        ],
+        "result": "HOST-FAIL",
+        "failures": [
+          {
+            "phase": "upload",
+            "error": "host timeout"
+          }
+        ]
+      }
+    },
+    {
+      "mode": "batch",
+      "scenario": "verifier_fail",
+      "passed": true,
+      "verifierCalls": 1,
+      "log": {
+        "url": "http://127.0.0.1:8791/xt-web-form-01",
+        "goal": "synthetic controls only",
+        "model": "unused",
+        "mode": "batch",
+        "cycles": [
+          {
+            "cycle": 0,
+            "n_elements": 1,
+            "latency_s": 0.0,
+            "reply": "[{\"action\": \"click\", \"id\": \"go\"}]",
+            "plan": [
+              {
+                "action": "click",
+                "id": "go"
+              }
+            ],
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "click",
+                  "ok": true
+                }
+              ],
+              "stopped_at": null,
+              "_rc": 0
+            }
+          },
+          {
+            "verifier": "persisted_json:{}",
+            "verdict": "FAIL: mismatch"
+          }
+        ],
+        "result": "VERIFICATION-FAIL-BATCH",
+        "verification_details": [
+          {}
+        ],
+        "failures": [
+          {
+            "phase": "verifier",
+            "verdict": "FAIL: mismatch"
+          }
+        ]
+      }
+    },
+    {
+      "mode": "batch",
+      "scenario": "snapshot_error",
+      "passed": true,
+      "verifierCalls": 0,
+      "log": {
+        "url": "http://127.0.0.1:8791/xt-web-form-01",
+        "goal": "synthetic controls only",
+        "model": "unused",
+        "mode": "batch",
+        "cycles": [
+          {
+            "error": "snapshot failed"
+          }
+        ],
+        "result": null
+      }
+    },
+    {
+      "mode": "batch",
+      "scenario": "after_save_fail",
+      "passed": true,
+      "verifierCalls": 1,
+      "log": {
+        "url": "http://127.0.0.1:8791/xt-web-form-01",
+        "goal": "synthetic controls only",
+        "model": "unused",
+        "mode": "batch",
+        "cycles": [
+          {
+            "cycle": 0,
+            "n_elements": 1,
+            "latency_s": 0.0,
+            "reply": "[{\"action\": \"click\", \"id\": \"save\", \"label\": \"Salvar\"}]",
+            "plan": [
+              {
+                "action": "click",
+                "id": "save",
+                "label": "Salvar"
+              }
+            ],
+            "exec": {
+              "results": [
+                {
+                  "i": 0,
+                  "action": "click",
+                  "ok": true
+                }
+              ],
+              "stopped_at": null,
+              "_rc": 0
+            }
+          },
+          {
+            "verifier": "persisted_json:{}",
+            "verdict": "FAIL: mismatch"
+          }
+        ],
+        "result": "VERIFICATION-FAIL-BATCH",
+        "verification_details": [
+          {}
+        ],
+        "failures": [
+          {
+            "phase": "verifier",
+            "verdict": "FAIL: mismatch"
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "recipe_prior_failure",
+      "passed": true,
+      "log": {
+        "url": "http://127.0.0.1:8791/xt-web-form-01",
+        "recipe": "r.json",
+        "steps": [
+          {
+            "i": 0,
+            "op": {
+              "id": "go",
+              "action": "click"
+            },
+            "exec": {
+              "results": [
+                {
+                  "ok": false,
+                  "error": "prior failure"
+                }
+              ],
+              "reason": "postcondition failed"
+            }
+          }
+        ],
+        "result": "RECIPE-FAIL postcondition failed at step 0: prior failure",
+        "postconditions": [],
+        "repairs": [],
+        "navigation": {
+          "rc": 0,
+          "url": "http://127.0.0.1:8791/xt-web-form-01",
+          "marker": null
+        },
+        "identity": {
+          "url": "http://127.0.0.1:8791/xt-web-form-01",
+          "title": "X-Testing",
+          "markerOk": null
+        },
+        "verifier": "SKIPPED (falha anterior — PASS nao poderia apagar)"
+      }
+    },
+    {
+      "scenario": "invalid_contract_0",
+      "passed": true
+    },
+    {
+      "scenario": "invalid_contract_1",
+      "passed": true
+    },
+    {
+      "scenario": "invalid_contract_2",
+      "passed": true
+    },
+    {
+      "scenario": "invalid_contract_3",
+      "passed": true
+    },
+    {
+      "scenario": "invalid_contract_4",
+      "passed": true
+    },
+    {
+      "scenario": "legacy_persisted_fails_closed",
+      "passed": true
+    },
+    {
+      "scenario": "judge_complete",
+      "passed": true,
+      "result": {
+        "passed": true,
+        "failures": [],
+        "ordinaryOk": 21,
+        "confirmedUploads": 1,
+        "checks": {
+          "persisted_read": true,
+          "fields": true,
+          "filtered_second_page": true,
+          "single_record": true,
+          "upload": true,
+          "requires_environment": true,
+          "seed": true,
+          "runId": true,
+          "ordered_workflow": true,
+          "single_submit": true,
+          "single_mutation": true
+        }
+      }
+    },
+    {
+      "scenario": "judge_missing",
+      "passed": true,
+      "result": {
+        "passed": false,
+        "failures": [
+          "judge runId divergente",
+          "judge pass_ != true",
+          "judge não fechou os 11 checks booleanos",
+          "upload terminal não confirmado no passo 21",
+          "exigidos 21 ok:true + 1 upload confirmado"
+        ],
+        "ordinaryOk": 21,
+        "confirmedUploads": 0,
+        "checks": null
+      }
+    },
+    {
+      "scenario": "judge_wrong_run",
+      "passed": true,
+      "result": {
+        "passed": false,
+        "failures": [
+          "judge runId divergente"
+        ],
+        "ordinaryOk": 21,
+        "confirmedUploads": 1,
+        "checks": {
+          "persisted_read": true,
+          "fields": true,
+          "filtered_second_page": true,
+          "single_record": true,
+          "upload": true,
+          "requires_environment": true,
+          "seed": true,
+          "runId": true,
+          "ordered_workflow": true,
+          "single_submit": true,
+          "single_mutation": true
+        }
+      }
+    },
+    {
+      "scenario": "judge_failed",
+      "passed": true,
+      "result": {
+        "passed": false,
+        "failures": [
+          "judge pass_ != true"
+        ],
+        "ordinaryOk": 21,
+        "confirmedUploads": 1,
+        "checks": {
+          "persisted_read": true,
+          "fields": true,
+          "filtered_second_page": true,
+          "single_record": true,
+          "upload": true,
+          "requires_environment": true,
+          "seed": true,
+          "runId": true,
+          "ordered_workflow": true,
+          "single_submit": true,
+          "single_mutation": true
+        }
+      }
+    },
+    {
+      "scenario": "judge_check_persisted_read",
+      "passed": true,
+      "result": {
+        "passed": false,
+        "failures": [
+          "judge não fechou os 11 checks booleanos"
+        ],
+        "ordinaryOk": 21,
+        "confirmedUploads": 1,
+        "checks": {
+          "persisted_read": false,
+          "fields": true,
+          "filtered_second_page": true,
+          "single_record": true,
+          "upload": true,
+          "requires_environment": true,
+          "seed": true,
+          "runId": true,
+          "ordered_workflow": true,
+          "single_submit": true,
+          "single_mutation": true
+        }
+      }
+    },
+    {
+      "scenario": "judge_check_fields",
+      "passed": true,
+      "result": {
+        "passed": false,
+        "failures": [
+          "judge não fechou os 11 checks booleanos"
+        ],
+        "ordinaryOk": 21,
+        "confirmedUploads": 1,
+        "checks": {
+          "persisted_read": true,
+          "fields": false,
+          "filtered_second_page": true,
+          "single_record": true,
+          "upload": true,
+          "requires_environment": true,
+          "seed": true,
+          "runId": true,
+          "ordered_workflow": true,
+          "single_submit": true,
+          "single_mutation": true
+        }
+      }
+    },
+    {
+      "scenario": "judge_check_filtered_second_page",
+      "passed": true,
+      "result": {
+        "passed": false,
+        "failures": [
+          "judge não fechou os 11 checks booleanos"
+        ],
+        "ordinaryOk": 21,
+        "confirmedUploads": 1,
+        "checks": {
+          "persisted_read": true,
+          "fields": true,
+          "filtered_second_page": false,
+          "single_record": true,
+          "upload": true,
+          "requires_environment": true,
+          "seed": true,
+          "runId": true,
+          "ordered_workflow": true,
+          "single_submit": true,
+          "single_mutation": true
+        }
+      }
+    },
+    {
+      "scenario": "judge_check_single_record",
+      "passed": true,
+      "result": {
+        "passed": false,
+        "failures": [
+          "judge não fechou os 11 checks booleanos"
+        ],
+        "ordinaryOk": 21,
+        "confirmedUploads": 1,
+        "checks": {
+          "persisted_read": true,
+          "fields": true,
+          "filtered_second_page": true,
+          "single_record": false,
+          "upload": true,
+          "requires_environment": true,
+          "seed": true,
+          "runId": true,
+          "ordered_workflow": true,
+          "single_submit": true,
+          "single_mutation": true
+        }
+      }
+    },
+    {
+      "scenario": "judge_check_upload",
+      "passed": true,
+      "result": {
+        "passed": false,
+        "failures": [
+          "judge não fechou os 11 checks booleanos",
+          "upload terminal não confirmado no passo 21",
+          "exigidos 21 ok:true + 1 upload confirmado"
+        ],
+        "ordinaryOk": 21,
+        "confirmedUploads": 0,
+        "checks": {
+          "persisted_read": true,
+          "fields": true,
+          "filtered_second_page": true,
+          "single_record": true,
+          "upload": false,
+          "requires_environment": true,
+          "seed": true,
+          "runId": true,
+          "ordered_workflow": true,
+          "single_submit": true,
+          "single_mutation": true
+        }
+      }
+    },
+    {
+      "scenario": "judge_check_requires_environment",
+      "passed": true,
+      "result": {
+        "passed": false,
+        "failures": [
+          "judge não fechou os 11 checks booleanos"
+        ],
+        "ordinaryOk": 21,
+        "confirmedUploads": 1,
+        "checks": {
+          "persisted_read": true,
+          "fields": true,
+          "filtered_second_page": true,
+          "single_record": true,
+          "upload": true,
+          "requires_environment": false,
+          "seed": true,
+          "runId": true,
+          "ordered_workflow": true,
+          "single_submit": true,
+          "single_mutation": true
+        }
+      }
+    },
+    {
+      "scenario": "judge_check_seed",
+      "passed": true,
+      "result": {
+        "passed": false,
+        "failures": [
+          "judge não fechou os 11 checks booleanos"
+        ],
+        "ordinaryOk": 21,
+        "confirmedUploads": 1,
+        "checks": {
+          "persisted_read": true,
+          "fields": true,
+          "filtered_second_page": true,
+          "single_record": true,
+          "upload": true,
+          "requires_environment": true,
+          "seed": false,
+          "runId": true,
+          "ordered_workflow": true,
+          "single_submit": true,
+          "single_mutation": true
+        }
+      }
+    },
+    {
+      "scenario": "judge_check_runId",
+      "passed": true,
+      "result": {
+        "passed": false,
+        "failures": [
+          "judge não fechou os 11 checks booleanos"
+        ],
+        "ordinaryOk": 21,
+        "confirmedUploads": 1,
+        "checks": {
+          "persisted_read": true,
+          "fields": true,
+          "filtered_second_page": true,
+          "single_record": true,
+          "upload": true,
+          "requires_environment": true,
+          "seed": true,
+          "runId": false,
+          "ordered_workflow": true,
+          "single_submit": true,
+          "single_mutation": true
+        }
+      }
+    },
+    {
+      "scenario": "judge_check_ordered_workflow",
+      "passed": true,
+      "result": {
+        "passed": false,
+        "failures": [
+          "judge não fechou os 11 checks booleanos"
+        ],
+        "ordinaryOk": 21,
+        "confirmedUploads": 1,
+        "checks": {
+          "persisted_read": true,
+          "fields": true,
+          "filtered_second_page": true,
+          "single_record": true,
+          "upload": true,
+          "requires_environment": true,
+          "seed": true,
+          "runId": true,
+          "ordered_workflow": false,
+          "single_submit": true,
+          "single_mutation": true
+        }
+      }
+    },
+    {
+      "scenario": "judge_check_single_submit",
+      "passed": true,
+      "result": {
+        "passed": false,
+        "failures": [
+          "judge não fechou os 11 checks booleanos"
+        ],
+        "ordinaryOk": 21,
+        "confirmedUploads": 1,
+        "checks": {
+          "persisted_read": true,
+          "fields": true,
+          "filtered_second_page": true,
+          "single_record": true,
+          "upload": true,
+          "requires_environment": true,
+          "seed": true,
+          "runId": true,
+          "ordered_workflow": true,
+          "single_submit": false,
+          "single_mutation": true
+        }
+      }
+    },
+    {
+      "scenario": "judge_check_single_mutation",
+      "passed": true,
+      "result": {
+        "passed": false,
+        "failures": [
+          "judge não fechou os 11 checks booleanos"
+        ],
+        "ordinaryOk": 21,
+        "confirmedUploads": 1,
+        "checks": {
+          "persisted_read": true,
+          "fields": true,
+          "filtered_second_page": true,
+          "single_record": true,
+          "upload": true,
+          "requires_environment": true,
+          "seed": true,
+          "runId": true,
+          "ordered_workflow": true,
+          "single_submit": true,
+          "single_mutation": false
+        }
+      }
+    },
+    {
+      "scenario": "preflight_real_verifier_snippets",
+      "passed": true,
+      "javascriptCompiled": 56,
+      "pythonCompiled": 56
+    }
+  ],
+  "note": "Synthetic caller/gate/preflight controls, not benchmark/judge execution"
+}

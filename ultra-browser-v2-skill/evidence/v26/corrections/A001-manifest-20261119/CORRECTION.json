@@ -1,0 +1,18 @@
+{
+  "item": "A001",
+  "kind": "manifest-correction-not-replacement",
+  "sourceCommit": "fb5e6cbe928ad481a6e56bee3ac9f100bf461b63",
+  "oldManifest": "evidence/v26/fixes/A001-20261119/SHA256SUMS.txt",
+  "oldManifestSha256": "d12040afa1439df975f0fd346ed8102e9f30e620904bae2f3a1fcc53c5873a8a",
+  "path": "scripts/test_semantic_boundaries.py",
+  "oldHash": "eb47ba832755c853b61cf1ceb66e34a5ed037ee6f210c95ebeb198064f49b358",
+  "committedAndCurrentHash": "efa3f9116423f15402491ee9172a482049be74f0e5258949e4cd727959dd9d71",
+  "authoritativeManifest": "evidence/v26/fixes/A001-20261119/SHA256SUMS-final.txt",
+  "authoritativeManifestSha256": "6005fa2ae6d4b70c16f076b8dbfc4338553dbd677d881c41ada8953d103f5a92",
+  "reason": "Manifesto intermediario congelou versao de 8 casos; teste evoluiu ate 10 casos no mesmo caminho. O caminho sem versao tornou o manifesto antigo inconsistente com o checkout final. Nao tratar como manifesto valido da versao atual.",
+  "correction": "Preservar manifesto antigo como checkpoint invalido para checkout final, usar exclusivamente SHA256SUMS-final.txt para fb5e6cb; nao sobrescrever recibos ou manifesto anterior.",
+  "after01": "76/80 preservado; quatro falhas de setup do teste foram corrigidas com novos recibos e novo baseline. Nao reclassificar como defeito de codigo.",
+  "status": "superseded-stale-reference",
+  "oldBytesUnchanged": true,
+  "finalManifestVerified": "35/35"
+}

@@ -636,11 +636,15 @@ def run_recipe(recipe_path: str, url: str, verify_spec: str = "", fallback_jev: 
     if verify_spec and log["result"] == "RECIPE-DONE":
         sys.path.insert(0, HERE)
         import agent_loop as AL
-        ok = AL.verify(verify_spec)
+        detail = {}
+        ok = AL.verify(verify_spec, details=detail)
+        log["verification_detail"] = detail
         log["verifier"] = ok
         if ok == "PASS":
             log["result"] = ("RECIPE-DONE-VERIFIED-ASSISTED" if log["repairs"]
                              else "RECIPE-DONE-VERIFIED")
+        else:
+            log["result"] = "RECIPE-FAIL verifier: " + str(ok)
     elif verify_spec:
         log["verifier"] = "SKIPPED (falha anterior — PASS nao poderia apagar)"
     return log

@@ -1,5 +1,7 @@
 # Publicação v2.6, proveniência e limites
 
+A005, atualização de 19/11: [aceite executado e novos recibos](v26/fixes/A005-20261119/ACCEPTANCE.md). [Correção explícita do manifesto intermediário A001](v26/corrections/A001-manifest-20261119/CORRECTION.json), sem substituir seus bytes. Manifestos históricos validam sua revisão Git declarada, não o HEAD atual.
+
 A001, atualização incremental de 19/11: [relatório, evidências novas e lacuna legada](v26/fixes/A001-20261119/ACCEPTANCE.md). Identidade com escopo/role e observação declarativa estão nos scripts ativos; não substituir os manifestos de exportação histórica por hashes desses scripts novos.
 
 Atualização incremental A002 de 19/11: [relatório e novos recibos](v26/fixes/A002-20261119/REPORT.md). Somente `scripts/agent_loop.py` recebeu correção de implementação. O manifesto e as afirmações de exportação sem alteração abaixo descrevem a publicação histórica v2.6d, não o patch novo. A fila original permanece imutável.

@@ -12,6 +12,8 @@ license: MIT
 
 ## Estado publicado e precedência
 
+A005, atualização de 19/11: use [persisted_json e contrato completo](references/persisted-verification.md) para persistência. O verifier ativo compara campos, vínculo e anexo público após reload confirmado; `persisted:<titulo>` falha fechado. [Aceite e limites A005](evidence/v26/fixes/A005-20261119/ACCEPTANCE.md). Não confundir este adaptador T1 com compatibilidade universal, transporte Hermes verificado ou bateria completa aprovada.
+
 A001, atualização de 19/11: o resolvedor ativo aceita identidade exata cumulativa com escopo/role e bloqueia ambiguidades; recipe preserva label junto de id. Para usar esse contrato, leia [alvos semânticos e pós-condições](references/semantic-targets.md). [Aceite A001 e limites](evidence/v26/fixes/A001-20261119/ACCEPTANCE.md): parcial no conjunto, pois ações legadas sem predicado continuam com efeito explicitamente não verificado. Esta atualização prevalece sobre descrições históricas de primeiro match/label descartado abaixo; não altera os recibos antigos nem fecha os demais itens.
 
 Em 19/11, o patch A002 substituiu o busy-wait do resolvedor compartilhado por espera assíncrona com deadline. Para esse item, consulte o [aceite novo e seus limites](evidence/v26/fixes/A002-20261119/REPORT.md); ele não reclassifica os recibos de 10/11 nem fecha os demais alvos. As descrições históricas de busy-wait abaixo não representam mais `scripts/agent_loop.py` nesta branch. Runtime e browser-eval não foram sincronizados.
@@ -56,7 +58,7 @@ Comando real do executor (a docstring interna de `recipe.py` tem a fonte canôni
 ```bash
 python scripts/recipe.py <recipe.json> \
   --url http://127.0.0.1:8791/xt-web-form-01 \
-  --verify "persisted:Plano WEB DEMO-024" \
+  --verify "persisted_json:@C:/caminho/contrato.json" \
   --marker X-Testing
 ```
 
@@ -111,9 +113,9 @@ Save incerto exige observação do resultado, não novo submit automático. Bloq
 
 ### 7. Verificar persistência sem consultar o judge privado
 
-Depois de confirmar o save, verificar após reload. O verifier inline `verify()` em `agent_loop.py` aceita `persisted:` e consulta presença textual posterior. É uma checagem limitada: não compara automaticamente todo o registro e pode aceitar prefixos. O helper [verifier.js](scripts/verifier.js) é separado e não implementa `persisted`.
+Depois de confirmar o save, verificar com `persisted_json` e expectativa completa derivada dos inputs autorizados. O adaptador T1 de `agent_loop.verify()` compara campos, vínculo, metadados/link e conteúdo do anexo público após reload confirmado. Ausência, divergência, ambiguidade e erro de transporte falham. Leia [formato, migração e limites](references/persisted-verification.md). O helper [verifier.js](scripts/verifier.js) permanece separado e não implementa esse contrato.
 
-A política de aceite exige passos obrigatórios confirmados e resultado final verificado; o código atual ainda pode substituir uma falha por verifier `PASS`. Portanto, o rótulo DONE, o verifier isolado e o exit code não bastam.
+A política de aceite exige passos obrigatórios confirmados e resultado final verificado. Os callers ativos preservam falhas inesperadas anteriores, inclusive navegação/upload/rc e FAIL de verificação. O verifier não substitui o judge externo nem fecha as lacunas declaradas do A001.
 
 O agente navegador não lê/importa implementação, arquivos de runs ou estado privado do judge para decidir ações ou se autovalidar. O validator externo pode associar o recibo read-only ao run depois da execução. Veja [verificação e evidência](references/verification-and-evidence.md).
 

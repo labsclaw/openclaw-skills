@@ -1,5 +1,7 @@
 # Verificação e evidência
 
+Atualização A005 de 19/11: para o caminho ativo de persistência, prevalece [contrato completo pós-reload](persisted-verification.md). As descrições `persisted:` e tabelas de ed963ec abaixo são históricas. Judge continua separado. Ao gerar manifesto novo, congelar código/testes primeiro e validar hashes após commit; manifesto intermediário que aponta para versão antiga no mesmo caminho exige recibo de correção explícito, nunca sobrescrita dos recibos. Ao auditar uma versão antiga, resolver caminhos na revisão Git declarada, não no HEAD atual.
+
 Status: referência documental da proposta de SKILL.md v2.3, para revisão do Hermes. Fonte de comportamento: código de `ed963ec`. Não altera executores nem concede acesso do navegador ao judge privado.
 
 ## 1. Separar três decisões

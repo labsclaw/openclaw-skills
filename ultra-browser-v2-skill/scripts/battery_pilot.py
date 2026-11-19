@@ -30,7 +30,18 @@ HARNESS_JUDGE = BENCHMARK / "harness/judge.py"
 RECIPE = ROOT / "results/recipes/xt24ds7-recipe.json"
 LOGS = ROOT / "results/v22-logs"
 RECIPE_SHA256 = "5defc9c2bf86ec8357cc16c063d03bb18ce6554bfd7848ca18e1f409d971fd71"
-VERIFY = "persisted:Plano WEB DEMO-024"
+def verifier_spec(run_id, url):
+    # Expectativas publicas da tarefa/arquivo de entrada, nunca do judge.
+    return "persisted_json:" + json.dumps(dict(version=1, url=url,
+        fields=dict(id="PLAN-001", runId=run_id, title="Plano WEB DEMO-024 revisado",
+                    email="qa@example.test", type="Integração", priority="Alta",
+                    responsible="Equipe Alfa", requiresEnvironment="true", environment="Homologação sintética"),
+        binding=dict(demand="DEMO-024"), attachment=dict(filename="fixture-evidence.txt", bytes=32,
+            sha256="22591ebec4f89fd83947ba44fa6e64d6a1e358ed2935a7493ed5b21cb81a3ed1",
+            href="/api/attachment", download="fixture-evidence.txt")), ensure_ascii=False)
+
+
+VERIFY = verifier_spec("preflight", "http://127.0.0.1:8791/xt-web-form-01")
 MARKER = "X-Testing"  # v2.6a criterio 1: marcador de identidade da fixture
 CHECKS = frozenset(("runId", "seed", "filtered_second_page", "fields",
                     "requires_environment", "ordered_workflow", "upload",
@@ -87,12 +98,12 @@ def git(*args):
 
 def fingerprints():
     return {str(p.relative_to(ROOT)): sha256(p) for p in
-            (HERE / "recipe.py", HERE / "agent_loop.py", HERE / "snapshot.js", Path(__file__), RECIPE)}
+            (HERE / "recipe.py", HERE / "agent_loop.py", HERE / "snapshot.js", HERE / "persisted_verifier.py", Path(__file__), RECIPE)}
 
 
 def provenance():
     executor = [str((HERE / name).relative_to(ROOT)).replace("\\", "/")
-                for name in ("recipe.py", "agent_loop.py", "snapshot.js")]
+                for name in ("recipe.py", "agent_loop.py", "snapshot.js", "persisted_verifier.py")]
     if git("diff", "HEAD", "--", *executor):
         raise RuntimeError("Executor difere de HEAD; requer outra bateria identificada")
     return dict(commit=git("rev-parse", "HEAD"),
@@ -147,6 +158,19 @@ def generated_snippets(recipe_path, url):
         if "pageText" in code and "const acts =" not in code:
             return json.dumps(dict(url=url, title="X-Testing — laboratório T1",
                                    elements=[], pageText="X-Testing / laboratório · INFRAESTRUTURA DETERMINÍSTICA"))
+        # Apenas geracao/sintaxe: nao e evidencia funcional do verifier.
+        if "UB2_PERSIST_BEFORE" in code:
+            return dict(url=url, timeOrigin=1)
+        if "UB2_RELOAD_REQUEST" in code:
+            return dict(requested=True)
+        if "UB2_PERSIST_OBSERVE" in code:
+            cfg, _ = json.JSONDecoder().raw_decode(code.split("const cfg = ", 1)[1])
+            values = dict(cfg["fields"], **cfg["binding"])
+            values["attachment"] = json.dumps({k:cfg["attachment"][k] for k in ("filename", "bytes", "sha256")})
+            return dict(ready=True, url=url, timeOrigin=2, navigationType="reload", recordCount=1,
+                        linkCount=1, structureValid=True, pairs=list(values.items()),
+                        link={k:cfg["attachment"][k] for k in ("href","download")},
+                        download={k:cfg["attachment"][k] for k in ("bytes","sha256")})
         # v2.6a: pos-condicoes do executor sintetizadas como ok (regra vem ANTES de textContent)
         if "return {ok:" in code:
             return dict(ok=True, detail="synthetic-preflight")
@@ -162,8 +186,6 @@ def generated_snippets(recipe_path, url):
             return json.dumps(response)
         if "textContent" in code:
             return "Anexado: fixture-evidence.txt · 32 bytes"
-        if "PASS: persisted" in code:
-            return "PASS: synthetic-preflight-only"
         return "{}"
 
     def fake_harness(code, timeout=90):
@@ -178,7 +200,7 @@ def generated_snippets(recipe_path, url):
 
     with patch.object(recipe, "harness", fake_harness), patch.object(loop, "harness", fake_harness), \
             patch("time.sleep", lambda *_: None):
-        log = recipe.run_recipe(str(recipe_path), url, verify_spec=VERIFY, marker=MARKER)
+        log = recipe.run_recipe(str(recipe_path), url, verify_spec=verifier_spec("preflight", url), marker=MARKER)
     # P1: dry-run PRECISA percorrer a recipe inteira — RECIPE-FAIL/parcial com
     # snippets sintaticamente validos nao e preflight, e passed=true mentiroso.
     ops = json.loads(Path(recipe_path).read_text(encoding="utf-8"))["native_ops"]
@@ -204,7 +226,7 @@ def generated_snippets(recipe_path, url):
 def preflight(recipe_path):
     if sha256(recipe_path) != RECIPE_SHA256:
         raise ValueError("Hash da recipe não corresponde ao acordo; não iniciar pilotos")
-    for name in ("recipe.py", "agent_loop.py", "battery_pilot.py"):
+    for name in ("recipe.py", "agent_loop.py", "battery_pilot.py", "persisted_verifier.py"):
         ast.parse((HERE / name).read_text(encoding="utf-8"), filename=name)
     snippets = generated_snippets(recipe_path, "http://127.0.0.1:8791/xt-web-form-01")
     # vm.Script só compila, não executa JS nem acessa navegador.
@@ -221,7 +243,7 @@ console.log(JSON.stringify({compiled:snippets.length}));"""
                 javascriptCompiled=len(snippets["javascript"]), generated=snippets)
 
 
-def executor_worker(recipe_path, url, audit_path, marker=""):
+def executor_worker(recipe_path, url, audit_path, marker="", verify_spec=""):
     """Observa chamadas originais; barreira externa no primeiro goto falho.
 
     O validator interrompe o worker antes do primeiro passo nesse caso, sem
@@ -254,7 +276,7 @@ def executor_worker(recipe_path, url, audit_path, marker=""):
         with patch.object(recipe, "harness", observe(recipe.harness, "recipe")), \
                 patch.object(loop, "harness", observe(loop.harness, "verifier")):
             sys.argv = [str(HERE / "recipe.py"), "run", str(recipe_path), "--url", url,
-                        "--verify", VERIFY] + (["--marker", marker] if marker else [])
+                        "--verify", verify_spec or verifier_spec("preflight", url)] + (["--marker", marker] if marker else [])
             recipe.main()
 
 
@@ -362,7 +384,7 @@ def run_pilot(batch_dir, run_id, source, recipe_path):
     port = free_port()
     url = f"http://127.0.0.1:{port}/xt-web-form-01"
     receipt = dict(schema="battery-v2.6a", runId=run_id, url=url, startedAt=utc_now(),
-                   recipeSha256=sha256(recipe_path), provenance=source, verifierSpec=VERIFY)
+                   recipeSha256=sha256(recipe_path), provenance=source, verifierSpec=verifier_spec(run_id, url))
     write_new(directory / "started.json", receipt)
     tick, fixture = time.monotonic(), None
     try:
@@ -377,7 +399,7 @@ def run_pilot(batch_dir, run_id, source, recipe_path):
             receipt["fixture"] = wait_ready(fixture, directory / "fixture.stdout.txt", run_id, port)
             execution_process = command([sys.executable, Path(__file__), "--executor-worker",
                                          str(recipe_path), url, directory / "harness.jsonl",
-                                         "--marker", MARKER])
+                                         "--marker", MARKER, "--verify", receipt["verifierSpec"]])
             write_new(directory / "recipe.json", execution_process.pop("stdout"), raw=True)
             write_new(directory / "recipe.stderr.txt", execution_process.pop("stderr"), raw=True)
             receipt["executionProcess"] = execution_process
@@ -438,9 +460,10 @@ def main():
                         help=argparse.SUPPRESS)
     parser.add_argument("--marker", default="",
                         help="marcador de identidade da pagina exigido antes de agir")
+    parser.add_argument("--verify", default="", help=argparse.SUPPRESS)
     args = parser.parse_args()
     if args.executor_worker:
-        executor_worker(*args.executor_worker, marker=args.marker)
+        executor_worker(*args.executor_worker, marker=args.marker, verify_spec=args.verify)
         return 0
     args.logs.mkdir(parents=True, exist_ok=True)
     batch_id = "battery-" + datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S") + "-" + uuid.uuid4().hex[:8]
