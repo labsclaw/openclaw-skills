@@ -1,0 +1,7 @@
+{
+  "status": "INTERRUPTED",
+  "at": "2026-10-29T22:49:20.670539+00:00",
+  "passed": false,
+  "reason": "Turno interrompido por nova mensagem. Sem processo ativo, sem summary/receipt final. Não reutilizar estes runIds.",
+  "lastObservedHarnessCalls": 38
+}

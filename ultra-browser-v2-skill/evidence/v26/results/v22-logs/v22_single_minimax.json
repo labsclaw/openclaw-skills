@@ -1,0 +1,221 @@
+{
+ "url": "http://127.0.0.1:8765/t4-form.html",
+ "goal": "Fill the form: name=Roger Oliveira, email=roger@labsclaw.dev, plan=Pro. Then check the terms checkbox and click submit. Success text contains 'OK:'",
+ "model": "minimax/minimax-m3.1-flash:free",
+ "steps": [
+  {
+   "step": 0,
+   "parsed": {
+    "action": "type",
+    "element": 1,
+    "value": "Roger Oliveira",
+    "reason": "Preenchendo o campo de nome completo."
+   },
+   "latency_s": 4.2,
+   "reply": "{\"action\":\"type\",\"element\":1,\"value\":\"Roger Oliveira\",\"reason\":\"Preenchendo o campo de nome completo.\"}",
+   "usage": {
+    "prompt_tokens": 504,
+    "completion_tokens": 66,
+    "total_tokens": 570,
+    "cost": 0,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 197,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0,
+     "upstream_inference_prompt_cost": 0,
+     "upstream_inference_completions_cost": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 40,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   },
+   "exec": "typed Roger Oliveira"
+  },
+  {
+   "step": 1,
+   "parsed": {
+    "action": "type",
+    "element": 2,
+    "value": "roger@labsclaw.dev",
+    "reason": "Preenchendo o campo de e-mail com o endereço solicitado."
+   },
+   "latency_s": 4.7,
+   "reply": "{\"action\":\"type\",\"element\":2,\"value\":\"roger@labsclaw.dev\",\"reason\":\"Preenchendo o campo de e-mail com o endereço solicitado.\"}",
+   "usage": {
+    "prompt_tokens": 505,
+    "completion_tokens": 138,
+    "total_tokens": 643,
+    "cost": 0,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 198,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0,
+     "upstream_inference_prompt_cost": 0,
+     "upstream_inference_completions_cost": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 105,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   },
+   "exec": "typed roger@labsclaw.dev"
+  },
+  {
+   "step": 2,
+   "parsed": {
+    "action": "select",
+    "element": 3,
+    "value": "Pro",
+    "reason": "Nome e e-mail já estão preenchidos; selecionando o plano Pro."
+   },
+   "latency_s": 3.4,
+   "reply": "{\"action\":\"select\",\"element\":3,\"value\":\"Pro\",\"reason\":\"Nome e e-mail já estão preenchidos; selecionando o plano Pro.\"}",
+   "usage": {
+    "prompt_tokens": 509,
+    "completion_tokens": 101,
+    "total_tokens": 610,
+    "cost": 0,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 198,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0,
+     "upstream_inference_prompt_cost": 0,
+     "upstream_inference_completions_cost": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 70,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   },
+   "exec": "selected Pro (value=pro)"
+  },
+  {
+   "step": 3,
+   "parsed": {
+    "action": "click",
+    "element": 4,
+    "value": "",
+    "reason": "Check the terms checkbox before submitting the completed form."
+   },
+   "latency_s": 3.7,
+   "reply": "{\"action\":\"click\",\"element\":4,\"value\":\"\",\"reason\":\"Check the terms checkbox before submitting the completed form.\"}",
+   "usage": {
+    "prompt_tokens": 507,
+    "completion_tokens": 151,
+    "total_tokens": 658,
+    "cost": 0,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 197,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0,
+     "upstream_inference_prompt_cost": 0,
+     "upstream_inference_completions_cost": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 126,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   },
+   "exec": "clicked"
+  },
+  {
+   "step": 4,
+   "parsed": {
+    "action": "click",
+    "element": 5,
+    "value": "",
+    "reason": "Name, email, and Pro plan are set, and the terms checkbox is checked; submitting the form."
+   },
+   "latency_s": 4.4,
+   "reply": "{\"action\":\"click\",\"element\":5,\"value\":\"\",\"reason\":\"Name, email, and Pro plan are set, and the terms checkbox is checked; submitting the form.\"}",
+   "usage": {
+    "prompt_tokens": 507,
+    "completion_tokens": 174,
+    "total_tokens": 681,
+    "cost": 0,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 198,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0,
+     "upstream_inference_prompt_cost": 0,
+     "upstream_inference_completions_cost": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 138,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   },
+   "exec": "clicked Enviar cadastro"
+  },
+  {
+   "step": 5,
+   "parsed": {
+    "action": "done",
+    "element": 5,
+    "value": "",
+    "reason": "Form already contains Roger Oliveira, roger@labsclaw.dev, plan Pro, terms checked, and success text shows 'OK:'."
+   },
+   "latency_s": 4.6,
+   "reply": "{\"action\":\"done\",\"element\":5,\"value\":\"\",\"reason\":\"Form already contains Roger Oliveira, roger@labsclaw.dev, plan Pro, terms checked, and success text shows 'OK:'.\"}",
+   "usage": {
+    "prompt_tokens": 522,
+    "completion_tokens": 195,
+    "total_tokens": 717,
+    "cost": 0,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 197,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0,
+     "upstream_inference_prompt_cost": 0,
+     "upstream_inference_completions_cost": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 153,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   }
+  },
+  {
+   "verifier": "text_contains:OK:",
+   "verdict": "PASS"
+  }
+ ],
+ "result": "DONE-VERIFIED"
+}

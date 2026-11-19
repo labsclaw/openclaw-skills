@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ultra-browser-v2 task log",
+  "description": "Schema de log por tentativa — métricas comparáveis entre modelos/skills (usado na avaliação e re-avaliações)",
+  "type": "object",
+  "required": ["task", "model", "steps", "result"],
+  "properties": {
+    "task": {"type": "string", "description": "ID da tarefa (T1..T6 ou custom)"},
+    "skill": {"type": "string", "default": "ultra-browser-v2"},
+    "model": {"type": "string", "description": "motor de decisão (ex: opencode/mimo-v2.6-flash-free)"},
+    "tier": {"type": "integer", "minimum": 1, "maximum": 3},
+    "url": {"type": "string"},
+    "goal": {"type": "string"},
+    "started": {"type": "number", "description": "epoch s"},
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "step": {"type": "integer"},
+          "parsed": {"type": ["object", "null"], "description": "{action, element, value, reason}"},
+          "latency_s": {"type": "number"},
+          "exec": {"type": "string"},
+          "error": {"type": "string"}
+        }
+      }
+    },
+    "verifier": {"type": ["string", "null"], "description": "spec + verdict (PASS/FAIL)"},
+    "recording": {"type": ["string", "null"], "description": "dir de gravação browser-harness"},
+    "result": {"type": "string", "enum": ["DONE", "DONE-VERIFIED", "BLOCKED", "LOOP-ABORT", "MAX-STEPS", "ERROR"]},
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "total_s": {"type": "number"},
+        "decisions": {"type": "integer"},
+        "exec_actions": {"type": "integer"},
+        "tokens_est": {"type": "number"},
+        "cost_usd": {"type": "number", "default": 0}
+      }
+    }
+  }
+}

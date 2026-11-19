@@ -1,0 +1,455 @@
+{
+ "url": "http://127.0.0.1:8792/xt-web-form-01",
+ "recipe": "xt24ds7-recipe.json",
+ "steps": [
+  {
+   "i": 0,
+   "op": {
+    "id": "channel",
+    "value": "WEB",
+    "action": "select"
+   },
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "select",
+      "ok": true,
+      "id": "channel",
+      "value": "WEB"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "i": 1,
+   "op": {
+    "id": "status",
+    "value": "",
+    "action": "click"
+   },
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "status",
+      "text": "Todos\nEm análise\nAberta"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "i": 2,
+   "op": {
+    "id": "status",
+    "value": "Em analise",
+    "action": "select"
+   },
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "select",
+      "ok": true,
+      "id": "status",
+      "value": "Em análise"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "i": 3,
+   "op": {
+    "id": "filter",
+    "value": "",
+    "action": "click"
+   },
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "i": 4,
+   "op": {
+    "id": "next",
+    "value": "",
+    "action": "click"
+   },
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "i": 5,
+   "op": {
+    "id": "",
+    "label": "Criar plano DEMO-024",
+    "value": "",
+    "action": "click"
+   },
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "",
+      "text": "Criar plano DEMO-024"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "i": 6,
+   "op": {
+    "id": "title1",
+    "value": "Plano WEB DEMO-024",
+    "action": "type"
+   },
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "type",
+      "ok": true,
+      "id": "title1",
+      "value": "Plano WEB DEMO-024"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "i": 7,
+   "op": {
+    "id": "email",
+    "value": "invalid-email@fixture",
+    "action": "type"
+   },
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "type",
+      "ok": true,
+      "id": "email",
+      "value": "invalid-email@fixture"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "i": 8,
+   "op": {
+    "id": "",
+    "label": "Continuar",
+    "value": "",
+    "action": "click"
+   },
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "",
+      "text": "Continuar"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "i": 9,
+   "op": {
+    "id": "email",
+    "value": "qa@example.test",
+    "action": "type"
+   },
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "type",
+      "ok": true,
+      "id": "email",
+      "value": "qa@example.test"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "i": 10,
+   "op": {
+    "id": "",
+    "label": "Continuar",
+    "value": "",
+    "action": "click"
+   },
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "",
+      "text": "Continuar"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "i": 11,
+   "op": {
+    "id": "type",
+    "value": "Integracao",
+    "action": "select"
+   },
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "select",
+      "ok": true,
+      "id": "type",
+      "value": "Integração"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "i": 12,
+   "op": {
+    "id": "priority",
+    "value": "Alta",
+    "action": "select"
+   },
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "select",
+      "ok": true,
+      "id": "priority",
+      "value": "Alta"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "i": 13,
+   "op": {
+    "id": "responsible",
+    "value": "Equipe Alfa",
+    "action": "type"
+   },
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "type",
+      "ok": true,
+      "id": "responsible",
+      "value": "Equipe Alfa"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "i": 14,
+   "op": {
+    "id": "requires",
+    "value": "",
+    "action": "click"
+   },
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "requires",
+      "text": ""
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "i": 15,
+   "op": {
+    "id": "environment",
+    "value": "Homologacao sintetica",
+    "action": "select"
+   },
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "select",
+      "ok": true,
+      "id": "environment",
+      "value": "Homologação sintética"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "i": 16,
+   "op": {
+    "id": "upload",
+    "value": "fixture-evidence.txt",
+    "action": "upload"
+   },
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "upload",
+      "pending": true,
+      "id": "upload"
+     }
+    ],
+    "stopped_at": 0,
+    "reason": "upload",
+    "terminal": "upload",
+    "file": "fixture-evidence.txt",
+    "selector": "#upload"
+   },
+   "upload": "upload-ok ATT=Anexado: fixture-evidence.txt · 32 bytes\n"
+  },
+  {
+   "i": 17,
+   "op": {
+    "id": "review",
+    "value": "",
+    "action": "click"
+   },
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "review",
+      "text": "Revisar plano"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "i": 18,
+   "op": {
+    "id": "back",
+    "value": "",
+    "action": "click"
+   },
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "back",
+      "text": "Voltar e corrigir"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "i": 19,
+   "op": {
+    "id": "title2",
+    "value": "Plano WEB DEMO-024 revisado",
+    "action": "type"
+   },
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "type",
+      "ok": true,
+      "id": "title2",
+      "value": "Plano WEB DEMO-024 revisado"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "i": 20,
+   "op": {
+    "id": "review",
+    "value": "",
+    "action": "click"
+   },
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "review",
+      "text": "Revisar plano"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "i": 21,
+   "op": {
+    "id": "save",
+    "value": "",
+    "action": "click"
+   },
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "save",
+      "text": "Confirmar revisão e salvar"
+     }
+    ],
+    "stopped_at": null
+   }
+  }
+ ],
+ "result": "RECIPE-DONE-VERIFIED",
+ "verifier": "PASS"
+}

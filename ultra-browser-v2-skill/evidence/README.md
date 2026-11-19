@@ -1,44 +1,19 @@
-# Proveniência e limites de distribuição
+# Publicação v2.6, proveniência e limites
 
-Este pacote distribui a revisão documental v2.3.0 aprovada por Hermes e Justus.
-A fonte é o repositório local `browser-eval`, revisão `ef55939`. Seus commits
-originais não são ancestrais do Git desta biblioteca. O manifesto contém os
-identificadores completos, os caminhos originais e SHA-256 dos bytes exportados.
-Os comandos `git show` nas referências exigem aquele repositório original.
+Fonte: browser-eval, commit `40c68be498817c9787d97ce68f581081ebc078f7`, sobre v2.6d `76eef077b8c9af28be0c4c18fb274a1baee4fea2`.
+Os commits da fonte não são ancestrais desta biblioteca; comandos `git show` das evidências exigem aquele repositório.
 
-## Evidência congelada
+- [Manifesto atual](manifest.json): bytes originais, caminhos de origem e SHA-256. Exportações completas em `v26/`, sem caches.
+- [Fechamento](v26/results/coordination/ledgerwalk/REPORT-v26-reduced-closure-20261110.md): 36 fulfilled, 7 omitted, 1 drifted, 3 N.A., A025 não verificado.
+- [Fila pendente, sem autorização para implementar](v26/results/coordination/fixes/FILA-v26-20261110.md).
+- [Bateria histórica v2.6d](v26/results/v22-logs/battery-20261110T051525-d94157c9/): 3/3, judge 11/11 em cada piloto. Não é fechamento dos alvos.
+- [Manifesto v2.3.0 preservado](manifest-v230.json): executáveis antigos relocados em `v230/`; recibos de `ed963ec/` e `51631c1/` preservados.
 
-- [Manifesto](manifest.json): inventário de scripts, template, recipe e recibos.
-- [Recipe corrigida](ed963ec/results/recipes/xt24ds7-recipe.json).
-- [Bateria corrigida e regressão](ed963ec/results/v22-logs/).
-- [Baseline](51631c1/results/v22-logs/): mesmos nomes, outra revisão; não sobrescrever.
+O SKILL.md recebeu somente nome/versão de distribuição e aviso de precedência. O original está em `v26/ultra-browser-v2/SKILL.source.md`. Referências `v26-*` refletem a fonte atual, com links de resultados adaptados; as demais referências e README-v230.md são históricas.
+Nenhum item da fila foi implementado. Nenhuma nova bateria, inferência ou avaliação de roteamento foi executada. Runtime não sincronizado. Recibos falhos e bem-sucedidos foram preservados, sem seleção por resultado.
 
-Os arquivos listados no manifesto são exportações byte a byte dos objetos Git.
-Os quatro documentos de referência só receberam links portáveis e esta nota de
-proveniência. O SKILL.md recebeu o nome de distribuição `ultra-browser-v2-skill`
-e notas sobre empacotamento. Scripts e recipe não foram modificados. Cache Python
-e referências antigas não revalidadas não são distribuídos. Mantém-se a licença
-MIT já declarada na fonte, com texto local e escopo explícito na biblioteca.
+## Pré-requisitos e uso
 
-Os logs e judges são material de auditoria externa histórica. Não disponibilizar
-o judge como entrada de planejamento ou de autovalidação ao agente navegador.
-Nenhuma nova execução, bateria, chamada LLM ou avaliação de roteamento foi feita
-para esta publicação. O catálogo registra roteamento não executado e runtime não
-sincronizado. As capacidades futuras v2.6 continuam fora do executor auditado.
-
-## Instalação e pré-requisitos
-
-Instalação pela biblioteca, quando solicitada:
-
-```text
-npx skills add labsclaw/openclaw-skills --skill ultra-browser-v2-skill
-```
-
-Os scripts são exemplos do ambiente Windows original, não um SDK portátil.
-Exigem o browser-harness do Hermes e navegador visível; o loop aceita
-`BROWSER_HARNESS` e `OPENCODE_BIN`. Outros exemplos ainda contêm caminhos locais
-fixos; `battery_pilot.py` requer fixture e judge externos não incluídos. Não
-executá-lo inalterado, pois reutiliza nomes de recibo. O gravador separado exige
-FFmpeg. Essas dependências não são instaladas por este pacote. Não executar uma
-bateria para verificar apenas documentação. Configurar autenticação somente pelo
-fluxo dedicado e mascarado do ambiente, nunca por mensagem ou arquivo publicado.
+Instalação, somente quando solicitada: `npx skills add labsclaw/openclaw-skills --skill ultra-browser-v2-skill`.
+Exemplos dependem do Windows, browser-harness do Hermes, navegador visível e fixture/judge externos; não são um SDK portátil. O loop usa `BROWSER_HARNESS` e `OPENCODE_BIN`; outros caminhos locais continuam nos exemplos. O gravador exige FFmpeg. Essas dependências não são instaladas pelo pacote.
+Não executar bateria ou inferência para conferir apenas a publicação. Configurar credenciais pelo fluxo dedicado mascarado. O agente navegador não deve usar judges ou arquivos de recibos privados como entrada de planejamento/autovalidação.

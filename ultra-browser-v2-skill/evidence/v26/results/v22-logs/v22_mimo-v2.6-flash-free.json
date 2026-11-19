@@ -1,0 +1,37 @@
+{
+ "url": "http://127.0.0.1:8765/t4-form.html",
+ "goal": "Fill the form: name=Roger Oliveira, email=roger@labsclaw.dev, plan=Pro. Then check the terms checkbox and click submit. Success text contains 'OK:'",
+ "model": "opencode/mimo-v2.6-flash-free",
+ "mode": "batch",
+ "cycles": [
+  {
+   "cycle": 0,
+   "n_elements": 5,
+   "latency_s": 48.9,
+   "reply": "\u001b[0m\n> Sisyphus - ultraworker · mimo-v2.6-flash-free\n\u001b[0m\n\u001b[91m\u001b[1mError: \u001b[0mThis API key has expired. Create a new API key in OpenCode Console and replace it in your client or secret store. Signing in again will not renew this key.\n",
+   "plan": null
+  },
+  {
+   "cycle": 1,
+   "n_elements": 5,
+   "latency_s": 48.9,
+   "reply": "\u001b[0m\n> Sisyphus - ultraworker · mimo-v2.6-flash-free\n\u001b[0m\n\u001b[91m\u001b[1mError: \u001b[0mThis API key has expired. Create a new API key in OpenCode Console and replace it in your client or secret store. Signing in again will not renew this key.\n",
+   "plan": null
+  },
+  {
+   "cycle": 2,
+   "n_elements": 5,
+   "latency_s": 41.4,
+   "reply": "\u001b[0m\n> Sisyphus - ultraworker · mimo-v2.6-flash-free\n\u001b[0m\n\u001b[91m\u001b[1mError: \u001b[0mThis API key has expired. Create a new API key in OpenCode Console and replace it in your client or secret store. Signing in again will not renew this key.\n",
+   "plan": null
+  },
+  {
+   "cycle": 3,
+   "n_elements": 5,
+   "latency_s": 39.4,
+   "reply": "\u001b[0m\n> Sisyphus - ultraworker · mimo-v2.6-flash-free\n\u001b[0m\n\u001b[91m\u001b[1mError: \u001b[0mThis API key has expired. Create a new API key in OpenCode Console and replace it in your client or secret store. Signing in again will not renew this key.\n",
+   "plan": null
+  }
+ ],
+ "result": null
+}

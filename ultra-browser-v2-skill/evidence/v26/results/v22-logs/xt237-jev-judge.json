@@ -1,0 +1,31 @@
+{
+  "runId": "hermes-xt237-051717",
+  "pass_": false,
+  "checks": {
+    "runId": false,
+    "seed": true,
+    "filtered_second_page": true,
+    "fields": false,
+    "requires_environment": false,
+    "ordered_workflow": false,
+    "upload": true,
+    "single_record": false,
+    "single_mutation": false,
+    "single_submit": false,
+    "persisted_read": false
+  },
+  "events": [
+    "table_view",
+    "table_view",
+    "table_view",
+    "start",
+    "email_valid",
+    "upload",
+    "review_open",
+    "review_back"
+  ],
+  "mutationCount": 0,
+  "submitAttempts": 2,
+  "network_origin_assertion": "External traffic must be checked in executor network ledger; not inferable from DB",
+  "readOnly": true
+}

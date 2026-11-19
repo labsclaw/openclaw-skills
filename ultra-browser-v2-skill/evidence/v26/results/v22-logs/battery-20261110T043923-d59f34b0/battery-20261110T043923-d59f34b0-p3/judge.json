@@ -1,0 +1,27 @@
+{
+  "runId": "battery-20261110T043923-d59f34b0-p3",
+  "pass_": false,
+  "checks": {
+    "runId": false,
+    "seed": true,
+    "filtered_second_page": true,
+    "fields": false,
+    "requires_environment": false,
+    "ordered_workflow": false,
+    "upload": false,
+    "single_record": false,
+    "single_mutation": false,
+    "single_submit": false,
+    "persisted_read": false
+  },
+  "events": [
+    "table_view",
+    "table_view",
+    "table_view",
+    "start"
+  ],
+  "mutationCount": 0,
+  "submitAttempts": 0,
+  "network_origin_assertion": "External traffic must be checked in executor network ledger; not inferable from DB",
+  "readOnly": true
+}

@@ -1,0 +1,12 @@
+{
+ "url": "http://127.0.0.1:8765/t4-form.html",
+ "goal": "Fill the form: name=Roger Oliveira, email=roger@labsclaw.dev, plan=Pro. Then check the terms checkbox and click submit. Success text contains 'OK:'",
+ "model": "GLM-5.3-Flash",
+ "mode": "batch",
+ "cycles": [
+  {
+   "error": "amd-radeon GLM-5.3-Flash failed: HTTP Error 429: Too Many Requests {\"detail\":{\"error\":{\"message\":\"Model 'GLM-5.3-Flash' is at its concurrency limit (16); please retry later or use another model\",\"type\":\"rate_limit_error\",\"code\":\"model_concurrency_rate_limit_exceeded\""
+  }
+ ],
+ "result": null
+}

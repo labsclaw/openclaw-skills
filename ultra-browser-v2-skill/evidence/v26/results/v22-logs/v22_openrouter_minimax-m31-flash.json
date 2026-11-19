@@ -1,0 +1,125 @@
+{
+ "url": "http://127.0.0.1:8765/t4-form.html",
+ "goal": "Fill the form: name=Roger Oliveira, email=roger@labsclaw.dev, plan=Pro. Then check the terms checkbox and click submit. Success text contains 'OK:'",
+ "model": "minimax/minimax-m3.1-flash:free",
+ "mode": "batch",
+ "cycles": [
+  {
+   "cycle": 0,
+   "n_elements": 5,
+   "latency_s": 4.9,
+   "reply": "[{\"action\":\"type\",\"element\":1,\"value\":\"Roger Oliveira\",\"reason\":\"Fill the full name field.\"},{\"action\":\"type\",\"element\":2,\"value\":\"roger@labsclaw.dev\",\"reason\":\"Fill the email field.\"},{\"action\":\"select\",\"element\":3,\"value\":\"Pro\",\"reason\":\"Select the Pro plan.\"},{\"action\":\"click\",\"element\":4,\"reason",
+   "plan": [
+    {
+     "action": "type",
+     "element": 1,
+     "value": "Roger Oliveira",
+     "reason": "Fill the full name field."
+    },
+    {
+     "action": "type",
+     "element": 2,
+     "value": "roger@labsclaw.dev",
+     "reason": "Fill the email field."
+    },
+    {
+     "action": "select",
+     "element": 3,
+     "value": "Pro",
+     "reason": "Select the Pro plan."
+    },
+    {
+     "action": "click",
+     "element": 4,
+     "reason": "Accept the terms."
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "reason": "Submit the registration form."
+    },
+    {
+     "action": "assert_text",
+     "value": "OK:",
+     "reason": "Verify that the success marker is present."
+    },
+    {
+     "action": "done",
+     "reason": "Form submitted successfully."
+    }
+   ],
+   "usage": {
+    "prompt_tokens": 538,
+    "completion_tokens": 246,
+    "total_tokens": 784,
+    "cost": 0,
+    "is_byok": false,
+    "prompt_tokens_details": {
+     "cached_tokens": 0,
+     "cache_write_tokens": 0,
+     "audio_tokens": 0,
+     "video_tokens": 0
+    },
+    "cost_details": {
+     "upstream_inference_cost": 0,
+     "upstream_inference_prompt_cost": 0,
+     "upstream_inference_completions_cost": 0
+    },
+    "completion_tokens_details": {
+     "reasoning_tokens": 106,
+     "image_tokens": 0,
+     "audio_tokens": 0
+    }
+   },
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "type",
+      "element": 1,
+      "ok": true,
+      "value": "Roger Oliveira"
+     },
+     {
+      "i": 1,
+      "action": "type",
+      "element": 2,
+      "ok": true,
+      "value": "roger@labsclaw.dev"
+     },
+     {
+      "i": 2,
+      "action": "select",
+      "element": 3,
+      "ok": true,
+      "value": "Pro"
+     },
+     {
+      "i": 3,
+      "action": "click",
+      "element": 4,
+      "ok": true
+     },
+     {
+      "i": 4,
+      "action": "click",
+      "element": 5,
+      "ok": true
+     },
+     {
+      "i": 5,
+      "action": "assert_text",
+      "ok": true,
+      "value": "OK:"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "verifier": "text_contains:OK:",
+   "verdict": "PASS"
+  }
+ ],
+ "result": "DONE-VERIFIED-BATCH"
+}

@@ -1,0 +1,1231 @@
+{
+ "url": "http://127.0.0.1:8775/xt-web-form-01",
+ "goal": "No laboratorio X-Testing, filtre a tabela de demandas por WEB e Em analise, localize na segunda pagina DEMO-024 e cadastre um plano de teste do tipo Integracao, prioridade Alta, responsavel Equipe Alfa. No formulario em etapas, tente continuar com e-mail de fixture invalido para verificar a validacao, depois corrija para qa@example.test. Ative Requer ambiente e selecione Homologacao sintetica no campo condicional. Anexe fixture-evidence.txt, abra o modal de revisao, volte e corrija o titulo para Plano WEB DEMO-024 revisado; confirme a revisao e salve uma unica vez. Recarregue e demonstre que valores, anexo e vinculo com DEMO-024 persistiram. Nao contate servicos externos.",
+ "model": "opencode/mimo-v2.6-flash-free",
+ "steps": [
+  {
+   "step": 0,
+   "parsed": {
+    "action": "select",
+    "element": 1,
+    "value": "WEB",
+    "reason": "jev conf op=0.71 tgt=0.56",
+    "_probabilities": {
+     "op": {
+      "click": 0.25,
+      "type": 0.01,
+      "select": 0.74,
+      "press": 0.0,
+      "upload": 0.0,
+      "navigate": 0.0,
+      "wait": 0.0,
+      "done": 0.0,
+      "blocked": 0.0
+     },
+     "tgt": {
+      "1": 0.58,
+      "2": 0.0,
+      "3": 0.02,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.0,
+      "7": 0.0,
+      "8": 0.4,
+      "9": 0.0,
+      "10": 0.0,
+      "11": 0.0,
+      "12": 0.0,
+      "13": 0.0,
+      "14": 0.0,
+      "15": 0.0,
+      "16": 0.0,
+      "17": 0.0,
+      "18": 0.0,
+      "19": 0.0,
+      "20": 0.0,
+      "21": 0.0
+     }
+    },
+    "_usage": {
+     "input_tokens": 1672,
+     "output_tokens": 253
+    },
+    "id": "channel",
+    "label": "select channel: current=Todos"
+   },
+   "latency_s": 0.39,
+   "engine": "jev",
+   "usage": {
+    "input_tokens": 1672,
+    "output_tokens": 253
+   },
+   "exec": "{\"i\": 0, \"action\": \"select\", \"ok\": true, \"id\": \"channel\", \"value\": \"WEB\"}"
+  },
+  {
+   "step": 1,
+   "parsed": {
+    "action": "click",
+    "element": 2,
+    "value": "",
+    "reason": "jev conf op=0.53 tgt=0.73",
+    "_probabilities": {
+     "op": {
+      "click": 0.58,
+      "type": 0.0,
+      "select": 0.42,
+      "press": 0.0,
+      "upload": 0.0,
+      "navigate": 0.0,
+      "wait": 0.0,
+      "done": 0.0,
+      "blocked": 0.0
+     },
+     "tgt": {
+      "1": 0.0,
+      "2": 0.74,
+      "3": 0.11,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.0,
+      "7": 0.0,
+      "8": 0.15000000000000002,
+      "9": 0.0,
+      "10": 0.0,
+      "11": 0.0,
+      "12": 0.0,
+      "13": 0.0,
+      "14": 0.0,
+      "15": 0.0,
+      "16": 0.0,
+      "17": 0.0,
+      "18": 0.0,
+      "19": 0.0,
+      "20": 0.0,
+      "21": 0.0
+     }
+    },
+    "_usage": {
+     "input_tokens": 1703,
+     "output_tokens": 253
+    },
+    "id": "status",
+    "label": "select status: current=Todos"
+   },
+   "latency_s": 0.3,
+   "engine": "jev",
+   "usage": {
+    "input_tokens": 1703,
+    "output_tokens": 253
+   },
+   "exec": "{\"i\": 0, \"action\": \"click\", \"ok\": true, \"id\": \"status\", \"text\": \"Todos\\nEm análise\\nAberta\"}"
+  },
+  {
+   "step": 2,
+   "parsed": {
+    "action": "select",
+    "element": 2,
+    "value": "Em análise",
+    "reason": "jev conf op=0.56 tgt=0.62",
+    "_probabilities": {
+     "op": {
+      "click": 0.37,
+      "type": 0.01,
+      "select": 0.61,
+      "press": 0.0,
+      "upload": 0.0,
+      "navigate": 0.0,
+      "wait": 0.01,
+      "done": 0.0,
+      "blocked": 0.0
+     },
+     "tgt": {
+      "1": 0.0,
+      "2": 0.64,
+      "3": 0.14,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.0,
+      "7": 0.0,
+      "8": 0.22,
+      "9": 0.0,
+      "10": 0.0,
+      "11": 0.0,
+      "12": 0.0,
+      "13": 0.0,
+      "14": 0.0,
+      "15": 0.0,
+      "16": 0.0,
+      "17": 0.0,
+      "18": 0.0,
+      "19": 0.0,
+      "20": 0.0,
+      "21": 0.0
+     }
+    },
+    "_usage": {
+     "input_tokens": 1708,
+     "output_tokens": 253
+    },
+    "id": "status",
+    "label": "select status: current=Todos"
+   },
+   "latency_s": 0.28,
+   "engine": "jev",
+   "usage": {
+    "input_tokens": 1708,
+    "output_tokens": 253
+   },
+   "exec": "{\"i\": 0, \"action\": \"select\", \"ok\": true, \"id\": \"status\", \"value\": \"Em análise\"}"
+  },
+  {
+   "step": 3,
+   "parsed": {
+    "action": "click",
+    "element": 3,
+    "value": "",
+    "reason": "jev conf op=1.0 tgt=0.88",
+    "_probabilities": {
+     "op": {
+      "click": 1.0,
+      "type": 0.0,
+      "select": 0.0,
+      "press": 0.0,
+      "upload": 0.0,
+      "navigate": 0.0,
+      "wait": 0.0,
+      "done": 0.0,
+      "blocked": 0.0
+     },
+     "tgt": {
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.89,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.0,
+      "7": 0.0,
+      "8": 0.11,
+      "9": 0.0,
+      "10": 0.0,
+      "11": 0.0,
+      "12": 0.0,
+      "13": 0.0,
+      "14": 0.0,
+      "15": 0.0,
+      "16": 0.0,
+      "17": 0.0,
+      "18": 0.0,
+      "19": 0.0,
+      "20": 0.0,
+      "21": 0.0
+     }
+    },
+    "_usage": {
+     "input_tokens": 1720,
+     "output_tokens": 253
+    },
+    "id": "filter",
+    "label": "button filter: Filtrar demandas"
+   },
+   "latency_s": 0.29,
+   "engine": "jev",
+   "usage": {
+    "input_tokens": 1720,
+    "output_tokens": 253
+   },
+   "exec": "{\"i\": 0, \"action\": \"click\", \"ok\": true, \"id\": \"filter\", \"text\": \"Filtrar demandas\"}"
+  },
+  {
+   "step": 4,
+   "parsed": {
+    "action": "click",
+    "element": 8,
+    "value": "",
+    "reason": "jev conf op=1.0 tgt=0.99",
+    "_probabilities": {
+     "op": {
+      "click": 1.0,
+      "type": 0.0,
+      "select": 0.0,
+      "press": 0.0,
+      "upload": 0.0,
+      "navigate": 0.0,
+      "wait": 0.0,
+      "done": 0.0,
+      "blocked": 0.0
+     },
+     "tgt": {
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.01,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.0,
+      "7": 0.0,
+      "8": 0.99,
+      "9": 0.0,
+      "10": 0.0,
+      "11": 0.0,
+      "12": 0.0,
+      "13": 0.0,
+      "14": 0.0,
+      "15": 0.0,
+      "16": 0.0,
+      "17": 0.0,
+      "18": 0.0,
+      "19": 0.0,
+      "20": 0.0,
+      "21": 0.0
+     }
+    },
+    "_usage": {
+     "input_tokens": 1723,
+     "output_tokens": 253
+    },
+    "id": "next",
+    "label": "button next: Próxima página"
+   },
+   "latency_s": 0.29,
+   "engine": "jev",
+   "usage": {
+    "input_tokens": 1723,
+    "output_tokens": 253
+   },
+   "exec": "{\"i\": 0, \"action\": \"click\", \"ok\": true, \"id\": \"next\", \"text\": \"Próxima página\"}"
+  },
+  {
+   "step": 5,
+   "parsed": {
+    "action": "click",
+    "element": 4,
+    "value": "",
+    "reason": "jev conf op=1.0 tgt=0.99",
+    "_probabilities": {
+     "op": {
+      "click": 1.0,
+      "type": 0.0,
+      "select": 0.0,
+      "press": 0.0,
+      "upload": 0.0,
+      "navigate": 0.0,
+      "wait": 0.0,
+      "done": 0.0,
+      "blocked": 0.0
+     },
+     "tgt": {
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.0,
+      "4": 0.99,
+      "5": 0.0,
+      "6": 0.0,
+      "7": 0.0,
+      "8": 0.01,
+      "9": 0.0,
+      "10": 0.0,
+      "11": 0.0,
+      "12": 0.0,
+      "13": 0.0,
+      "14": 0.0,
+      "15": 0.0,
+      "16": 0.0,
+      "17": 0.0,
+      "18": 0.0,
+      "19": 0.0,
+      "20": 0.0,
+      "21": 0.0
+     }
+    },
+    "_usage": {
+     "input_tokens": 1728,
+     "output_tokens": 253
+    },
+    "label": "button : Criar plano DEMO-024"
+   },
+   "latency_s": 0.31,
+   "engine": "jev",
+   "usage": {
+    "input_tokens": 1728,
+    "output_tokens": 253
+   },
+   "exec": "{\"i\": 0, \"action\": \"click\", \"ok\": true, \"id\": \"\", \"text\": \"Criar plano DEMO-024\"}"
+  },
+  {
+   "step": 6,
+   "parsed": {
+    "action": "type",
+    "element": 9,
+    "value": "Plano WEB DEMO-024 revisado",
+    "reason": "jev conf op=0.87 tgt=0.76",
+    "_probabilities": {
+     "op": {
+      "click": 0.09,
+      "type": 0.88,
+      "select": 0.03,
+      "press": 0.0,
+      "upload": 0.0,
+      "navigate": 0.0,
+      "wait": 0.0,
+      "done": 0.0,
+      "blocked": 0.0
+     },
+     "tgt": {
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.0,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.0,
+      "7": 0.0,
+      "8": 0.0,
+      "9": 0.77,
+      "10": 0.1,
+      "11": 0.05,
+      "12": 0.0,
+      "13": 0.07,
+      "14": 0.01,
+      "15": 0.0,
+      "16": 0.0,
+      "17": 0.0,
+      "18": 0.0,
+      "19": 0.0,
+      "20": 0.0,
+      "21": 0.0
+     }
+    },
+    "_usage": {
+     "input_tokens": 1759,
+     "output_tokens": 253
+    },
+    "id": "title1",
+    "label": "input title1: value=(empty)"
+   },
+   "latency_s": 0.3,
+   "engine": "jev",
+   "usage": {
+    "input_tokens": 1759,
+    "output_tokens": 253
+   },
+   "exec": "{\"i\": 0, \"action\": \"type\", \"ok\": true, \"id\": \"title1\", \"value\": \"Plano WEB DEMO-024 revisado\"}"
+  },
+  {
+   "step": 7,
+   "parsed": {
+    "action": "type",
+    "element": 10,
+    "value": "qa@example.test",
+    "reason": "jev conf op=0.9 tgt=0.84",
+    "_probabilities": {
+     "op": {
+      "click": 0.09,
+      "type": 0.91,
+      "select": 0.0,
+      "press": 0.0,
+      "upload": 0.0,
+      "navigate": 0.0,
+      "wait": 0.0,
+      "done": 0.0,
+      "blocked": 0.0
+     },
+     "tgt": {
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.0,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.0,
+      "7": 0.0,
+      "8": 0.0,
+      "9": 0.0,
+      "10": 0.85,
+      "11": 0.13,
+      "12": 0.0,
+      "13": 0.02,
+      "14": 0.0,
+      "15": 0.0,
+      "16": 0.0,
+      "17": 0.0,
+      "18": 0.0,
+      "19": 0.0,
+      "20": 0.0,
+      "21": 0.0
+     }
+    },
+    "_usage": {
+     "input_tokens": 1799,
+     "output_tokens": 254
+    },
+    "id": "email",
+    "label": "input email: value=(empty)"
+   },
+   "latency_s": 0.34,
+   "engine": "jev",
+   "usage": {
+    "input_tokens": 1799,
+    "output_tokens": 254
+   },
+   "exec": "{\"i\": 0, \"action\": \"type\", \"ok\": true, \"id\": \"email\", \"value\": \"qa@example.test\"}"
+  },
+  {
+   "step": 8,
+   "parsed": {
+    "action": "click",
+    "element": 11,
+    "value": "",
+    "reason": "jev conf op=0.98 tgt=0.91",
+    "_probabilities": {
+     "op": {
+      "click": 0.98,
+      "type": 0.01,
+      "select": 0.01,
+      "press": 0.0,
+      "upload": 0.0,
+      "navigate": 0.0,
+      "wait": 0.0,
+      "done": 0.0,
+      "blocked": 0.0
+     },
+     "tgt": {
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.0,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.0,
+      "7": 0.0,
+      "8": 0.0,
+      "9": 0.0,
+      "10": 0.03,
+      "11": 0.91,
+      "12": 0.0,
+      "13": 0.060000000000000005,
+      "14": 0.0,
+      "15": 0.0,
+      "16": 0.0,
+      "17": 0.0,
+      "18": 0.0,
+      "19": 0.0,
+      "20": 0.0,
+      "21": 0.0
+     }
+    },
+    "_usage": {
+     "input_tokens": 1814,
+     "output_tokens": 254
+    },
+    "label": "button : Continuar"
+   },
+   "latency_s": 0.29,
+   "engine": "jev",
+   "usage": {
+    "input_tokens": 1814,
+    "output_tokens": 254
+   },
+   "exec": "{\"i\": 0, \"action\": \"click\", \"ok\": true, \"id\": \"\", \"text\": \"Continuar\"}"
+  },
+  {
+   "step": 9,
+   "parsed": {
+    "action": "select",
+    "element": 13,
+    "value": "Integração",
+    "reason": "jev conf op=0.92 tgt=0.87",
+    "_probabilities": {
+     "op": {
+      "click": 0.05,
+      "type": 0.01,
+      "select": 0.93,
+      "press": 0.0,
+      "upload": 0.01,
+      "navigate": 0.0,
+      "wait": 0.0,
+      "done": 0.0,
+      "blocked": 0.0
+     },
+     "tgt": {
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.0,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.0,
+      "7": 0.0,
+      "8": 0.0,
+      "9": 0.0,
+      "10": 0.0,
+      "11": 0.02,
+      "12": 0.01,
+      "13": 0.88,
+      "14": 0.05,
+      "15": 0.0,
+      "16": 0.01,
+      "17": 0.0,
+      "18": 0.0,
+      "19": 0.02,
+      "20": 0.0,
+      "21": 0.01
+     }
+    },
+    "_usage": {
+     "input_tokens": 1853,
+     "output_tokens": 254
+    },
+    "id": "type",
+    "label": "select type: current=Selecione"
+   },
+   "latency_s": 0.3,
+   "engine": "jev",
+   "usage": {
+    "input_tokens": 1853,
+    "output_tokens": 254
+   },
+   "exec": "{\"i\": 0, \"action\": \"select\", \"ok\": true, \"id\": \"type\", \"value\": \"Integração\"}"
+  },
+  {
+   "step": 10,
+   "parsed": {
+    "action": "select",
+    "element": 14,
+    "value": "Alta",
+    "reason": "jev conf op=0.84 tgt=0.96",
+    "_probabilities": {
+     "op": {
+      "click": 0.11,
+      "type": 0.02,
+      "select": 0.86,
+      "press": 0.0,
+      "upload": 0.01,
+      "navigate": 0.0,
+      "wait": 0.0,
+      "done": 0.0,
+      "blocked": 0.0
+     },
+     "tgt": {
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.0,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.0,
+      "7": 0.0,
+      "8": 0.0,
+      "9": 0.0,
+      "10": 0.0,
+      "11": 0.0,
+      "12": 0.0,
+      "13": 0.0,
+      "14": 0.96,
+      "15": 0.02,
+      "16": 0.0,
+      "17": 0.0,
+      "18": 0.0,
+      "19": 0.02,
+      "20": 0.0,
+      "21": 0.0
+     }
+    },
+    "_usage": {
+     "input_tokens": 1869,
+     "output_tokens": 254
+    },
+    "id": "priority",
+    "label": "select priority: current=Normal"
+   },
+   "latency_s": 0.31,
+   "engine": "jev",
+   "usage": {
+    "input_tokens": 1869,
+    "output_tokens": 254
+   },
+   "exec": "{\"i\": 0, \"action\": \"select\", \"ok\": true, \"id\": \"priority\", \"value\": \"Alta\"}"
+  },
+  {
+   "step": 11,
+   "parsed": {
+    "action": "type",
+    "element": 15,
+    "value": "Equipe Alfa",
+    "reason": "jev conf op=0.31 tgt=0.87",
+    "_probabilities": {
+     "op": {
+      "click": 0.23,
+      "type": 0.39,
+      "select": 0.25,
+      "press": 0.0,
+      "upload": 0.12,
+      "navigate": 0.0,
+      "wait": 0.01,
+      "done": 0.0,
+      "blocked": 0.0
+     },
+     "tgt": {
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.0,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.0,
+      "7": 0.0,
+      "8": 0.0,
+      "9": 0.0,
+      "10": 0.0,
+      "11": 0.01,
+      "12": 0.0,
+      "13": 0.0,
+      "14": 0.0,
+      "15": 0.88,
+      "16": 0.07,
+      "17": 0.01,
+      "18": 0.01,
+      "19": 0.02,
+      "20": 0.0,
+      "21": 0.0
+     }
+    },
+    "_usage": {
+     "input_tokens": 1876,
+     "output_tokens": 254
+    },
+    "id": "responsible",
+    "label": "input responsible: value=(empty)"
+   },
+   "latency_s": 0.31,
+   "engine": "jev",
+   "usage": {
+    "input_tokens": 1876,
+    "output_tokens": 254
+   },
+   "exec": "{\"i\": 0, \"action\": \"type\", \"ok\": true, \"id\": \"responsible\", \"value\": \"Equipe Alfa\"}"
+  },
+  {
+   "step": 12,
+   "parsed": {
+    "action": "click",
+    "element": 16,
+    "value": "",
+    "reason": "jev conf op=0.79 tgt=0.81",
+    "_probabilities": {
+     "op": {
+      "click": 0.81,
+      "type": 0.01,
+      "select": 0.01,
+      "press": 0.0,
+      "upload": 0.15,
+      "navigate": 0.0,
+      "wait": 0.01,
+      "done": 0.0,
+      "blocked": 0.0
+     },
+     "tgt": {
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.0,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.0,
+      "7": 0.0,
+      "8": 0.0,
+      "9": 0.0,
+      "10": 0.0,
+      "11": 0.04,
+      "12": 0.01,
+      "13": 0.0,
+      "14": 0.0,
+      "15": 0.0,
+      "16": 0.8200000000000001,
+      "17": 0.03,
+      "18": 0.02,
+      "19": 0.07,
+      "20": 0.0,
+      "21": 0.0
+     }
+    },
+    "_usage": {
+     "input_tokens": 1893,
+     "output_tokens": 254
+    },
+    "id": "requires",
+    "label": "input requires: checked=false"
+   },
+   "latency_s": 0.29,
+   "engine": "jev",
+   "usage": {
+    "input_tokens": 1893,
+    "output_tokens": 254
+   },
+   "exec": "{\"i\": 0, \"action\": \"click\", \"ok\": true, \"id\": \"requires\", \"text\": \"\"}"
+  },
+  {
+   "step": 13,
+   "parsed": {
+    "action": "select",
+    "element": 17,
+    "value": "Homologação sintética",
+    "reason": "jev conf op=0.9 tgt=0.92",
+    "_probabilities": {
+     "op": {
+      "click": 0.04,
+      "type": 0.01,
+      "select": 0.91,
+      "press": 0.0,
+      "upload": 0.04,
+      "navigate": 0.0,
+      "wait": 0.0,
+      "done": 0.0,
+      "blocked": 0.0
+     },
+     "tgt": {
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.0,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.0,
+      "7": 0.0,
+      "8": 0.0,
+      "9": 0.0,
+      "10": 0.0,
+      "11": 0.0,
+      "12": 0.0,
+      "13": 0.0,
+      "14": 0.0,
+      "15": 0.0,
+      "16": 0.0,
+      "17": 0.92,
+      "18": 0.02,
+      "19": 0.05,
+      "20": 0.0,
+      "21": 0.01
+     }
+    },
+    "_usage": {
+     "input_tokens": 1904,
+     "output_tokens": 254
+    },
+    "id": "environment",
+    "label": "select environment: current=Selecione"
+   },
+   "latency_s": 0.42,
+   "engine": "jev",
+   "usage": {
+    "input_tokens": 1904,
+    "output_tokens": 254
+   },
+   "exec": "{\"i\": 0, \"action\": \"select\", \"ok\": true, \"id\": \"environment\", \"value\": \"Homologação sintética\"}"
+  },
+  {
+   "step": 14,
+   "parsed": {
+    "action": "upload",
+    "element": 18,
+    "value": "",
+    "reason": "jev conf op=0.94 tgt=0.91",
+    "_probabilities": {
+     "op": {
+      "click": 0.03,
+      "type": 0.02,
+      "select": 0.0,
+      "press": 0.0,
+      "upload": 0.95,
+      "navigate": 0.0,
+      "wait": 0.0,
+      "done": 0.0,
+      "blocked": 0.0
+     },
+     "tgt": {
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.0,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.0,
+      "7": 0.0,
+      "8": 0.0,
+      "9": 0.0,
+      "10": 0.0,
+      "11": 0.0,
+      "12": 0.0,
+      "13": 0.0,
+      "14": 0.0,
+      "15": 0.0,
+      "16": 0.0,
+      "17": 0.0,
+      "18": 0.91,
+      "19": 0.09,
+      "20": 0.0,
+      "21": 0.0
+     }
+    },
+    "_usage": {
+     "input_tokens": 1924,
+     "output_tokens": 254
+    },
+    "id": "upload",
+    "label": "input upload: value=(empty)"
+   },
+   "latency_s": 0.34,
+   "engine": "jev",
+   "usage": {
+    "input_tokens": 1924,
+    "output_tokens": 254
+   },
+   "exec": "{\"results\": [{\"i\": 0, \"action\": \"upload\", \"pending\": true, \"id\": \"upload\"}], \"stopped_at\": 0, \"reason\": \"upload\", \"terminal\": \"upload\", \"file\": \"\", \"selector\": \"#upload\"}",
+   "upload": "upload-ok\n"
+  },
+  {
+   "step": 15,
+   "parsed": {
+    "action": "click",
+    "element": 19,
+    "value": "",
+    "reason": "jev conf op=1.0 tgt=0.98",
+    "_probabilities": {
+     "op": {
+      "click": 1.0,
+      "type": 0.0,
+      "select": 0.0,
+      "press": 0.0,
+      "upload": 0.0,
+      "navigate": 0.0,
+      "wait": 0.0,
+      "done": 0.0,
+      "blocked": 0.0
+     },
+     "tgt": {
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.0,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.0,
+      "7": 0.0,
+      "8": 0.0,
+      "9": 0.0,
+      "10": 0.0,
+      "11": 0.0,
+      "12": 0.02,
+      "13": 0.0,
+      "14": 0.0,
+      "15": 0.0,
+      "16": 0.0,
+      "17": 0.0,
+      "18": 0.0,
+      "19": 0.98,
+      "20": 0.0,
+      "21": 0.0
+     }
+    },
+    "_usage": {
+     "input_tokens": 1960,
+     "output_tokens": 254
+    },
+    "id": "review",
+    "label": "button review: Revisar plano"
+   },
+   "latency_s": 0.29,
+   "engine": "jev",
+   "usage": {
+    "input_tokens": 1960,
+    "output_tokens": 254
+   },
+   "exec": "{\"i\": 0, \"action\": \"click\", \"ok\": true, \"id\": \"review\", \"text\": \"Revisar plano\"}"
+  },
+  {
+   "step": 16,
+   "parsed": {
+    "action": "click",
+    "element": 21,
+    "value": "",
+    "reason": "jev conf op=1.0 tgt=0.92",
+    "_probabilities": {
+     "op": {
+      "click": 1.0,
+      "type": 0.0,
+      "select": 0.0,
+      "press": 0.0,
+      "upload": 0.0,
+      "navigate": 0.0,
+      "wait": 0.0,
+      "done": 0.0,
+      "blocked": 0.0
+     },
+     "tgt": {
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.0,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.0,
+      "7": 0.0,
+      "8": 0.0,
+      "9": 0.0,
+      "10": 0.0,
+      "11": 0.0,
+      "12": 0.01,
+      "13": 0.0,
+      "14": 0.0,
+      "15": 0.0,
+      "16": 0.0,
+      "17": 0.0,
+      "18": 0.0,
+      "19": 0.03,
+      "20": 0.04,
+      "21": 0.92
+     }
+    },
+    "_usage": {
+     "input_tokens": 2019,
+     "output_tokens": 254
+    },
+    "id": "save",
+    "label": "button save: Confirmar revisão e salvar"
+   },
+   "latency_s": 0.3,
+   "engine": "jev",
+   "usage": {
+    "input_tokens": 2019,
+    "output_tokens": 254
+   },
+   "exec": "{\"i\": 0, \"action\": \"click\", \"ok\": true, \"id\": \"save\", \"text\": \"Confirmar revisão e salvar\"}"
+  },
+  {
+   "step": 17,
+   "parsed": {
+    "action": "navigate",
+    "element": 20,
+    "value": "",
+    "reason": "jev conf op=0.4 tgt=0.61",
+    "_probabilities": {
+     "op": {
+      "click": 0.09,
+      "type": 0.0,
+      "select": 0.0,
+      "press": 0.0,
+      "upload": 0.0,
+      "navigate": 0.47000000000000003,
+      "wait": 0.02,
+      "done": 0.4,
+      "blocked": 0.01
+     },
+     "tgt": {
+      "1": 0.01,
+      "2": 0.0,
+      "3": 0.06,
+      "4": 0.03,
+      "5": 0.0,
+      "6": 0.0,
+      "7": 0.02,
+      "8": 0.11,
+      "9": 0.0,
+      "10": 0.0,
+      "11": 0.0,
+      "12": 0.01,
+      "13": 0.0,
+      "14": 0.0,
+      "15": 0.0,
+      "16": 0.0,
+      "17": 0.0,
+      "18": 0.0,
+      "19": 0.02,
+      "20": 0.63,
+      "21": 0.02,
+      "22": 0.09
+     }
+    },
+    "_usage": {
+     "input_tokens": 2090,
+     "output_tokens": 262
+    },
+    "label": "a : Abrir anexo persistido"
+   },
+   "latency_s": 0.36,
+   "engine": "jev",
+   "usage": {
+    "input_tokens": 2090,
+    "output_tokens": 262
+   },
+   "exec": "{\"results\": [{\"i\": 0, \"action\": \"navigate\", \"value\": \"\"}], \"stopped_at\": 0, \"reason\": \"navigate\", \"terminal\": \"navigate\", \"url\": \"http://127.0.0.1:8775/xt-web-form-01\"}",
+   "nav": "http://127.0.0.1:8775/xt-web-form-01"
+  },
+  {
+   "step": 18,
+   "parsed": {
+    "action": "navigate",
+    "element": 20,
+    "value": "",
+    "reason": "jev conf op=0.37 tgt=0.68",
+    "_probabilities": {
+     "op": {
+      "click": 0.14,
+      "type": 0.0,
+      "select": 0.03,
+      "press": 0.0,
+      "upload": 0.0,
+      "navigate": 0.44,
+      "wait": 0.02,
+      "done": 0.35,
+      "blocked": 0.02
+     },
+     "tgt": {
+      "1": 0.08,
+      "2": 0.0,
+      "3": 0.03,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.0,
+      "7": 0.0,
+      "8": 0.11,
+      "9": 0.0,
+      "10": 0.0,
+      "11": 0.0,
+      "12": 0.0,
+      "13": 0.0,
+      "14": 0.0,
+      "15": 0.0,
+      "16": 0.0,
+      "17": 0.0,
+      "18": 0.0,
+      "19": 0.01,
+      "20": 0.6900000000000001,
+      "21": 0.01,
+      "22": 0.06
+     }
+    },
+    "_usage": {
+     "input_tokens": 2010,
+     "output_tokens": 262
+    },
+    "label": "a : Abrir anexo persistido"
+   },
+   "latency_s": 0.33,
+   "engine": "jev",
+   "usage": {
+    "input_tokens": 2010,
+    "output_tokens": 262
+   },
+   "exec": "{\"results\": [{\"i\": 0, \"action\": \"navigate\", \"value\": \"\"}], \"stopped_at\": 0, \"reason\": \"navigate\", \"terminal\": \"navigate\", \"url\": \"http://127.0.0.1:8775/xt-web-form-01\"}",
+   "nav": "http://127.0.0.1:8775/xt-web-form-01"
+  },
+  {
+   "step": 19,
+   "parsed": {
+    "action": "navigate",
+    "element": 20,
+    "value": "",
+    "reason": "jev conf op=0.57 tgt=0.68",
+    "_probabilities": {
+     "op": {
+      "click": 0.13,
+      "type": 0.0,
+      "select": 0.01,
+      "press": 0.0,
+      "upload": 0.0,
+      "navigate": 0.62,
+      "wait": 0.02,
+      "done": 0.21,
+      "blocked": 0.01
+     },
+     "tgt": {
+      "1": 0.04,
+      "2": 0.0,
+      "3": 0.02,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.0,
+      "7": 0.0,
+      "8": 0.18000000000000002,
+      "9": 0.0,
+      "10": 0.0,
+      "11": 0.0,
+      "12": 0.0,
+      "13": 0.0,
+      "14": 0.0,
+      "15": 0.0,
+      "16": 0.0,
+      "17": 0.0,
+      "18": 0.0,
+      "19": 0.01,
+      "20": 0.6900000000000001,
+      "21": 0.01,
+      "22": 0.04
+     }
+    },
+    "_usage": {
+     "input_tokens": 2010,
+     "output_tokens": 262
+    },
+    "label": "a : Abrir anexo persistido"
+   },
+   "latency_s": 0.31,
+   "engine": "jev",
+   "usage": {
+    "input_tokens": 2010,
+    "output_tokens": 262
+   },
+   "exec": "{\"results\": [{\"i\": 0, \"action\": \"navigate\", \"value\": \"\"}], \"stopped_at\": 0, \"reason\": \"navigate\", \"terminal\": \"navigate\", \"url\": \"http://127.0.0.1:8775/xt-web-form-01\"}",
+   "nav": "http://127.0.0.1:8775/xt-web-form-01"
+  },
+  {
+   "step": 20,
+   "parsed": {
+    "action": "navigate",
+    "element": 20,
+    "value": "",
+    "reason": "jev conf op=0.49 tgt=0.66",
+    "_probabilities": {
+     "op": {
+      "click": 0.18,
+      "type": 0.0,
+      "select": 0.01,
+      "press": 0.0,
+      "upload": 0.0,
+      "navigate": 0.55,
+      "wait": 0.02,
+      "done": 0.22,
+      "blocked": 0.02
+     },
+     "tgt": {
+      "1": 0.05,
+      "2": 0.0,
+      "3": 0.03,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.0,
+      "7": 0.0,
+      "8": 0.15000000000000002,
+      "9": 0.0,
+      "10": 0.0,
+      "11": 0.0,
+      "12": 0.0,
+      "13": 0.0,
+      "14": 0.0,
+      "15": 0.0,
+      "16": 0.0,
+      "17": 0.0,
+      "18": 0.0,
+      "19": 0.01,
+      "20": 0.68,
+      "21": 0.01,
+      "22": 0.060000000000000005
+     }
+    },
+    "_usage": {
+     "input_tokens": 2010,
+     "output_tokens": 262
+    }
+   },
+   "latency_s": 0.29,
+   "engine": "jev",
+   "usage": {
+    "input_tokens": 2010,
+    "output_tokens": 262
+   }
+  },
+  {
+   "loop_guard": "same action x3: ('navigate', 20)",
+   "verifier_on_abort": "text_contains:Plano WEB DEMO-024 revisado",
+   "verdict": "PASS"
+  }
+ ],
+ "result": "DONE-VERIFIED"
+}

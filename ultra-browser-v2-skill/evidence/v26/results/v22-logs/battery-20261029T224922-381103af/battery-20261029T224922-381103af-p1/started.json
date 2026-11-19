@@ -1,0 +1,21 @@
+{
+  "schema": "battery-v2.6a",
+  "runId": "battery-20261029T224922-381103af-p1",
+  "url": "http://127.0.0.1:49519/xt-web-form-01",
+  "startedAt": "2026-10-29T22:49:23.347373+00:00",
+  "recipeSha256": "5defc9c2bf86ec8357cc16c063d03bb18ce6554bfd7848ca18e1f409d971fd71",
+  "provenance": {
+    "commit": "ef55939aeb19891ce47f9dc944edc02b4625a5a9",
+    "executorCommit": "ed963eca968698bdce1cdaeb33557ca51502e221",
+    "validatorBaseCommit": "51631c1e834fc3203b1fecae333f5a4964863d01",
+    "validatorUncommitted": true,
+    "files": {
+      "ultra-browser-v2\\scripts\\recipe.py": "ee06995e3de347004b42f0034814cdf26f1291e25584feb9e1d4bd50f650747d",
+      "ultra-browser-v2\\scripts\\agent_loop.py": "ff11293c638e5f9dff25f2291806517fe513ad0ae4bbf23514e54f2876b7d0f5",
+      "ultra-browser-v2\\scripts\\snapshot.js": "b72d5d4f1b151aebe07ab274082647b8b2007478186be1c82e4ec7f5e424bf16",
+      "ultra-browser-v2\\scripts\\battery_pilot.py": "0d210748562e74418fec8e7f3d0412848d3655070ee4963c2df7f793358a1443",
+      "results\\recipes\\xt24ds7-recipe.json": "d97addfde6e6a88c4361eccde95566398e5fd547b5b7f0e6d37ac12e8a5847cb"
+    }
+  },
+  "verifierSpec": "persisted:Plano WEB DEMO-024"
+}

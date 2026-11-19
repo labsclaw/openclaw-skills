@@ -1,0 +1,12 @@
+{
+ "url": "http://127.0.0.1:8765/t4-form.html",
+ "goal": "Fill the form: name=Roger Oliveira, email=roger@labsclaw.dev, plan=Pro. Then check the terms checkbox and click submit. Success text contains 'OK:'",
+ "model": "opencode/big-pickle",
+ "mode": "batch",
+ "cycles": [
+  {
+   "error": "snapshot failed: Traceback (most recent call last):\n  File \"C:\\Users\\ClawLabs\\AppData\\Local\\hermes\\installs\\bde0425e6fa3eeac\\environments\\19338042a70945f794a89da1de5408f4\\venv\\Lib\\site-packages\\browser_harness\\helpers"
+  }
+ ],
+ "result": null
+}

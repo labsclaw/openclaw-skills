@@ -1,0 +1,39 @@
+{
+  "runId": "hermes-battery-p3-1793302790",
+  "pass_": true,
+  "checks": {
+    "runId": true,
+    "seed": true,
+    "filtered_second_page": true,
+    "fields": true,
+    "requires_environment": true,
+    "ordered_workflow": true,
+    "upload": true,
+    "single_record": true,
+    "single_mutation": true,
+    "single_submit": true,
+    "persisted_read": true
+  },
+  "events": [
+    "table_view",
+    "table_view",
+    "table_view",
+    "start",
+    "email_invalid_blocked",
+    "email_valid",
+    "upload",
+    "review_open",
+    "review_back",
+    "title_changed",
+    "review_open",
+    "saved",
+    "persisted_read",
+    "document_reload",
+    "persisted_read",
+    "table_view"
+  ],
+  "mutationCount": 1,
+  "submitAttempts": 1,
+  "network_origin_assertion": "External traffic must be checked in executor network ledger; not inferable from DB",
+  "readOnly": true
+}
