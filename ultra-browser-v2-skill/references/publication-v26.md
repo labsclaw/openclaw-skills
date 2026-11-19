@@ -17,3 +17,7 @@ Fonte: `40c68be498817c9787d97ce68f581081ebc078f7`, sobre `76eef077b8c9af28be0c4c
 O fechamento permanece: **36 fulfilled, 7 omitted, 1 drifted, 3 N.A., A025 não verificado**. A bateria histórica 3/3 com judge 11/11 por piloto não resolve esses alvos. A fila não é autorização para implementar.
 
 O original de SKILL.md tem versão 2.3.0 e descrições anteriores ao código v2.6d. A distribuição usa versão 2.6.0 com aviso de precedência, sem reescrever silenciosamente as evidências históricas. A fonte original está congelada no pacote. Não há certificação de generalização, adoção ou sincronização de runtime.
+
+## Correção de empacotamento após o primeiro CI
+
+A descrição de roteamento já auditada em master foi preservada, em vez de substituída pela descrição antiga da fonte. O SKILL.md arquivado foi renomeado para SKILL.source.md para não ser descoberto como outra skill instalável. Seus bytes e origem permanecem no manifesto. Nenhuma mudança de executor ou da fila.

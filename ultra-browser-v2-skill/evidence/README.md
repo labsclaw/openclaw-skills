@@ -9,7 +9,7 @@ Os commits da fonte não são ancestrais desta biblioteca; comandos `git show` d
 - [Bateria histórica v2.6d](v26/results/v22-logs/battery-20261110T051525-d94157c9/): 3/3, judge 11/11 em cada piloto. Não é fechamento dos alvos.
 - [Manifesto v2.3.0 preservado](manifest-v230.json): executáveis antigos relocados em `v230/`; recibos de `ed963ec/` e `51631c1/` preservados.
 
-O SKILL.md recebeu somente nome/versão de distribuição e aviso de precedência. O original está em `v26/ultra-browser-v2/SKILL.md`. Referências `v26-*` refletem a fonte atual, com links de resultados adaptados; as demais referências e README-v230.md são históricas.
+O SKILL.md recebeu somente nome/versão de distribuição e aviso de precedência. O original está em `v26/ultra-browser-v2/SKILL.source.md`. Referências `v26-*` refletem a fonte atual, com links de resultados adaptados; as demais referências e README-v230.md são históricas.
 Nenhum item da fila foi implementado. Nenhuma nova bateria, inferência ou avaliação de roteamento foi executada. Runtime não sincronizado. Recibos falhos e bem-sucedidos foram preservados, sem seleção por resultado.
 
 ## Pré-requisitos e uso

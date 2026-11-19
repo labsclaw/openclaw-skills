@@ -40,7 +40,7 @@
     },
     {
       "name": "ultra-browser-v2-skill",
-      "description": "Navegação em navegador visível com snapshots DOM, operações nativas e recipes revisadas. Use para executar uma recipe compatível, navegar com LLM+JEV ou preparar evidência verificável de formulários e fluxos de navegador. Distingue capacidades existentes de propostas; não concede acesso ao estado privado do judge.",
+      "description": "Executar recipes revisadas, navegação visível com LLM+JEV e snapshots DOM, ou revisar sua evidência de execução. Não usar para leitura simples de URL, dúvidas sobre navegadores ou navegação comum sem esse harness; não concede acesso ao judge privado.",
       "path": "ultra-browser-v2-skill",
       "trustTier": "experimental",
       "owner": "LabsClaw",
@@ -66,7 +66,7 @@
         "total": 0,
         "report": "docs/skill-routing-boundaries-20261110.md"
       },
-      "contentDigest": "sha256:ea867632643b7931a31c03960cfc0d84c697048d79d3d6db0e272bc9b19452a5"
+      "contentDigest": "sha256:026055f6ce02c8a36149abccc0f5c9b9ee83e7cd1e6081b94581e415e5346062"
     },
     {
       "name": "ultra-code-context-skill",

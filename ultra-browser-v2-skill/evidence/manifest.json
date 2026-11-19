@@ -1630,7 +1630,7 @@
       "sha256": "df8a8148c290cd856633f6e053609b5a2df2538063d805a6cdbf39fdea31ab74"
     },
     {
-      "path": "evidence/v26/ultra-browser-v2/SKILL.md",
+      "path": "evidence/v26/ultra-browser-v2/SKILL.source.md",
       "source_commit": "40c68be498817c9787d97ce68f581081ebc078f7",
       "source_path": "ultra-browser-v2/SKILL.md",
       "sha256": "647ecd029eab714706a6c5a70b27b075138bc64f144daaf72b5cbc50efebc808"
