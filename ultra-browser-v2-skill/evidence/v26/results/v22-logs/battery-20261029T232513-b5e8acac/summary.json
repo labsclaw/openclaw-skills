@@ -1,0 +1,9 @@
+{
+  "batchId": "battery-20261029T232513-b5e8acac",
+  "startedAt": "2026-10-29T23:25:13.749604+00:00",
+  "preflightOnly": true,
+  "pilots": [],
+  "passed": false,
+  "error": "RuntimeError: Executor difere de HEAD; requer outra bateria identificada",
+  "finishedAt": "2026-10-29T23:25:13.818129+00:00"
+}

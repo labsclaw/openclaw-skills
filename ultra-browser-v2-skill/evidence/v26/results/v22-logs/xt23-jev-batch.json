@@ -1,0 +1,2721 @@
+{
+ "url": "http://127.0.0.1:8769/xt-web-form-01",
+ "goal": "No laboratorio X-Testing, filtre a tabela de demandas por WEB e Em analise, localize na segunda pagina DEMO-024 e cadastre um plano de teste do tipo Integracao, prioridade Alta, responsavel Equipe Alfa. No formulario em etapas, tente continuar com e-mail de fixture invalido para verificar a validacao, depois corrija para qa@example.test. Ative Requer ambiente e selecione Homologacao sintetica no campo condicional. Anexe fixture-evidence.txt, abra o modal de revisao, volte e corrija o titulo para Plano WEB DEMO-024 revisado; confirme a revisao e salve uma unica vez. Recarregue e demonstre que valores, anexo e vinculo com DEMO-024 persistiram. Nao contate servicos externos.",
+ "model": "opencode/mimo-v2.6-flash-free",
+ "mode": "batch",
+ "cycles": [
+  {
+   "cycle": 0,
+   "n_elements": 21,
+   "latency_s": 0.47,
+   "usage": {
+    "input_tokens": 3402,
+    "output_tokens": 979
+   },
+   "plan": [
+    {
+     "action": "select",
+     "element": 1,
+     "value": "WEB",
+     "reason": "jev-plan step1 conf op=0.95 tgt=0.92"
+    },
+    {
+     "action": "select",
+     "element": 1,
+     "value": "WEB",
+     "reason": "jev-plan step2 conf op=0.75 tgt=0.44"
+    },
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step3 conf op=0.52 tgt=0.34"
+    },
+    {
+     "action": "select",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step4 conf op=0.31 tgt=0.35"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step5 conf op=0.54 tgt=0.38"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step6 conf op=0.59 tgt=0.35"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step7 conf op=0.6 tgt=0.3"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step8 conf op=0.56 tgt=0.5"
+    }
+   ],
+   "exec": {
+    "results": [],
+    "stopped_at": null,
+    "error": "Traceback (most recent call last):\n  File \"<frozen runpy>\", line 203, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"C:\\Users\\ClawLabs\\AppData\\Local\\hermes\\installs\\bde0425e6fa3eeac\\environments\\19338042a70945f794a89da1de5408f4\\venv\\Scripts\\browser-harness.exe\\__main__"
+   }
+  },
+  {
+   "verifier": "text_contains:Plano WEB DEMO-024 revisado",
+   "verdict": "FAIL (FAIL: text missing)"
+  },
+  {
+   "cycle": 1,
+   "n_elements": 21,
+   "latency_s": 0.29,
+   "usage": {
+    "input_tokens": 3401,
+    "output_tokens": 979
+   },
+   "plan": [
+    {
+     "action": "select",
+     "element": 2,
+     "value": "Em análise",
+     "reason": "jev-plan step1 conf op=0.52 tgt=0.5"
+    },
+    {
+     "action": "select",
+     "element": 2,
+     "value": "Em análise",
+     "reason": "jev-plan step2 conf op=0.66 tgt=0.49"
+    },
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step3 conf op=0.6 tgt=0.41"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step4 conf op=0.64 tgt=0.49"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step5 conf op=0.66 tgt=0.37"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step6 conf op=0.61 tgt=0.41"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step7 conf op=0.75 tgt=0.41"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step8 conf op=0.65 tgt=0.65"
+    }
+   ],
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "select",
+      "ok": true,
+      "id": "status",
+      "value": "Em análise"
+     },
+     {
+      "i": 1,
+      "action": "select",
+      "ok": true,
+      "id": "status",
+      "value": "Em análise"
+     },
+     {
+      "i": 2,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 3,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 4,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 5,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 6,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 7,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "verifier": "text_contains:Plano WEB DEMO-024 revisado",
+   "verdict": "FAIL (FAIL: text missing)"
+  },
+  {
+   "cycle": 2,
+   "n_elements": 18,
+   "latency_s": 0.3,
+   "usage": {
+    "input_tokens": 2755,
+    "output_tokens": 811
+   },
+   "plan": [
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step1 conf op=0.74 tgt=0.65"
+    },
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step2 conf op=0.68 tgt=0.24"
+    },
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step3 conf op=0.7 tgt=0.64"
+    },
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step4 conf op=0.69 tgt=0.44"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step5 conf op=0.61 tgt=0.29"
+    },
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step6 conf op=0.56 tgt=0.3"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step7 conf op=0.45 tgt=0.36"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step8 conf op=0.52 tgt=0.3"
+    }
+   ],
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 1,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 2,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 3,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 4,
+      "error": "element disabled"
+     }
+    ],
+    "stopped_at": 4,
+    "reason": "element disabled"
+   }
+  },
+  {
+   "cycle": 3,
+   "n_elements": 21,
+   "latency_s": 0.32,
+   "usage": {
+    "input_tokens": 3409,
+    "output_tokens": 979
+   },
+   "plan": [
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step1 conf op=0.99 tgt=0.7"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step2 conf op=0.92 tgt=0.5"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step3 conf op=0.9 tgt=0.44"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step4 conf op=0.84 tgt=0.66"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step5 conf op=0.81 tgt=0.54"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step6 conf op=0.71 tgt=0.53"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step7 conf op=0.84 tgt=0.62"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step8 conf op=0.7 tgt=0.67"
+    }
+   ],
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 1,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 2,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 3,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 4,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 5,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 6,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 7,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "verifier": "text_contains:Plano WEB DEMO-024 revisado",
+   "verdict": "FAIL (FAIL: text missing)"
+  },
+  {
+   "cycle": 4,
+   "n_elements": 18,
+   "latency_s": 0.31,
+   "usage": {
+    "input_tokens": 2755,
+    "output_tokens": 811
+   },
+   "plan": [
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step1 conf op=0.8 tgt=0.51"
+    },
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step2 conf op=0.76 tgt=0.19"
+    },
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step3 conf op=0.73 tgt=0.59"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step4 conf op=0.7 tgt=0.34"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step5 conf op=0.65 tgt=0.51"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step6 conf op=0.66 tgt=0.45"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step7 conf op=0.51 tgt=0.47"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step8 conf op=0.55 tgt=0.45"
+    }
+   ],
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 1,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 2,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 3,
+      "error": "element disabled"
+     }
+    ],
+    "stopped_at": 3,
+    "reason": "element disabled"
+   }
+  },
+  {
+   "cycle": 5,
+   "n_elements": 21,
+   "latency_s": 0.31,
+   "usage": {
+    "input_tokens": 3409,
+    "output_tokens": 979
+   },
+   "plan": [
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step1 conf op=0.96 tgt=0.65"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step2 conf op=0.9 tgt=0.47"
+    },
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step3 conf op=0.91 tgt=0.47"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step4 conf op=0.82 tgt=0.68"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step5 conf op=0.84 tgt=0.6"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step6 conf op=0.76 tgt=0.55"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step7 conf op=0.9 tgt=0.55"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step8 conf op=0.74 tgt=0.67"
+    }
+   ],
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 1,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 2,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 3,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 4,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 5,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 6,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 7,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "verifier": "text_contains:Plano WEB DEMO-024 revisado",
+   "verdict": "FAIL (FAIL: text missing)"
+  },
+  {
+   "cycle": 6,
+   "n_elements": 20,
+   "latency_s": 0.3,
+   "usage": {
+    "input_tokens": 3191,
+    "output_tokens": 923
+   },
+   "plan": [
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step1 conf op=0.56 tgt=0.21"
+    },
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step2 conf op=0.54 tgt=0.14"
+    },
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step3 conf op=0.55 tgt=0.48"
+    },
+    {
+     "action": "click",
+     "element": 6,
+     "value": "",
+     "reason": "jev-plan step4 conf op=0.4 tgt=0.18"
+    },
+    {
+     "action": "click",
+     "element": 7,
+     "value": "",
+     "reason": "jev-plan step5 conf op=0.46 tgt=0.22"
+    },
+    {
+     "action": "click",
+     "element": 6,
+     "value": "",
+     "reason": "jev-plan step6 conf op=0.54 tgt=0.31"
+    },
+    {
+     "action": "click",
+     "element": 7,
+     "value": "",
+     "reason": "jev-plan step7 conf op=0.5 tgt=0.36"
+    },
+    {
+     "action": "click",
+     "element": 7,
+     "value": "",
+     "reason": "jev-plan step8 conf op=0.4 tgt=0.22"
+    }
+   ],
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 1,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 2,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 3,
+      "action": "click",
+      "ok": true,
+      "id": "prev",
+      "text": "Página anterior"
+     },
+     {
+      "i": 4,
+      "error": "element disabled"
+     }
+    ],
+    "stopped_at": 4,
+    "reason": "element disabled"
+   }
+  },
+  {
+   "cycle": 7,
+   "n_elements": 21,
+   "latency_s": 0.3,
+   "usage": {
+    "input_tokens": 3409,
+    "output_tokens": 979
+   },
+   "plan": [
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step1 conf op=0.95 tgt=0.59"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step2 conf op=0.91 tgt=0.35"
+    },
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step3 conf op=0.89 tgt=0.45"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step4 conf op=0.82 tgt=0.69"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step5 conf op=0.84 tgt=0.63"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step6 conf op=0.81 tgt=0.59"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step7 conf op=0.85 tgt=0.63"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step8 conf op=0.7 tgt=0.63"
+    }
+   ],
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 1,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 2,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 3,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 4,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 5,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 6,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 7,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "verifier": "text_contains:Plano WEB DEMO-024 revisado",
+   "verdict": "FAIL (FAIL: text missing)"
+  },
+  {
+   "cycle": 8,
+   "n_elements": 21,
+   "latency_s": 0.29,
+   "usage": {
+    "input_tokens": 3409,
+    "output_tokens": 979
+   },
+   "plan": [
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step1 conf op=0.76 tgt=0.19"
+    },
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step2 conf op=0.69 tgt=0.27"
+    },
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step3 conf op=0.74 tgt=0.5"
+    },
+    {
+     "action": "click",
+     "element": 4,
+     "value": "",
+     "reason": "jev-plan step4 conf op=0.69 tgt=0.57"
+    },
+    {
+     "action": "click",
+     "element": 4,
+     "value": "",
+     "reason": "jev-plan step5 conf op=0.5 tgt=0.46"
+    },
+    {
+     "action": "click",
+     "element": 4,
+     "value": "",
+     "reason": "jev-plan step6 conf op=0.46 tgt=0.37"
+    },
+    {
+     "action": "click",
+     "element": 7,
+     "value": "",
+     "reason": "jev-plan step7 conf op=0.66 tgt=0.29"
+    },
+    {
+     "action": "click",
+     "element": 4,
+     "value": "",
+     "reason": "jev-plan step8 conf op=0.42 tgt=0.31"
+    }
+   ],
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 1,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 2,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 3,
+      "action": "click",
+      "ok": true,
+      "id": "",
+      "text": "Criar plano DEMO-024"
+     },
+     {
+      "i": 4,
+      "action": "click",
+      "ok": true,
+      "id": "",
+      "text": "Criar plano DEMO-024"
+     },
+     {
+      "i": 5,
+      "action": "click",
+      "ok": true,
+      "id": "",
+      "text": "Criar plano DEMO-024"
+     },
+     {
+      "i": 6,
+      "action": "click",
+      "ok": true,
+      "id": "prev",
+      "text": "Página anterior"
+     },
+     {
+      "i": 7,
+      "action": "click",
+      "ok": true,
+      "id": "",
+      "text": "Criar plano DEMO-024"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "verifier": "text_contains:Plano WEB DEMO-024 revisado",
+   "verdict": "FAIL (FAIL: text missing)"
+  },
+  {
+   "cycle": 9,
+   "n_elements": 21,
+   "latency_s": 0.32,
+   "usage": {
+    "input_tokens": 3416,
+    "output_tokens": 979
+   },
+   "plan": [
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step1 conf op=0.95 tgt=0.73"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step2 conf op=0.9 tgt=0.5"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step3 conf op=0.81 tgt=0.53"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step4 conf op=0.76 tgt=0.68"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step5 conf op=0.75 tgt=0.61"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step6 conf op=0.74 tgt=0.61"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step7 conf op=0.79 tgt=0.67"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step8 conf op=0.69 tgt=0.73"
+    }
+   ],
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 1,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 2,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 3,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 4,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 5,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 6,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 7,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "verifier": "text_contains:Plano WEB DEMO-024 revisado",
+   "verdict": "FAIL (FAIL: text missing)"
+  },
+  {
+   "cycle": 10,
+   "n_elements": 18,
+   "latency_s": 0.31,
+   "usage": {
+    "input_tokens": 2762,
+    "output_tokens": 811
+   },
+   "plan": [
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step1 conf op=0.49 tgt=0.54"
+    },
+    {
+     "action": "click",
+     "element": 2,
+     "value": "",
+     "reason": "jev-plan step2 conf op=0.47 tgt=0.22"
+    },
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step3 conf op=0.5 tgt=0.62"
+    },
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step4 conf op=0.49 tgt=0.37"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step5 conf op=0.4 tgt=0.39"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step6 conf op=0.45 tgt=0.44"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step7 conf op=0.34 tgt=0.39"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step8 conf op=0.35 tgt=0.44"
+    }
+   ],
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 1,
+      "action": "click",
+      "ok": true,
+      "id": "status",
+      "text": "Todos\nEm análise\nAberta"
+     },
+     {
+      "i": 2,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 3,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 4,
+      "error": "element disabled"
+     }
+    ],
+    "stopped_at": 4,
+    "reason": "element disabled"
+   }
+  },
+  {
+   "cycle": 11,
+   "n_elements": 21,
+   "latency_s": 0.3,
+   "usage": {
+    "input_tokens": 3416,
+    "output_tokens": 979
+   },
+   "plan": [
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step1 conf op=0.97 tgt=0.78"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step2 conf op=0.87 tgt=0.63"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step3 conf op=0.82 tgt=0.53"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step4 conf op=0.79 tgt=0.81"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step5 conf op=0.74 tgt=0.59"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step6 conf op=0.73 tgt=0.61"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step7 conf op=0.85 tgt=0.73"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step8 conf op=0.64 tgt=0.7"
+    }
+   ],
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 1,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 2,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 3,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 4,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 5,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 6,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 7,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "verifier": "text_contains:Plano WEB DEMO-024 revisado",
+   "verdict": "FAIL (FAIL: text missing)"
+  },
+  {
+   "cycle": 12,
+   "n_elements": 18,
+   "latency_s": 0.29,
+   "usage": {
+    "input_tokens": 2762,
+    "output_tokens": 811
+   },
+   "plan": [
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step1 conf op=0.59 tgt=0.49"
+    },
+    {
+     "action": "click",
+     "element": 2,
+     "value": "",
+     "reason": "jev-plan step2 conf op=0.49 tgt=0.19"
+    },
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step3 conf op=0.55 tgt=0.52"
+    },
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step4 conf op=0.52 tgt=0.3"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step5 conf op=0.44 tgt=0.44"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step6 conf op=0.44 tgt=0.45"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step7 conf op=0.35 tgt=0.46"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step8 conf op=0.4 tgt=0.51"
+    }
+   ],
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 1,
+      "action": "click",
+      "ok": true,
+      "id": "status",
+      "text": "Todos\nEm análise\nAberta"
+     },
+     {
+      "i": 2,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 3,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 4,
+      "error": "element disabled"
+     }
+    ],
+    "stopped_at": 4,
+    "reason": "element disabled"
+   }
+  },
+  {
+   "cycle": 13,
+   "n_elements": 21,
+   "latency_s": 0.31,
+   "usage": {
+    "input_tokens": 3416,
+    "output_tokens": 979
+   },
+   "plan": [
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step1 conf op=0.96 tgt=0.65"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step2 conf op=0.9 tgt=0.47"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step3 conf op=0.84 tgt=0.42"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step4 conf op=0.8 tgt=0.66"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step5 conf op=0.79 tgt=0.57"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step6 conf op=0.79 tgt=0.61"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step7 conf op=0.86 tgt=0.6"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step8 conf op=0.65 tgt=0.63"
+    }
+   ],
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 1,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 2,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 3,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 4,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 5,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 6,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 7,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "verifier": "text_contains:Plano WEB DEMO-024 revisado",
+   "verdict": "FAIL (FAIL: text missing)"
+  },
+  {
+   "cycle": 14,
+   "n_elements": 18,
+   "latency_s": 0.29,
+   "usage": {
+    "input_tokens": 2762,
+    "output_tokens": 811
+   },
+   "plan": [
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step1 conf op=0.59 tgt=0.37"
+    },
+    {
+     "action": "click",
+     "element": 2,
+     "value": "",
+     "reason": "jev-plan step2 conf op=0.49 tgt=0.21"
+    },
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step3 conf op=0.59 tgt=0.59"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step4 conf op=0.55 tgt=0.42"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step5 conf op=0.45 tgt=0.52"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step6 conf op=0.44 tgt=0.51"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step7 conf op=0.36 tgt=0.5"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step8 conf op=0.39 tgt=0.55"
+    }
+   ],
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 1,
+      "action": "click",
+      "ok": true,
+      "id": "status",
+      "text": "Todos\nEm análise\nAberta"
+     },
+     {
+      "i": 2,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 3,
+      "error": "element disabled"
+     }
+    ],
+    "stopped_at": 3,
+    "reason": "element disabled"
+   }
+  },
+  {
+   "cycle": 15,
+   "n_elements": 21,
+   "latency_s": 0.54,
+   "usage": {
+    "input_tokens": 3416,
+    "output_tokens": 979
+   },
+   "plan": [
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step1 conf op=0.96 tgt=0.86"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step2 conf op=0.9 tgt=0.6"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step3 conf op=0.85 tgt=0.54"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step4 conf op=0.8 tgt=0.76"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step5 conf op=0.8 tgt=0.62"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step6 conf op=0.7 tgt=0.6"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step7 conf op=0.81 tgt=0.68"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step8 conf op=0.64 tgt=0.78"
+    }
+   ],
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 1,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 2,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 3,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 4,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 5,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 6,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 7,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "verifier": "text_contains:Plano WEB DEMO-024 revisado",
+   "verdict": "FAIL (FAIL: text missing)"
+  },
+  {
+   "cycle": 16,
+   "n_elements": 18,
+   "latency_s": 0.35,
+   "usage": {
+    "input_tokens": 2762,
+    "output_tokens": 811
+   },
+   "plan": [
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step1 conf op=0.64 tgt=0.42"
+    },
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step2 conf op=0.57 tgt=0.26"
+    },
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step3 conf op=0.55 tgt=0.47"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step4 conf op=0.57 tgt=0.35"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step5 conf op=0.49 tgt=0.49"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step6 conf op=0.49 tgt=0.51"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step7 conf op=0.35 tgt=0.5"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step8 conf op=0.44 tgt=0.54"
+    }
+   ],
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 1,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 2,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 3,
+      "error": "element disabled"
+     }
+    ],
+    "stopped_at": 3,
+    "reason": "element disabled"
+   }
+  },
+  {
+   "cycle": 17,
+   "n_elements": 21,
+   "latency_s": 0.35,
+   "usage": {
+    "input_tokens": 3416,
+    "output_tokens": 979
+   },
+   "plan": [
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step1 conf op=0.96 tgt=0.77"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step2 conf op=0.91 tgt=0.71"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step3 conf op=0.84 tgt=0.58"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step4 conf op=0.8 tgt=0.74"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step5 conf op=0.73 tgt=0.57"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step6 conf op=0.7 tgt=0.61"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step7 conf op=0.76 tgt=0.69"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step8 conf op=0.7 tgt=0.76"
+    }
+   ],
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 1,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 2,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 3,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 4,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 5,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 6,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 7,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "verifier": "text_contains:Plano WEB DEMO-024 revisado",
+   "verdict": "FAIL (FAIL: text missing)"
+  },
+  {
+   "cycle": 18,
+   "n_elements": 18,
+   "latency_s": 0.33,
+   "usage": {
+    "input_tokens": 2762,
+    "output_tokens": 811
+   },
+   "plan": [
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step1 conf op=0.62 tgt=0.4"
+    },
+    {
+     "action": "click",
+     "element": 2,
+     "value": "",
+     "reason": "jev-plan step2 conf op=0.45 tgt=0.16"
+    },
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step3 conf op=0.59 tgt=0.57"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step4 conf op=0.54 tgt=0.36"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step5 conf op=0.44 tgt=0.5"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step6 conf op=0.45 tgt=0.5"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step7 conf op=0.35 tgt=0.49"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step8 conf op=0.31 tgt=0.51"
+    }
+   ],
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 1,
+      "action": "click",
+      "ok": true,
+      "id": "status",
+      "text": "Todos\nEm análise\nAberta"
+     },
+     {
+      "i": 2,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 3,
+      "error": "element disabled"
+     }
+    ],
+    "stopped_at": 3,
+    "reason": "element disabled"
+   }
+  },
+  {
+   "cycle": 19,
+   "n_elements": 21,
+   "latency_s": 0.28,
+   "usage": {
+    "input_tokens": 3416,
+    "output_tokens": 979
+   },
+   "plan": [
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step1 conf op=0.95 tgt=0.77"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step2 conf op=0.89 tgt=0.62"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step3 conf op=0.82 tgt=0.46"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step4 conf op=0.76 tgt=0.7"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step5 conf op=0.75 tgt=0.59"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step6 conf op=0.64 tgt=0.61"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step7 conf op=0.76 tgt=0.65"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step8 conf op=0.62 tgt=0.7"
+    }
+   ],
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 1,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 2,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 3,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 4,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 5,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 6,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 7,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "verifier": "text_contains:Plano WEB DEMO-024 revisado",
+   "verdict": "FAIL (FAIL: text missing)"
+  },
+  {
+   "cycle": 20,
+   "n_elements": 18,
+   "latency_s": 0.33,
+   "usage": {
+    "input_tokens": 2762,
+    "output_tokens": 811
+   },
+   "plan": [
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step1 conf op=0.66 tgt=0.51"
+    },
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step2 conf op=0.52 tgt=0.14"
+    },
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step3 conf op=0.62 tgt=0.56"
+    },
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step4 conf op=0.59 tgt=0.31"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step5 conf op=0.49 tgt=0.51"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step6 conf op=0.46 tgt=0.49"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step7 conf op=0.39 tgt=0.45"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step8 conf op=0.41 tgt=0.52"
+    }
+   ],
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 1,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 2,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 3,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 4,
+      "error": "element disabled"
+     }
+    ],
+    "stopped_at": 4,
+    "reason": "element disabled"
+   }
+  },
+  {
+   "cycle": 21,
+   "n_elements": 21,
+   "latency_s": 0.3,
+   "usage": {
+    "input_tokens": 3416,
+    "output_tokens": 979
+   },
+   "plan": [
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step1 conf op=0.96 tgt=0.84"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step2 conf op=0.85 tgt=0.62"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step3 conf op=0.82 tgt=0.53"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step4 conf op=0.73 tgt=0.75"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step5 conf op=0.79 tgt=0.6"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step6 conf op=0.71 tgt=0.6"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step7 conf op=0.81 tgt=0.67"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step8 conf op=0.73 tgt=0.71"
+    }
+   ],
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 1,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 2,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 3,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 4,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 5,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 6,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 7,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "verifier": "text_contains:Plano WEB DEMO-024 revisado",
+   "verdict": "FAIL (FAIL: text missing)"
+  },
+  {
+   "cycle": 22,
+   "n_elements": 18,
+   "latency_s": 0.31,
+   "usage": {
+    "input_tokens": 2762,
+    "output_tokens": 811
+   },
+   "plan": [
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step1 conf op=0.46 tgt=0.47"
+    },
+    {
+     "action": "click",
+     "element": 2,
+     "value": "",
+     "reason": "jev-plan step2 conf op=0.45 tgt=0.19"
+    },
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step3 conf op=0.54 tgt=0.54"
+    },
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step4 conf op=0.5 tgt=0.33"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step5 conf op=0.39 tgt=0.4"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step6 conf op=0.44 tgt=0.47"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step7 conf op=0.35 tgt=0.47"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step8 conf op=0.35 tgt=0.5"
+    }
+   ],
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 1,
+      "action": "click",
+      "ok": true,
+      "id": "status",
+      "text": "Todos\nEm análise\nAberta"
+     },
+     {
+      "i": 2,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 3,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 4,
+      "error": "element disabled"
+     }
+    ],
+    "stopped_at": 4,
+    "reason": "element disabled"
+   }
+  },
+  {
+   "cycle": 23,
+   "n_elements": 21,
+   "latency_s": 0.34,
+   "usage": {
+    "input_tokens": 3416,
+    "output_tokens": 979
+   },
+   "plan": [
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step1 conf op=0.95 tgt=0.73"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step2 conf op=0.89 tgt=0.55"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step3 conf op=0.86 tgt=0.49"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step4 conf op=0.73 tgt=0.67"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step5 conf op=0.75 tgt=0.63"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step6 conf op=0.75 tgt=0.54"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step7 conf op=0.81 tgt=0.68"
+    },
+    {
+     "action": "click",
+     "element": 8,
+     "value": "",
+     "reason": "jev-plan step8 conf op=0.64 tgt=0.67"
+    }
+   ],
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 1,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 2,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 3,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 4,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 5,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 6,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     },
+     {
+      "i": 7,
+      "action": "click",
+      "ok": true,
+      "id": "next",
+      "text": "Próxima página"
+     }
+    ],
+    "stopped_at": null
+   }
+  },
+  {
+   "verifier": "text_contains:Plano WEB DEMO-024 revisado",
+   "verdict": "FAIL (FAIL: text missing)"
+  },
+  {
+   "cycle": 24,
+   "n_elements": 18,
+   "latency_s": 0.32,
+   "usage": {
+    "input_tokens": 2762,
+    "output_tokens": 811
+   },
+   "plan": [
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step1 conf op=0.73 tgt=0.56"
+    },
+    {
+     "action": "click",
+     "element": 2,
+     "value": "",
+     "reason": "jev-plan step2 conf op=0.59 tgt=0.16"
+    },
+    {
+     "action": "click",
+     "element": 3,
+     "value": "",
+     "reason": "jev-plan step3 conf op=0.69 tgt=0.55"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step4 conf op=0.66 tgt=0.39"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step5 conf op=0.54 tgt=0.49"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step6 conf op=0.52 tgt=0.51"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step7 conf op=0.45 tgt=0.5"
+    },
+    {
+     "action": "click",
+     "element": 5,
+     "value": "",
+     "reason": "jev-plan step8 conf op=0.49 tgt=0.54"
+    }
+   ],
+   "exec": {
+    "results": [
+     {
+      "i": 0,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 1,
+      "action": "click",
+      "ok": true,
+      "id": "status",
+      "text": "Todos\nEm análise\nAberta"
+     },
+     {
+      "i": 2,
+      "action": "click",
+      "ok": true,
+      "id": "filter",
+      "text": "Filtrar demandas"
+     },
+     {
+      "i": 3,
+      "error": "element disabled"
+     }
+    ],
+    "stopped_at": 3,
+    "reason": "element disabled"
+   }
+  }
+ ],
+ "result": null
+}

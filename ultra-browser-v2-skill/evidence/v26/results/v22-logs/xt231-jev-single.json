@@ -1,0 +1,462 @@
+{
+ "url": "http://127.0.0.1:8769/xt-web-form-01",
+ "goal": "No laboratorio X-Testing, filtre a tabela de demandas por WEB e Em analise, localize na segunda pagina DEMO-024 e cadastre um plano de teste do tipo Integracao, prioridade Alta, responsavel Equipe Alfa. No formulario em etapas, tente continuar com e-mail de fixture invalido para verificar a validacao, depois corrija para qa@example.test. Ative Requer ambiente e selecione Homologacao sintetica no campo condicional. Anexe fixture-evidence.txt, abra o modal de revisao, volte e corrija o titulo para Plano WEB DEMO-024 revisado; confirme a revisao e salve uma unica vez. Recarregue e demonstre que valores, anexo e vinculo com DEMO-024 persistiram. Nao contate servicos externos.",
+ "model": "opencode/mimo-v2.6-flash-free",
+ "steps": [
+  {
+   "step": 0,
+   "parsed": {
+    "action": "select",
+    "element": 1,
+    "value": "WEB",
+    "reason": "jev conf op=0.84 tgt=0.69",
+    "_probabilities": {
+     "op": {
+      "click": 0.13,
+      "type": 0.0,
+      "select": 0.87,
+      "done": 0.0,
+      "blocked": 0.0
+     },
+     "tgt": {
+      "1": 0.73,
+      "2": 0.01,
+      "3": 0.04,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.0,
+      "7": 0.0,
+      "8": 0.22
+     }
+    },
+    "_usage": {
+     "input_tokens": 1131,
+     "output_tokens": 122
+    },
+    "id": "channel",
+    "label": "select channel: current=Todos"
+   },
+   "latency_s": 0.43,
+   "engine": "jev",
+   "usage": {
+    "input_tokens": 1131,
+    "output_tokens": 122
+   },
+   "exec": "{\"i\": 0, \"action\": \"select\", \"ok\": true, \"id\": \"channel\", \"value\": \"WEB\"}"
+  },
+  {
+   "step": 1,
+   "parsed": {
+    "action": "click",
+    "element": 8,
+    "value": "",
+    "reason": "jev conf op=0.5 tgt=0.36",
+    "_probabilities": {
+     "op": {
+      "click": 0.6,
+      "type": 0.0,
+      "select": 0.39,
+      "done": 0.0,
+      "blocked": 0.01
+     },
+     "tgt": {
+      "1": 0.02,
+      "2": 0.35,
+      "3": 0.18,
+      "4": 0.0,
+      "5": 0.01,
+      "6": 0.0,
+      "7": 0.0,
+      "8": 0.44
+     }
+    },
+    "_usage": {
+     "input_tokens": 1131,
+     "output_tokens": 122
+    },
+    "id": "next",
+    "label": "button next: Próxima página"
+   },
+   "latency_s": 0.32,
+   "engine": "jev",
+   "usage": {
+    "input_tokens": 1131,
+    "output_tokens": 122
+   },
+   "exec": "{\"i\": 0, \"action\": \"click\", \"ok\": true, \"id\": \"next\", \"text\": \"Próxima página\"}"
+  },
+  {
+   "step": 2,
+   "parsed": {
+    "action": "select",
+    "element": 8,
+    "value": "",
+    "reason": "jev conf op=0.5 tgt=0.43",
+    "_probabilities": {
+     "op": {
+      "click": 0.4,
+      "type": 0.0,
+      "select": 0.6,
+      "done": 0.0,
+      "blocked": 0.0
+     },
+     "tgt": {
+      "1": 0.01,
+      "2": 0.39,
+      "3": 0.09,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.01,
+      "7": 0.0,
+      "8": 0.5
+     }
+    },
+    "_usage": {
+     "input_tokens": 1130,
+     "output_tokens": 122
+    },
+    "id": "next",
+    "label": "button next: Próxima página"
+   },
+   "latency_s": 0.28,
+   "engine": "jev",
+   "usage": {
+    "input_tokens": 1130,
+    "output_tokens": 122
+   },
+   "exec": "{}"
+  },
+  {
+   "step": 3,
+   "parsed": {
+    "action": "click",
+    "element": 8,
+    "value": "",
+    "reason": "jev conf op=0.42 tgt=0.5",
+    "_probabilities": {
+     "op": {
+      "click": 0.54,
+      "type": 0.0,
+      "select": 0.45,
+      "done": 0.0,
+      "blocked": 0.01
+     },
+     "tgt": {
+      "1": 0.01,
+      "2": 0.3,
+      "3": 0.1,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.01,
+      "7": 0.01,
+      "8": 0.56
+     }
+    },
+    "_usage": {
+     "input_tokens": 1130,
+     "output_tokens": 122
+    },
+    "id": "next",
+    "label": "button next: Próxima página"
+   },
+   "latency_s": 0.29,
+   "engine": "jev",
+   "usage": {
+    "input_tokens": 1130,
+    "output_tokens": 122
+   },
+   "exec": "{\"i\": 0, \"action\": \"click\", \"ok\": true, \"id\": \"next\", \"text\": \"Próxima página\"}"
+  },
+  {
+   "step": 4,
+   "parsed": {
+    "action": "select",
+    "element": 2,
+    "value": "Em análise",
+    "reason": "jev conf op=0.44 tgt=0.39",
+    "_probabilities": {
+     "op": {
+      "click": 0.43,
+      "type": 0.0,
+      "select": 0.55,
+      "done": 0.0,
+      "blocked": 0.02
+     },
+     "tgt": {
+      "1": 0.01,
+      "2": 0.47,
+      "3": 0.1,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.01,
+      "7": 0.05,
+      "8": 0.36
+     }
+    },
+    "_usage": {
+     "input_tokens": 1130,
+     "output_tokens": 122
+    },
+    "id": "status",
+    "label": "select status: current=Todos"
+   },
+   "latency_s": 0.3,
+   "engine": "jev",
+   "usage": {
+    "input_tokens": 1130,
+    "output_tokens": 122
+   },
+   "exec": "{\"i\": 0, \"action\": \"select\", \"ok\": true, \"id\": \"status\", \"value\": \"Em análise\"}"
+  },
+  {
+   "step": 5,
+   "parsed": {
+    "action": "click",
+    "element": 8,
+    "value": "",
+    "reason": "jev conf op=0.97 tgt=0.68",
+    "_probabilities": {
+     "op": {
+      "click": 0.98,
+      "type": 0.0,
+      "select": 0.0,
+      "done": 0.0,
+      "blocked": 0.02
+     },
+     "tgt": {
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.26,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.0,
+      "7": 0.02,
+      "8": 0.72
+     }
+    },
+    "_usage": {
+     "input_tokens": 1132,
+     "output_tokens": 122
+    },
+    "id": "next",
+    "label": "button next: Próxima página"
+   },
+   "latency_s": 0.28,
+   "engine": "jev",
+   "usage": {
+    "input_tokens": 1132,
+    "output_tokens": 122
+   },
+   "exec": "{\"i\": 0, \"action\": \"click\", \"ok\": true, \"id\": \"next\", \"text\": \"Próxima página\"}"
+  },
+  {
+   "step": 6,
+   "parsed": {
+    "action": "click",
+    "element": 3,
+    "value": "",
+    "reason": "jev conf op=0.85 tgt=0.39",
+    "_probabilities": {
+     "op": {
+      "click": 0.88,
+      "type": 0.0,
+      "select": 0.02,
+      "done": 0.01,
+      "blocked": 0.09
+     },
+     "tgt": {
+      "1": 0.01,
+      "2": 0.01,
+      "3": 0.51,
+      "4": 0.14,
+      "5": 0.33
+     }
+    },
+    "_usage": {
+     "input_tokens": 939,
+     "output_tokens": 101
+    },
+    "id": "filter",
+    "label": "button filter: Filtrar demandas"
+   },
+   "latency_s": 0.29,
+   "engine": "jev",
+   "usage": {
+    "input_tokens": 939,
+    "output_tokens": 101
+   },
+   "exec": "{\"i\": 0, \"action\": \"click\", \"ok\": true, \"id\": \"filter\", \"text\": \"Filtrar demandas\"}"
+  },
+  {
+   "step": 7,
+   "parsed": {
+    "action": "click",
+    "element": 8,
+    "value": "",
+    "reason": "jev conf op=1.0 tgt=0.95",
+    "_probabilities": {
+     "op": {
+      "click": 1.0,
+      "type": 0.0,
+      "select": 0.0,
+      "done": 0.0,
+      "blocked": 0.0
+     },
+     "tgt": {
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.04,
+      "4": 0.0,
+      "5": 0.0,
+      "6": 0.0,
+      "7": 0.0,
+      "8": 0.96
+     }
+    },
+    "_usage": {
+     "input_tokens": 1131,
+     "output_tokens": 122
+    },
+    "id": "next",
+    "label": "button next: Próxima página"
+   },
+   "latency_s": 0.27,
+   "engine": "jev",
+   "usage": {
+    "input_tokens": 1131,
+    "output_tokens": 122
+   },
+   "exec": "{\"i\": 0, \"action\": \"click\", \"ok\": true, \"id\": \"next\", \"text\": \"Próxima página\"}"
+  },
+  {
+   "step": 8,
+   "parsed": {
+    "action": "click",
+    "element": 4,
+    "value": "",
+    "reason": "jev conf op=0.96 tgt=0.58",
+    "_probabilities": {
+     "op": {
+      "click": 0.97,
+      "type": 0.0,
+      "select": 0.0,
+      "done": 0.01,
+      "blocked": 0.02
+     },
+     "tgt": {
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.19,
+      "4": 0.63,
+      "5": 0.0,
+      "6": 0.0,
+      "7": 0.03,
+      "8": 0.15
+     }
+    },
+    "_usage": {
+     "input_tokens": 1131,
+     "output_tokens": 122
+    },
+    "label": "button : Criar plano DEMO-024"
+   },
+   "latency_s": 0.32,
+   "engine": "jev",
+   "usage": {
+    "input_tokens": 1131,
+    "output_tokens": 122
+   },
+   "exec": "{\"i\": 0, \"action\": \"click\", \"ok\": true, \"id\": \"\", \"text\": \"Criar plano DEMO-024\"}"
+  },
+  {
+   "step": 9,
+   "parsed": {
+    "action": "click",
+    "element": 4,
+    "value": "",
+    "reason": "jev conf op=0.77 tgt=0.55",
+    "_probabilities": {
+     "op": {
+      "click": 0.82,
+      "type": 0.15,
+      "select": 0.01,
+      "done": 0.0,
+      "blocked": 0.02
+     },
+     "tgt": {
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.18,
+      "4": 0.59,
+      "5": 0.0,
+      "6": 0.0,
+      "7": 0.01,
+      "8": 0.17,
+      "9": 0.01,
+      "10": 0.02,
+      "11": 0.02
+     }
+    },
+    "_usage": {
+     "input_tokens": 1243,
+     "output_tokens": 145
+    },
+    "label": "button : Criar plano DEMO-024"
+   },
+   "latency_s": 0.28,
+   "engine": "jev",
+   "usage": {
+    "input_tokens": 1243,
+    "output_tokens": 145
+   },
+   "exec": "{\"i\": 0, \"action\": \"click\", \"ok\": true, \"id\": \"\", \"text\": \"Criar plano DEMO-024\"}"
+  },
+  {
+   "step": 10,
+   "parsed": {
+    "action": "click",
+    "element": 4,
+    "value": "",
+    "reason": "jev conf op=0.66 tgt=0.55",
+    "_probabilities": {
+     "op": {
+      "click": 0.73,
+      "type": 0.23,
+      "select": 0.01,
+      "done": 0.0,
+      "blocked": 0.03
+     },
+     "tgt": {
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.12,
+      "4": 0.59,
+      "5": 0.0,
+      "6": 0.0,
+      "7": 0.04,
+      "8": 0.17,
+      "9": 0.01,
+      "10": 0.05,
+      "11": 0.02
+     }
+    },
+    "_usage": {
+     "input_tokens": 1243,
+     "output_tokens": 145
+    }
+   },
+   "latency_s": 0.29,
+   "engine": "jev",
+   "usage": {
+    "input_tokens": 1243,
+    "output_tokens": 145
+   }
+  },
+  {
+   "loop_guard": "same action x3: ('click', 4)",
+   "verifier_on_abort": "text_contains:Plano WEB DEMO-024 revisado",
+   "verdict": "FAIL (FAIL: text missing)"
+  }
+ ],
+ "result": "LOOP-ABORT"
+}

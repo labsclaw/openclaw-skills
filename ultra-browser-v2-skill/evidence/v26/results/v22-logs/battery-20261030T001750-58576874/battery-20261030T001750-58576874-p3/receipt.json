@@ -1,0 +1,126 @@
+{
+  "schema": "battery-v2.6a",
+  "runId": "battery-20261030T001750-58576874-p3",
+  "url": "http://127.0.0.1:49739/xt-web-form-01",
+  "startedAt": "2026-10-30T00:21:21.456457+00:00",
+  "recipeSha256": "5defc9c2bf86ec8357cc16c063d03bb18ce6554bfd7848ca18e1f409d971fd71",
+  "provenance": {
+    "commit": "5117c186ffae327d305c310dfe3c0fedf3570481",
+    "executorCommit": "5117c186ffae327d305c310dfe3c0fedf3570481",
+    "validatorBaseCommit": "5117c186ffae327d305c310dfe3c0fedf3570481",
+    "validatorUncommitted": false,
+    "files": {
+      "ultra-browser-v2\\scripts\\recipe.py": "989cffaa05877e553b8a40e09b26aede3cd94cb9205d84df5bf5a378a13a3b4f",
+      "ultra-browser-v2\\scripts\\agent_loop.py": "ff11293c638e5f9dff25f2291806517fe513ad0ae4bbf23514e54f2876b7d0f5",
+      "ultra-browser-v2\\scripts\\snapshot.js": "b72d5d4f1b151aebe07ab274082647b8b2007478186be1c82e4ec7f5e424bf16",
+      "ultra-browser-v2\\scripts\\battery_pilot.py": "07f55fb7587a69feeecdad76ed1bedb2a1fd92e26ebe4b18f38ef46698a04f33",
+      "results\\recipes\\xt24ds7-recipe.json": "d97addfde6e6a88c4361eccde95566398e5fd547b5b7f0e6d37ac12e8a5847cb"
+    }
+  },
+  "verifierSpec": "persisted:Plano WEB DEMO-024",
+  "fixture": {
+    "ready": true,
+    "origin": "http://127.0.0.1:49739",
+    "runId": "battery-20261030T001750-58576874-p3",
+    "pid": 9412
+  },
+  "executionProcess": {
+    "startedAt": "2026-10-30T00:21:21.892120+00:00",
+    "finishedAt": "2026-10-30T00:22:49.096022+00:00",
+    "durationSeconds": 87.20309640001506,
+    "rc": 0
+  },
+  "judgeProcess": {
+    "startedAt": "2026-10-30T00:22:49.097265+00:00",
+    "finishedAt": "2026-10-30T00:22:49.414792+00:00",
+    "durationSeconds": 0.3175291999941692,
+    "rc": 0
+  },
+  "legacyWouldPass": true,
+  "executorResult": "RECIPE-DONE-VERIFIED",
+  "executorVerifier": "PASS",
+  "gate": {
+    "passed": true,
+    "failures": [],
+    "ordinaryOk": 21,
+    "confirmedUploads": 1,
+    "checks": {
+      "runId": true,
+      "seed": true,
+      "filtered_second_page": true,
+      "fields": true,
+      "requires_environment": true,
+      "ordered_workflow": true,
+      "upload": true,
+      "single_record": true,
+      "single_mutation": true,
+      "single_submit": true,
+      "persisted_read": true
+    }
+  },
+  "initialNavigation": {
+    "index": 1,
+    "owner": "recipe",
+    "startedAt": "2026-10-30T00:21:22.356497+00:00",
+    "phase": "initial_navigation",
+    "code": "goto_url(\"http://127.0.0.1:49739/xt-web-form-01\")\nimport time as _t\n_t.sleep(1.5)",
+    "out": "",
+    "err": "",
+    "rc": 0,
+    "finishedAt": "2026-10-30T00:21:25.060724+00:00",
+    "durationSeconds": 2.7041970998980105
+  },
+  "judge": {
+    "runId": "battery-20261030T001750-58576874-p3",
+    "pass_": true,
+    "checks": {
+      "runId": true,
+      "seed": true,
+      "filtered_second_page": true,
+      "fields": true,
+      "requires_environment": true,
+      "ordered_workflow": true,
+      "upload": true,
+      "single_record": true,
+      "single_mutation": true,
+      "single_submit": true,
+      "persisted_read": true
+    },
+    "events": [
+      "table_view",
+      "table_view",
+      "table_view",
+      "start",
+      "email_invalid_blocked",
+      "email_valid",
+      "upload",
+      "review_open",
+      "review_back",
+      "title_changed",
+      "review_open",
+      "saved",
+      "persisted_read",
+      "document_reload",
+      "persisted_read",
+      "table_view"
+    ],
+    "mutationCount": 1,
+    "submitAttempts": 1,
+    "network_origin_assertion": "External traffic must be checked in executor network ledger; not inferable from DB",
+    "readOnly": true
+  },
+  "fixtureExitCode": 1,
+  "finishedAt": "2026-10-30T00:22:49.480782+00:00",
+  "durationSeconds": 88.02253439999186,
+  "sourcesUnchanged": true,
+  "artifacts": {
+    "fixture.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "fixture.stdout.txt": "5dc9d5bdd33311576eac791dd2d9d398bcbd626e8bae78692edcac5a92efc1fb",
+    "harness.jsonl": "a9d2a6b5aa91c3adce48998460efc8db27b09a29d22910d772cf6e11d873debd",
+    "judge.json": "b2882b663f9de6760c7189c2256095a29c99b18d6c66a107bf4d354af0fccc0c",
+    "judge.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "recipe.json": "9aeed42b450448f9f8cecf60c2487a780479f7ad00d8585d21649505d834e0b7",
+    "recipe.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "started.json": "49c173dc580f071ddd35cd2f1d2623f46db1563df0057feca3b373040931e56d"
+  }
+}

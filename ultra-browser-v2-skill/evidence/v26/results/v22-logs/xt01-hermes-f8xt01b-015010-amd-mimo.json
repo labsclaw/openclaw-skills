@@ -1,0 +1,12 @@
+{
+ "url": "http://127.0.0.1:8769/xt-web-form-01",
+ "goal": "No laboratorio X-Testing, filtre a tabela de demandas por WEB e Em analise, localize na segunda pagina DEMO-024 e cadastre um plano de teste do tipo Integracao, prioridade Alta, responsavel Equipe Alfa. No formulario em etapas, tente continuar com e-mail de fixture invalido para verificar a validacao, depois corrija para qa@example.test. Ative Requer ambiente e selecione Homologacao sintetica no campo condicional. Anexe fixture-evidence.txt, abra o modal de revisao, volte e corrija o titulo para Plano WEB DEMO-024 revisado; confirme a revisao e salve uma unica vez. Recarregue e demonstre que valores, anexo e vinculo com DEMO-024 persistiram. Nao contate servicos externos.",
+ "model": "MiMo-V2.6-Flash",
+ "mode": "batch",
+ "cycles": [
+  {
+   "error": "amd-radeon MiMo-V2.6-Flash failed: HTTP Error 429: Too Many Requests {\"detail\":{\"error\":{\"message\":\"Model API rate limit exceeded; please retry later\",\"type\":\"rate_limit_error\",\"code\":\"global_concurrency_rate_limit_exceeded\"}}}"
+  }
+ ],
+ "result": null
+}

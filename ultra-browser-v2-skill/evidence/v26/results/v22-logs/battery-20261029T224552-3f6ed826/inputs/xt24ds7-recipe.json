@@ -1,0 +1,142 @@
+{
+ "version": "2.5.1",
+ "intent": "Criar plano DEMO-024 (WEB, Em analise), email invalido bloqueado e corrigido, condicional Homologacao sintetica, anexo fixture-evidence.txt, revisar, voltar, editar titulo para 'Plano WEB DEMO-024 revisado', reabrir revisao e salvar",
+ "source_trace": "C:/Users/ClawLabs/browser-eval/results/v22-logs/xt24ds7-jev-deepseek.json",
+ "native_ops": [
+  {
+   "op": "select",
+   "id": "channel",
+   "label": "current=Todos",
+   "value": "WEB"
+  },
+  {
+   "op": "click",
+   "id": "status",
+   "label": "current=Todos",
+   "value": ""
+  },
+  {
+   "op": "select",
+   "id": "status",
+   "label": "current=Todos",
+   "value": "Em analise"
+  },
+  {
+   "op": "click",
+   "id": "filter",
+   "label": "Filtrar demandas",
+   "value": ""
+  },
+  {
+   "op": "click",
+   "id": "next",
+   "label": "Próxima página",
+   "value": ""
+  },
+  {
+   "op": "click",
+   "id": "",
+   "label": "Criar plano DEMO-024",
+   "value": ""
+  },
+  {
+   "op": "type",
+   "id": "title1",
+   "label": "value=(empty)",
+   "value": "Plano WEB DEMO-024"
+  },
+  {
+   "op": "type",
+   "id": "email",
+   "label": "value=(empty)",
+   "value": "invalid-email@fixture"
+  },
+  {
+   "op": "click",
+   "id": "",
+   "label": "Continuar",
+   "value": ""
+  },
+  {
+   "op": "type",
+   "id": "email",
+   "label": "value=\"invalid-email@fixture\"",
+   "value": "qa@example.test"
+  },
+  {
+   "op": "click",
+   "id": "",
+   "label": "Continuar",
+   "value": ""
+  },
+  {
+   "op": "select",
+   "id": "type",
+   "label": "current=Selecione",
+   "value": "Integracao"
+  },
+  {
+   "op": "select",
+   "id": "priority",
+   "label": "current=Normal",
+   "value": "Alta"
+  },
+  {
+   "op": "type",
+   "id": "responsible",
+   "label": "value=(empty)",
+   "value": "Equipe Alfa"
+  },
+  {
+   "op": "click",
+   "id": "requires",
+   "label": "checked=false",
+   "value": ""
+  },
+  {
+   "op": "select",
+   "id": "environment",
+   "label": "current=Selecione",
+   "value": "Homologacao sintetica"
+  },
+  {
+   "op": "upload",
+   "id": "upload",
+   "label": "value=(empty)",
+   "value": "fixture-evidence.txt"
+  },
+  {
+   "op": "click",
+   "id": "review",
+   "label": "Revisar plano",
+   "value": ""
+  },
+  {
+   "op": "click",
+   "id": "back",
+   "label": "Voltar",
+   "value": ""
+  },
+  {
+   "op": "type",
+   "id": "title2",
+   "label": "value=\"Plano WEB DEMO-024\"",
+   "value": "Plano WEB DEMO-024 revisado"
+  },
+  {
+   "op": "click",
+   "id": "review",
+   "label": "Revisar plano",
+   "value": ""
+  },
+  {
+   "op": "click",
+   "id": "save",
+   "label": "Confirmar revisão e salvar",
+   "value": ""
+  }
+ ],
+ "notes": [
+  "v2.5.1: +4 ops apos review_open (back, type title2, review, save) para fechar ordered_workflow (review_back, title_changed, review_open, saved) e fields (title='Plano WEB DEMO-024 revisado'); corte pos-save mantido (37 passos do trace -> 22 ops)"
+ ]
+}

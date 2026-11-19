@@ -1,0 +1,22 @@
+{
+  "runId": "hermes-battery-p2-1793301570",
+  "pass_": false,
+  "checks": {
+    "runId": false,
+    "seed": true,
+    "filtered_second_page": false,
+    "fields": false,
+    "requires_environment": false,
+    "ordered_workflow": false,
+    "upload": false,
+    "single_record": false,
+    "single_mutation": false,
+    "single_submit": false,
+    "persisted_read": false
+  },
+  "events": [],
+  "mutationCount": 0,
+  "submitAttempts": 0,
+  "network_origin_assertion": "External traffic must be checked in executor network ledger; not inferable from DB",
+  "readOnly": true
+}

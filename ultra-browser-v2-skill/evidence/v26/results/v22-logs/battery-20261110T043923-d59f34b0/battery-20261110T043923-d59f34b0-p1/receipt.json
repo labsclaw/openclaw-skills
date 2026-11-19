@@ -1,0 +1,125 @@
+{
+  "schema": "battery-v2.6a",
+  "runId": "battery-20261110T043923-d59f34b0-p1",
+  "url": "http://127.0.0.1:59368/xt-web-form-01",
+  "startedAt": "2026-11-10T04:39:24.023703+00:00",
+  "recipeSha256": "5defc9c2bf86ec8357cc16c063d03bb18ce6554bfd7848ca18e1f409d971fd71",
+  "provenance": {
+    "commit": "261ba245337e500e3263889fc1e4cff2bcd3c8df",
+    "executorCommit": "261ba245337e500e3263889fc1e4cff2bcd3c8df",
+    "validatorBaseCommit": "1a34345a45e9df613e79c2935a106d4fd7ff3f8c",
+    "validatorUncommitted": false,
+    "files": {
+      "ultra-browser-v2\\scripts\\recipe.py": "66300d24cf74db4b480926487b98fd916fec10e20183d6d328ff7349d52ee5ba",
+      "ultra-browser-v2\\scripts\\agent_loop.py": "1906a3604c7b98b37912fce70a72372bcdeccc808046cc1e17270f0a27443f7f",
+      "ultra-browser-v2\\scripts\\snapshot.js": "b72d5d4f1b151aebe07ab274082647b8b2007478186be1c82e4ec7f5e424bf16",
+      "ultra-browser-v2\\scripts\\battery_pilot.py": "252ebe1889a8974c0b19dcd24638224e3cfc181cfbb3312f8b5c015702508195",
+      "results\\recipes\\xt24ds7-recipe.json": "d97addfde6e6a88c4361eccde95566398e5fd547b5b7f0e6d37ac12e8a5847cb"
+    }
+  },
+  "verifierSpec": "persisted:Plano WEB DEMO-024",
+  "fixture": {
+    "ready": true,
+    "origin": "http://127.0.0.1:59368",
+    "runId": "battery-20261110T043923-d59f34b0-p1",
+    "pid": 6112
+  },
+  "executionProcess": {
+    "startedAt": "2026-11-10T04:39:24.450785+00:00",
+    "finishedAt": "2026-11-10T04:39:51.631822+00:00",
+    "durationSeconds": 27.180522199952975,
+    "rc": 1
+  },
+  "judgeProcess": {
+    "startedAt": "2026-11-10T04:39:51.632962+00:00",
+    "finishedAt": "2026-11-10T04:39:51.823611+00:00",
+    "durationSeconds": 0.19064290006645024,
+    "rc": 1
+  },
+  "legacyWouldPass": false,
+  "executorResult": "RECIPE-FAIL harness at step 6: rc=1",
+  "executorVerifier": "SKIPPED (falha anterior — PASS nao poderia apagar)",
+  "gate": {
+    "passed": false,
+    "failures": [
+      "recipe process rc != 0",
+      "judge process rc != 0",
+      "judge pass_ != true",
+      "judge não fechou os 11 checks booleanos",
+      "resultado não verificado",
+      "verifier != PASS",
+      "falha em chamada do harness",
+      "esperados exatamente 22 passos, sem falha/retry oculto",
+      "resultado estruturado ausente no passo 6",
+      "exigidos 21 ok:true + 1 upload confirmado"
+    ],
+    "ordinaryOk": 6,
+    "confirmedUploads": 0,
+    "checks": {
+      "runId": false,
+      "seed": true,
+      "filtered_second_page": true,
+      "fields": false,
+      "requires_environment": false,
+      "ordered_workflow": false,
+      "upload": false,
+      "single_record": false,
+      "single_mutation": false,
+      "single_submit": false,
+      "persisted_read": false
+    }
+  },
+  "initialNavigation": {
+    "index": 1,
+    "owner": "recipe",
+    "startedAt": "2026-11-10T04:39:24.764261+00:00",
+    "phase": "initial_navigation",
+    "code": "goto_url(\"http://127.0.0.1:59368/xt-web-form-01\")\nmaximize()\nimport time as _t\n_t.sleep(1.5)",
+    "out": "",
+    "err": "",
+    "rc": 0,
+    "finishedAt": "2026-11-10T04:39:27.330159+00:00",
+    "durationSeconds": 2.5658498001284897
+  },
+  "judge": {
+    "runId": "battery-20261110T043923-d59f34b0-p1",
+    "pass_": false,
+    "checks": {
+      "runId": false,
+      "seed": true,
+      "filtered_second_page": true,
+      "fields": false,
+      "requires_environment": false,
+      "ordered_workflow": false,
+      "upload": false,
+      "single_record": false,
+      "single_mutation": false,
+      "single_submit": false,
+      "persisted_read": false
+    },
+    "events": [
+      "table_view",
+      "table_view",
+      "table_view",
+      "start"
+    ],
+    "mutationCount": 0,
+    "submitAttempts": 0,
+    "network_origin_assertion": "External traffic must be checked in executor network ledger; not inferable from DB",
+    "readOnly": true
+  },
+  "fixtureExitCode": 1,
+  "finishedAt": "2026-11-10T04:39:51.862442+00:00",
+  "durationSeconds": 27.837065199855715,
+  "sourcesUnchanged": true,
+  "artifacts": {
+    "fixture.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "fixture.stdout.txt": "e32ef3c9da2ab6887bd650025285783ccb770fd8d315a2db23632f3c7f083d2a",
+    "harness.jsonl": "0e8639a566270deadd2361e0c73e7ecb87b3f4f788be313854575416e0ed0902",
+    "judge.json": "9dc99d03ed86cba17df7373d66a49bb9a5a76ce8b96da80a2cbfdfcfd03243a9",
+    "judge.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "recipe.json": "ac84543ce5b0ff4cec7eb392e843726faaed2c36eac4317ecdb7f437b5089cfc",
+    "recipe.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "started.json": "5d85f422161c76521ebad7a660a2c3a42987e10389709b1de8edb790f0aabb09"
+  }
+}
