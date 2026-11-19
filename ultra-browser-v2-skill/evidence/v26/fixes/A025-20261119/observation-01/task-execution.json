@@ -1,0 +1,95 @@
+{
+  "url": "http://127.0.0.1:61325/xt-web-form-01",
+  "recipe": "recipe-input.json",
+  "steps": [
+    {
+      "i": 0,
+      "op": {
+        "id": "channel",
+        "label": "current=Todos",
+        "value": "WEB",
+        "action": "select"
+      },
+      "exec": {
+        "results": [
+          {
+            "i": 0,
+            "error": "element not found (waited)",
+            "label": "current=Todos"
+          }
+        ],
+        "stopped_at": 0,
+        "reason": "identity invalid",
+        "_rc": 0
+      }
+    }
+  ],
+  "result": "RECIPE-FAIL identity invalid at step 0: element not found (waited)",
+  "postconditions": [],
+  "repairs": [],
+  "navigation": {
+    "rc": 0,
+    "url": "http://127.0.0.1:61325/xt-web-form-01",
+    "marker": "X-Testing"
+  },
+  "identity": {
+    "url": "http://127.0.0.1:61325/xt-web-form-01",
+    "title": "X-Testing a025-c3281a759974",
+    "markerOk": true
+  },
+  "verifier": "SKIPPED (falha anterior — PASS nao poderia apagar)",
+  "capture": {
+    "schema": "browser-capture-v1",
+    "runId": "a025-c3281a759974",
+    "method": "state-frames-png",
+    "frames": [
+      {
+        "runId": "a025-c3281a759974",
+        "index": 1,
+        "phase": "after-navigation",
+        "observedAt": "2026-11-19T22:09:05.478218+00:00",
+        "file": "00001.png",
+        "bytes": 52589,
+        "sha256": "c71274cc4685ff1711304d8c64e7bb32f6dcaaacd8b4360151affd2054afebe2"
+      },
+      {
+        "runId": "a025-c3281a759974",
+        "index": 2,
+        "phase": "after-host-call",
+        "observedAt": "2026-11-19T22:09:05.563800+00:00",
+        "file": "00002.png",
+        "bytes": 52589,
+        "sha256": "c71274cc4685ff1711304d8c64e7bb32f6dcaaacd8b4360151affd2054afebe2"
+      },
+      {
+        "runId": "a025-c3281a759974",
+        "index": 3,
+        "phase": "after-host-call",
+        "observedAt": "2026-11-19T22:09:05.654887+00:00",
+        "file": "00003.png",
+        "bytes": 52589,
+        "sha256": "c71274cc4685ff1711304d8c64e7bb32f6dcaaacd8b4360151affd2054afebe2"
+      },
+      {
+        "runId": "a025-c3281a759974",
+        "index": 4,
+        "phase": "after-native",
+        "observedAt": "2026-11-19T22:09:08.754359+00:00",
+        "file": "00004.png",
+        "bytes": 52659,
+        "sha256": "83cf99c7d81342141c784aa744962b7c7b35188f67c5e84ddcacbdd99e9df9ef"
+      },
+      {
+        "runId": "a025-c3281a759974",
+        "index": 5,
+        "phase": "recipe-final",
+        "observedAt": "2026-11-19T22:09:08.824950+00:00",
+        "file": "00005.png",
+        "bytes": 52659,
+        "sha256": "83cf99c7d81342141c784aa744962b7c7b35188f67c5e84ddcacbdd99e9df9ef"
+      }
+    ],
+    "errors": [],
+    "passed": true
+  }
+}

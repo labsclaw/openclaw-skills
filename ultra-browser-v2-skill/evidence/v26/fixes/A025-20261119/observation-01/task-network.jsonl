@@ -1,0 +1,10 @@
+{"observedAt": "2026-11-19T22:09:03.710562+00:00", "source": "Playwright-context", "kind": "request", "url": "http://127.0.0.1:61325/xt-web-form-01", "allowedOrigin": true, "method": "GET"}
+{"observedAt": "2026-11-19T22:09:03.711294+00:00", "source": "CDP-target", "kind": "request", "url": "http://127.0.0.1:61325/xt-web-form-01", "allowedOrigin": true, "method": "GET", "requestId": "9EE712417D536EEA5009FAB8D84DC937"}
+{"observedAt": "2026-11-19T22:09:03.812534+00:00", "source": "CDP-target", "kind": "request", "url": "http://127.0.0.1:61325/style.css", "allowedOrigin": true, "method": "GET", "requestId": "14108.2"}
+{"observedAt": "2026-11-19T22:09:03.822043+00:00", "source": "CDP-target", "kind": "request", "url": "http://127.0.0.1:61325/app.js", "allowedOrigin": true, "method": "GET", "requestId": "14108.3"}
+{"observedAt": "2026-11-19T22:09:03.822043+00:00", "source": "Playwright-context", "kind": "request", "url": "http://127.0.0.1:61325/style.css", "allowedOrigin": true, "method": "GET"}
+{"observedAt": "2026-11-19T22:09:03.823058+00:00", "source": "Playwright-context", "kind": "request", "url": "http://127.0.0.1:61325/app.js", "allowedOrigin": true, "method": "GET"}
+{"observedAt": "2026-11-19T22:09:03.932340+00:00", "source": "Playwright-context", "kind": "request", "url": "http://127.0.0.1:61325/api/session", "allowedOrigin": true, "method": "GET"}
+{"observedAt": "2026-11-19T22:09:05.438531+00:00", "source": "CDP-target", "kind": "request", "url": "http://127.0.0.1:61325/api/session", "allowedOrigin": true, "method": "GET", "requestId": "14108.6"}
+{"observedAt": "2026-11-19T22:09:05.441535+00:00", "source": "CDP-target", "kind": "request", "url": "http://127.0.0.1:61325/api/demands?channel=&status=&page=1", "allowedOrigin": true, "method": "GET", "requestId": "14108.7"}
+{"observedAt": "2026-11-19T22:09:05.442534+00:00", "source": "Playwright-context", "kind": "request", "url": "http://127.0.0.1:61325/api/demands?channel=&status=&page=1", "allowedOrigin": true, "method": "GET"}

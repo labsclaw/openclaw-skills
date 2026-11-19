@@ -1,0 +1,21 @@
+{
+  "controls_passed": true,
+  "sources_unchanged": true,
+  "files_match": true,
+  "events": 10,
+  "distinct_urls": 5,
+  "events_nonallowed": 0,
+  "observation_verdict": "not_verified",
+  "sufficiency": {
+    "sufficient": false,
+    "reasons": [
+      "sensor attached after Chromium launch; startup not observed",
+      "does not observe all browser background/DNS/UDP/host processes",
+      "no inference/provider transport exercised",
+      "historical runs cannot be reconstructed from this observation",
+      "normal public recipe did not complete full contracted workflow"
+    ]
+  },
+  "task_result": "RECIPE-FAIL identity invalid at step 0: element not found (waited)",
+  "exit0_means": "diagnostic produced, not requirement fulfilled"
+}

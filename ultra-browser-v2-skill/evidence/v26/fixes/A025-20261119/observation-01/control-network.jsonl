@@ -1,0 +1,4 @@
+{"observedAt": "2026-11-19T22:09:01.172750+00:00", "source": "Playwright-context", "kind": "request", "url": "http://127.0.0.1:64881/", "allowedOrigin": true, "method": "GET"}
+{"observedAt": "2026-11-19T22:09:01.173380+00:00", "source": "CDP-target", "kind": "request", "url": "http://127.0.0.1:64881/", "allowedOrigin": true, "method": "GET", "requestId": "6A6E7C453EAAD5717B95E2EDF7FB6028"}
+{"observedAt": "2026-11-19T22:09:01.256810+00:00", "source": "CDP-target", "kind": "request", "url": "http://127.0.0.1:64882/calibration", "allowedOrigin": false, "method": "GET", "requestId": "6376.2"}
+{"observedAt": "2026-11-19T22:09:01.257321+00:00", "source": "Playwright-context", "kind": "request", "url": "http://127.0.0.1:64882/calibration", "allowedOrigin": false, "method": "GET"}

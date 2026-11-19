@@ -1,0 +1,6 @@
+{
+  "command": "pktmon status",
+  "observedOutput": "Falha ao obter o status do Packet Monitor: O sistema não pode encontrar o arquivo especificado.",
+  "captureObtained": false,
+  "meaning": "Somente status consultado, nenhuma captura de kernel obtida. Não prova falta de privilégios nem ausência de tráfego. Não foram alterados filtros, monitores, proxy ou firewall."
+}
