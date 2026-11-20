@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Fixture T4 — Iframe Inner</title>
+<style>
+  body { font-family: system-ui; padding: 1rem; }
+  button { padding: .5rem 1rem; border-radius: 8px; border: 1px solid #4f46e5; background: #eef; cursor: pointer; }
+  #iframe-msg { margin-top: .5rem; font-weight: 700; color: #4f46e5; min-height: 1em; }
+</style>
+</head>
+<body>
+  <strong>Área extra (dentro do iframe)</strong>
+  <p>Clique para revelar o código de verificação:</p>
+  <button id="reveal">Revelar código</button>
+  <div id="iframe-msg"></div>
+  <script>
+    document.getElementById('reveal').addEventListener('click', () => {
+      document.getElementById('iframe-msg').textContent = 'Código: X7-K9-42';
+    });
+  </script>
+</body>
+</html>
