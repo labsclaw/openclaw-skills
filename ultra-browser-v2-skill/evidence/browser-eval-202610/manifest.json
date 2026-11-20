@@ -1,0 +1,153 @@
+{
+  "schema": "browser-eval-history-export-v1",
+  "source_repository": "C:/Users/ClawLabs/browser-eval",
+  "source_commit": "40c68be498817c9787d97ce68f581081ebc078f7",
+  "source_checkout_head": "8ab233f7b7bf9156192a5cdd3154e62cb8e2f4ba",
+  "publication_base": "0ae6885bb5946598ca6f6c4aa9ca8557ad0b2882",
+  "copy_mode": "raw bytes, no rewriting or link substitution",
+  "classification": "historical evidence, not current executable recipe or new verification",
+  "files": [
+    {
+      "source_path": "C:\\Users\\ClawLabs\\browser-eval\\EXPERIMENT.md",
+      "destination_path": "evidence/browser-eval-202610/EXPERIMENT.md",
+      "bytes": 15829,
+      "source_sha256": "f2d1410117ee408b299cef4af5fec906b4159ce82f5963bb5abb912ed2364b3e",
+      "destination_sha256": "f2d1410117ee408b299cef4af5fec906b4159ce82f5963bb5abb912ed2364b3e",
+      "source_commit_blob_sha256": "f2d1410117ee408b299cef4af5fec906b4159ce82f5963bb5abb912ed2364b3e",
+      "source_commit_blob_raw_equal": true
+    },
+    {
+      "source_path": "C:\\Users\\ClawLabs\\browser-eval\\results\\analysis-lcu-opengcua.md",
+      "destination_path": "evidence/browser-eval-202610/results/analysis-lcu-opengcua.md",
+      "bytes": 7103,
+      "source_sha256": "aa5c133f3ac939f250b4e7c7f0f507e5081c7ca1a195920673d1a57998cce1b7",
+      "destination_sha256": "aa5c133f3ac939f250b4e7c7f0f507e5081c7ca1a195920673d1a57998cce1b7",
+      "source_commit_blob_sha256": "aa5c133f3ac939f250b4e7c7f0f507e5081c7ca1a195920673d1a57998cce1b7",
+      "source_commit_blob_raw_equal": true
+    },
+    {
+      "source_path": "C:\\Users\\ClawLabs\\browser-eval\\results\\phase0-results.md",
+      "destination_path": "evidence/browser-eval-202610/results/phase0-results.md",
+      "bytes": 2952,
+      "source_sha256": "3de85f094f8e454927a04ae2b64fef2d6122c76df5c19726275faf46e2349dda",
+      "destination_sha256": "3de85f094f8e454927a04ae2b64fef2d6122c76df5c19726275faf46e2349dda",
+      "source_commit_blob_sha256": "3de85f094f8e454927a04ae2b64fef2d6122c76df5c19726275faf46e2349dda",
+      "source_commit_blob_raw_equal": true
+    },
+    {
+      "source_path": "C:\\Users\\ClawLabs\\browser-eval\\results\\phase1-inventory.md",
+      "destination_path": "evidence/browser-eval-202610/results/phase1-inventory.md",
+      "bytes": 4799,
+      "source_sha256": "ae04abfb8e5b466cb55e00e019995eb1237346e865c1bd0fc17712f1475efd72",
+      "destination_sha256": "ae04abfb8e5b466cb55e00e019995eb1237346e865c1bd0fc17712f1475efd72",
+      "source_commit_blob_sha256": "ae04abfb8e5b466cb55e00e019995eb1237346e865c1bd0fc17712f1475efd72",
+      "source_commit_blob_raw_equal": true
+    },
+    {
+      "source_path": "C:\\Users\\ClawLabs\\browser-eval\\results\\phase10-jev-deepseek-webm.md",
+      "destination_path": "evidence/browser-eval-202610/results/phase10-jev-deepseek-webm.md",
+      "bytes": 3292,
+      "source_sha256": "cf7b28771f17ccfe2029f1809195902d241c72c8a64da36441853b6bb3ab33c7",
+      "destination_sha256": "cf7b28771f17ccfe2029f1809195902d241c72c8a64da36441853b6bb3ab33c7",
+      "source_commit_blob_sha256": "cf7b28771f17ccfe2029f1809195902d241c72c8a64da36441853b6bb3ab33c7",
+      "source_commit_blob_raw_equal": true
+    },
+    {
+      "source_path": "C:\\Users\\ClawLabs\\browser-eval\\results\\phase2-battery.md",
+      "destination_path": "evidence/browser-eval-202610/results/phase2-battery.md",
+      "bytes": 4028,
+      "source_sha256": "6599c86e7121aeee827252ea7a0a7dc0b09b08314dda25ad5c6e52b8c4240c2e",
+      "destination_sha256": "6599c86e7121aeee827252ea7a0a7dc0b09b08314dda25ad5c6e52b8c4240c2e",
+      "source_commit_blob_sha256": "6599c86e7121aeee827252ea7a0a7dc0b09b08314dda25ad5c6e52b8c4240c2e",
+      "source_commit_blob_raw_equal": true
+    },
+    {
+      "source_path": "C:\\Users\\ClawLabs\\browser-eval\\results\\phase3-free-models.md",
+      "destination_path": "evidence/browser-eval-202610/results/phase3-free-models.md",
+      "bytes": 3079,
+      "source_sha256": "c587ab6391101b012a33e1da7fa3fb140b146cae90ef6d1e5c779c75f5b3bfa1",
+      "destination_sha256": "c587ab6391101b012a33e1da7fa3fb140b146cae90ef6d1e5c779c75f5b3bfa1",
+      "source_commit_blob_sha256": "c587ab6391101b012a33e1da7fa3fb140b146cae90ef6d1e5c779c75f5b3bfa1",
+      "source_commit_blob_raw_equal": true
+    },
+    {
+      "source_path": "C:\\Users\\ClawLabs\\browser-eval\\results\\phase6-jev-typesafe.md",
+      "destination_path": "evidence/browser-eval-202610/results/phase6-jev-typesafe.md",
+      "bytes": 3956,
+      "source_sha256": "1fdf628bd260cd374b1c2755a0979316ef900b28c0953ac2eabe8adb028c7b9c",
+      "destination_sha256": "1fdf628bd260cd374b1c2755a0979316ef900b28c0953ac2eabe8adb028c7b9c",
+      "source_commit_blob_sha256": "1fdf628bd260cd374b1c2755a0979316ef900b28c0953ac2eabe8adb028c7b9c",
+      "source_commit_blob_raw_equal": true
+    },
+    {
+      "source_path": "C:\\Users\\ClawLabs\\browser-eval\\results\\phase7-v22-batch.md",
+      "destination_path": "evidence/browser-eval-202610/results/phase7-v22-batch.md",
+      "bytes": 4581,
+      "source_sha256": "786801900d4487a5c97d92ef40824961ea5774fd9321817a98e2ba46082e37cf",
+      "destination_sha256": "786801900d4487a5c97d92ef40824961ea5774fd9321817a98e2ba46082e37cf",
+      "source_commit_blob_sha256": "786801900d4487a5c97d92ef40824961ea5774fd9321817a98e2ba46082e37cf",
+      "source_commit_blob_raw_equal": true
+    },
+    {
+      "source_path": "C:\\Users\\ClawLabs\\browser-eval\\results\\phase8-amd-battery.md",
+      "destination_path": "evidence/browser-eval-202610/results/phase8-amd-battery.md",
+      "bytes": 3754,
+      "source_sha256": "7845f43ee23c0663bf5e84cde668f0c3e4efa26147766f217f2effffd8e7fa06",
+      "destination_sha256": "7845f43ee23c0663bf5e84cde668f0c3e4efa26147766f217f2effffd8e7fa06",
+      "source_commit_blob_sha256": "7845f43ee23c0663bf5e84cde668f0c3e4efa26147766f217f2effffd8e7fa06",
+      "source_commit_blob_raw_equal": true
+    },
+    {
+      "source_path": "C:\\Users\\ClawLabs\\browser-eval\\results\\phase8b-xt-testing.md",
+      "destination_path": "evidence/browser-eval-202610/results/phase8b-xt-testing.md",
+      "bytes": 4533,
+      "source_sha256": "f63953b543a232971cc8ad6b402b2736d44eca1c483902053037c31a63ae0168",
+      "destination_sha256": "f63953b543a232971cc8ad6b402b2736d44eca1c483902053037c31a63ae0168",
+      "source_commit_blob_sha256": "f63953b543a232971cc8ad6b402b2736d44eca1c483902053037c31a63ae0168",
+      "source_commit_blob_raw_equal": true
+    },
+    {
+      "source_path": "C:\\Users\\ClawLabs\\browser-eval\\results\\phase9-xt238-complete.md",
+      "destination_path": "evidence/browser-eval-202610/results/phase9-xt238-complete.md",
+      "bytes": 3828,
+      "source_sha256": "27e1970eaf303b853a4bf7ee1c159af13772f1e5b612ce1038997d299ae3feca",
+      "destination_sha256": "27e1970eaf303b853a4bf7ee1c159af13772f1e5b612ce1038997d299ae3feca",
+      "source_commit_blob_sha256": "27e1970eaf303b853a4bf7ee1c159af13772f1e5b612ce1038997d299ae3feca",
+      "source_commit_blob_raw_equal": true
+    },
+    {
+      "source_path": "C:\\Users\\ClawLabs\\browser-eval\\fixtures\\html\\t4-form.html",
+      "destination_path": "evidence/browser-eval-202610/fixtures/html/t4-form.html",
+      "bytes": 3030,
+      "source_sha256": "30b0acf3a24290b0ed5465ed5cde3d8af2d39f5e66342c1852bddef7d187c938",
+      "destination_sha256": "30b0acf3a24290b0ed5465ed5cde3d8af2d39f5e66342c1852bddef7d187c938",
+      "source_commit_blob_sha256": "30b0acf3a24290b0ed5465ed5cde3d8af2d39f5e66342c1852bddef7d187c938",
+      "source_commit_blob_raw_equal": true
+    },
+    {
+      "source_path": "C:\\Users\\ClawLabs\\browser-eval\\fixtures\\html\\iframe-inner.html",
+      "destination_path": "evidence/browser-eval-202610/fixtures/html/iframe-inner.html",
+      "bytes": 777,
+      "source_sha256": "da0af177b00351b37bb02ce7a98ad70f89d4ac866c08aa01b2b9c98c1593fda0",
+      "destination_sha256": "da0af177b00351b37bb02ce7a98ad70f89d4ac866c08aa01b2b9c98c1593fda0",
+      "source_commit_blob_sha256": "da0af177b00351b37bb02ce7a98ad70f89d4ac866c08aa01b2b9c98c1593fda0",
+      "source_commit_blob_raw_equal": true
+    }
+  ],
+  "fixture_static_review": [
+    {
+      "path": "fixtures/html/t4-form.html",
+      "sha256": "30b0acf3a24290b0ed5465ed5cde3d8af2d39f5e66342c1852bddef7d187c938",
+      "review": "Full HTML inspected. Static empty test form/local iframe, placeholders and fixed test code only; no embedded client record or provider endpoint observed. No live execution.",
+      "external_network_pattern_hits": 0
+    },
+    {
+      "path": "fixtures/html/iframe-inner.html",
+      "sha256": "da0af177b00351b37bb02ce7a98ad70f89d4ac866c08aa01b2b9c98c1593fda0",
+      "review": "Full HTML inspected. Static empty test form/local iframe, placeholders and fixed test code only; no embedded client record or provider endpoint observed. No live execution.",
+      "external_network_pattern_hits": 0
+    }
+  ],
+  "total_original_bytes": 65541,
+  "total_original_files": 14
+}

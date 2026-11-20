@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Fixture T4 — Form Complexo</title>
+<style>
+  body { font-family: system-ui; margin: 2rem; background: #f7f7f9; }
+  .card { background: white; border-radius: 12px; padding: 1.5rem; max-width: 520px; margin: 1rem auto; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+  label { display: block; margin: .6rem 0 .2rem; font-weight: 600; }
+  input, select { width: 100%; padding: .5rem; border: 1px solid #ccc; border-radius: 6px; }
+  button { margin-top: 1rem; padding: .6rem 1.4rem; background: #4f46e5; color: white; border: 0; border-radius: 8px; font-weight: 700; cursor: pointer; }
+  #result { margin-top: 1rem; font-weight: 700; color: #16a34a; min-height: 1.2em; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h2>Cadastro — Fixture T4</h2>
+  <label for="name">Nome completo</label>
+  <input id="name" placeholder="Digite seu nome">
+  <label for="email">E-mail</label>
+  <input id="email" type="email" placeholder="voce@exemplo.com">
+  <label for="plan">Plano</label>
+  <select id="plan">
+    <option value="">Selecione…</option>
+    <option value="free">Free</option>
+    <option value="pro">Pro</option>
+    <option value="enterprise">Enterprise</option>
+  </select>
+  <!-- shadow DOM: termos + botão submit -->
+  <div id="shadow-host"></div>
+  <div id="result"></div>
+</div>
+<iframe src="iframe-inner.html" title="Seção adicional" style="width:100%;height:180px;border:0;margin-top:1rem;border-radius:12px;background:white"></iframe>
+<script>
+  // Shadow DOM com checkbox de termos e botão de submit
+  const host = document.getElementById('shadow-host');
+  const root = host.attachShadow({ mode: 'open' });
+  root.innerHTML = `
+    <style>
+      .terms { display:flex; gap:.5rem; align-items:flex-start; margin-top: 1rem; font-size: .9rem; }
+      button { margin-top: 1rem; padding: .6rem 1.4rem; background: #4f46e5; color: white; border: 0; border-radius: 8px; font-weight: 700; cursor: pointer; }
+      button:disabled { background: #aaa; cursor: not-allowed; }
+    </style>
+    <label class="terms"><input id="terms" type="checkbox"> Aceito os termos de uso e a política de privacidade</label>
+    <button id="submit-btn" disabled>Enviar cadastro</button>
+  `;
+  const terms = root.getElementById('terms');
+  const btn = root.getElementById('submit-btn');
+  terms.addEventListener('change', () => { btn.disabled = !terms.checked; });
+  btn.addEventListener('click', () => {
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const plan = document.getElementById('plan').value;
+    const result = document.getElementById('result');
+    if (name && email.includes('@') && plan && terms.checked) {
+      result.textContent = `OK: ${name} | ${email} | plano=${plan}`;
+      result.style.color = '#16a34a';
+    } else {
+      result.textContent = 'FALTA: preencha todos os campos + termos';
+      result.style.color = '#dc2626';
+    }
+  });
+</script>
+</body>
+</html>
